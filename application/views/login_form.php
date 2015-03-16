@@ -47,7 +47,7 @@
                 </fieldset>
                 <?php echo form_close(); ?>
             </div>
-            <div class="panel-footer ">
+            <div class="panel-footer">
                 Forgot Your Password? <a href="#" onClick=""> Get Help! </a>
             </div>
         </div>

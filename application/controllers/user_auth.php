@@ -29,6 +29,7 @@ class User_Auth extends CI_Controller{
             $sess_array = array();
             foreach ($result as $row) {
                 $sess_array = array(
+                    'logged_in' => TRUE,
                     'id' => $row->id,
                     'username' => $row->username,
                     'password' => $row->password,
@@ -36,7 +37,7 @@ class User_Auth extends CI_Controller{
                     'last_name' => $row->last_name,
                     'user_type' => $row->user_type
                 );
-                $this->session->set_userdata('logged_in', $sess_array);
+                $this->session->set_userdata($sess_array);
             }
             return TRUE;
         } else {
