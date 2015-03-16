@@ -16,15 +16,8 @@
             <ul class="nav navbar-nav">
             </ul>
             <ul class="nav navbar-nav navbar-right">
-                <li class="dropdown">
-                    <a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" aria-expanded="false">Hello <?php echo $first_name; ?> <span class="caret"></span></a>
-                    <ul class="dropdown-menu" role="menu">
-                        <li><a href="#"><span class="glyphicon glyphicon-user"></span> Profile</a></li>
-                        <li><a href="#"><span class="glyphicon glyphicon-cog"></span> Security</a></li>
-                        <li class="divider"></li>
-                        <li><a href="dashboard/logout"><span class="glyphicon glyphicon-off"></span> Log Out</a></li>
-                    </ul>
-                </li>
+                <li><a href="#" class="display-tooltip" data-toggle="tooltip" title="Inbox"><span class="glyphicon glyphicon-comment" aria-hidden="true"></span></a></li>
+                <li><a href="dashboard/logout" title="Logout"><span class="glyphicon glyphicon-off" aria-hidden="true"></span></a></li>
             </ul>
         </div><!-- /.navbar-collapse -->
     </div><!-- /.container-fluid -->
