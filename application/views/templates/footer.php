@@ -1,6 +1,6 @@
-<footer class="footer">
+<footer>
     <div align="center">
-        <p class="text-muted" style="margin-top: 10px;">Managed by SLIIT - WE Software Engineering Group</p>
+        <p  style="margin-top: 10px;">Managed by SLIIT - WE Software Engineering Group</p>
     </div>
 </footer>
 

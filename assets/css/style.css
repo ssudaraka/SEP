@@ -164,3 +164,27 @@ html, body {
     margin-bottom: 0px;
     border-radius: 0px;
 }
+
+.navbar-brand {
+    font-size: 2em;
+}
+
+.list-heading {
+    background-color: #ccc;
+}
+
+#accordion .glyphicon { 
+    margin-right:10px; 
+}
+
+#accordion .panel-body { 
+    padding:0px; 
+}
+
+#accordion .panel-body table tr td {
+    padding-left: 15px 
+}
+
+#accordion .panel-body .table {
+    margin-bottom: 0px; 
+}

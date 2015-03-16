@@ -14,7 +14,7 @@ class Dashboard extends CI_Controller {
         $data['first_name'] = $this->session->userdata('first_name');
         $this->load->view('templates/header', $data);
         $this->load->view('navbar_main', $data);
-        $this->load->view('navbar_sub');
+        $this->load->view('navbar_sub', $data);
         $this->load->view('dashboard');
         $this->load->view('templates/footer');
     }

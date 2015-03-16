@@ -8,7 +8,7 @@
                 <span class="icon-bar"></span>
                 <span class="icon-bar"></span>
             </button>
-            <a class="navbar-brand" href="#">SCHOOL MANAGEMENT SYSTEM</a>
+            <a class="navbar-brand" href="#">école</a>
         </div>
 
         <!-- Collect the nav links, forms, and other content for toggling -->
@@ -17,7 +17,7 @@
             </ul>
             <ul class="nav navbar-nav navbar-right">
                 <li><a href="#" class="display-tooltip" data-toggle="tooltip" title="Inbox"><span class="glyphicon glyphicon-comment" aria-hidden="true"></span></a></li>
-                <li><a href="dashboard/logout" title="Logout"><span class="glyphicon glyphicon-off" aria-hidden="true"></span></a></li>
+                <li><a href="<?php echo base_url('index.php/dashboard/logout'); ?>" title="Logout"><span class="glyphicon glyphicon-off" aria-hidden="true"></span></a></li>
             </ul>
         </div><!-- /.navbar-collapse -->
     </div><!-- /.container-fluid -->
