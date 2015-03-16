@@ -8,6 +8,10 @@ class Login extends CI_Controller{
     
     function index(){
         
+        if($this->session->userdata('logged_in')){
+            redirect('dashboard', 'refresh');
+        }
+        
         $data['page_title'] = "Login";
         $this->load->view('/templates/header', $data);
         $this->load->view('login_form');

@@ -12,7 +12,10 @@ class User_Auth extends CI_Controller{
         $this->form_validation->set_rules('password', 'Password', 'trim|required|xss_clean|callback_authenticate');
         
         if($this->form_validation->run() == FALSE){
+            $data['page_title'] = "Login";
+            $this->load->view('/templates/header', $data);
             $this->load->view('login_form');
+            $this->load->view('/templates/footer');
         } else {
             redirect('dashboard', 'refresh');
         }

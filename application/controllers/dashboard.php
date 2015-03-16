@@ -18,7 +18,7 @@ class Dashboard extends CI_Controller {
 
     function logout() {
         $this->session->unset_userdata('logged_in');
-        session_destroy();
+        // session_destroy(); I'm not sure if this is necessary 
         redirect('login', 'refresh');
     }
 
