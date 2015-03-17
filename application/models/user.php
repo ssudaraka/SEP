@@ -17,27 +17,5 @@ class User extends CI_Model {
             return FALSE;
         }
     }
-    
-    public function get_details($user_id){
-        $query = $this->db->query("SELECT first_name, last_name FROM users WHERE id='{$user_id}' LIMIT 1");
-        if($query->num_rows() > 0){
-            return $query->result();
-        } else {
-            return FALSE;
-        }
-        
-    }
-    
-    public function change_password($user_id, $new_password){
-        $hashed_password = md($new_password);
-        $query = "UPDATE users SET password='{$hashed_password}' WHERE id='{$user_id}'";
-        $result = $this->db->query($query);
-        
-        if(!$result){
-            return FALSE;
-        } else {
-            return TRUE;
-        }
-    }
 
 }
