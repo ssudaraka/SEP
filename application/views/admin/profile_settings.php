@@ -14,12 +14,12 @@
                             <table class="table">
                                 <tr>
                                     <td>
-                                        <span class="glyphicon glyphicon-pencil text-primary"></span><a href="#">Profile</a>
+                                        <span class="glyphicon glyphicon-user text-primary"></span><a href="#">Profile</a>
                                     </td>
                                 </tr>
                                 <tr>
                                     <td>
-                                        <span class="glyphicon glyphicon-flash text-success"></span><a href="#">Account Settings</a>
+                                        <span class="glyphicon glyphicon-cog text-warning"></span><a href="#">Account Settings</a>
                                     </td>
                                 </tr>
                             </table>
@@ -29,7 +29,7 @@
                 <div class="panel panel-default">
                     <div class="panel-heading">
                         <h4 class="panel-title">
-                            <a data-toggle="collapse" data-parent="#accordion" href="#collapseTwo"><span class="glyphicon glyphicon-th">
+                            <a data-toggle="collapse" data-parent="#accordion" href="#collapseTwo"><span class="glyphicon glyphicon-globe">
                                 </span>Global Settings</a>
                         </h4>
                     </div>
@@ -38,17 +38,17 @@
                             <table class="table">
                                 <tr>
                                     <td>
-                                        <span class="glyphicon glyphicon-pencil text-primary"></span><a href="#">System Settings</a>
+                                        <span class="glyphicon glyphicon-wrench text-warning"></span><a href="#">System Settings</a>
                                     </td>
                                 </tr>
                                 <tr>
                                     <td>
-                                        <span class="glyphicon glyphicon-pencil text-primary"></span><a href="#">Create Admin Account</a>
+                                        <span class="glyphicon glyphicon-star text-warning"></span><a href="#">Create Admin Account</a>
                                     </td>
                                 </tr>
                                 <tr>
                                     <td>
-                                        <span class="glyphicon glyphicon-pencil text-primary"></span><a href="#">Manage Administrators</a>
+                                        <span class="glyphicon glyphicon-list-alt text-warning"></span><a href="#">Manage Administrators</a>
                                     </td>
                                 </tr>
                             </table>
