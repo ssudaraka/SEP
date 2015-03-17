@@ -10,7 +10,8 @@
         <link href="<?php echo base_url("assets/css/bootstrap.css"); ?>" rel="stylesheet">
         <link href="<?php echo base_url("assets/css/style.css"); ?>" rel="stylesheet">
         
-
+        <!-- Font Awesome -->
+        <link rel="stylesheet" href="<?php echo base_url("assets/css/font-awesome.min.css"); ?>">
         <!-- HTML5 shim and Respond.js for IE8 support of HTML5 elements and media queries -->
         <!-- WARNING: Respond.js doesn't work if you view the page via file:// -->
         <!--[if lt IE 9]>

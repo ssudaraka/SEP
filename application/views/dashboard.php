@@ -15,7 +15,7 @@
 	                <strong>Header 2</strong>
 	            </div>
 	            <div class="panel-body">
-	            	<p>Test 124</p>
+	            	<p><i class="fa fa-bed"></i></p>
 	            	<p>Test 124</p>
 	            	<p>Test 124</p>
 	            	<p>Test 124</p>
