@@ -49,7 +49,6 @@ class Admin extends CI_Controller {
     }
 
     function change_password() {
-        
         $this->load->library('form_validation');
         $this->form_validation->set_rules('old_password', 'Old Password', "required|xss_clean|callback_check_old_password");
         $this->form->validation->set_rules('new_password', 'New Password', "required|xss_clean|matches[conf_password]");
@@ -63,12 +62,10 @@ class Admin extends CI_Controller {
             $this->load->view('admin/account_settings', $data);
             $this->load->view('templates/footer');
         } else {
-            
             $user_id = $this->session->userdata('id');
             $new_password = $this->input->post('new_password');
             if ($this->user->change_password($user_id, $new_password)) {
                 $data['page_title'] = "Account Settings";
-                $data['succ_message'] = "Password Changed Successfully";
                 $this->load->view('templates/header', $data);
                 $this->load->view('navbar_main', $data);
                 $this->load->view('navbar_sub');
