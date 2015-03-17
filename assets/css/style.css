@@ -201,3 +201,62 @@ html, body {
     margin-bottom: 0px; 
 }
 
+/* CSS for Main Doc with stats that need attention*/
+
+#big_stats 
+{ 
+    width: 100%; 
+    display: table;
+    margin-top: 1.5em;
+    
+    
+}
+
+.big-stats-container .widget-content {
+    border:0;
+}
+
+#big_stats .stat
+{
+    width: 25%;
+    height: 90px;
+    text-align: center;
+    display: table-cell;
+    padding: 0;
+    position: relative;
+    
+    border-right: 1px solid #CCC;
+    border-left: 1px solid #FFF;
+}
+#big_stats  i { font-size:30px; display:block; line-height: 40px; color:#b2afaa;}
+#big_stats .stat:hover i {color:#ff6f00;}
+
+h6.bigstats{margin: 20px;
+border-bottom: 1px solid #eee;
+padding-bottom: 20px;
+margin-bottom: 26px;}
+
+#big_stats .stat:first-child {
+    border-left: none;
+}
+
+#big_stats .stat:last-child {
+    border-right: none;
+}
+
+#big_stats .stat h4
+{
+    font-size: 11px;
+    font-weight: bold;
+    color: #777;
+    margin-bottom: 1.5em;
+}
+
+#big_stats .stat .value
+{
+    font-size: 45px;
+    font-weight: bold;
+    color: #545454;
+    line-height: 1em;
+}
+
