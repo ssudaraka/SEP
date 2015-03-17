@@ -29,7 +29,7 @@ class User extends CI_Model {
     }
     
     public function change_password($user_id, $new_password){
-        $hashed_password = md($new_password);
+        $hashed_password = md5($new_password);
         $query = "UPDATE users SET password='{$hashed_password}' WHERE id='{$user_id}'";
         $result = $this->db->query($query);
         
@@ -38,6 +38,12 @@ class User extends CI_Model {
         } else {
             return TRUE;
         }
+    }
+    
+    public function get_password_hash($user_id){
+        $query = $this->db->query("SELECT password FROM users WHERE id='{$user_id}'");
+        $row = $query->row();
+        return $row->password;
     }
 
 }

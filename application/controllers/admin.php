@@ -49,11 +49,11 @@ class Admin extends CI_Controller {
     }
 
     function change_password() {
-        
+
         $this->load->library('form_validation');
         $this->form_validation->set_rules('old_password', 'Old Password', "required|xss_clean|callback_check_old_password");
-        $this->form->validation->set_rules('new_password', 'New Password', "required|xss_clean|matches[conf_password]");
-        $this->form->valdation->set_rules('conf_password', 'Confirm Password', "required|xss_clean|matches[new_password]");
+        $this->form_validation->set_rules('new_password', 'New Password', "required|xss_clean|matches[conf_password]");
+        $this->form_validation->set_rules('conf_password', 'Confirm Password', "required|xss_clean|matches[new_password]");
 
         if ($this->form_validation->run() == FALSE) {
             $data['page_title'] = "Account Settings";
@@ -63,7 +63,7 @@ class Admin extends CI_Controller {
             $this->load->view('admin/account_settings', $data);
             $this->load->view('templates/footer');
         } else {
-            
+
             $user_id = $this->session->userdata('id');
             $new_password = $this->input->post('new_password');
             if ($this->user->change_password($user_id, $new_password)) {
@@ -75,6 +75,19 @@ class Admin extends CI_Controller {
                 $this->load->view('admin/account_settings', $data);
                 $this->load->view('templates/footer');
             }
+        }
+    }
+
+    function check_old_password() {
+        $user_id = $this->session->userdata('id');
+        $password_hash = $this->user->get_password_hash($user_id);
+
+        $inserted_old_password_hash = md5($this->input->post('old_password'));
+        if ($password_hash === $inserted_old_password_hash) {
+            return TRUE;
+        } else {
+            $this->form_validation->set_message('check_old_password', "Your old password is incorrect");
+            return FALSE;
         }
     }
 
