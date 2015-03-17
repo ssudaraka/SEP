@@ -41,13 +41,12 @@ html, body {
 
 .subnavbar-inner {
     height: 60px;
-    background: #fff;
+    background: #ffd54f;
     border-bottom: 1px solid #d6d6d6;
 }
 
 .subnavbar .container > ul {
     display: inline-block;
-
     height: 80px;
     padding: 0;
     margin: 0;
@@ -56,27 +55,22 @@ html, body {
 
 .subnavbar .container > ul > li {
     float: left;
-
     min-width: 90px;
     height: 60px;
     padding: 0;
     margin: 0;
-
     text-align: center;
     list-style: none;
-
-    border-left: 1px solid #d9d9d9;
+    border-left: 1px solid #fff;
 }
 
 .subnavbar .container > ul > li > a {
     display: block;
-
     height: 100%;
     padding: 0 15px;
-
     font-size: 12px;
     font-weight: bold;
-    color: #b2afaa;
+    color: #9e7700;
 }
 
 .subnavbar .container > ul > li > a:hover {
@@ -86,7 +80,6 @@ html, body {
 
 .subnavbar .container > ul > li > a > i {
     display: inline-block;
-
     width: 24px;
     height: 24px;
     margin-top: 11px;
@@ -96,13 +89,11 @@ html, body {
 
 .subnavbar .container > ul > li > a > span {
     display: block;
-
 }
 
 
 .subnavbar .container > ul > li.active > a {
-
-    border-bottom:3px solid #1976D2;
+    border-bottom:4px solid #ff6f00;
     color: #383838;
 }
 
@@ -114,7 +105,6 @@ html, body {
 
 .subnavbar .dropdown .dropdown-menu {
     text-align: left;
-
     -webkit-border-top-left-radius: 0;
     -webkit-border-top-right-radius: 0;
     -moz-border-radius-topleft: 0;
@@ -211,3 +201,91 @@ html, body {
     margin-bottom: 0px; 
 }
 
+.profile-img {
+    width: 150px;
+    height: 150px;
+}
+
+.btn-file {
+    position: relative;
+    overflow: hidden;
+}
+
+.btn-file input[type=file] {
+    position: absolute;
+    top: 0;
+    right: 0;
+    min-width: 100%;
+    min-height: 100%;
+    font-size: 100px;
+    text-align: right;
+    filter: alpha(opacity=0);
+    opacity: 0;
+    outline: none;
+    background: white;
+    cursor: inherit;
+    display: block;
+}
+
+.img-submit {
+    margin-bottom: 1em;
+}
+
+/* CSS for Main Doc with stats that need attention*/
+
+#big_stats 
+{ 
+    width: 100%; 
+    display: table;
+    margin-top: 1.5em;
+    
+    
+}
+
+.big-stats-container .widget-content {
+    border:0;
+}
+
+#big_stats .stat
+{
+    width: 25%;
+    height: 90px;
+    text-align: center;
+    display: table-cell;
+    padding: 0;
+    position: relative;
+    
+    border-right: 1px solid #CCC;
+    border-left: 1px solid #FFF;
+}
+#big_stats  i { font-size:30px; display:block; line-height: 40px; color:#b2afaa;}
+#big_stats .stat:hover i {color:#ff6f00;}
+
+h6.bigstats{margin: 20px;
+border-bottom: 1px solid #eee;
+padding-bottom: 20px;
+margin-bottom: 26px;}
+
+#big_stats .stat:first-child {
+    border-left: none;
+}
+
+#big_stats .stat:last-child {
+    border-right: none;
+}
+
+#big_stats .stat h4
+{
+    font-size: 11px;
+    font-weight: bold;
+    color: #777;
+    margin-bottom: 1.5em;
+}
+
+#big_stats .stat .value
+{
+    font-size: 45px;
+    font-weight: bold;
+    color: #545454;
+    line-height: 1em;
+}
