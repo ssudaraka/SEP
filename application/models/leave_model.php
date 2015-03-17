@@ -22,9 +22,9 @@ class leave_model extends CI_Model {
 
     //Get a list of applied leaves according to the teacher id
     //Teacher id is not passed yet ;)
-    public function get_applied_leaves_list($uid){
+    public function get_applied_leaves_list(){
         try{
-            $query = $this->db->query("SELECT lt.name,al.applied_date,al.start_date,al.end_date,al.no_of_days,ls.status FROM apply_leaves al,leave_types lt,leave_status ls where (al.id = lt.id) AND al.leave_status = ls.id AND al.user_id='$uid' ORDER BY al.applied_date desc LIMIT 5");
+            $query = $this->db->query("SELECT lt.name,al.applied_date,al.start_date,al.end_date,al.no_of_days,ls.status FROM apply_leaves al,leave_types lt,leave_status ls where (al.id = lt.id) AND al.leave_status = ls.id");
 //            $query = $this->db->query("SELECT lt.name,al.applied_date,al.start_date,al.end_date,al.no_of_days,al.leave_status FROM apply_leaves al,leave_types lt where (al.id = lt.id)");
             return $query->result();
         } catch(Exception $ex) {
@@ -43,10 +43,10 @@ class leave_model extends CI_Model {
 		}
 	}
 
-    //Get No of leaves applied by a person Make sure to use user id
-    public function get_no_leaves($leave_type, $uid){
+    //Get No of leaves applied by a person
+    public function get_no_leaves($leave_type, $tid){
         try {
-            $query = $this->db->query("SELECT sum(no_of_days) as days FROM `apply_leaves` WHERE user_id = '$uid' AND leave_type_id = '$leave_type'");
+            $query = $this->db->query("SELECT sum(no_of_days) as days FROM `apply_leaves` WHERE teacher_id = '$tid' AND leave_type_id = '$leave_type'");
             $row = $query->row();
             return $row->days;
             

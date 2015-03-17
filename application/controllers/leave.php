@@ -31,6 +31,7 @@ class leave extends CI_Controller {
         }
         $data['page_title'] = "Leave Management";
         $data['first_name'] = $this->session->userdata('first_name');
+        
 
         //Load form combo
         $data['leave_types'] = $this->leave_model->get_leave_types();
@@ -43,7 +44,7 @@ class leave extends CI_Controller {
         $data['maternity_leaves'] = $this->leave_model->get_max_leave_count("Maternity");
 
         //Getting List of Applied Leaves
-        $data['applied_leaves'] = $this->leave_model->get_applied_leaves_list($this->session->userdata['id']);
+        $data['applied_leaves'] = $this->leave_model->get_applied_leaves_list();
 
         //Get Separate leaves count according to the type
         $data['applied_casual_leaves'] = $this->leave_model->get_no_leaves('1', '1');
@@ -65,10 +66,6 @@ class leave extends CI_Controller {
 
     //Main function to apply leaves
     public function apply_leave() {
-        //Basic data to be loaded
-
-        //Load form combo
-        $data['leave_types'] = $this->leave_model->get_leave_types();
 
         //Getting Values from Leaves DB
         $data['casual_leaves'] = $this->leave_model->get_max_leave_count("Casual");
@@ -77,8 +74,8 @@ class leave extends CI_Controller {
         $data['other_leaves'] = $this->leave_model->get_max_leave_count("Other");
         $data['maternity_leaves'] = $this->leave_model->get_max_leave_count("Maternity");
 
-        //Getting List of Applied Leaves
-        $data['applied_leaves'] = $this->leave_model->get_applied_leaves_list($this->session->userdata['id']);
+//Getting List of Applied Leaves
+        $data['applied_leaves'] = $this->leave_model->get_applied_leaves_list();
 
         //Get Separate leaves count according to the type
         $data['applied_casual_leaves'] = $this->leave_model->get_no_leaves('1', '1');
@@ -90,34 +87,24 @@ class leave extends CI_Controller {
         //total leaves
         $data['total_leaves'] = $data['applied_casual_leaves'] + $data['applied_medical_leaves'] + $data['applied_duty_leaves'] + $data['applied_other_leaves'] + $data['applied_maternity_leaves'];
 
-        $this->load->library('form_validation');
-        $this->form_validation->set_rules('txt_reason', 'Reason', "required|xss_clean");
-        $this->form_validation->set_rules('txt_startdate', 'Start Date', "required|xss_clean");
-        $this->form_validation->set_rules('txt_enddate', 'End Date', "required|xss_clean");
-
-        $data['page_title'] = "Leave Management";
-
-        if($this->form_validation->run() == FALSE){
-
-            //Passing it to the View
-            $this->load->view('templates/header', $data);
-            $this->load->view('navbar_main', $data);
-            $this->load->view('navbar_sub', $data);
-            $this->load->view('/leave/leave', $data);
-            $this->load->view('/templates/footer');
-
-        } else{
-            $something = $this->input->post('cmb_leavetype');
-            $data['succ_message'] = "Leave Applied Successfully ".$something;
-
-            //Passing it to the View
-            $this->load->view('templates/header', $data);
-            $this->load->view('navbar_main', $data);
-            $this->load->view('navbar_sub', $data);
-            $this->load->view('/leave/leave', $data);
-            $this->load->view('/templates/footer');
+        //This is where the logic happens
+        if ($this->leave_model->get_no_leaves('1', '1') == $this->leave_model->get_max_leave_count("Casual")) {
+            $data['error_reason'] = 'No casual leaves left to apply';
+        } elseif ($this->leave_model->get_no_leaves('2', '1') == $this->leave_model->get_max_leave_count("Medical")) {
+            $data['error_reason'] = 'No Medical leaves left to apply';
+        } else {
+            
         }
 
+
+        $data['title'] = "Leave Management";
+        $this->load->view('/templates/header', $data);
+        $this->load->view('navbar_main', $data);
+        $this->load->view('navbar_sub', $data);
+        $this->load->view('/leave/save', $data);
+        //Passing it to the View
+        $this->load->view('/leave/leave', $data);
+        $this->load->view('/templates/footer');
     }
 
 }
