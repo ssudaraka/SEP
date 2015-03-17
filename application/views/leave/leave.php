@@ -1,7 +1,23 @@
 <div class="container">
     <div class="row">
-        <div class="col-md-3"></div>
+        <div class="col-md-3">
+
+        </div>
         <div class="col-md-9">
+            <!--    Messages        -->
+            <?php if (isset($succ_message)) { ?>
+                <div class="alert alert-success alert-dismissible" role="alert">
+                    <button type="button" class="close" data-dismiss="alert" aria-label="Close"><span aria-hidden="true">&times;</span></button>
+                    <?php echo $succ_message; ?>
+                </div>
+            <?php } ?>
+            <?php if (validation_errors()) { ?>
+                <div class="alert alert-danger alert-dismissible" role="alert">
+                    <button type="button" class="close" data-dismiss="alert" aria-label="Close"><span aria-hidden="true">&times;</span></button>
+                    <?php echo validation_errors(); ?>
+                </div>
+            <?php } ?>
+
             <div class="panel panel-default">
                 <div class="panel-heading">
                     <strong>LEAVE STATUS</strong>
@@ -61,6 +77,7 @@
                 </div>
                 <div class="panel-body">
                     <div class="container-fluid">
+
                         <?php
                         // Change the css classes to suit your needs
 
@@ -82,7 +99,7 @@
                         <div class="row" style="margin-bottom:15px;">
                             <div class="col-xs-6 col-md-4">
                                 <?php
-                                echo "<select class='form-control'>" . PHP_EOL;
+                                echo "<select name='cmb_leavetype' class='form-control'>" . PHP_EOL;
                                 foreach ($leave_types as $row) {
                                     echo "<option value='" . $row->id . "'>" . $row->name . "</option>" . PHP_EOL;
                                 }
@@ -90,10 +107,10 @@
                                 ?>
                             </div>
                             <div class="col-xs-6 col-md-4">
-                                <input class="form-control" placeholder="Start Date" name="startdate"   type="date">
+                                <input class="form-control" name="txt_startdate" placeholder="Start Date" name="startdate"   type="date">
                             </div>
                             <div class="col-xs-6 col-md-4">
-                                <input class="form-control" placeholder="End Date" name="enddate"   type="date">
+                                <input class="form-control" name="txt_enddate" placeholder="End Date" name="enddate"   type="date">
                             </div>
                         </div>
                         <div class="row" style="margin-bottom:5px;">
@@ -101,7 +118,7 @@
                             <div class="col-xs-6 col-md-4"></div>
                         </div> 						
                         <div class="row">
-                            <div class="col-xs-12 col-md-8"><textarea class="form-control" rows="3"></textarea></div>
+                            <div class="col-xs-12 col-md-8"><textarea class="form-control" rows="3" id="txt_reason" name="txt_reason"></textarea></div>
                             <div class="col-xs-6 col-md-4"><button type="submit" class="btn btn-primary">Apply</button></div>
                         </div>
 <?php echo form_close(); ?>
