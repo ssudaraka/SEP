@@ -61,7 +61,7 @@ html, body {
     margin: 0;
     text-align: center;
     list-style: none;
-    border-left: 1px solid #d9d9d9;
+    border-left: 1px solid #fff;
 }
 
 .subnavbar .container > ul > li > a {
@@ -201,3 +201,32 @@ html, body {
     margin-bottom: 0px; 
 }
 
+.profile-img {
+    width: 150px;
+    height: 150px;
+}
+
+.btn-file {
+    position: relative;
+    overflow: hidden;
+}
+
+.btn-file input[type=file] {
+    position: absolute;
+    top: 0;
+    right: 0;
+    min-width: 100%;
+    min-height: 100%;
+    font-size: 100px;
+    text-align: right;
+    filter: alpha(opacity=0);
+    opacity: 0;
+    outline: none;
+    background: white;
+    cursor: inherit;
+    display: block;
+}
+
+.img-submit {
+    margin-bottom: 1em;
+}

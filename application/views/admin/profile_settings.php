@@ -58,11 +58,49 @@
             </div>
         </div>
         <div class="col-md-9">
+            <ol class="breadcrumb">
+                <li><a href="<?php echo base_url('index.php/dashboard'); ?>">Dashboard</a></li>
+                <li><a href="<?php echo base_url('index.php/admin'); ?>">Admin</a></li>
+                <li class="active">Profile Settings</li>
+            </ol>
             <div class="panel panel-default">
-                <div class="panel-heading">Personal Settings</div>
-                <div class="panel-body">test</div>
+                <div class="panel-heading">Profile Settings</div>
+                <div class="panel-body">
+                    <?php echo form_open(); ?>
+                    <div class="fom-group img-submit">
+                        <label for="profile-img">Profile image</label>
+                        <br />
+                        <img src="<?php echo base_url("/assets/img/profile_img.png"); ?>" id="profile-img" class="img-thumbnail profile-img">
+                        <span class="btn btn-default btn-file">
+                            Upload new picture<input type="file" name="profile_img" id="img-inp" onchange="readURL(this);">
+                        </span>
+                    </div>
+                    <div class="form-group">
+                        <label for="first_name">First Name</label>
+                        <input type="text" name="first_name" id="first_name" class="form-control">
+                        <p class="help-block"></p>
+                    </div>
+                    <?php echo form_close(); ?>
+                </div>
             </div>
         </div>
     </div>
 
 </div>
+<script>
+function readURL(input) {
+        if (input.files && input.files[0]) {
+            var reader = new FileReader();
+            
+            reader.onload = function (e) {
+                $('#profile-img').attr('src', e.target.result);
+            }
+            
+            reader.readAsDataURL(input.files[0]);
+        }
+    }
+    
+    $("#imp-inp").change(function(){
+        readURL(this);
+    });
+</script>
