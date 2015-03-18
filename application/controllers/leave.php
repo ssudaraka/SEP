@@ -56,12 +56,32 @@ class leave extends CI_Controller {
         //total leaves
         $data['total_leaves'] = $data['applied_casual_leaves'] + $data['applied_medical_leaves'] + $data['applied_duty_leaves'] + $data['applied_other_leaves'] + $data['applied_maternity_leaves'];
 
-        //Passing it to the View
-        $this->load->view('templates/header', $data);
-        $this->load->view('navbar_main', $data);
-        $this->load->view('navbar_sub', $data);
-        $this->load->view('/leave/leave', $data);
-        $this->load->view('/templates/footer');
+        //Getting user type
+        $data['user_type'] = $this->session->userdata['user_type'];
+
+        if($data['user_type'] == 'A'){
+            //Passing it to the View
+            $this->load->view('templates/header', $data);
+            $this->load->view('navbar_main', $data);
+            $this->load->view('navbar_sub', $data);
+            $this->load->view('/leave/admin_leave', $data);
+            $this->load->view('/templates/footer');
+        } elseif($data['user_type'] == 'T'){
+            //Passing it to the View
+            $this->load->view('templates/header', $data);
+            $this->load->view('navbar_main', $data);
+            $this->load->view('navbar_sub', $data);
+            $this->load->view('/leave/leave', $data);
+            $this->load->view('/templates/footer');
+        } else {
+            //Passing it to the View
+            $this->load->view('templates/header', $data);
+            $this->load->view('navbar_main', $data);
+            $this->load->view('navbar_sub', $data);
+            $this->load->view('/leave/leave', $data);
+            $this->load->view('/templates/footer');
+        }
+
     }
 
     //Main function to apply leaves
@@ -142,7 +162,7 @@ class leave extends CI_Controller {
 
                 if($this->leave_model->apply_for_leave($userid, $teacherid, $leavetype, $applieddate, $startdate, $enddate, $reason, $sdate) == TRUE)
                 {
-                    $data['succ_message'] = "Leave Applied Successfully". $noofdates->format("%R%a days");
+                    $data['succ_message'] = "Leave Applied Successfully for ". $noofdates->format("%a days");
 
                     //loading values again
                     //Getting Values from Leaves DB

@@ -78,6 +78,28 @@ class leave_model extends CI_Model {
     		return FALSE;
     	}
 	}
+
+    //Get a list of pending leaves
+    public function get_list_of_pending_leaves(){
+        try {
+            $query = $this->db->query("SELECT * FROM `apply_leaves` WHERE leave_status = '0' ORDER BY applied_date desc");
+            return $query->result();
+
+        } catch(Exception $ex) {
+            return FALSE;
+        }
+    }
+
+    //Get a single leave details
+    public function get_leave_details($id){
+        try {
+            $query = $this->db->query("SELECT * FROM `apply_leaves` WHERE id = '$id'");
+            return $query->result();
+
+        } catch(Exception $ex) {
+            return FALSE;
+        }
+    }
     //Sample Data extraction
     public function get_data(){
         try {
