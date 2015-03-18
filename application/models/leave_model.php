@@ -54,13 +54,22 @@ class leave_model extends CI_Model {
             return FALSE;
         }
     }
+    //Get teacher id by userid
+    function get_teacher_id($uid){
+        try{
+            $query = $this->db->query("SELECT id FROM teachers WHERE user_id='$uid'");
+            $row = $query->row();
+            return $row->id;
+        } catch (Exception $ex) {
+            return FALSE;
+        }
+    }
 
 	//Apply for leave
-	public function apply_for_leave($user_id, $teacher_id, $leave_type_id, $is_half_day, $applied_date, $start_date, $end_date, $reason, $remarks, $no_of_days){
+	public function apply_for_leave($user_id, $teacher_id, $leave_type_id, $applied_date, $start_date, $end_date, $reason, $no_of_days){
 		try {
-    		if($this->db->query("INSERT INTO `dcsms`.`apply_leaves` ('user_id', 'teacher_id', 'leave_type_id', 'is_half_day','applied_date','start_date',
-    			'end_date','reason','remarks','no_of_days')
-    			VALUES ('$user_id', '$teacher_id', '$leave_type_id', '$is_half_day','$applied_date', '$start_date', '$end_date', '$reason', '$remarks','$no_of_days');")) {
+    		if($this->db->query("INSERT INTO apply_leaves (`id`, `user_id`, `teacher_id`, `leave_type_id`, `is_half_day`, `applied_date`, `start_date`, `end_date`, `reason`, `leave_status`, `remarks`, `no_of_days`)
+                VALUES (NULL ,'$user_id', '$teacher_id', '$leave_type_id','0' ,'$applied_date', '$start_date', '$end_date', '$reason','0',NULL ,'$no_of_days');")) {
     			return TRUE;
     		} else {
     			return FALSE;
