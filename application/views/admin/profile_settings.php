@@ -8,7 +8,7 @@
                 <div class="panel-heading">Profile Settings</div>
                 <div class="panel-body">
                     <div class="col-md-6">
-                        <?php echo form_open(); ?>
+                        <?php echo form_open_multipart(); ?>
                         <div class="fom-group img-submit">
                             <label for="profile-img">Profile image</label>
                             <br />

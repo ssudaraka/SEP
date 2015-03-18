@@ -77,6 +77,10 @@ class Admin extends CI_Controller {
             }
         }
     }
+    
+    function update_profile(){
+        
+    }
 
     function check_old_password() {
         $user_id = $this->session->userdata('id');
