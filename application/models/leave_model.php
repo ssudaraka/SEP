@@ -82,7 +82,7 @@ class leave_model extends CI_Model {
     //Get a list of pending leaves
     public function get_list_of_pending_leaves(){
         try {
-            $query = $this->db->query("SELECT * FROM `apply_leaves` WHERE leave_status = '0' ORDER BY applied_date desc");
+            $query = $this->db->query("SELECT t.full_name, al.id, al.user_id,al.leave_type_id,al.applied_date,al.start_date,al.end_date,al.reason FROM apply_leaves al,teachers t WHERE al.user_id = t.user_id AND al.leave_status = '0' ORDER BY al.applied_date desc");
             return $query->result();
 
         } catch(Exception $ex) {
@@ -93,7 +93,7 @@ class leave_model extends CI_Model {
     //Get a single leave details
     public function get_leave_details($id){
         try {
-            $query = $this->db->query("SELECT * FROM `apply_leaves` WHERE id = '$id'");
+            $query = $this->db->query("SELECT t.full_name, al.id, al.user_id,lt.name,al.applied_date,al.start_date,al.end_date,al.reason,al.no_of_days FROM apply_leaves al,teachers t, leave_types lt WHERE al.id = '$id' AND al.user_id = t.user_id AND lt.id = al.leave_type_id");
             return $query->result();
 
         } catch(Exception $ex) {

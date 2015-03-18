@@ -59,7 +59,11 @@ class leave extends CI_Controller {
         //Getting user type
         $data['user_type'] = $this->session->userdata['user_type'];
 
+        //For Admin Views
         if($data['user_type'] == 'A'){
+            //Get Pending Leaves List
+            $data['admin_pending_list'] = $this->leave_model->get_list_of_pending_leaves();
+
             //Passing it to the View
             $this->load->view('templates/header', $data);
             $this->load->view('navbar_main', $data);
@@ -200,6 +204,22 @@ class leave extends CI_Controller {
             $this->load->view('/templates/footer');
         }
 
+    }
+
+    //Get One Leave details
+    public function get_leave_details($id){
+        $data['page_title'] = "Leave Management";
+        $data['id'] = $id;
+
+        //Get Leave Details
+        $data['leave_details'] = $this->leave_model->get_leave_details($id);
+
+        //Passing it to the View
+        $this->load->view('templates/header', $data);
+        $this->load->view('navbar_main', $data);
+        $this->load->view('navbar_sub', $data);
+        $this->load->view('/leave/view_leave', $data);
+        $this->load->view('/templates/footer');
     }
 
 }
