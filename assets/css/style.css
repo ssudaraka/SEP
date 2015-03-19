@@ -356,3 +356,7 @@ margin-bottom: 26px;}
     font-weight: 600;
     color: #888;
 }
+
+.error {
+    color: #b71c1c;
+}

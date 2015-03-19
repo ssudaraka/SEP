@@ -40,7 +40,7 @@
                     </tr>
                     <tr>
                         <td>
-                            <span class="glyphicon glyphicon-star text-warning"></span><a href="#">Create Admin Account</a>
+                            <span class="glyphicon glyphicon-star text-warning"></span><a href="<?php echo base_url('index.php/admin/create'); ?>">Create Admin Account</a>
                         </td>
                     </tr>
                     <tr>

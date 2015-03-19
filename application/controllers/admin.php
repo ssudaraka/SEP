@@ -77,8 +77,43 @@ class Admin extends CI_Controller {
             }
         }
     }
-    
-    function update_profile(){
+
+    function update_profile() {
+        $this->load->library('form_validation');
+        $this->form_validation->set_rules('first_name', 'first name', "required|xss_clean|alpha");
+        $this->form_validation->set_rules('last_name', 'last name', "required|xss_clean|alpha");
+
+        if ($this->form_validation->run() == FALSE) {
+            $data['page_title'] = "Profile Settings";
+            $data['first_name'] = $this->input->post('first_name');
+            $data['last_name'] = $this->input->post('last_name');
+            $this->load->view('templates/header', $data);
+            $this->load->view('navbar_main', $data);
+            $this->load->view('navbar_sub');
+            $this->load->view('admin/profile_settings', $data);
+            $this->load->view('templates/footer');
+        } else {
+            $user_id = $this->session->userdata('id');
+            $first_name = $this->input->post('first_name');
+            $last_name = $this->input->post('last_name');
+            if ($this->user->update_info($user_id, $first_name, $last_name)) {
+                $result = $this->user->get_details($this->session->userdata('id'));
+                foreach ($result as $row) {
+                    $data['first_name'] = $row->first_name;
+                    $data['last_name'] = $row->last_name;
+                }
+                $data['page_title'] = "Profile Settings";
+                $data['succ_message'] = "Profile Settings Changed Successfully";
+                $this->load->view('templates/header', $data);
+                $this->load->view('navbar_main', $data);
+                $this->load->view('navbar_sub');
+                $this->load->view('admin/profile_settings', $data);
+                $this->load->view('templates/footer');
+            }
+        }
+    }
+
+    function get_profile_img() {
         
     }
 
@@ -95,4 +130,33 @@ class Admin extends CI_Controller {
         }
     }
 
+    function create() {
+        $this->load->library('form_validation');
+        $this->form_validation->set_rules('username', 'username', "trim|required|xss_clean|min_length[5]|alpha_dash");
+        $this->form_validation->set_rules('email', 'email', "trim|required|xss_clean|valid_email");
+        $this->form_validation->set_rules('first_name', 'first name', "trim|required|xss_clean|alpha");
+        $this->form_validation->set_rules('last_name', 'last name', "trim|required|xss_clean|alpha");
+        $this->form_validation->set_rules('password', 'password', "required|xss_clean|matches[conf_password]|min_length[5]");
+        $this->form_validation->set_rules('conf_password', 'confirm password', "required|xss_clean|matches[password]");
+        
+        if ($this->form_validation->run() == FALSE) {
+            $data['page_title'] = "Create Admin Account";
+            $this->load->view('templates/header', $data);
+            $this->load->view('navbar_main', $data);
+            $this->load->view('navbar_sub');
+            $this->load->view('admin/create_admin', $data);
+            $this->load->view('templates/footer');
+        } else {
+            $input_data = array(
+                'username' => $this->input->post('username'),
+                'email' => $this->input->post('email'),
+                'first_name' => $this->input->post('first_name'),
+                'last_name' => $this->input->post('last_name'),
+                'password' => md5($this->input->post('password')) 
+            );
+            if($this->user->create($input_data)){
+                
+            }
+        }
+    }
 }
