@@ -45,7 +45,7 @@ class leave_model extends CI_Model {
     //Get No of leaves applied by a person Make sure to use user id
     public function get_no_leaves($leave_type, $uid){
         try {
-            $query = $this->db->query("SELECT sum(no_of_days) as days FROM `apply_leaves` WHERE user_id = '$uid' AND leave_type_id = '$leave_type'");
+            $query = $this->db->query("SELECT sum(no_of_days) as days FROM `apply_leaves` WHERE user_id = '$uid' AND leave_type_id = '$leave_type' AND (leave_status = '1' OR leave_status='0')");
             $row = $query->row();
             return $row->days;
             
@@ -126,9 +126,9 @@ class leave_model extends CI_Model {
     }
 
     //Get a list of applied leaves according to the teacher id
-    public function get_all_leaves($limit){
+    public function get_all_leaves(){
         try{
-            $query = $this->db->query("SELECT * FROM apply_leaves ORDER BY applied_date desc LIMIT $limit ");
+            $query = $this->db->query("SELECT * FROM apply_leaves ORDER BY applied_date desc ");
             return $query->result();
         } catch(Exception $ex) {
             return FALSE;

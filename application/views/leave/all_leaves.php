@@ -20,13 +20,50 @@
                     <strong>ALL LEAVES</strong>
                 </div>
                 <div class="panel-body">
+                    <table class="table table-hover">
+                        <thead>
+                        <tr>
+                            <th>#</th>
+                            <th>Name</th>
+                            <th>Type</th>
+                            <th>Applied Date</th>
+                            <th>Start Date</th>
+                            <th>End Date</th>
+                            <th>Days</th>
+                            <th>Status</th>
+                            <th>View</th>
+                        </tr>
+                        </thead>
+                        <tbody>
+                        <?php
+                        foreach($query->result() as $row){
+
+                            echo "<tr>" . PHP_EOL;
+                            echo "<th scope='row'>".$row->id."</th>" . PHP_EOL;
+                            echo "<td>".$row->full_name."</td>" . PHP_EOL;
+                            echo "<td>".$row->name."</td>" . PHP_EOL;
+                            echo "<td>".$row->applied_date."</td>" . PHP_EOL;
+                            echo "<td>".$row->start_date."</td>" . PHP_EOL;
+                            echo "<td>".$row->end_date."</td>" . PHP_EOL;
+                            echo "<td>".$row->no_of_days."</td>" . PHP_EOL;
+                            echo "<td>".$row->status."</td>" . PHP_EOL;
+                            echo "<td>" . PHP_EOL; ?>
+                            <a href='<?php echo base_url('index.php/leave/get_leave_details/'.$row->id); ?>' class='btn btn-primary'><span class='glyphicon glyphicon-list-alt'></span></a>
+                        <?php
+                            echo "</td>" . PHP_EOL;
+                            echo "</tr>" . PHP_EOL;
+                        }
+
+                        ?>
+
+
+
+                        </tbody>
+                    </table>
+
 
                     <?php
-                    foreach($query->result() as $row){
-
-                        echo $row->id;
-                    }
-                    echo $pages;
+                         echo $pages;
                     ?>
                 </div>
 

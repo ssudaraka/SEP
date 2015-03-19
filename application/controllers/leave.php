@@ -98,7 +98,7 @@ class leave extends CI_Controller {
         $data['navbar'] = "leave";
 
         //Basic data to be loaded
-
+        $data['user_type'] = $this->session->userdata['user_type'];
         //Load form combo
         $data['leave_types'] = $this->leave_model->get_leave_types();
 
@@ -151,11 +151,15 @@ class leave extends CI_Controller {
             $noofdates=date_diff(date_create($startdate),date_create($enddate));
             $sdate = $noofdates->format("%a");
 
+            $dateold = date_diff(date_create($applieddate),date_create($startdate));
+            $dateoldc = $dateold->format("%R%a");
+
+
             //validation for dates
             if($sdate == '0'){
-                $data['error_message'] = "Start date cannot be the End date of the leaves". $noofdates->format("%R%a days");
-            } elseif($applieddate == $startdate) {
-                $data['error_message'] = "Start Date cannot be the current date";
+                $data['error_message'] = "Start date cannot be the End date of the leaves";
+            } elseif($dateoldc < 0) {
+                $data['error_message'] = "Start Date cannot be a previous date";
             } elseif($enddate < $startdate){
                 $data['error_message'] = "End Date cannot be a previous date";
             }
@@ -330,10 +334,19 @@ class leave extends CI_Controller {
         $config["uri_segment"] = 3;
         $config['total_rows'] = $this->db->get('apply_leaves')->num_rows();
 
+
+
         $this->pagination->initialize($config);
 
+        $this->db->select('*');
 
-       $data['query'] = $this->db->get('apply_leaves', $config['per_page'], $this->uri->segment(3));
+        $qry = "SELECT al.id,t.full_name,lt.name,al.applied_date,al.start_date,al.end_date,al.reason,al.no_of_days,ls.status FROM apply_leaves al,leave_status ls,teachers t,leave_types lt WHERE al.leave_status = ls.id AND t.id = al.teacher_id AND lt.id = al.leave_type_id ORDER by al.applied_date desc";
+        $limit = 3;
+        $offset = ($this->uri->segment(3) != '' ? $this->uri->segment(3):0);
+
+        $qry .= " limit {$limit} offset {$offset} ";
+
+       $data['query'] = $this->db->query($qry);
 
         $data['pages'] = $this->pagination->create_links();
 
