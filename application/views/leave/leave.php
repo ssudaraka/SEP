@@ -1,7 +1,18 @@
 <div class="container">
     <div class="row">
         <div class="col-md-3">
+            <?php
+            if($user_type == 'A'){
+                $this->view('leave/admin_sidebar');
+            }
+            elseif($user_type == 'T'){
+                $this->view('leave/teacher_sidebar');
+            }
+            else{
+                $this->view('leave/teacher_sidebar');
+            }
 
+            ?>
         </div>
         <div class="col-md-9">
             <!--    Messages        -->

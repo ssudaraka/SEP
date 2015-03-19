@@ -71,6 +71,8 @@ class leave extends CI_Controller {
             $this->load->view('/leave/admin_leave', $data);
             $this->load->view('/templates/footer');
         } elseif($data['user_type'] == 'T'){
+
+
             //Passing it to the View
             $this->load->view('templates/header', $data);
             $this->load->view('navbar_main', $data);
@@ -210,6 +212,8 @@ class leave extends CI_Controller {
     public function get_leave_details($id){
         $data['page_title'] = "Leave Details";
         $data['id'] = $id;
+
+        $data['user_type'] = $this->session->userdata['user_type'];
 
         //Get Leave Details
         $data['leave_details'] = $this->leave_model->get_leave_details($id);
