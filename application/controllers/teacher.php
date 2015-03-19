@@ -30,18 +30,18 @@ class Teacher extends CI_Controller {
     function create() {
         $this->load->library('form_validation');
         $this->form_validation->set_rules('NIC', 'NIC', 'required');
-        $this->form_validation->set_rules('name', 'name', '');
-        $this->form_validation->set_rules('initial', 'initial', '');
-        $this->form_validation->set_rules('birth', 'birth', '');
-        $this->form_validation->set_rules('gender', 'gender', '');
-        $this->form_validation->set_rules('Nationality', 'Nationality', '');
-        $this->form_validation->set_rules('religion', 'religion', '');
-        $this->form_validation->set_rules('civilstatus', 'civilstatus', '');
-        $this->form_validation->set_rules('address', 'address', '');
-        $this->form_validation->set_rules('contactMob', 'contactMob', '');
-        $this->form_validation->set_rules('contactHome', 'contactHome', '');
-        $this->form_validation->set_rules('email', 'email', '');
-        $this->form_validation->set_rules('widow', 'widow', '');
+        $this->form_validation->set_rules('Name', 'name', 'required');
+        $this->form_validation->set_rules('Name with Initial', 'initial', 'required');
+        $this->form_validation->set_rules('Birthdate', 'birth', 'required');
+        $this->form_validation->set_rules('Gender', 'gender', 'required');
+        $this->form_validation->set_rules('Nationality', 'Nationality', 'required');
+        $this->form_validation->set_rules('Religion', 'religion', 'required');
+        $this->form_validation->set_rules('Civilstatus', 'civilstatus', 'required');
+        $this->form_validation->set_rules('Address', 'address', 'required');
+        $this->form_validation->set_rules('Contact Mobile', 'contactMob', 'required');
+        $this->form_validation->set_rules('Contact Home', 'contactHome', 'required');
+        $this->form_validation->set_rules('Email', 'email', 'required');
+        $this->form_validation->set_rules('Widow or Orphan', 'widow', 'required');
 
         $this->form_validation->set_error_delimiters('<br /><span class="error">', '</span>');
 
