@@ -208,7 +208,7 @@ class leave extends CI_Controller {
 
     //Get One Leave details
     public function get_leave_details($id){
-        $data['page_title'] = "Leave Management";
+        $data['page_title'] = "Leave Details";
         $data['id'] = $id;
 
         //Get Leave Details
@@ -220,6 +220,86 @@ class leave extends CI_Controller {
         $this->load->view('navbar_sub', $data);
         $this->load->view('/leave/view_leave', $data);
         $this->load->view('/templates/footer');
+    }
+
+    //Approve Leave
+    public  function  approve_leave($id){
+        $data['page_title'] = "Leave Details";
+        $data['id'] = $id;
+
+        //Get Approve Leave Status
+        $data['leave_approve_status'] = $this->leave_model->approve_leave($id);
+
+        if($data['leave_approve_status'] == TRUE){
+
+            $data['succ_message'] = "Successfully Approved the leave";
+
+
+            //Get Leave Details
+            $data['leave_details'] = $this->leave_model->get_leave_details($id);
+
+            //Passing it to the View
+            $this->load->view('templates/header', $data);
+            $this->load->view('navbar_main', $data);
+            $this->load->view('navbar_sub', $data);
+            $this->load->view('/leave/view_leave', $data);
+            $this->load->view('/templates/footer');
+        } else{
+            $data['error_message'] = "Failed to Approved the leave";
+
+
+            //Get Leave Details
+            $data['leave_details'] = $this->leave_model->get_leave_details($id);
+
+            //Passing it to the View
+            $this->load->view('templates/header', $data);
+            $this->load->view('navbar_main', $data);
+            $this->load->view('navbar_sub', $data);
+            $this->load->view('/leave/view_leave', $data);
+            $this->load->view('/templates/footer');
+        }
+
+
+    }
+
+    //Rejected Leave
+    public  function  reject_leave($id){
+        $data['page_title'] = "Leave Details";
+        $data['id'] = $id;
+
+        //Get Approve Leave Status
+        $data['leave_approve_status'] = $this->leave_model->reject_leave($id);
+
+        if($data['leave_approve_status'] == TRUE){
+
+            $data['succ_message'] = "Successfully Rejected the leave";
+
+
+            //Get Leave Details
+            $data['leave_details'] = $this->leave_model->get_leave_details($id);
+
+            //Passing it to the View
+            $this->load->view('templates/header', $data);
+            $this->load->view('navbar_main', $data);
+            $this->load->view('navbar_sub', $data);
+            $this->load->view('/leave/view_leave', $data);
+            $this->load->view('/templates/footer');
+        } else{
+            $data['error_message'] = "Failed to Reject the leave";
+
+
+            //Get Leave Details
+            $data['leave_details'] = $this->leave_model->get_leave_details($id);
+
+            //Passing it to the View
+            $this->load->view('templates/header', $data);
+            $this->load->view('navbar_main', $data);
+            $this->load->view('navbar_sub', $data);
+            $this->load->view('/leave/view_leave', $data);
+            $this->load->view('/templates/footer');
+        }
+
+
     }
 
 }

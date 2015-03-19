@@ -93,18 +93,34 @@ class leave_model extends CI_Model {
     //Get a single leave details
     public function get_leave_details($id){
         try {
-            $query = $this->db->query("SELECT t.full_name, al.id, al.user_id,lt.name,al.applied_date,al.start_date,al.end_date,al.reason,al.no_of_days FROM apply_leaves al,teachers t, leave_types lt WHERE al.id = '$id' AND al.user_id = t.user_id AND lt.id = al.leave_type_id");
+            $query = $this->db->query("SELECT t.full_name, al.id, al.user_id,lt.name,al.applied_date,al.start_date,al.end_date,al.reason,al.no_of_days,ls.status FROM apply_leaves al,teachers t, leave_types lt, leave_status ls WHERE al.leave_status=ls.id AND al.id = '$id' AND al.user_id = t.user_id AND lt.id = al.leave_type_id");
             return $query->result();
 
         } catch(Exception $ex) {
             return FALSE;
         }
     }
-    //Sample Data extraction
-    public function get_data(){
+    //Approve Leave by ID
+    public function approve_leave($id){
         try {
-            $query = $this->db->query("SELECT * FROM `staff`");
-            return $query->result_array();
+            if($this->db->query("UPDATE apply_leaves SET leave_status='1',remarks='Leave Approved' WHERE id = '$id'")){
+                return TRUE;
+            } else{
+                return FALSE;
+            }
+        } catch(Exception $ex) {
+            return FALSE;
+        }
+    }
+
+    //Reject Leave by ID
+    public function reject_leave($id){
+        try {
+            if($this->db->query("UPDATE apply_leaves SET leave_status='2',remarks='Leave Reject' WHERE id = '$id'")){
+                return TRUE;
+            } else{
+                return FALSE;
+            }
         } catch(Exception $ex) {
             return FALSE;
         }

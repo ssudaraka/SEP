@@ -4,9 +4,24 @@
             Side bar
         </div>
         <div class="col-md-9">
+            <!--    Messages         -->
+            <?php if (isset($error_message)) { ?>
+                <div class="alert alert-danger alert-dismissible" role="alert">
+                    <button type="button" class="close" data-dismiss="alert" aria-label="Close"><span aria-hidden="true">&times;</span></button>
+                    <strong>Error </strong>
+                    <?php echo $error_message; ?>
+                </div>
+            <?php } ?>
+            <?php if (isset($succ_message)) { ?>
+                <div class="alert alert-success alert-dismissible" role="alert">
+                    <button type="button" class="close" data-dismiss="alert" aria-label="Close"><span aria-hidden="true">&times;</span></button>
+                    <strong>Success </strong>
+                    <?php echo $succ_message; ?>
+                </div>
+            <?php } ?>
             <div class="panel panel-default">
                 <div class="panel-heading">
-                    <strong>VIEW LEAVE DETAILS</strong>
+                    <strong>LEAVE DETAILS</strong>
                 </div>
                 <div class="panel-body">
 
@@ -18,10 +33,10 @@
                                 <?php
                                 foreach ($leave_details as $row) {
                                     echo"<tbody>". PHP_EOL;
-                                    echo"<tr>". PHP_EOL;
-                                echo"<td><b>Leave ID</b></td>". PHP_EOL;
-                                    echo"<td>".$row->id."</td>". PHP_EOL;
-                                    echo"</tr>". PHP_EOL;
+//                                    echo"<tr>". PHP_EOL;
+//                                    echo"<td><b>Leave ID</b></td>". PHP_EOL;
+//                                    echo"<td>".$row->id."</td>". PHP_EOL;
+//                                    echo"</tr>". PHP_EOL;
                                     echo"<tr>". PHP_EOL;
                                     echo"<td><b>Name</b></td>". PHP_EOL;
                                     echo"<td>".$row->full_name."</td>". PHP_EOL;
@@ -52,15 +67,21 @@
                                     echo"<td><b>No of Days</b></td>". PHP_EOL;
                                     echo"<td>".$row->no_of_days."</td>". PHP_EOL;
                                     echo"</tr>". PHP_EOL;
+                                    echo"<tr>". PHP_EOL;
+                                    echo"<td><b>Leave Status</b></td>". PHP_EOL;
+                                    echo"<td>".$row->status."</td>". PHP_EOL;
+                                    echo"</tr>". PHP_EOL;
                                     echo"</tbody>". PHP_EOL;
-                                }
-                                ?>
 
 
-                            </table>
 
-                            <a href="#" class="btn btn-success">Approve</a>
+                                    echo"</table>". PHP_EOL; ?>
+
+                            <a href="<?php echo base_url('index.php/leave/approve_leave/'.$row->id); ?>" class="btn btn-success">Approve</a>
                             <a href="#" class="btn btn-danger">Reject</a>
+                                <?php
+                                    }
+                                ?>
                         </div>
                     </div>
                 </div>
