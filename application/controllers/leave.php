@@ -29,6 +29,9 @@ class leave extends CI_Controller {
         if (!$this->session->userdata('logged_in')) {
             redirect('login', 'refresh');
         }
+
+        $data['navbar'] = "leave";
+
         $data['page_title'] = "Leave Management";
         $data['first_name'] = $this->session->userdata('first_name');
         $userid = $this->session->userdata['id'];
@@ -92,6 +95,8 @@ class leave extends CI_Controller {
 
     //Main function to apply leaves
     public function apply_leave() {
+        $data['navbar'] = "leave";
+
         //Basic data to be loaded
 
         //Load form combo
@@ -210,6 +215,8 @@ class leave extends CI_Controller {
 
     //Get One Leave details
     public function get_leave_details($id){
+        $data['navbar'] = "leave";
+
         $data['page_title'] = "Leave Details";
         $data['id'] = $id;
 
@@ -228,11 +235,15 @@ class leave extends CI_Controller {
 
     //Approve Leave
     public  function  approve_leave($id){
+        $data['navbar'] = "leave";
+
         $data['page_title'] = "Leave Details";
         $data['id'] = $id;
 
         //Get Approve Leave Status
         $data['leave_approve_status'] = $this->leave_model->approve_leave($id);
+
+        $data['user_type'] = $this->session->userdata['user_type'];
 
         if($data['leave_approve_status'] == TRUE){
 
@@ -268,8 +279,12 @@ class leave extends CI_Controller {
 
     //Rejected Leave
     public  function  reject_leave($id){
+        $data['navbar'] = "leave";
+
         $data['page_title'] = "Leave Details";
         $data['id'] = $id;
+
+        $data['user_type'] = $this->session->userdata['user_type'];
 
         //Get Approve Leave Status
         $data['leave_approve_status'] = $this->leave_model->reject_leave($id);
@@ -302,7 +317,42 @@ class leave extends CI_Controller {
             $this->load->view('/leave/view_leave', $data);
             $this->load->view('/templates/footer');
         }
+    }
+    //View All Leaves
+    public  function  get_all_leaves(){
+        $data['navbar'] = "leave";
 
+        //pagination
+        $this->load->library('pagination');
+
+        $config['base_url'] =  base_url()."index.php/leave/get_all_leaves";
+        $config['per_page'] = 2;
+        $config["uri_segment"] = 3;
+        $config['total_rows'] = $this->db->get('apply_leaves')->num_rows();
+
+        $this->pagination->initialize($config);
+
+
+       $data['query'] = $this->db->get('apply_leaves', $config['per_page'], $this->uri->segment(3));
+
+        $data['pages'] = $this->pagination->create_links();
+
+
+        //other
+        $data['page_title'] = "Leave Details";
+
+        $data['user_type'] = $this->session->userdata['user_type'];
+
+        //Get Approve Leave Status
+        $data['all_leaves'] = $this->leave_model->get_all_leaves(3);
+
+
+            //Passing it to the View
+            $this->load->view('templates/header', $data);
+            $this->load->view('navbar_main', $data);
+            $this->load->view('navbar_sub', $data);
+            $this->load->view('/leave/all_leaves', $data);
+            $this->load->view('/templates/footer');
 
     }
 

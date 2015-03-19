@@ -13,6 +13,7 @@ class Admin extends CI_Controller {
             redirect('login', 'refresh');
         }
 
+        $data['navbar'] = "admin";
 
         $result = $this->user->get_details($this->session->userdata('id'));
         foreach ($result as $row) {
@@ -29,6 +30,8 @@ class Admin extends CI_Controller {
     }
 
     function account_settings() {
+
+        $data['navbar'] = "admin";
 
         if ($this->session->userdata('user_type') !== "A") {
             redirect('login', 'refresh');
@@ -49,6 +52,8 @@ class Admin extends CI_Controller {
     }
 
     function change_password() {
+
+        $data['navbar'] = "admin";
 
         $this->load->library('form_validation');
         $this->form_validation->set_rules('old_password', 'Old Password', "required|xss_clean|callback_check_old_password");
@@ -79,6 +84,8 @@ class Admin extends CI_Controller {
     }
 
     function update_profile() {
+        $data['navbar'] = "admin";
+
         $this->load->library('form_validation');
         $this->form_validation->set_rules('first_name', 'first name', "required|xss_clean|alpha");
         $this->form_validation->set_rules('last_name', 'last name', "required|xss_clean|alpha");
@@ -131,6 +138,8 @@ class Admin extends CI_Controller {
     }
 
     function create() {
+        $data['navbar'] = "admin";
+
         $this->load->library('form_validation');
         $this->form_validation->set_rules('username', 'username', "trim|required|xss_clean|min_length[5]|alpha_dash");
         $this->form_validation->set_rules('email', 'email', "trim|required|xss_clean|valid_email");

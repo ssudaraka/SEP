@@ -21,7 +21,6 @@ class leave_model extends CI_Model {
     }
 
     //Get a list of applied leaves according to the teacher id
-    //Teacher id is not passed yet ;)
     public function get_applied_leaves_list($uid){
         try{
             $query = $this->db->query("SELECT lt.name,al.applied_date,al.start_date,al.end_date,al.no_of_days,ls.status FROM apply_leaves al,leave_types lt,leave_status ls where (al.id = lt.id) AND al.leave_status = ls.id AND al.user_id='$uid' ORDER BY al.applied_date desc LIMIT 5");
@@ -121,6 +120,16 @@ class leave_model extends CI_Model {
             } else{
                 return FALSE;
             }
+        } catch(Exception $ex) {
+            return FALSE;
+        }
+    }
+
+    //Get a list of applied leaves according to the teacher id
+    public function get_all_leaves($limit){
+        try{
+            $query = $this->db->query("SELECT * FROM apply_leaves ORDER BY applied_date desc LIMIT $limit ");
+            return $query->result();
         } catch(Exception $ex) {
             return FALSE;
         }

@@ -10,6 +10,9 @@ class Dashboard extends CI_Controller {
         if (!$this->session->userdata('logged_in')) {
             redirect('login', 'refresh');
         }
+
+        $data['navbar'] = "dashboard";
+
         $data['page_title'] = 'Dashboard';
         $data['first_name'] = $this->session->userdata('first_name');
         $this->load->view('templates/header', $data);

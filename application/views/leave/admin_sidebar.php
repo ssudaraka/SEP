@@ -16,7 +16,7 @@
                     </tr>
                     <tr>
                         <td>
-                            <span class="glyphicon glyphicon-list-alt"></span><a href="<?php echo base_url('index.php/#'); ?>">All Leaves</a>
+                            <span class="glyphicon glyphicon-list-alt"></span><a href="<?php echo base_url('index.php/leave/get_all_leaves'); ?>">All Leaves</a>
                         </td>
                     </tr>
                     <tr>

@@ -6,12 +6,16 @@ class Teacher extends CI_Controller {
         parent::__construct();
         $this->load->model('Teacher_Model');
         $this->load->model('user');
+
+
     }
 
     function index() {
         if ($this->session->userdata('user_type') !== "A") {
             redirect('login', 'refresh');
         }
+
+        $data['navbar'] = "teacher";
 
         $result = $this->user->get_details($this->session->userdata('id'));
         foreach ($result as $row) {
@@ -28,6 +32,8 @@ class Teacher extends CI_Controller {
     }
 
     function create() {
+        $data['navbar'] = "teacher";
+
         $this->load->library('form_validation');
         $this->form_validation->set_rules('NIC', 'NIC', 'required');
         $this->form_validation->set_rules('Name', 'name', 'required');
@@ -87,6 +93,8 @@ class Teacher extends CI_Controller {
 
     function update_details() {
 
+        $data['navbar'] = "teacher";
+
         $this->load->library('form_validation');
         $this->form_validation->set_rules('NIC', 'NIC', '');
         $this->form_validation->set_rules('serialno', 'serialno', '');
@@ -134,6 +142,7 @@ class Teacher extends CI_Controller {
     }
 
     function create_log_details() {
+        $data['navbar'] = "teacher";
 
         $this->load->library('form_validation');
         $this->form_validation->set_rules('ID', 'ID', '');
