@@ -11,17 +11,17 @@
                 <table class="table">
                     <tr>
                         <td>
-                            <span class="glyphicon glyphicon-repeat text-primary"></span><a href="<?php echo base_url('index.php/leave'); ?>">Leave Status</a>
+                            <span class="glyphicon glyphicon-repeat text-primary"></span><a href="#leavestatus">Leave Status</a>
                         </td>
                     </tr>
                     <tr>
                         <td>
-                            <span class="glyphicon glyphicon-edit"></span><a href="<?php echo base_url('index.php/#'); ?>">Apply Leave</a>
+                            <span class="glyphicon glyphicon-edit"></span><a href="#requestleave">Apply Leave</a>
                         </td>
                     </tr>
                     <tr>
                         <td>
-                            <span class="glyphicon glyphicon-check"></span><a href="<?php echo base_url('index.php/#'); ?>">Leave Request</a>
+                            <span class="glyphicon glyphicon-check"></span><a href="#leaverequests">Leave Request</a>
                         </td>
                     </tr>
                 </table>
