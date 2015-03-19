@@ -74,7 +74,7 @@ html, body {
 }
 
 .subnavbar .container > ul > li > a:hover {
-    color: #888;
+    color: #ff6f00 ;
     text-decoration: none;
 }
 

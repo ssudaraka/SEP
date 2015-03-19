@@ -69,7 +69,15 @@
                                     echo"</tr>". PHP_EOL;
                                     echo"<tr>". PHP_EOL;
                                     echo"<td><b>Leave Status</b></td>". PHP_EOL;
-                                    echo"<td>".$row->status."</td>". PHP_EOL;
+
+                                    if ($row->status == "Pending") {
+                                        echo "<td><span class='label label-primary'>" . $row->status . "</span></td>" . PHP_EOL;
+                                    } elseif ($row->status == "Approved") {
+                                        echo "<td><span class='label label-success'>" . $row->status . "</span></td>" . PHP_EOL;
+                                    } else {
+                                        echo "<td><span class='label label-danger'>" . $row->status . "</span></td>" . PHP_EOL;
+                                    }
+
                                     echo"</tr>". PHP_EOL;
                                     echo"</tbody>". PHP_EOL;
 
@@ -78,7 +86,7 @@
                                     echo"</table>". PHP_EOL; ?>
 
                             <a href="<?php echo base_url('index.php/leave/approve_leave/'.$row->id); ?>" class="btn btn-success">Approve</a>
-                            <a href="#" class="btn btn-danger">Reject</a>
+                            <a href="<?php echo base_url('index.php/leave/reject_leave/'.$row->id); ?>" class="btn btn-danger">Reject</a>
                                 <?php
                                     }
                                 ?>
