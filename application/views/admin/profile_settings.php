@@ -4,11 +4,23 @@
             <?php $this->view('admin/sidebar_nav'); ?>
         </div>
         <div class="col-md-9">
+            <?php if (isset($succ_message)) { ?>
+                <div class="alert alert-success alert-dismissible" role="alert">
+                    <button type="button" class="close" data-dismiss="alert" aria-label="Close"><span aria-hidden="true">&times;</span></button>
+                    <?php echo $succ_message; ?>
+                </div>
+            <?php } ?>
+            <?php if (validation_errors()) { ?>
+                <div class="alert alert-danger alert-dismissible" role="alert">
+                    <button type="button" class="close" data-dismiss="alert" aria-label="Close"><span aria-hidden="true">&times;</span></button>
+                    <?php echo validation_errors(); ?>
+                </div>
+            <?php } ?>
             <div class="panel panel-default">
                 <div class="panel-heading">Profile Settings</div>
                 <div class="panel-body">
                     <div class="col-md-6">
-                        <?php echo form_open_multipart(); ?>
+                        <?php echo form_open_multipart('admin/update_profile'); ?>
                         <div class="fom-group img-submit">
                             <label for="profile-img">Profile image</label>
                             <br />
@@ -19,7 +31,7 @@
                         </div>
                         <div class="form-group">
                             <label for="first_name">First Name</label>
-                            
+
                             <input type="text" name="first_name" id="first_name" class="form-control" value="<?php echo $first_name; ?>">
                             <p class="help-block"></p>
                         </div>
@@ -42,7 +54,7 @@
         if (input.files && input.files[0]) {
             var reader = new FileReader();
 
-            reader.onload = function (e) {
+            reader.onload = function(e) {
                 $('#profile-img').attr('src', e.target.result);
             }
 
@@ -50,7 +62,7 @@
         }
     }
 
-    $("#imp-inp").change(function () {
+    $("#imp-inp").change(function() {
         readURL(this);
     });
 </script>

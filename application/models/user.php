@@ -25,7 +25,6 @@ class User extends CI_Model {
         } else {
             return FALSE;
         }
-        
     }
     
     public function change_password($user_id, $new_password){
@@ -44,6 +43,27 @@ class User extends CI_Model {
         $query = $this->db->query("SELECT password FROM users WHERE id='{$user_id}'");
         $row = $query->row();
         return $row->password;
+    }
+    
+    public function update_info($user_id, $first_name, $last_name){
+        $query = "UPDATE users SET first_name='{$first_name}', last_name='{$last_name}' WHERE id='{$user_id}'";
+        $result = $this->db->query($query);
+        
+        if(!$result){
+            return FALSE;
+        } else {
+            return TRUE;
+        }
+    }
+    
+    public function create($new_user_data){
+        $username = $new_user_data['username'];
+        $email = $new_user_data['email'];
+        $first_name = $new_user_data['first_name'];
+        $last_name = $new_user_data['last_name'];
+        $password = $new_user_data['password'];
+        
+        
     }
 
 }
