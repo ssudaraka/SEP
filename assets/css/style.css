@@ -366,3 +366,7 @@ margin-bottom: 26px;}
     border-bottom: 1px dotted #ccc;
     padding: 15px
 }
+
+.error {
+    color: #b71c1c;
+}
