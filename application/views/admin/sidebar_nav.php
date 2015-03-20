@@ -45,7 +45,7 @@
                     </tr>
                     <tr>
                         <td>
-                            <span class="glyphicon glyphicon-list-alt text-warning"></span><a href="#">Manage Administrators</a>
+                            <span class="glyphicon glyphicon-list-alt text-warning"></span><a href="<?php echo base_url('index.php/admin/manage_admins'); ?>">Manage Administrators</a>
                         </td>
                     </tr>
                 </table>
