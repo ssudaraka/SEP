@@ -4,6 +4,12 @@
             <?php $this->view('admin/sidebar_nav'); ?>
         </div>
         <div class="col-md-9">
+            <?php if (isset($delete_msg)) { ?>
+                <div class="alert alert-danger alert-dismissible" role="alert">
+                    <button type="button" class="close" data-dismiss="alert" aria-label="Close"><span aria-hidden="true">&times;</span></button>
+                    <?php echo $delete_msg; ?>
+                </div>
+            <?php } ?>
             <?php
             $attributes = array(
                 'class' => 'form-inline'
@@ -40,18 +46,16 @@
                                     <td><?php echo $row->lastvisit_at; ?></td>
                                     <td>
                                         <a href="#" data-toggle="tooltip" title="edit"><i class="fa fa-pencil-square-o" style="font-size: 22px;" ></i></a>&nbsp;
-                                        <a href="#" data-toggle="tooltip" title="edit"><i class="fa fa-trash" style="font-size: 22px;"></i></a>&nbsp;
+                                        <a href="<?php echo base_url('index.php/admin/delete') . '/' . $row->id; ?>"  data-toggle="tooltip" title="edit"><i class="fa fa-trash" style="font-size: 22px;"></i></a>&nbsp;
                                     </td>
                                 </tr>
                             <?php } ?>
                         </tbody>                      
                     </table>
                     <nav>
-                        <ul class="pagination">
-                            <?php foreach ($links as $link) { ?>
-                            <li><?php echo $link; ?></li>
-                            <?php } ?>
-                        </ul>
+                        <?php foreach ($links as $link) { ?>
+                            <?php echo $link; ?>
+                        <?php } ?>
                     </nav>
 
                 </div>
@@ -61,7 +65,7 @@
     </div>
 </div>
 <script type="text/javascript">
-    $(function() {
+    $(function () {
         $("[data-toggle='tooltip']").tooltip();
     });
 </script>

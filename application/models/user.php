@@ -19,7 +19,7 @@ class User extends CI_Model {
     }
 
     public function get_details($user_id) {
-        $query = $this->db->query("SELECT first_name, last_name FROM users WHERE id='{$user_id}' LIMIT 1");
+        $query = $this->db->query("SELECT * FROM users WHERE id='{$user_id}' LIMIT 1");
         if ($query->num_rows() > 0) {
             return $query->result();
         } else {
@@ -45,8 +45,9 @@ class User extends CI_Model {
         return $row->password;
     }
 
-    public function update_info($user_id, $first_name, $last_name) {
-        $query = "UPDATE users SET first_name='{$first_name}', last_name='{$last_name}' WHERE id='{$user_id}'";
+    public function update_info($update_data) {
+               
+        $query = "UPDATE users SET first_name='{$update_data['first_name']}', last_name='{$update_data["last_name"]}', profile_img='{$update_data['image']}' WHERE id='{$update_data['user_id']}'";
         $result = $this->db->query($query);
 
         if (!$result) {
@@ -90,21 +91,37 @@ class User extends CI_Model {
         }
     }
 
-    public function get_user_list($keyword = '', $user_type, $limit=1, $offset=null) {
+    public function get_user_list($keyword = '', $user_type, $limit = 1, $offset = null) {
         $sql = "SELECT * FROM users WHERE id LIKE '%{$keyword}%' OR username LIKE '%{$keyword}%' ";
-        $sql .= "OR first_name LIKE '%{$keyword}%' OR last_name LIKE '%{$keyword}%' OR email LIKE '%{$keyword}%' AND user_type = '{$user_type}' LIMIT {$limit}";
-        if(isset($offset)){
+        $sql .= "OR first_name LIKE '%{$keyword}%' OR last_name LIKE '%{$keyword}%' OR email LIKE '%{$keyword}%' HAVING user_type = '{$user_type}' LIMIT {$limit}";
+        if (isset($offset)) {
             $sql .= " OFFSET {$offset}";
         }
         $query = $this->db->query($sql);
         return $query;
     }
-    
-    public function get_user_total(){
+
+    public function get_user_total() {
         $sql = "SELECT * FROM users";
         $query = $this->db->query($sql);
-        
+
         return $query->num_rows();
     }
 
+    public function delete($user_id) {
+        $sql = "DELETE FROM users WHERE id='{$user_id}'";
+        $query = $this->db->query($sql);
+
+        if ($query) {
+            return TRUE;
+        }
+    }
+
+    public function get_profile_img($user_id) {
+        $sql = "SELECT profile_img FROM users WHERE id='{$user_id}'";
+        $query = $this->db->query($sql);
+
+        return $query->row();
+    }
 }
+    

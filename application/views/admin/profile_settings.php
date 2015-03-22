@@ -24,7 +24,8 @@
                         <div class="fom-group img-submit">
                             <label for="profile-img">Profile image</label>
                             <br />
-                            <img src="<?php echo base_url("/assets/img/profile_img.png"); ?>" id="profile-img" class="img-thumbnail profile-img">
+                            <?php $user_id= $this->session->userdata('id'); ?>
+                            <img src="<?php echo $profile_image; ?>" id="profile-img" class="img-thumbnail profile-img">
                             <span class="btn btn-default btn-file">
                                 Upload new picture<input type="file" name="profile_img" id="img-inp" onchange="readURL(this);">
                             </span>

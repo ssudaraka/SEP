@@ -1,31 +1,42 @@
 <?php
 
-class User_Auth extends CI_Controller{
+class User_Auth extends CI_Controller {
+
     function __construct() {
         parent::__construct();
         $this->load->model('user', '', TRUE);
     }
-    
+
     function index() {
         $this->load->library('form_validation');
         $this->form_validation->set_rules('username', 'Username', 'trim|required|xss_clean');
         $this->form_validation->set_rules('password', 'Password', 'trim|required|xss_clean|callback_authenticate');
-        
-        if($this->form_validation->run() == FALSE){
+
+        if ($this->form_validation->run() == FALSE) {
             $data['page_title'] = "Login";
             $this->load->view('/templates/header', $data);
             $this->load->view('login_form');
             $this->load->view('/templates/footer');
         } else {
-            redirect('dashboard', 'refresh');
+
+            if ($this->input->post('rememberme')) {
+
+                $this->rememberme->setCookie($this->input->post('username'));
+            }
+            $this->load->library('user_agent');
+            if($this->agent->is_referral()) {
+                redirect($this->agent->referrer(), 'refresh');
+            } else {
+                redirect('dashboard', 'refresh');
+            }
         }
     }
-    
-    function authenticate($password){
+
+    function authenticate($password) {
         $username = $this->input->post('username');
         $result = $this->user->login($username, $password);
-        
-        if($result) {
+
+        if ($result) {
             $sess_array = array();
             foreach ($result as $row) {
                 $sess_array = array(
@@ -41,8 +52,9 @@ class User_Auth extends CI_Controller{
             }
             return TRUE;
         } else {
-            $this->form_validation->set_message('authenticate',"Invalid Username or Password.");
+            $this->form_validation->set_message('authenticate', "Invalid Username or Password.");
             return FALSE;
         }
     }
+
 }
