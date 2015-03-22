@@ -121,7 +121,19 @@ class User extends CI_Model {
         $sql = "SELECT profile_img FROM users WHERE id='{$user_id}'";
         $query = $this->db->query($sql);
 
-        return $query->row();
+        return $query->row()->profile_img;
+    }
+    
+    public function force_strong_password(){
+        $sql = "SELECT is_strong_password FROM system_config";
+        $query = $this->db->query($sql);
+        $row = $query->row();
+        
+        if($row->is_strong_password == 1) {
+            return TRUE;
+        } else {
+            return FALSE;
+        }
     }
 }
     
