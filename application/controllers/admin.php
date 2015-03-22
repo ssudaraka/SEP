@@ -224,7 +224,13 @@ class Admin extends CI_Controller {
         $this->form_validation->set_rules('email', 'email', "trim|required|xss_clean|valid_email");
         $this->form_validation->set_rules('first_name', 'first name', "trim|required|xss_clean|alpha");
         $this->form_validation->set_rules('last_name', 'last name', "trim|required|xss_clean|alpha");
-        $this->form_validation->set_rules('password', 'password', "required|xss_clean|matches[conf_password]|min_length[5]");
+
+        if ($this->user->force_strong_password()) {
+            $this->form_validation->set_rules('new_password', 'New Password', "required|min_length[5]|xss_clean|matches[conf_password]|callback_is_strong_password");
+        } else {
+            $this->form_validation->set_rules('new_password', 'New Password', "required|min_length[5]|xss_clean|matches[conf_password]");
+        }
+
         $this->form_validation->set_rules('conf_password', 'confirm password', "required|xss_clean|matches[password]");
 
         if ($this->form_validation->run() == FALSE) {

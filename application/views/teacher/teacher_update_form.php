@@ -38,27 +38,27 @@
                         </div>
 
                         <div class="form-group">
-                            <label for="inputEmail3" class="col-sm-2 control-label">Serial No</label>
+                            <label for="inputEmail3" class="col-sm-2 control-label">*Serial No</label>
                             <div class="col-sm-5">
-                                <?php echo form_error('serialno'); ?>
                                 <input id="serialno" type="text" name="serialno"  value="<?php echo set_value('serialno'); ?>" type="text" class="form-control" id="serialno" placeholder="Serial No">
                             </div>
+                            <?php echo form_error('serialno'); ?>
                         </div>
 
                         <div class="form-group">
-                            <label for="inputEmail3" class="col-sm-2 control-label">Signature No</label>
+                            <label for="inputEmail3" class="col-sm-2 control-label">*Signature No</label>
                             <div class="col-sm-5">
-                                <?php echo form_error('signatureno'); ?>
                                 <input id="signatureno" type="text" name="signatureno"  value="<?php echo set_value('signatureno'); ?>"  type="text" class="form-control" id="signatureno" placeholder="Signature">
                             </div>
+                            <?php echo form_error('signatureno'); ?>
                         </div>
 
                         <div class="form-group">
-                            <label for="inputEmail3" class="col-sm-2 control-label">Date Joined this School</label>
+                            <label for="inputEmail3" class="col-sm-2 control-label">*Date Joined this School</label>
                             <div class="col-sm-5">
-                                <?php echo form_error('careerdate'); ?>
                                 <input id="careerdate" type="date" name="careerdate"  value="<?php echo set_value('careerdate'); ?>" type="text" class="form-control" id="careerdate" placeholder="Start Date">
                             </div>
+                            <?php echo form_error('careerdate'); ?>
                         </div>
 
 

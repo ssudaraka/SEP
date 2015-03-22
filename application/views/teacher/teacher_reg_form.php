@@ -27,7 +27,7 @@
                     ?>
 
                     <div class="form-group">
-                        <label for="inputEmail3" class="col-sm-2 control-label">NIC</label>
+                        <label for="inputEmail3" class="col-sm-2 control-label">*NIC</label>
                         <div class="col-sm-5">
                             <input id="NIC" type="text" name="NIC"  value="<?php echo set_value('NIC'); ?>" type="text" class="form-control" id="NIC" placeholder="NIC No">
                             <?php echo form_error('NIC'); ?>
@@ -35,7 +35,7 @@
                     </div>
 
                     <div class="form-group">
-                        <label for="inputEmail3" class="col-sm-2 control-label">Full Name</label>
+                        <label for="inputEmail3" class="col-sm-2 control-label">*Full Name</label>
                         <div class="col-sm-5">
 
                             <input id="name" type="text" name="name"  value="<?php echo set_value('name'); ?>"  type="text" class="form-control" id="name" placeholder="Name">
@@ -53,7 +53,7 @@
                     </div>
 
                     <div class="form-group">
-                        <label for="inputEmail3" class="col-sm-2 control-label">Birth Day</label>
+                        <label for="inputEmail3" class="col-sm-2 control-label">*Birth Day</label>
                         <div class="col-sm-5">
 
                             <input id="birth" type="date" name="birth"  value="<?php echo set_value('birth'); ?>" type="text" class="form-control" id="birth" placeholder="Birth Day">
@@ -63,7 +63,7 @@
 
 
                     <div class="form-group">
-                        <label for="inputEmail3" class="col-sm-2 control-label">Gender</label>
+                        <label for="inputEmail3" class="col-sm-2 control-label">*Gender</label>
                         <div class="col-sm-3">
                             <label class="radio-inline">
                                 <input id="male" type="radio" name="gender"  value="m" type="radio"  id="male"> Male
@@ -77,7 +77,7 @@
                     </div>
 
                     <div class="form-group">
-                        <label for="inputEmail3" class="col-sm-2 control-label">Nationality</label>
+                        <label for="inputEmail3" class="col-sm-2 control-label">*Nationality</label>
                         <div class="col-sm-5">
 
                             <select id="Nationality" name="Nationality" class="form-control">
@@ -93,7 +93,7 @@
                     </div>
                     
                     <div class="form-group">
-                        <label for="inputEmail3" class="col-sm-2 control-label">Religion</label>
+                        <label for="inputEmail3" class="col-sm-2 control-label">*Religion</label>
                         <div class="col-sm-5">
 
                             <select id="religion" name="religion" class="form-control">
@@ -110,7 +110,7 @@
                     </div>
 
                     <div class="form-group">
-                        <label for="inputEmail3" class="col-sm-2 control-label">Civil Status</label>
+                        <label for="inputEmail3" class="col-sm-2 control-label">*Civil Status</label>
                         <div class="col-sm-5">
 
                             <select id="civilstatus" name="civilstatus" class="form-control">
@@ -125,7 +125,7 @@
                     </div>
 
                     <div class="form-group">
-                        <label for="inputEmail3" class="col-sm-2 control-label">Address</label>
+                        <label for="inputEmail3" class="col-sm-2 control-label">*Address</label>
                         <div class="col-sm-5">
 
                             <input id="address" type="text" name="address"  value="<?php echo set_value('address'); ?>" type="text" class="form-control" id="address" placeholder="Address">
@@ -134,7 +134,7 @@
                     </div>
 
                     <div class="form-group">
-                        <label for="inputEmail3" class="col-sm-2 control-label">Contact Mobile</label>
+                        <label for="inputEmail3" class="col-sm-2 control-label">*Contact Mobile</label>
                         <div class="col-sm-5">
 
                             <input id="contactMob" type="text" name="contactMob"  value="<?php echo set_value('contactMob'); ?>" type="text" class="form-control" id="contactMob" placeholder="Contact Mobile">

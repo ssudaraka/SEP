@@ -17,18 +17,36 @@ class Teacher extends CI_Controller {
         $data['navbar'] = "teacher";
         $data['result'] = $this->Teacher_Model->SearchAllTeachers();
 
-        //Load all teachers
-        $data['page_title'] = "Search Teacher";
-        $this->load->view('/templates/header', $data);
-        $this->load->view('navbar_main', $data);
-        $this->load->view('navbar_sub', $data);
-        $this->load->view('/teacher/Search_page', $data);
-        $this->load->view('/templates/footer');
-        $result = $this->user->get_details($this->session->userdata('id'));
-        foreach ($result as $row) {
-            $data['first_name'] = $row->first_name;
-            $data['last_name'] = $row->last_name;
+        //Getting user type
+        $data['user_type'] = $this->session->userdata['user_type'];
+
+        if($data['user_type'] == 'T'){
+            $data['page_title'] = "View Teacher Profile";
+            $data['navbar'] = 'teacher';
+            $teacher_id = $this->Teacher_Model->get_teacher_id($this->session->userdata['id']);
+            $data['user_id'] = $this->Teacher_Model->get_staff_details($teacher_id);
+            $this->load->view('templates/header', $data);
+            $this->load->view('navbar_main', $data);
+            $this->load->view('navbar_sub', $data);
+            $this->load->view('teacher/check_teacher_profile', $data);
+            $this->load->view('/templates/footer');
+
+        } else{
+            //Load all teachers
+            $data['page_title'] = "Search Teacher";
+            $this->load->view('/templates/header', $data);
+            $this->load->view('navbar_main', $data);
+            $this->load->view('navbar_sub', $data);
+            $this->load->view('/teacher/Search_page', $data);
+            $this->load->view('/templates/footer');
+            $result = $this->user->get_details($this->session->userdata('id'));
+            foreach ($result as $row) {
+                $data['first_name'] = $row->first_name;
+                $data['last_name'] = $row->last_name;
+            }
         }
+
+
     }
 
     //Table search
@@ -81,7 +99,7 @@ class Teacher extends CI_Controller {
         //edit_teacher_profile view validations
         $this->form_validation->set_rules('NIC', 'NIC', 'required|exact_length[10]|callback_check_NIC');
         $this->form_validation->set_rules('name', 'name', 'required');
-        $this->form_validation->set_rules('initial', 'initial', '');
+        $this->form_validation->set_rules('initial', 'initial', 'required');
         $this->form_validation->set_rules('birth', 'birth', 'required|callback_check_Birth_day');
         $this->form_validation->set_rules('gender', 'gender', 'callback_check_gender');
         $this->form_validation->set_rules('Nationality', 'Nationality', 'callback_check_selection');
@@ -92,7 +110,19 @@ class Teacher extends CI_Controller {
         $this->form_validation->set_rules('contactHome', 'contactHome', 'exact_length[10]|integer');
         $this->form_validation->set_rules('email', 'email', 'valid_email');
         $this->form_validation->set_rules('widow', 'widow', '');
+        $this->form_validation->set_rules('serialno', 'serialno', 'required');
+        $this->form_validation->set_rules('name', 'name', 'required');
+        $this->form_validation->set_rules('careerdate', 'careerdate', 'required');
+        $this->form_validation->set_rules('medium', 'medium', 'required');
+        $this->form_validation->set_rules('section', 'section', 'required');
+        $this->form_validation->set_rules('mainsubject', 'mainsubject', 'required');
+        $this->form_validation->set_rules('servicegrade', 'servicegrade', 'required');
+        $this->form_validation->set_rules('personfile', 'personfile', 'required');
+        $this->form_validation->set_rules('teacherregno', 'teacherregno', 'required');
+        $this->form_validation->set_rules('serviceperiod', 'serviceperiod', 'required');
+        $this->form_validation->set_rules('remarks', 'remarks', 'required');
         $this->form_validation->set_error_delimiters('<br /><span class="error">', '</span>');
+
 
         //if validations are false
         if ($this->form_validation->run() == FALSE) {
@@ -360,9 +390,10 @@ class Teacher extends CI_Controller {
             $servicegrade = $this->input->post('servicegrade');
             // run insert model to write data to db
 
-            $datestring = "%Y-%m-%d %h:%i:%a";
-            $time = time();
-            $create = mdate($datestring, $time);
+//            $datestring = "%Y-%m-%d %h:%i:%a";
+//            $time = time();
+//            $create = mdate($datestring, $time);
+            $create = date('Y-m-d H:i:s');
             $this->Teacher_Model->set_time($NIC, $create);
 
             if ($id = $this->Teacher_Model->update_new_staff($NIC, $serialno, $signatureno, $careerdate, $medium, $designation, $section, $mainsubject, $servicegrade)) { // the information has therefore been successfully saved in the db
@@ -405,9 +436,9 @@ class Teacher extends CI_Controller {
             $password = $this->input->post('password');
             $confirm_password = $this->input->post('confirm_password');
 
-            $datestring = "%Y-%m-%d %h:%i:%a";
-            $time = time();
-            $create = mdate($datestring, $time);
+//            $datestring = "%Y-%m-%d %h:%i:%a";
+//            $time = time();
+            $create = date('Y-m-d H:i:s');
             //$this->Teacher_Model->set_time($ID , $create);
 
             if ($id = $this->Teacher_Model->insert_new_teacher_userdata($username, $password, $create)) { // the information has therefore been successfully saved in the db

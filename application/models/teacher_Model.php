@@ -77,7 +77,7 @@ class Teacher_Model extends CI_Model {
     public function insert_new_teacher_userdata($username, $password , $create) {
         try {
             $encryptpwd = md5($password);
-            if ($this->db->query("INSERT INTO users (`username`, `password` , `created_at`) VALUES ('$username', '$encryptpwd' , '$create')")) {
+            if ($this->db->query("INSERT INTO users (`username`, `password` , `created_at`, `user_type`) VALUES ('$username', '$encryptpwd' , '$create', 'T')")) {
                 $id = $this->db->insert_id();
                 return $id;
             } else {
@@ -111,7 +111,7 @@ class Teacher_Model extends CI_Model {
 
     //update teacher details
     public function UpdateTeacher($teacher,$myid) {
-        $datestring = " %Y-%m-%d %h:%i:%a";
+        $datestring = " %Y-%m-%d";
         $time = time();
 
         $updated_date = mdate($datestring, $time);
@@ -145,6 +145,17 @@ class Teacher_Model extends CI_Model {
         }else{
             return FALSE;
             
+        }
+    }
+
+    //Get teacher id from user id
+    public function get_teacher_id($userid){
+        try{
+            $query = $this->db->query("SELECT id FROM teachers WHERE user_id='$userid'");
+            $row = $query->row();
+            return $row->id;
+        } catch (Exception $ex) {
+            return FALSE;
         }
     }
 
