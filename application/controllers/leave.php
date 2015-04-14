@@ -37,24 +37,24 @@ class leave extends CI_Controller {
         $userid = $this->session->userdata['id'];
 
         //Load form combo
-        $data['leave_types'] = $this->leave_model->get_leave_types();
+        $data['leave_types'] = $this->Leave_Model->get_leave_types();
 
         //Getting Values from Leaves DB
-        $data['casual_leaves'] = $this->leave_model->get_max_leave_count("Casual");
-        $data['medical_leaves'] = $this->leave_model->get_max_leave_count("Medical");
-        $data['duty_leaves'] = $this->leave_model->get_max_leave_count("Duty");
-        $data['other_leaves'] = $this->leave_model->get_max_leave_count("Other");
-        $data['maternity_leaves'] = $this->leave_model->get_max_leave_count("Maternity");
+        $data['casual_leaves'] = $this->Leave_Model->get_max_leave_count("Casual");
+        $data['medical_leaves'] = $this->Leave_Model->get_max_leave_count("Medical");
+        $data['duty_leaves'] = $this->Leave_Model->get_max_leave_count("Duty");
+        $data['other_leaves'] = $this->Leave_Model->get_max_leave_count("Other");
+        $data['maternity_leaves'] = $this->Leave_Model->get_max_leave_count("Maternity");
 
         //Getting List of Applied Leaves
-        $data['applied_leaves'] = $this->leave_model->get_applied_leaves_list($userid);
+        $data['applied_leaves'] = $this->Leave_Model->get_applied_leaves_list($userid);
 
         //Get Separate leaves count according to the type
-        $data['applied_casual_leaves'] = $this->leave_model->get_no_leaves('1', $userid);
-        $data['applied_medical_leaves'] = $this->leave_model->get_no_leaves('2', $userid);
-        $data['applied_duty_leaves'] = $this->leave_model->get_no_leaves('3', $userid);
-        $data['applied_other_leaves'] = $this->leave_model->get_no_leaves('4', $userid);
-        $data['applied_maternity_leaves'] = $this->leave_model->get_no_leaves('5', $userid);
+        $data['applied_casual_leaves'] = $this->Leave_Model->get_no_leaves('1', $userid);
+        $data['applied_medical_leaves'] = $this->Leave_Model->get_no_leaves('2', $userid);
+        $data['applied_duty_leaves'] = $this->Leave_Model->get_no_leaves('3', $userid);
+        $data['applied_other_leaves'] = $this->Leave_Model->get_no_leaves('4', $userid);
+        $data['applied_maternity_leaves'] = $this->Leave_Model->get_no_leaves('5', $userid);
 
         //total leaves
         $data['total_leaves'] = $data['applied_casual_leaves'] + $data['applied_medical_leaves'] + $data['applied_duty_leaves'] + $data['applied_other_leaves'] + $data['applied_maternity_leaves'];
@@ -65,7 +65,7 @@ class leave extends CI_Controller {
         //For Admin Views
         if($data['user_type'] == 'A'){
             //Get Pending Leaves List
-            $data['admin_pending_list'] = $this->leave_model->get_list_of_pending_leaves();
+            $data['admin_pending_list'] = $this->Leave_Model->get_list_of_pending_leaves();
 
             //Passing it to the View
             $this->load->view('templates/header', $data);
@@ -100,26 +100,26 @@ class leave extends CI_Controller {
         //Basic data to be loaded
         $data['user_type'] = $this->session->userdata['user_type'];
         //Load form combo
-        $data['leave_types'] = $this->leave_model->get_leave_types();
+        $data['leave_types'] = $this->Leave_Model->get_leave_types();
 
         $userid = $this->session->userdata['id'];
 
         //Getting Values from Leaves DB
-        $data['casual_leaves'] = $this->leave_model->get_max_leave_count("Casual");
-        $data['medical_leaves'] = $this->leave_model->get_max_leave_count("Medical");
-        $data['duty_leaves'] = $this->leave_model->get_max_leave_count("Duty");
-        $data['other_leaves'] = $this->leave_model->get_max_leave_count("Other");
-        $data['maternity_leaves'] = $this->leave_model->get_max_leave_count("Maternity");
+        $data['casual_leaves'] = $this->Leave_Model->get_max_leave_count("Casual");
+        $data['medical_leaves'] = $this->Leave_Model->get_max_leave_count("Medical");
+        $data['duty_leaves'] = $this->Leave_Model->get_max_leave_count("Duty");
+        $data['other_leaves'] = $this->Leave_Model->get_max_leave_count("Other");
+        $data['maternity_leaves'] = $this->Leave_Model->get_max_leave_count("Maternity");
 
         //Getting List of Applied Leaves
-        $data['applied_leaves'] = $this->leave_model->get_applied_leaves_list($this->session->userdata['id']);
+        $data['applied_leaves'] = $this->Leave_Model->get_applied_leaves_list($this->session->userdata['id']);
 
         //Get Separate leaves count according to the type
-        $data['applied_casual_leaves'] = $this->leave_model->get_no_leaves('1', $userid);
-        $data['applied_medical_leaves'] = $this->leave_model->get_no_leaves('2', $userid);
-        $data['applied_duty_leaves'] = $this->leave_model->get_no_leaves('3', $userid);
-        $data['applied_other_leaves'] = $this->leave_model->get_no_leaves('4', $userid);
-        $data['applied_maternity_leaves'] = $this->leave_model->get_no_leaves('5', $userid);
+        $data['applied_casual_leaves'] = $this->Leave_Model->get_no_leaves('1', $userid);
+        $data['applied_medical_leaves'] = $this->Leave_Model->get_no_leaves('2', $userid);
+        $data['applied_duty_leaves'] = $this->Leave_Model->get_no_leaves('3', $userid);
+        $data['applied_other_leaves'] = $this->Leave_Model->get_no_leaves('4', $userid);
+        $data['applied_maternity_leaves'] = $this->Leave_Model->get_no_leaves('5', $userid);
 
         //total leaves
         $data['total_leaves'] = $data['applied_casual_leaves'] + $data['applied_medical_leaves'] + $data['applied_duty_leaves'] + $data['applied_other_leaves'] + $data['applied_maternity_leaves'];
@@ -146,7 +146,7 @@ class leave extends CI_Controller {
             $enddate = $this->input->post('txt_enddate');
             $reason = $this->input->post('txt_reason');
             $applieddate = date("Y-m-d");
-            $teacherid = $this->leave_model-> get_teacher_id($userid);
+            $teacherid = $this->Leave_Model-> get_teacher_id($userid);
 
             $noofdates=date_diff(date_create($startdate),date_create($enddate));
             $sdate = $noofdates->format("%a");
@@ -175,27 +175,27 @@ class leave extends CI_Controller {
             }
             else {
 
-                if($this->leave_model->apply_for_leave($userid, $teacherid, $leavetype, $applieddate, $startdate, $enddate, $reason, $sdate) == TRUE)
+                if($this->Leave_Model->apply_for_leave($userid, $teacherid, $leavetype, $applieddate, $startdate, $enddate, $reason, $sdate) == TRUE)
                 {
                     $data['succ_message'] = "Leave Applied Successfully for ". $noofdates->format("%a days");
 
                     //loading values again
                     //Getting Values from Leaves DB
-                    $data['casual_leaves'] = $this->leave_model->get_max_leave_count("Casual");
-                    $data['medical_leaves'] = $this->leave_model->get_max_leave_count("Medical");
-                    $data['duty_leaves'] = $this->leave_model->get_max_leave_count("Duty");
-                    $data['other_leaves'] = $this->leave_model->get_max_leave_count("Other");
-                    $data['maternity_leaves'] = $this->leave_model->get_max_leave_count("Maternity");
+                    $data['casual_leaves'] = $this->Leave_Model->get_max_leave_count("Casual");
+                    $data['medical_leaves'] = $this->Leave_Model->get_max_leave_count("Medical");
+                    $data['duty_leaves'] = $this->Leave_Model->get_max_leave_count("Duty");
+                    $data['other_leaves'] = $this->Leave_Model->get_max_leave_count("Other");
+                    $data['maternity_leaves'] = $this->Leave_Model->get_max_leave_count("Maternity");
 
                     //Getting List of Applied Leaves
-                    $data['applied_leaves'] = $this->leave_model->get_applied_leaves_list($this->session->userdata['id']);
+                    $data['applied_leaves'] = $this->Leave_Model->get_applied_leaves_list($this->session->userdata['id']);
 
                     //Get Separate leaves count according to the type
-                    $data['applied_casual_leaves'] = $this->leave_model->get_no_leaves('1', $userid);
-                    $data['applied_medical_leaves'] = $this->leave_model->get_no_leaves('2', $userid);
-                    $data['applied_duty_leaves'] = $this->leave_model->get_no_leaves('3', $userid);
-                    $data['applied_other_leaves'] = $this->leave_model->get_no_leaves('4', $userid);
-                    $data['applied_maternity_leaves'] = $this->leave_model->get_no_leaves('5', $userid);
+                    $data['applied_casual_leaves'] = $this->Leave_Model->get_no_leaves('1', $userid);
+                    $data['applied_medical_leaves'] = $this->Leave_Model->get_no_leaves('2', $userid);
+                    $data['applied_duty_leaves'] = $this->Leave_Model->get_no_leaves('3', $userid);
+                    $data['applied_other_leaves'] = $this->Leave_Model->get_no_leaves('4', $userid);
+                    $data['applied_maternity_leaves'] = $this->Leave_Model->get_no_leaves('5', $userid);
 
                     //total leaves
                     $data['total_leaves'] = $data['applied_casual_leaves'] + $data['applied_medical_leaves'] + $data['applied_duty_leaves'] + $data['applied_other_leaves'] + $data['applied_maternity_leaves'];
@@ -227,7 +227,7 @@ class leave extends CI_Controller {
         $data['user_type'] = $this->session->userdata['user_type'];
 
         //Get Leave Details
-        $data['leave_details'] = $this->leave_model->get_leave_details($id);
+        $data['leave_details'] = $this->Leave_Model->get_leave_details($id);
 
         //Passing it to the View
         $this->load->view('templates/header', $data);
@@ -245,7 +245,7 @@ class leave extends CI_Controller {
         $data['id'] = $id;
 
         //Get Approve Leave Status
-        $data['leave_approve_status'] = $this->leave_model->approve_leave($id);
+        $data['leave_approve_status'] = $this->Leave_Model->approve_leave($id);
 
         $data['user_type'] = $this->session->userdata['user_type'];
 
@@ -255,7 +255,7 @@ class leave extends CI_Controller {
 
 
             //Get Leave Details
-            $data['leave_details'] = $this->leave_model->get_leave_details($id);
+            $data['leave_details'] = $this->Leave_Model->get_leave_details($id);
 
             //Passing it to the View
             $this->load->view('templates/header', $data);
@@ -268,7 +268,7 @@ class leave extends CI_Controller {
 
 
             //Get Leave Details
-            $data['leave_details'] = $this->leave_model->get_leave_details($id);
+            $data['leave_details'] = $this->Leave_Model->get_leave_details($id);
 
             //Passing it to the View
             $this->load->view('templates/header', $data);
@@ -291,7 +291,7 @@ class leave extends CI_Controller {
         $data['user_type'] = $this->session->userdata['user_type'];
 
         //Get Approve Leave Status
-        $data['leave_approve_status'] = $this->leave_model->reject_leave($id);
+        $data['leave_approve_status'] = $this->Leave_Model->reject_leave($id);
 
         if($data['leave_approve_status'] == TRUE){
 
@@ -299,7 +299,7 @@ class leave extends CI_Controller {
 
 
             //Get Leave Details
-            $data['leave_details'] = $this->leave_model->get_leave_details($id);
+            $data['leave_details'] = $this->Leave_Model->get_leave_details($id);
 
             //Passing it to the View
             $this->load->view('templates/header', $data);
@@ -312,7 +312,7 @@ class leave extends CI_Controller {
 
 
             //Get Leave Details
-            $data['leave_details'] = $this->leave_model->get_leave_details($id);
+            $data['leave_details'] = $this->Leave_Model->get_leave_details($id);
 
             //Passing it to the View
             $this->load->view('templates/header', $data);
@@ -357,7 +357,7 @@ class leave extends CI_Controller {
         $data['user_type'] = $this->session->userdata['user_type'];
 
         //Get Approve Leave Status
-        $data['all_leaves'] = $this->leave_model->get_all_leaves(3);
+        $data['all_leaves'] = $this->Leave_Model->get_all_leaves(3);
 
 
             //Passing it to the View
