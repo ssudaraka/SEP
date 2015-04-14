@@ -1,5 +1,5 @@
 <?php
-class leave_model extends CI_Model {
+class Leave_Model extends CI_Model {
 	//loading database on class creationorderMainAddress
 	public function __construct() {
 			$this->load->database();

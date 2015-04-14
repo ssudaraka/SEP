@@ -22,7 +22,7 @@ class leave extends CI_Controller {
      */
     public function __construct() {
         parent::__construct();
-        $this->load->model('leave_model');
+        $this->load->model('Leave_Model');
     }
 
     public function index() {
