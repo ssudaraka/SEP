@@ -99,13 +99,13 @@
                         <div class="col-md-4">
                             <?php
                             
-                                $string = $row->structure;
-                                $partial = explode(', ', $string);
-                                $final = array();
-                                array_walk($partial, function($val,$key) use(&$final){
-                                    list($key, $value) = explode('=', $val);
-                                    $final[$key] = $value;
-                                });
+                                // $string = $row->structure;
+                                // $partial = explode(', ', $string);
+                                // $final = array();
+                                // array_walk($partial, function($val,$key) use(&$final){
+                                //     list($key, $value) = explode('=', $val);
+                                //     $final[$key] = $value;
+                                // });
                                 // print_r($final);
                                 // foreach ($final as $key => $value) {
                                 //     echo "Key: $key; Value: $value";
@@ -118,6 +118,19 @@
                     <div class="row" style="margin-bottom:5px;">
                         <div align="center">
                             <?php
+
+
+                            //Getting Data from the DB
+                                $string = $row->structure;
+                                $partial = explode(', ', $string);
+                                $final = array();
+                                array_walk($partial, function($val,$key) use(&$final){
+                                    list($key, $value) = explode('=', $val);
+                                    $final[$key] = $value;
+                                });
+                                
+                                
+
                                 $months=array('January', 'February', 'March', 'April', 'May', 'June', 'July', 'August', 'September', 'October', 'November', 'December');
                                 $current_month=date('n');
                                 $current_year=date('Y');
@@ -158,10 +171,31 @@
                                          for($day=1; $day<=$month_days; $day++) {
                                                     $pos=($day+$first_day_in_month-1)%7;
                                                     $class = (($day==$current_day) && ($month==$current_month)) ? 'today' : 'day';
-                                                    $class .= ($pos==6) ? ' sat' : '';
-                                                    $class .= ($pos==0) ? ' sun' : '';
+                                                    $class .= ($pos==6) ? ' weekend' : '';
+                                                    $class .= ($pos==0) ? ' weekend' : '';
 
-                                                    echo '<td class="'.$class.'">'.$day.'</td>';
+                                                    // echo '<td class="'.$class.'">'.$day.'</td>';
+                                                    $href = $current_year."-".$month."-".$day;
+                                                    
+                                                    $t = true;
+
+                                                    foreach ($final as $key => $value) {
+                                                        $noofdates=date_diff(date_create($key),date_create($href));
+                                                        //No of days in the Year
+                                                        $sdate = $noofdates->format("%a");
+
+                                                        if($sdate == '0' && $value == '1'){
+                                                            $class .=  ' holi';
+                                                        
+                                                        // echo "Key: $key; Value: $value";
+                                                        // echo "<br />";
+                                                        }
+                                                    } 
+
+                                                    // echo '<td class="'.$class.'">'.'<a href="'.$href.'">' .$day. '</a>' . '</td>'; 
+
+                                                    echo '<td class="'.$class.'">'. $day . '</td>'; 
+
                                                     if ($pos==0) echo '</tr><tr>';
                                                 }
                                                 
@@ -215,12 +249,12 @@
                                 color:#666666;
                                 font-weight: bold;
                             }
-                            .calendar .month .sat{
+                            .calendar .month .weekend{
                                 color:#0000cc;
                             }
-                            .calendar .month .sun{
-                                color:#0000cc;
-                                /*color:#cc0000;*/
+                            .calendar .month .holi{
+                                /*color:#0000cc;*/
+                                color:#cc0000;
                             }
                             .calendar .month .today{
                                 background:#ff0000;
