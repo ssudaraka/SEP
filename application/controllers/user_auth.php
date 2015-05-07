@@ -18,17 +18,7 @@ class User_Auth extends CI_Controller {
             $this->load->view('login_form');
             $this->load->view('/templates/footer');
         } else {
-
-            if ($this->input->post('rememberme')) {
-
-                $this->rememberme->setCookie($this->input->post('username'));
-            }
-            $this->load->library('user_agent');
-            if($this->agent->is_referral()) {
-                redirect($this->agent->referrer(), 'refresh');
-            } else {
-                redirect('dashboard', 'refresh');
-            }
+            redirect('dashboard', 'refresh');
         }
     }
 

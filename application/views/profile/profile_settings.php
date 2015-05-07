@@ -1,7 +1,7 @@
 <div class="container">
     <div class="row">
         <div class="col-md-3">
-            <?php $this->view('admin/sidebar_nav'); ?>
+            <?php $this->view('profile/sidebar_nav'); ?>
         </div>
         <div class="col-md-9">
             <?php if (isset($succ_message)) { ?>
@@ -20,7 +20,7 @@
                 <div class="panel-heading">Profile Settings</div>
                 <div class="panel-body">
                     <div class="col-md-6">
-                        <?php echo form_open_multipart('admin/update_profile'); ?>
+                        <?php echo form_open_multipart('profile/update_profile'); ?>
                         <div class="fom-group img-submit">
                             <label for="profile-img">Profile image</label>
                             <br />
@@ -32,7 +32,6 @@
                         </div>
                         <div class="form-group">
                             <label for="first_name">First Name</label>
-
                             <input type="text" name="first_name" id="first_name" class="form-control" value="<?php echo $first_name; ?>">
                             <p class="help-block"></p>
                         </div>

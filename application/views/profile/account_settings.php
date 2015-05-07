@@ -1,7 +1,7 @@
 <div class="container">
     <div class="row">
         <div class="col-md-3">
-            <?php $this->view('admin/sidebar_nav'); ?>
+            <?php $this->view('profile/sidebar_nav'); ?>
         </div>
         <div class="col-md-9">
             <?php if (isset($succ_message)) { ?>
@@ -20,7 +20,7 @@
                 <div class="panel-heading">Change password</div>
                 <div class="panel-body">
                     <div class="col-md-6">
-                        <?php echo form_open('admin/change_password'); ?>
+                        <?php echo form_open('profile/change_password'); ?>
                         <div class="form-group">
                             <label for="old_password">Old Password</label>
                             <input type="password" name="old_password" id="old_password" class="form-control" value="">

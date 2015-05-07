@@ -6,6 +6,7 @@ class Attendance extends CI_Controller {
         parent::__construct();
         $this->load->model('attendance_model');
         $this->load->library('form_validation');
+        $this->load->helper('date');
     }
     
     /*
@@ -95,6 +96,17 @@ class Attendance extends CI_Controller {
             $this->load->view('attendance/att_record_form', $data);
             $this->load->view('/templates/footer');
         }
+        
+    }
+    
+    function generate_report() {
+        $date_string = "%Y-%m-%d";
+        $time = time();
+        $data['date'] = mdate($date_string, $time);
+        
+        $data['page_title'] = 'Attendance Report For: ' . $data['date'];
+        
+        $data['result'] = $this->attendance_model->get_all_records();
         
     }
 
