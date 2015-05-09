@@ -38,7 +38,7 @@
                                 <?php echo form_close(); ?>
                             </div>
                             <div class="col-md-3">
-                                <a href="#"><button class="btn btn-primary">Generate Report</button></a>
+                                <a href="<?php echo base_url("index.php/attendance/generate_report"); ?>"><button class="btn btn-primary">Generate Report</button></a>
                             </div>
                         </div>
                         <div class="row">

@@ -112,7 +112,7 @@ class Admin extends CI_Controller {
         $config['cur_tag_open'] = '<a href="#">';
         $config['cur_tag_close'] = '</a>';
 
-        $config['offset'] = ($this->uri->segment(3) ? $this->uri->segment(3) : null);
+        $config['offset'] = ($this->uri->segment(3) ? $this->uri->segment(3) : 0);
 
         $data['query'] = $this->user->get_user_list('', 'A', $config['per_page'], $config['offset']);
 

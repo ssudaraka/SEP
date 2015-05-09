@@ -21,7 +21,7 @@
             </div>
             <div class="admin-btn">
                 <i class="fa fa-globe"></i>
-                <a href="#">
+                <a href="<?php echo base_url('index.php/admin/manage_admins'); ?>">
                     <span class="main">Administrators</span>
                     <span class="sub">Add, Update, Delete...</span>
                 </a>
