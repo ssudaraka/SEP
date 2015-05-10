@@ -108,7 +108,7 @@
                                 
                                 echo "<td>". PHP_EOL;
                                 ?>
-                                    <a href='<?php echo base_url('index.php/Year/view_year/'.$row->id); ?>' class='btn btn-success btn-xs'><i class='fa fa-pencil-square-o'></i></a>
+                                    <a href='<?php echo base_url('index.php/Year/edit_year/'.$row->id); ?>' class='btn btn-success btn-xs'><i class='fa fa-pencil-square-o'></i></a>
                                     <a href='<?php echo base_url('index.php/Year/view_year/'.$row->id); ?>' class='btn btn-success btn-xs'><i class='fa fa-calendar'></i></a>
                                 <?php
                                 echo "</td>". PHP_EOL;

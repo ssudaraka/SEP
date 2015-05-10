@@ -29,6 +29,21 @@ class Year_Model extends CI_Model {
         }
     }
 
+    //update Academic Year
+    public function update_academic_year($id,$name, $start_date, $end_date, $status, $t1_start_date, $t1_end_date, $t2_start_date, $t2_end_date, $t3_start_date, $t3_end_date, $structure){
+        try {
+            if($this->db->query("UPDATE year_plan SET `name` = '$name', `start_date` = '$start_date', `end_date` = '$end_date', `status` = '$status', `t1_start_date` = '$t1_start_date', `t1_end_date` = '$t1_end_date', `t2_start_date` = '$t2_start_date', `t2_end_date` = '$t2_end_date', `t3_start_date` = '$t3_start_date', `t3_end_date` = '$t3_end_date', `structure` ='$structure'
+                WHERE `id` = '$id' ")) {
+                return TRUE;
+            } else {
+                return FALSE;
+            }
+        } catch(Exception $ex) {
+            return FALSE;
+        }
+    }
+
+
     //Get current Academic Year Details
     public function get_academic_year_details(){
         try{

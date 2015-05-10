@@ -42,40 +42,47 @@
 
             <div class="panel panel-default">
                 <div class="panel-heading">
-                    <strong>Academic Year</strong>
+                    <strong>Edit Academic Year</strong>
                 </div>
                 <div class="panel-body">
                     
+
                     <?php
                             foreach ($year as $row)
                             {
                     ?>
-
-                    <!-- Buttons for Modifications -->
-                    <div class="row" style="margin-bottom:5px;">
-                        <div class="col-md-10"></div>
-                        <div class="col-md-2">
-                            <a class="btn btn-primary btn-sm" href='<?php echo base_url('index.php/Year/edit_year/'.$row->id); ?>' role="button"><i class="fa fa-pencil-square-o"></i> Edit Year</a>
-                        </div>
-                    </div>
                     
+                    <?php
+                        // Change the css classes to suit your needs
+
+                        $attributes = array('class' => '', 'id' => '');
+                        echo form_open('Year/edit_academic_year/'.$row->id, $attributes);
+                    ?>
                     <div class="row" style="margin-bottom:5px;">
-                        <div class="col-md-4"><b>Name : </b><?php echo $row->name ?></div>   
+                        <div class="col-md-4"><b>Name : </b>
+                            <input type="text" name="txt_name" class="form-control" placeholder="Name" value="<?php echo $row->name ?>">
+                        </div>   
                     </div>
                     <div class="row" style="margin-bottom:5px;">
-                        <div class="col-md-4"></i><b>Starts On : </b><?php echo $row->start_date ?></div>  
-                        <div class="col-md-4"></i><b>Ends On : </b><?php echo $row->end_date ?></div>    
+                        <div class="col-md-4"></i><b>Starts On : 
+                            </b><input type="date" name="txt_startdate" class="form-control" placeholder="Start Date" value= "<?php echo $row->start_date ?>">
+                        </div>  
+                        <div class="col-md-4"></i><b>Ends On : 
+                            </b><input type="date" name="txt_enddate" class="form-control" placeholder="End Date" value="<?php echo $row->end_date ?>">
+                        </div>    
                     </div>
                     <div class="row" style="margin-bottom:5px;">
                         <div class="col-md-4"><b>Status : </b>
+                            <select name="cmb_status" class="form-control">
                             <?php 
                                 if ($row->status == "1") {
-                                    echo "<span class='label label-primary'>Active</span>". PHP_EOL;
+                                    echo "<option value='1' selected>Active</option>". PHP_EOL;
                                 } else{
-                                    echo "<span class='label label-danger'>Inactive</span>". PHP_EOL;
+                                    echo "<option value='0' selected>Inactive</option>". PHP_EOL;
                                 }
-                             ?>
-
+                             ?>                              
+                              
+                            </select>
                         </div> 
 
                     </div>
@@ -87,43 +94,110 @@
                         <div class="col-md-4"><b>Term 01</b></div>   
                     </div>
                     <div class="row" style="margin-bottom:5px;  margin-top:10px;">
-                        <div class="col-md-4"><b>Start Date : </b><?php echo $row->t1_start_date ?></div>  
-                        <div class="col-md-4"><b>End Date : </b><?php echo $row->t1_end_date ?></div>    
+                        <div class="col-md-4"><b>Start Date : </b>
+                            <input type="date" name="txt_t1_startdate" class="form-control" placeholder="Start Date" value="<?php echo $row->t1_start_date ?>">
+                        </div>  
+                        <div class="col-md-4"><b>End Date : </b>
+                            <input type="date" name="txt_t1_enddate" class="form-control" placeholder="End Date" value="<?php echo $row->t1_end_date ?>">
+                        </div>    
                     </div>
                     <div class="row" style="margin-bottom:5px;  margin-top:10px;">
                         <div class="col-md-4"><b>Term 02</b></div>   
                     </div>
                     <div class="row" style="margin-bottom:5px;">
-                        <div class="col-md-4"><b>Start Date : </b><?php echo $row->t2_start_date ?></div>  
-                        <div class="col-md-4"><b>End Date : </b><?php echo $row->t2_end_date ?></div>    
+                        <div class="col-md-4"><b>Start Date : </b>
+                            <input type="date" name="txt_t2_startdate" class="form-control" placeholder="Start Date" value="<?php echo $row->t2_start_date ?>">
+                        </div>  
+                        <div class="col-md-4"><b>End Date : </b>
+                            <input type="date" name="txt_t2_enddate" class="form-control" placeholder="End Date" value="<?php echo $row->t2_end_date ?>">
+                        </div>    
                     </div>
                     <div class="row" style="margin-bottom:5px; margin-top:10px;">
                         <div class="col-md-4"><b>Term 03</b></div>   
                     </div>
                     <div class="row" style="margin-bottom:5px;">
-                        <div class="col-md-4"><b>Start Date : </b><?php echo $row->t3_start_date ?></div>  
-                        <div class="col-md-4"><b>End Date : </b><?php echo $row->t3_end_date ?></div>    
+                        <div class="col-md-4"><b>Start Date : </b>
+                            <input type="date" name="txt_t3_startdate" class="form-control" placeholder="Start Date" value="<?php echo $row->t3_start_date ?>">
+                        </div>  
+                        <div class="col-md-4"><b>End Date : </b>
+                            <input type="date" name="txt_t3_enddate" class="form-control" placeholder="End Date" value="<?php echo $row->t3_end_date ?>">
+                        </div>    
                     </div>
                     <div class="row" style="margin-bottom:5px;">
                         <div class="col-md-4">
+                            <div class="form-group">
+                                <button class="btn btn-success" type="submit">Save</button>
+                            </div>  
+                        </div>
+                    </div>
+                    <!-- End of Form -->
+                    <?php echo form_close(); ?>
+                    <hr>
+
+                    <div class="row" style="margin-bottom:5px;">
+                        <div class="col-md-12">
+                            <b>Holidays</b>
+                            <div class="row" style="margin-bottom:5px;">
+                                <div class="col-md-6"></div>
+                                <div class="col-md-6">
+                                    <form class="form-inline">
+                                    <div class="form-group">
+                                    <label>Date</label>
+                                    <input type="date" name="txt_t3_enddate" class="form-control" placeholder="End Date" >
+                                    <a href='<?php echo base_url('index.php/Year/edit_year/'.$row->id); ?>' class='btn btn-success'><i class='fa fa-plus'></i> Add Holiday</a>
+                                    </div>
+                                    </form>
+                                </div>
+                            </div>
+
                             <?php
                             
-                                // $string = $row->structure;
-                                // $partial = explode(', ', $string);
-                                // $final = array();
-                                // array_walk($partial, function($val,$key) use(&$final){
-                                //     list($key, $value) = explode('=', $val);
-                                //     $final[$key] = $value;
-                                // });
+                                $string = $row->structure;
+                                $partial = explode(', ', $string);
+                                $final = array();
+                                array_walk($partial, function($val,$key) use(&$final){
+                                    list($key, $value) = explode('=', $val);
+                                    $final[$key] = $value;
+                                });
                                 // print_r($final);
-                                // foreach ($final as $key => $value) {
-                                //     echo "Key: $key; Value: $value";
-                                //     echo "<br />";
-                                // }  
+                                $indextbl = 1;
+                                ?>
+                                <table class="table table-striped">
+                                      <thead>
+                                        <tr>
+                                          <th>#</th>
+                                          <th>Date</th>
+                                          <th>Type</th>
+                                          <th>Actions</th>
+                                        </tr>
+                                      </thead>
+                                      <tbody>
+
+                                <!-- Start of Forloop -->
+                                <?php
+                                foreach ($final as $key => $value) {
+                                    if($value == 2) {
+                                ?>
+                                        <tr>
+                                          <th scope="row"><?php echo $indextbl ?></th>
+                                          <td><?php echo $key ?></td>
+                                          <td>Poya Day</td>
+                                          <td><a href="<?php echo base_url("index.php/attendance/delete_record/" . $key); ?>">Delete</a></td>
+                                        </tr>
+
+                          <!--End of For loop -->
+                            <?php
+                                        $indextbl++;
+                                    }
+                                
+                                }  
                             ?>
+                                    </tbody>
+                                </table>
 
                         </div>   
                     </div>
+                    <hr>
                     <div class="row" style="margin-bottom:5px;">
                         <div align="center">
                             <?php
@@ -271,6 +345,7 @@
                             }
 
                         </style>
+                    <!-- End of Calender -->
                     </div>
 
                     <?php } ?>
