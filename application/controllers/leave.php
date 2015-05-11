@@ -23,6 +23,7 @@ class leave extends CI_Controller {
     public function __construct() {
         parent::__construct();
         $this->load->model('Leave_Model');
+        $this->load->model('Year_Model');
     }
 
     public function index() {
@@ -154,6 +155,13 @@ class leave extends CI_Controller {
             $dateold = date_diff(date_create($applieddate),date_create($startdate));
             $dateoldc = $dateold->format("%R%a");
 
+            //Get info from the Academic Year
+            $academic_year = $this->Year_Model->get_curret_academic_year();
+            foreach ($query->result() as $row)
+            {
+                $row->structure;
+            }
+
 
             //validation for dates
             if($sdate == '0'){
@@ -175,7 +183,10 @@ class leave extends CI_Controller {
             }
             else {
 
-                if($this->Leave_Model->apply_for_leave($userid, $teacherid, $leavetype, $applieddate, $startdate, $enddate, $reason, $sdate) == TRUE)
+                $ss=TRUE;
+                if($ss == TRUE)
+
+                // if($this->Leave_Model->apply_for_leave($userid, $teacherid, $leavetype, $applieddate, $startdate, $enddate, $reason, $sdate) == TRUE)
                 {
                     $data['succ_message'] = "Leave Applied Successfully for ". $noofdates->format("%a days");
 

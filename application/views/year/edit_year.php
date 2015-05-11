@@ -178,6 +178,7 @@
                                       <option value="2">Poya Day</option>
                                       <option value="3">Religious Holiday</option>
                                       <option value="4">Special Holiday</option>
+                                      <option value="5">Special School Day</option>
                                     </select>
                                    <button class='btn btn-success' type="submit"><i class='fa fa-plus'></i> Add Holiday</a></button>
                                     </div>
@@ -213,8 +214,9 @@
                                 <!-- Start of Forloop -->
                                 <?php
                                 foreach ($final as $key => $value) {
+                                    // If its a poya day
                                     if($value == 2) {
-                                ?>
+                                    ?>
                                         <tr>
                                           <th scope="row"><?php echo $indextbl ?></th>
                                           <td><?php echo $key ?></td>
@@ -222,13 +224,58 @@
                                           <td><a href="<?php echo base_url("index.php/year/remove_holiday/".$row->id."/" . $key); ?>">Delete</a></td>
                                         </tr>
 
-                          <!--End of For loop -->
-                            <?php
-                                        $indextbl++;
-                                    }
-                                
-                                }  
-                            ?>
+                                <!--End of For loop -->
+                                <?php
+                                            $indextbl++;
+                                        }
+
+                                    //If its a Religious Holiday
+                                    if($value == 3) {
+                                    ?>
+                                        <tr>
+                                          <th scope="row"><?php echo $indextbl ?></th>
+                                          <td><?php echo $key ?></td>
+                                          <td>Religious Holiday</td>
+                                          <td><a href="<?php echo base_url("index.php/year/remove_holiday/".$row->id."/" . $key); ?>">Delete</a></td>
+                                        </tr>
+
+                                <!--End of For loop -->
+                                <?php
+                                            $indextbl++;
+                                        }
+
+                                    //If its a Speicial Holiday
+                                    if($value == 4) {
+                                    ?>
+                                        <tr>
+                                          <th scope="row"><?php echo $indextbl ?></th>
+                                          <td><?php echo $key ?></td>
+                                          <td>Special Holiday</td>
+                                          <td><a href="<?php echo base_url("index.php/year/remove_holiday/".$row->id."/" . $key); ?>">Delete</a></td>
+                                        </tr>
+
+                                <!--End of For loop -->
+                                <?php
+                                            $indextbl++;
+                                        }
+
+                                    //If its a Special School day
+                                    if($value == 5) {
+                                    ?>
+                                        <tr>
+                                          <th scope="row"><?php echo $indextbl ?></th>
+                                          <td><?php echo $key ?></td>
+                                          <td>Special School Day</td>
+                                          <td><a href="<?php echo base_url("index.php/year/remove_holiday/".$row->id."/" . $key); ?>">Delete</a></td>
+                                        </tr>
+
+                                <!--End of For loop -->
+                                <?php
+                                            $indextbl++;
+                                        }
+                                    
+                                    }  
+                                ?>
                                     </tbody>
                                 </table>
 
@@ -291,8 +338,8 @@
                                          for($day=1; $day<=$month_days; $day++) {
                                                     $pos=($day+$first_day_in_month-1)%7;
                                                     $class = (($day==$current_day) && ($month==$current_month)) ? 'today' : 'day';
-                                                    $class .= ($pos==6) ? ' weekend' : '';
-                                                    $class .= ($pos==0) ? ' weekend' : '';
+                                                    // $class .= ($pos==6) ? ' weekend' : '';
+                                                    // $class .= ($pos==0) ? ' weekend' : '';
 
                                                     // echo '<td class="'.$class.'">'.$day.'</td>';
                                                     $href = $current_year."-".$month."-".$day;

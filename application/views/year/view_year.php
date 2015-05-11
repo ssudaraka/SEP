@@ -201,8 +201,8 @@
                                                     }
 
                                                     //Class set for Holidays
-                                                    $class .= ($pos==6) ? ' weekend' : '';
-                                                    $class .= ($pos==0) ? ' weekend' : '';
+                                                    // $class .= ($pos==6) ? ' weekend' : '';
+                                                    // $class .= ($pos==0) ? ' weekend' : '';
 
                                                     // echo '<td class="'.$class.'">'.'<a href="'.$href.'">' .$day. '</a>' . '</td>'; 
 

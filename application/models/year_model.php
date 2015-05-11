@@ -160,5 +160,14 @@ class Year_Model extends CI_Model {
     }
     //End of Temp Date functions
 
+    //Validation Codes for Active and Inactive Years
+    public function get_curret_academic_year(){
+        try{
+            $query = $this->db->query("SELECT * FROM year_plan WHERE status='1' LIMIT 1");
+                return $query->result();
+        } catch(Exception $ex) {
+            return FALSE;
+        }
+    }
 }
 ?>

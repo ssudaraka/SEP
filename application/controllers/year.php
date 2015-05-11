@@ -175,7 +175,7 @@ class Year extends CI_Controller {
                 $dataset = array();
                 $newdate = $start_date;
 
-                //Running a forloop till the end of end date with value 0
+                //Running a forloop till the end of end date with value 1
                 for($x = 0; $x <= $sdate; $x++){
                     $dataset[$newdate] = "1" ;
                     $newdate = strtotime($newdate);
@@ -184,6 +184,7 @@ class Year extends CI_Controller {
                 }
 
                 $noofdates=date_diff(date_create($t1_start_date),date_create($t1_end_date));
+
                 //No of days in between Term 1 start and end 
                 $t1days = $noofdates->format("%a");
                 $newdate = $t1_start_date;
@@ -197,10 +198,10 @@ class Year extends CI_Controller {
                 }
 
                 $noofdates=date_diff(date_create($t2_start_date),date_create($t2_end_date));
-                //No of days in between Term 1 start and end 
+                //No of days in between Term 2 start and end 
                 $t1days = $noofdates->format("%a");
                 $newdate = $t2_start_date;
-                //Overiding the values on term 01
+                //Overiding the values on term 02
                 for ($i=0; $i <= $t1days  ; $i++) { 
                     $dataset[$newdate] = "0" ;
                     $newdate = strtotime($newdate);
@@ -210,20 +211,31 @@ class Year extends CI_Controller {
                 }
 
                 $noofdates=date_diff(date_create($t3_start_date),date_create($t3_end_date));
-                //No of days in between Term 1 start and end 
+                //No of days in between Term 3 start and end 
                 $t1days = $noofdates->format("%a");
                 $newdate = $t3_start_date;
-                //Overiding the values on term 01
+                //Overiding the values on term 02
                 for ($i=0; $i <= $t1days  ; $i++) { 
                     $dataset[$newdate] = "0" ;
                     $newdate = strtotime($newdate);
                     $newdate = strtotime("+1 day", $newdate);
                     $newdate = date('Y-m-d', $newdate);
                 
-                }  
+                } 
 
-                //Add 1 to Saturdays and Sundays again                            
+                $newdate = $start_date; 
 
+                //Add 1 to Saturdays and Sundays again
+                for($x = 0; $x <= $sdate; $x++){
+                    if(date('w', strtotime($newdate)) == 6 || date('w', strtotime($newdate)) == 0) {
+                        $dataset[$newdate] = "1" ;
+                    }
+                    $newdate = strtotime($newdate);
+                    $newdate = strtotime("+1 day", $newdate);
+                    $newdate = date('Y-m-d', $newdate);
+                }
+
+                
                 //Data Passing
                 $data['daysof'] = $sdate;
                 $data['dataarr'] = $dataset;
@@ -429,7 +441,19 @@ class Year extends CI_Controller {
                 
                 }  
 
-                //Add 1 to Saturdays and Sundays again                            
+                //Add 1 to Saturdays and Sundays again  
+                $newdate = $start_date; 
+
+                //Add 1 to Saturdays and Sundays again
+                for($x = 0; $x <= $sdate; $x++){
+                    if(date('w', strtotime($newdate)) == 6 || date('w', strtotime($newdate)) == 0) {
+                        $dataset[$newdate] = "1" ;
+                    }
+                    $newdate = strtotime($newdate);
+                    $newdate = strtotime("+1 day", $newdate);
+                    $newdate = date('Y-m-d', $newdate);
+                }
+                                          
 
                 //Data Passing
                 $data['daysof'] = $sdate;

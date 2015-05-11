@@ -33,8 +33,8 @@
                 </div>
                 <div class="panel-body">
                     <div class="row">
-                        <div class="col-md-8"></div>
-                        <div class="col-md-4">
+                        <div class="col-md-9"></div>
+                        <div class="col-md-3">
                             <div class="row">
                             <a class="btn btn-primary btn-sm" href='<?php foreach ($current_year as $row1){ echo base_url('index.php/Year/view_year/'.$row1->id); } ?>' role="button"><i class="fa fa-calendar"></i> View Year</a>
                             <a class="btn btn-primary btn-sm" href='<?php echo base_url('index.php/Year/add_academic_year/'); ?>' role="button"><i class="fa fa-plus"></i> Add Year</a>
