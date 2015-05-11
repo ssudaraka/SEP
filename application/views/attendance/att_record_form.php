@@ -21,9 +21,23 @@
             <div class="panel panel-default">
                 <div class="panel-heading">Daily Attendance Record</div>
                 <div class="panel-body">
+                    <div class="row" style="margin-left: 1em; margin-bottom: 2em;">
+                        <div class="media">
+                            <div class="media-left">
+                                <a href="#">
+                                    <img class="media-object" src="<?php echo base_url("assets/img/info_ico.png"); ?>" width="64px" height="64px">
+                                </a>
+                            </div>
+                            <div class="media-body">
+                                <h4 class="media-heading">Recording Attendance for <?php echo $date; ?></h4>
+                                Enter the list of signature numbers of teachers present today and use "Generate Report" to get
+                                today's attendance report.
+                            </div>
+                        </div>
+                    </div>
                     <div class="col-md-10">
                         <div class="row">
-                            <div class="col-md-4">
+                            <div class="col-md-5">
                                 <?php
                                 $attributes = array(
                                     'class' => 'form-inline'
@@ -41,9 +55,7 @@
                                 <a href="<?php echo base_url("index.php/attendance/generate_report"); ?>"><button class="btn btn-primary">Generate Report</button></a>
                             </div>
                         </div>
-                        <div class="row">
-                        </div>
-                        <table class="table table-hover">
+                        <table class="table table-hover" style="margin-top: 1em;">
                             <thead>
                                 <tr>
                                     <th>#</th>

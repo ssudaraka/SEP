@@ -16,7 +16,7 @@
                     </tr>
                     <tr>
                         <td>
-                            <span class="glyphicon glyphicon-cog text-warning"></span><a href="#">Reports</a>
+                            <span class="glyphicon glyphicon-cog text-warning"></span><a href="<?php echo base_url('index.php/attendance/reports'); ?>">Reports</a>
                         </td>
                     </tr>
                 </table>

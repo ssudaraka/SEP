@@ -8,6 +8,7 @@
                 <div class="panel-heading">Attendance Report</div>
                 <div class="panel-body">
                     <h3>Attendance Report for: <?php echo $date; ?></h3>
+                    <p><a href="<?php echo base_url('index.php/attendance/report_pdf'); ?>"><button class="btn btn-danger"><i class="fa fa-list-alt"></i> CONFIRM AND GET PDF</button></a></p>
                     <table class="table table-hover">
                             <thead>
                                 <tr>
@@ -26,7 +27,6 @@
                                     </tr>
                                 <?php } ?>
                             </tbody>
-
                         </table>
                 </div>
             </div>
