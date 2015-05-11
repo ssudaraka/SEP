@@ -57,15 +57,27 @@
                         <div class="col-md-4"><b>Name</b></div>   
                     </div>
                     <div class="row" style="margin-bottom:5px;">
-                        <div class="col-md-4"><input type="text" name="txt_name" class="form-control" placeholder="Name"></div> 
+                        <div class="col-md-4">
+                            <input type="text" name="txt_name" class="form-control" placeholder="Name">
+                        </div> 
                     </div>
                     <div class="row" style="margin-bottom:5px;">
                         <div class="col-md-4"><b>Starts On</b></div>  
                         <div class="col-md-4"><b>Ends On</b></div>    
                     </div>
                     <div class="row" style="margin-bottom:5px;">
-                        <div class="col-md-4"><input type="date" name="txt_startdate" class="form-control" placeholder="Start Date" value="<?php echo set_value('name'); ?>"></div>  
-                        <div class="col-md-4"><input type="date" name="txt_enddate" class="form-control" placeholder="End Date" value="<?php echo set_value('name'); ?>"></div>    
+                        <div class="col-md-4">
+                            <div class="input-group">
+                                <input type="date" name="txt_startdate" class="form-control" placeholder="Start Date" value="<?php echo set_value('name'); ?>">
+                                <div class="input-group-addon"><i class="fa fa-calendar"></i></div>
+                            </div>
+                        </div>  
+                        <div class="col-md-4">
+                            <div class="input-group">
+                                <input type="date" name="txt_enddate" class="form-control" placeholder="End Date" value="<?php echo set_value('name'); ?>">
+                                <div class="input-group-addon"><i class="fa fa-calendar"></i></div>
+                            </div>    
+                        </div>    
                     </div>
                     <div class="row" style="margin-bottom:5px;">
                         <div class="col-md-4"><b>Status</b></div>   
@@ -91,8 +103,18 @@
                         <div class="col-md-4"><b>End Date</b></div>    
                     </div>
                     <div class="row" style="margin-bottom:5px;">
-                        <div class="col-md-4"><input type="date" name="txt_t1_startdate" class="form-control" placeholder="Start Date"></div>  
-                        <div class="col-md-4"><input type="date" name="txt_t1_enddate" class="form-control" placeholder="End Date"></div>    
+                        <div class="col-md-4">
+                            <div class="input-group">
+                                <input type="date" name="txt_t1_startdate" class="form-control" placeholder="Start Date">
+                                <div class="input-group-addon"><i class="fa fa-calendar"></i></div>
+                            </div> 
+                        </div>  
+                        <div class="col-md-4">
+                            <div class="input-group">
+                                <input type="date" name="txt_t1_enddate" class="form-control" placeholder="End Date">
+                                <div class="input-group-addon"><i class="fa fa-calendar"></i></div>
+                            </div> 
+                        </div>    
                     </div>
                     <div class="row" style="margin-bottom:5px;  margin-top:10px;">
                         <div class="col-md-4"><b>Term 02</b></div>   
@@ -102,8 +124,18 @@
                         <div class="col-md-4"><b>End Date</b></div>    
                     </div>
                     <div class="row" style="margin-bottom:5px;">
-                        <div class="col-md-4"><input type="date" name="txt_t2_startdate" class="form-control" placeholder="Start Date"></div>  
-                        <div class="col-md-4"><input type="date" name="txt_t2_enddate" class="form-control" placeholder="End Date"></div>    
+                        <div class="col-md-4">
+                            <div class="input-group">
+                                <input type="date" name="txt_t2_startdate" class="form-control" placeholder="Start Date">
+                                <div class="input-group-addon"><i class="fa fa-calendar"></i></div>
+                            </div>
+                        </div>  
+                        <div class="col-md-4">
+                            <div class="input-group">
+                                <input type="date" name="txt_t2_enddate" class="form-control" placeholder="End Date">
+                                <div class="input-group-addon"><i class="fa fa-calendar"></i></div>
+                            </div>
+                        </div>    
                     </div>
                     <div class="row" style="margin-bottom:5px; margin-top:10px;">
                         <div class="col-md-4"><b>Term 03</b></div>   
@@ -113,8 +145,18 @@
                         <div class="col-md-4"><b>End Date</b></div>    
                     </div>
                     <div class="row" style="margin-bottom:5px;">
-                        <div class="col-md-4"><input type="date" name="txt_t3_startdate" class="form-control" placeholder="Start Date"></div>  
-                        <div class="col-md-4"><input type="date" name="txt_t3_enddate" class="form-control" placeholder="End Date"></div>    
+                        <div class="col-md-4">
+                            <div class="input-group">
+                                <input type="date" name="txt_t3_startdate" class="form-control" placeholder="Start Date">
+                                <div class="input-group-addon"><i class="fa fa-calendar"></i></div>
+                            </div> 
+                        </div>  
+                        <div class="col-md-4">
+                            <div class="input-group">
+                                <input type="date" name="txt_t3_enddate" class="form-control" placeholder="End Date">
+                                <div class="input-group-addon"><i class="fa fa-calendar"></i></div>
+                            </div> 
+                        </div>    
                     </div>
                     <div class="row" style="margin-bottom:5px; margin-top:10px;">
                         <div class="col-md-4">

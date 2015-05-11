@@ -64,11 +64,17 @@
                         </div>   
                     </div>
                     <div class="row" style="margin-bottom:5px;">
-                        <div class="col-md-4"></i><b>Starts On : 
-                            </b><input type="date" name="txt_startdate" class="form-control" placeholder="Start Date" value= "<?php echo $row->start_date ?>">
+                        <div class="col-md-4"></i><b>Starts On : </b>
+                            <div class="input-group">
+                                <input type="date" name="txt_startdate" class="form-control" placeholder="Start Date" value= "<?php echo $row->start_date ?>">
+                                <div class="input-group-addon"><i class="fa fa-calendar"></i></div>
+                            </div>
                         </div>  
-                        <div class="col-md-4"></i><b>Ends On : 
-                            </b><input type="date" name="txt_enddate" class="form-control" placeholder="End Date" value="<?php echo $row->end_date ?>">
+                        <div class="col-md-4"></i><b>Ends On : </b>
+                            <div class="input-group">
+                                <input type="date" name="txt_enddate" class="form-control" placeholder="End Date" value="<?php echo $row->end_date ?>">
+                                <div class="input-group-addon"><i class="fa fa-calendar"></i></div>
+                            </div>
                         </div>    
                     </div>
                     <div class="row" style="margin-bottom:5px;">
@@ -95,10 +101,16 @@
                     </div>
                     <div class="row" style="margin-bottom:5px;  margin-top:10px;">
                         <div class="col-md-4"><b>Start Date : </b>
-                            <input type="date" name="txt_t1_startdate" class="form-control" placeholder="Start Date" value="<?php echo $row->t1_start_date ?>">
+                            <div class="input-group">
+                                <input type="date" name="txt_t1_startdate" class="form-control" placeholder="Start Date" value="<?php echo $row->t1_start_date ?>">
+                                <div class="input-group-addon"><i class="fa fa-calendar"></i></div>
+                            </div>
                         </div>  
                         <div class="col-md-4"><b>End Date : </b>
-                            <input type="date" name="txt_t1_enddate" class="form-control" placeholder="End Date" value="<?php echo $row->t1_end_date ?>">
+                            <div class="input-group">
+                                <input type="date" name="txt_t1_enddate" class="form-control" placeholder="End Date" value="<?php echo $row->t1_end_date ?>">
+                                <div class="input-group-addon"><i class="fa fa-calendar"></i></div>
+                            </div>
                         </div>    
                     </div>
                     <div class="row" style="margin-bottom:5px;  margin-top:10px;">
@@ -106,10 +118,16 @@
                     </div>
                     <div class="row" style="margin-bottom:5px;">
                         <div class="col-md-4"><b>Start Date : </b>
-                            <input type="date" name="txt_t2_startdate" class="form-control" placeholder="Start Date" value="<?php echo $row->t2_start_date ?>">
+                            <div class="input-group">
+                                <input type="date" name="txt_t2_startdate" class="form-control" placeholder="Start Date" value="<?php echo $row->t2_start_date ?>">
+                                <div class="input-group-addon"><i class="fa fa-calendar"></i></div>
+                            </div>
                         </div>  
                         <div class="col-md-4"><b>End Date : </b>
-                            <input type="date" name="txt_t2_enddate" class="form-control" placeholder="End Date" value="<?php echo $row->t2_end_date ?>">
+                            <div class="input-group">
+                                <input type="date" name="txt_t2_enddate" class="form-control" placeholder="End Date" value="<?php echo $row->t2_end_date ?>">
+                                <div class="input-group-addon"><i class="fa fa-calendar"></i></div>
+                            </div>
                         </div>    
                     </div>
                     <div class="row" style="margin-bottom:5px; margin-top:10px;">
@@ -117,10 +135,16 @@
                     </div>
                     <div class="row" style="margin-bottom:5px;">
                         <div class="col-md-4"><b>Start Date : </b>
-                            <input type="date" name="txt_t3_startdate" class="form-control" placeholder="Start Date" value="<?php echo $row->t3_start_date ?>">
+                            <div class="input-group">
+                                <input type="date" name="txt_t3_startdate" class="form-control" placeholder="Start Date" value="<?php echo $row->t3_start_date ?>">
+                                <div class="input-group-addon"><i class="fa fa-calendar"></i></div>
+                            </div>
                         </div>  
                         <div class="col-md-4"><b>End Date : </b>
-                            <input type="date" name="txt_t3_enddate" class="form-control" placeholder="End Date" value="<?php echo $row->t3_end_date ?>">
+                            <div class="input-group">
+                                <input type="date" name="txt_t3_enddate" class="form-control" placeholder="End Date" value="<?php echo $row->t3_end_date ?>">
+                                <div class="input-group-addon"><i class="fa fa-calendar"></i></div>
+                            </div>
                         </div>    
                     </div>
                     <div class="row" style="margin-bottom:5px;">
@@ -136,17 +160,19 @@
 
                     <div class="row" style="margin-bottom:5px;">
                         <div class="col-md-12">
-                            <b>Holidays</b>
+                            <b>Add Holidays</b><br>
                             <div class="row" style="margin-bottom:5px;">
-                                <div class="col-md-2"></div>
-                                <div class="col-md-10">
+                                <div class="col-md-12">
                                     <?php 
                                         $attributes = array('class' => 'form-inline', 'id' => '');
                                         echo form_open('Year/add_holiday/'.$row->id, $attributes);
                                     ?>
                                     <div class="form-group">
                                     <label>Date</label>
-                                    <input type="date" name="txt_date" class="form-control" placeholder="Date" >
+                                    <div class="input-group">
+                                        <input type="date" name="txt_date" class="form-control" placeholder="Date" >
+                                        <div class="input-group-addon"><i class="fa fa-calendar"></i></div>
+                                    </div>
                                     <label>Type</label>
                                     <select name="cmb_status" class="form-control">
                                       <option value="2">Poya Day</option>
@@ -158,6 +184,8 @@
                                     <?php echo form_close(); ?>
                                 </div>
                             </div>
+                            <hr>
+                            <b>Current Holidays</b>
 
                             <?php
                             

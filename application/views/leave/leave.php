@@ -130,10 +130,16 @@
                                 ?>
                             </div>
                             <div class="col-xs-6 col-md-4">
-                                <input class="form-control" name="txt_startdate" placeholder="Start Date" name="startdate"   type="date">
+                                <div class="input-group">
+                                    <input class="form-control" name="txt_startdate" placeholder="Start Date" name="startdate"   type="date">
+                                    <div class="input-group-addon"><i class="fa fa-calendar"></i></div>
+                                </div>
                             </div>
                             <div class="col-xs-6 col-md-4">
-                                <input class="form-control" name="txt_enddate" placeholder="End Date" name="enddate"   type="date">
+                                <div class="input-group">
+                                    <input class="form-control" name="txt_enddate" placeholder="End Date" name="enddate"   type="date">
+                                    <div class="input-group-addon"><i class="fa fa-calendar"></i></div>
+                                </div>
                             </div>
                         </div>
                         <div class="row" style="margin-bottom:5px;">
