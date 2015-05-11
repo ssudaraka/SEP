@@ -64,8 +64,8 @@
                         <div class="col-md-4"><b>Ends On</b></div>    
                     </div>
                     <div class="row" style="margin-bottom:5px;">
-                        <div class="col-md-4"><input type="date" name="txt_startdate" class="form-control" placeholder="Start Date"></div>  
-                        <div class="col-md-4"><input type="date" name="txt_enddate" class="form-control" placeholder="End Date"></div>    
+                        <div class="col-md-4"><input type="date" name="txt_startdate" class="form-control" placeholder="Start Date" value="<?php echo set_value('name'); ?>"></div>  
+                        <div class="col-md-4"><input type="date" name="txt_enddate" class="form-control" placeholder="End Date" value="<?php echo set_value('name'); ?>"></div>    
                     </div>
                     <div class="row" style="margin-bottom:5px;">
                         <div class="col-md-4"><b>Status</b></div>   

@@ -138,15 +138,24 @@
                         <div class="col-md-12">
                             <b>Holidays</b>
                             <div class="row" style="margin-bottom:5px;">
-                                <div class="col-md-6"></div>
-                                <div class="col-md-6">
-                                    <form class="form-inline">
+                                <div class="col-md-2"></div>
+                                <div class="col-md-10">
+                                    <?php 
+                                        $attributes = array('class' => 'form-inline', 'id' => '');
+                                        echo form_open('Year/add_holiday/'.$row->id, $attributes);
+                                    ?>
                                     <div class="form-group">
                                     <label>Date</label>
-                                    <input type="date" name="txt_t3_enddate" class="form-control" placeholder="End Date" >
-                                    <a href='<?php echo base_url('index.php/Year/edit_year/'.$row->id); ?>' class='btn btn-success'><i class='fa fa-plus'></i> Add Holiday</a>
+                                    <input type="date" name="txt_date" class="form-control" placeholder="Date" >
+                                    <label>Type</label>
+                                    <select name="cmb_status" class="form-control">
+                                      <option value="2">Poya Day</option>
+                                      <option value="3">Religious Holiday</option>
+                                      <option value="4">Special Holiday</option>
+                                    </select>
+                                   <button class='btn btn-success' type="submit"><i class='fa fa-plus'></i> Add Holiday</a></button>
                                     </div>
-                                    </form>
+                                    <?php echo form_close(); ?>
                                 </div>
                             </div>
 
@@ -182,7 +191,7 @@
                                           <th scope="row"><?php echo $indextbl ?></th>
                                           <td><?php echo $key ?></td>
                                           <td>Poya Day</td>
-                                          <td><a href="<?php echo base_url("index.php/attendance/delete_record/" . $key); ?>">Delete</a></td>
+                                          <td><a href="<?php echo base_url("index.php/year/remove_holiday/".$row->id."/" . $key); ?>">Delete</a></td>
                                         </tr>
 
                           <!--End of For loop -->
@@ -273,6 +282,9 @@
                                                         // echo "Key: $key; Value: $value";
                                                         // echo "<br />";
                                                         }
+
+                                                        else if($sdate == '0' && $value == '2')
+                                                            $class .=  ' poya';
                                                     } 
 
                                                     // echo '<td class="'.$class.'">'.'<a href="'.$href.'">' .$day. '</a>' . '</td>'; 
@@ -336,6 +348,10 @@
                                 color:#0000cc;
                             }
                             .calendar .month .holi{
+                                /*color:#0000cc;*/
+                                color:#00BCD4;
+                            }
+                            .calendar .month .poya{
                                 /*color:#0000cc;*/
                                 color:#cc0000;
                             }

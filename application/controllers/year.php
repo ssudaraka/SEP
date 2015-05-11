@@ -475,6 +475,195 @@ class Year extends CI_Controller {
             
         }
     }
+
+    //Add Holiday
+    public function add_holiday($id){
+        $data['navbar'] = "admin";
+
+        $data['page_title'] = "Year Planer";
+        $data['first_name'] = $this->session->userdata('first_name');
+        $userid = $this->session->userdata['id'];
+
+        //Year Details by ID
+        $data['year'] =  $this->Year_Model->get_academic_year_by_id($id);
+
+        $this->load->library('form_validation');
+        $this->form_validation->set_rules('txt_date', 'Date', "required|xss_clean");
+
+        
+
+        if($this->form_validation->run() == FALSE){
+
+            //Passing it to the View
+            $this->load->view('templates/header', $data);
+            $this->load->view('navbar_main', $data);
+            $this->load->view('navbar_sub', $data);
+            $this->load->view('year/edit_year', $data);
+            $this->load->view('/templates/footer');
+
+        } else{
+            //Getting Form Data
+            $holiday = $this->input->post('txt_date'); 
+            $holiday_type = $this->input->post('cmb_status'); 
+
+            //Date compare with the current year
+            $year_start_date;
+            $year_end_date;
+            $year_details = $this->Year_Model->get_academic_year_by_id($id);
+            foreach ($year_details as $list)
+            {
+                $year_start_date = $list->start_date;
+                $year_end_date = $list->end_date;
+            }
+            if($year_start_date < $holiday and $holiday > $year_end_date){
+                    $data['error_message'] = "Holiday picked is not inside Currenct Acadamic Year";
+
+                    //Year Again
+                    $data['year'] =  $this->Year_Model->get_academic_year_by_id($id);
+
+                    //Passing it to the View
+                    $this->load->view('templates/header', $data);
+                    $this->load->view('navbar_main', $data);
+                    $this->load->view('navbar_sub', $data);
+                    $this->load->view('year/edit_year', $data);
+                    $this->load->view('/templates/footer');
+            } else {
+
+
+            
+            
+
+                //Year Details by ID
+                $year_structure =$this->Year_Model->year_structure($id);
+
+                //Building the Array from the Database
+                $string =$year_structure;
+                $partial = explode(', ', $string);
+                $final = array();
+                array_walk($partial, function($val,$key) use(&$final){
+                    list($key, $value) = explode('=', $val);
+                    $final[$key] = $value;
+                });
+
+
+                // Updating the Array Value
+                foreach($final as $key => $value){
+                    if ($key == $holiday )
+                    {
+                        //updating the temp_year_date
+                        $this->Year_Model->add_temp_dates($id, $holiday, $value);
+                        //Adding new values
+                        $final[$key] = $holiday_type;
+                    }
+                }
+
+                $stucture = http_build_query($final, '', ', ');
+
+                if($this->Year_Model->update_holiday($id, $stucture) == TRUE){
+                    $data['succ_message'] = "Holiday Added Sucessfully";
+
+                    //Year Again
+                    $data['year'] =  $this->Year_Model->get_academic_year_by_id($id);
+
+                    //Passing it to the View
+                    $this->load->view('templates/header', $data);
+                    $this->load->view('navbar_main', $data);
+                    $this->load->view('navbar_sub', $data);
+                    $this->load->view('year/edit_year', $data);
+                    $this->load->view('/templates/footer');
+                } else {
+                    $data['error_message'] = "Failed to Update";
+
+                    //Year Again
+                    $data['year'] =  $this->Year_Model->get_academic_year_by_id($id);
+
+                    //Passing it to the View
+                    $this->load->view('templates/header', $data);
+                    $this->load->view('navbar_main', $data);
+                    $this->load->view('navbar_sub', $data);
+                    $this->load->view('year/edit_year', $data);
+                    $this->load->view('/templates/footer');
+                }
+
+            }
+        }
+    }
+
+    //Remove Holiday
+    public function remove_holiday($id, $date){
+        $data['navbar'] = "admin";
+
+        $data['page_title'] = "Year Planer";
+        $data['first_name'] = $this->session->userdata('first_name');
+        $userid = $this->session->userdata['id'];
+
+        //Year Details by ID
+        $data['year'] =  $this->Year_Model->get_academic_year_by_id($id);
+
+        //Get previous value from the Model
+        $previous_status = $this->Year_Model->get_temp_dates($id,$date);
+        $previous_id = $this->Year_Model->get_temp_dates_id($id,$date);
+        
+         
+        // $data['error_message'] = $id ." ". $date ." ". $previous_status. "E";
+
+        //Year Again
+        $data['year'] =  $this->Year_Model->get_academic_year_by_id($id);
+
+        //Year Details by ID
+        $year_structure =$this->Year_Model->year_structure($id);
+
+        //Building the Array from the Database
+        $string =$year_structure;
+        $partial = explode(', ', $string);
+        $final = array();
+        array_walk($partial, function($val,$key) use(&$final){
+            list($key, $value) = explode('=', $val);
+            $final[$key] = $value;
+        });
+
+
+        // Updating the Array Value
+        foreach($final as $key => $value){
+            if ($key == $date )
+            {
+                //Delete from database
+                $this->Year_Model->delete_temp_date($previous_id);
+                //Adding new values
+                $final[$key] = $previous_status;
+            }
+        }
+
+        $stucture = http_build_query($final, '', ', ');
+
+        if($this->Year_Model->update_holiday($id, $stucture) == TRUE){
+            $data['succ_message'] = "Holiday Deleted Sucessfully";
+
+                    //Year Again
+            $data['year'] =  $this->Year_Model->get_academic_year_by_id($id);
+
+                    //Passing it to the View
+            $this->load->view('templates/header', $data);
+            $this->load->view('navbar_main', $data);
+            $this->load->view('navbar_sub', $data);
+            $this->load->view('year/edit_year', $data);
+            $this->load->view('/templates/footer');
+        } else {
+            $data['error_message'] = "Failed to Delete";
+
+            //Year Again
+            $data['year'] =  $this->Year_Model->get_academic_year_by_id($id);
+
+            //Passing it to the View
+            $this->load->view('templates/header', $data);
+            $this->load->view('navbar_main', $data);
+            $this->load->view('navbar_sub', $data);
+            $this->load->view('year/edit_year', $data);
+            $this->load->view('/templates/footer');
+        }
+        
+
+    }
    
 }
 
