@@ -3,15 +3,15 @@
     <div class="row">
         <div class="col-md-3">
             <?php
-//            if($user_type == 'A'){
-//                $this->view('leave/admin_sidebar');
-//            }
-//            elseif($user_type == 'T'){
-//                $this->view('leave/teacher_sidebar');
-//            }
-//            else{
-//                $this->view('leave/teacher_sidebar');
-//            }
+               if($user_type == 'A'){
+                   $this->view('year/admin_sidebar_nav');
+               }
+               elseif($user_type == 'T'){
+                   $this->view('leave/teacher_sidebar_nav');
+               }
+               else{
+                   $this->view('leave/teacher_sidebar_nav');
+               }
 
             ?>
             

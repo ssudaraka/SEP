@@ -61,6 +61,17 @@ class Year extends CI_Controller {
             $this->load->view('/templates/footer');
         } elseif($data['user_type'] == 'T'){
 
+            //Get info from the Academic Year
+            $yearid;
+            $academic_year = $this->Year_Model->get_academic_year_details();
+            foreach ($academic_year as $row)
+            {
+                $yearid =$row->id;
+            }
+
+            //Get Year Details 
+            $data['year'] =  $this->Year_Model->get_academic_year_by_id($yearid);
+
 
             //Passing it to the View
             $this->load->view('templates/header', $data);
@@ -68,6 +79,7 @@ class Year extends CI_Controller {
             $this->load->view('navbar_sub', $data);
             
             //View Year Planer  Teacher
+            $this->load->view('year/view_year_teacher');
             
             $this->load->view('/templates/footer');
         } else {
@@ -93,6 +105,9 @@ class Year extends CI_Controller {
         $data['first_name'] = $this->session->userdata('first_name');
         $userid = $this->session->userdata['id'];
 
+        //Getting user type
+        $data['user_type'] = $this->session->userdata['user_type'];
+
             //Passing it to the View
         $this->load->view('templates/header', $data);
         $this->load->view('navbar_main', $data);
@@ -109,6 +124,9 @@ class Year extends CI_Controller {
     */
     public function add_year(){
         $data['navbar'] = "admin";
+
+        //Getting user type
+        $data['user_type'] = $this->session->userdata['user_type'];
 
         $data['page_title'] = "Year Planer";
         $data['first_name'] = $this->session->userdata('first_name');
@@ -245,8 +263,8 @@ class Year extends CI_Controller {
                 $stucture = http_build_query($dataset, '', ', ');
                     
 
-                $tt = TRUE;
-                // if($this->Year_Model->add_new_academic_year($name, $start_date, $end_date, $status, $t1_start_date, $t1_end_date, $t2_start_date, $t2_end_date, $t3_start_date, $t3_end_date, $stucture) == TRUE)
+                // $tt = TRUE;
+                if($this->Year_Model->add_new_academic_year($name, $start_date, $end_date, $status, $t1_start_date, $t1_end_date, $t2_start_date, $t2_end_date, $t3_start_date, $t3_end_date, $stucture) == TRUE)
                 if($tt == TRUE)
                 
                 {
@@ -285,6 +303,9 @@ class Year extends CI_Controller {
         $data['first_name'] = $this->session->userdata('first_name');
         $userid = $this->session->userdata['id'];
 
+        //Getting user type
+        $data['user_type'] = $this->session->userdata['user_type'];
+
         //Get Year Details 
         $data['year'] =  $this->Year_Model->get_academic_year_by_id($id);
 
@@ -307,6 +328,9 @@ class Year extends CI_Controller {
         $data['first_name'] = $this->session->userdata('first_name');
         $userid = $this->session->userdata['id'];
 
+         //Getting user type
+        $data['user_type'] = $this->session->userdata['user_type'];
+
         //Get Year Details 
         $data['year'] =  $this->Year_Model->get_academic_year_by_id($id);
 
@@ -324,6 +348,9 @@ class Year extends CI_Controller {
     //Edit Acadamic Year Function
     public function edit_academic_year($id){
         $data['navbar'] = "admin";
+
+         //Getting user type
+        $data['user_type'] = $this->session->userdata['user_type'];
 
         $data['page_title'] = "Year Planer";
         $data['first_name'] = $this->session->userdata('first_name');
@@ -502,6 +529,9 @@ class Year extends CI_Controller {
 
     //Add Holiday
     public function add_holiday($id){
+         //Getting user type
+        $data['user_type'] = $this->session->userdata['user_type'];
+
         $data['navbar'] = "admin";
 
         $data['page_title'] = "Year Planer";
@@ -615,6 +645,9 @@ class Year extends CI_Controller {
 
     //Remove Holiday
     public function remove_holiday($id, $date){
+         //Getting user type
+        $data['user_type'] = $this->session->userdata['user_type'];
+
         $data['navbar'] = "admin";
 
         $data['page_title'] = "Year Planer";

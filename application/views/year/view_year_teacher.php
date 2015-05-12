@@ -7,10 +7,10 @@
                    $this->view('year/admin_sidebar_nav');
                }
                elseif($user_type == 'T'){
-                   $this->view('leave/teacher_sidebar_nav');
+                   $this->view('year/teacher_sidebar_nav');
                }
                else{
-                   $this->view('leave/teacher_sidebar_nav');
+                   $this->view('year/teacher_sidebar_nav');
                }
 
             ?>
@@ -42,7 +42,7 @@
 
             <div class="panel panel-default">
                 <div class="panel-heading">
-                    <strong>Academic Year</strong>
+                    <strong>Current Academic Year</strong>
                 </div>
                 <div class="panel-body">
                     
@@ -51,14 +51,6 @@
                             {
                     ?>
 
-                    <!-- Buttons for Modifications -->
-                    <div class="row" style="margin-bottom:5px;">
-                        <div class="col-md-10"></div>
-                        <div class="col-md-2">
-                            <a class="btn btn-primary btn-sm" href='<?php echo base_url('index.php/Year/edit_year/'.$row->id); ?>' role="button"><i class="fa fa-pencil-square-o"></i> Edit Year</a>
-                        </div>
-                    </div>
-                    
                     <div class="row" style="margin-bottom:5px;">
                         <div class="col-md-4"><b>Name : </b><?php echo $row->name ?></div>   
                     </div>
