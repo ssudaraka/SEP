@@ -5,15 +5,6 @@ class Year_Model extends CI_Model {
 			$this->load->database();
 	}
 
-    //Get Leave types table
-    public function get_leave_types(){
-        try{
-            $query = $this->db->query("SELECT * FROM `leave_types`");
-            return $query->result();
-        } catch(Exception $ex) {
-            return FALSE;
-        }
-    }
 
     //Add New Adcademic Year
     public function add_new_academic_year($name, $start_date, $end_date, $status, $t1_start_date, $t1_end_date, $t2_start_date, $t2_end_date, $t3_start_date, $t3_end_date, $structure){
@@ -61,7 +52,7 @@ class Year_Model extends CI_Model {
     //Get current Academic Year Details
     public function get_academic_year_details(){
         try{
-            $query = $this->db->query("SELECT * FROM year_plan where status = '1'");
+            $query = $this->db->query("SELECT * FROM year_plan where status = '1' LIMIT 1");
 
             return $query->result();
         } catch(Exception $ex) {
@@ -160,14 +151,5 @@ class Year_Model extends CI_Model {
     }
     //End of Temp Date functions
 
-    //Validation Codes for Active and Inactive Years
-    public function get_curret_academic_year(){
-        try{
-            $query = $this->db->query("SELECT * FROM year_plan WHERE status='1' LIMIT 1");
-                return $query->result();
-        } catch(Exception $ex) {
-            return FALSE;
-        }
-    }
 }
 ?>

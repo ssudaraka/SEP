@@ -198,8 +198,10 @@
                                                         // echo "Key: $key; Value: $value";
                                                         // echo "<br />";
                                                         }
-                                                    }
 
+                                                        else if($sdate == '0' && $value == '2')
+                                                            $class .=  ' poya';
+                                                    }
                                                     //Class set for Holidays
                                                     // $class .= ($pos==6) ? ' weekend' : '';
                                                     // $class .= ($pos==0) ? ' weekend' : '';
@@ -261,10 +263,11 @@
                                 color:#666666;
                                 font-weight: bold;
                             }
-                            .calendar .month .weekend{
-                                color:#0000cc;
-                            }
                             .calendar .month .holi{
+                                /*color:#0000cc;*/
+                                color:#00BCD4;
+                            }
+                            .calendar .month .poya{
                                 /*color:#0000cc;*/
                                 color:#cc0000;
                             }

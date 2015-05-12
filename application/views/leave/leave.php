@@ -25,6 +25,13 @@
                     <?php echo $succ_message; ?>
                 </div>
             <?php } ?>
+<!--             <?php if (isset($succ_message)) { ?>
+                <div class="alert alert-success alert-dismissible" role="alert">
+                    <button type="button" class="close" data-dismiss="alert" aria-label="Close"><span aria-hidden="true">&times;</span></button>
+                    <strong>Success </strong>
+                    <?php echo $succ_message; ?>
+                </div>
+            <?php } ?> -->
             <?php if (validation_errors()) { ?>
                 <div class="alert alert-danger alert-dismissible" role="alert">
                     <button type="button" class="close" data-dismiss="alert" aria-label="Close"><span aria-hidden="true">&times;</span></button>
