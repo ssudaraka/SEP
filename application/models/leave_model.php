@@ -154,5 +154,15 @@ class Leave_Model extends CI_Model {
             return FALSE;
         }
     }
+
+    //Get All teachers by id
+    public function get_teacher_by_id($id){
+        try{
+            $query = $this->db->query("SELECT * FROM teachers where user_id='$id'");
+                return $query->result();
+        } catch(Exception $ex) {
+            return FALSE;
+        }
+    }
 }
 ?>

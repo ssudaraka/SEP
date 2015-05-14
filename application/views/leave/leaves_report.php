@@ -21,9 +21,9 @@
                 </div>
                 <div class="panel-body">
                     <div class="row">
-                       <div class="col-md-4"><label>Name</label></div>
-                       <div class="col-md-4"><label>Start Date</label></div> 
-                       <div class="col-md-4"><label>End Date</label></div>  
+                       <div class="col-md-3"><label>Name</label></div>
+                       <div class="col-md-3"><label>Start Date</label></div> 
+                       <div class="col-md-2"><label>End Date</label></div>  
                     </div>
                     <div class="row">
                         <div class="col-md-12">
@@ -69,6 +69,33 @@
                                 <button type="submit" class="btn btn-primary"><i class="fa fa-print"></i> Print</button>
                             </div>
                         </div>
+                        <hr>
+                        <!-- Report Details -->
+                        <?php
+                                  foreach ($teacher_details as $row) {
+                                    ?>
+                        <div class="row">
+                            <div class="col-md-6">
+                                <h2><?php echo $row->full_name ?></h2>
+                                <h4>NIC No : <?php echo $row->nic_no ?></h4>
+                            </div>
+                        </div>
+                        <div class="row">
+                            <div class="col-md-4">
+                                <h4>Signature No : <?php echo $row->signature_no ?></h4>
+                            </div>
+                            <div class="col-md-4">
+                                <h4>Serial No : <?php echo $row->serial_no ?></h4>
+                            </div>
+                            <div class="col-md-4">
+                                <h4>Registration No : <?php echo $row->teacher_register_no ?></h4>
+                            </div>
+                        </div>
+                        <?php
+                            }
+                        ?>
+                        <hr>
+                        <!-- End of Report Details -->
                         <div class="row">
                             <div class="col-md-12 col-md-offset-*">
                                 <table class="table table-hover">

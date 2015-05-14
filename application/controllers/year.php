@@ -121,6 +121,7 @@ class Year extends CI_Controller {
 
     /*
     *Add Academic year to the database
+    * Takes new Values from the POST Data and Feed them to the Database
     */
     public function add_year(){
         $data['navbar'] = "admin";
@@ -263,10 +264,7 @@ class Year extends CI_Controller {
                 $stucture = http_build_query($dataset, '', ', ');
                     
 
-                // $tt = TRUE;
                 if($this->Year_Model->add_new_academic_year($name, $start_date, $end_date, $status, $t1_start_date, $t1_end_date, $t2_start_date, $t2_end_date, $t3_start_date, $t3_end_date, $stucture) == TRUE)
-                if($tt == TRUE)
-                
                 {
                     $data['succ_message'] = "Academic Year Added Sucessfully";
 

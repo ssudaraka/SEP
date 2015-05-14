@@ -456,6 +456,8 @@ class leave extends CI_Controller {
             //Get all leaves in a period
             $data['applied_leaves'] = $this->Leave_Model->get_leaves_for_report($userid, $startdate, $enddate);
 
+            $data['teacher_details'] = $this->Leave_Model->get_teacher_by_id($userid);
+
             if(empty($data['applied_leaves'])){
                 $var = TRUE;
             } else {
