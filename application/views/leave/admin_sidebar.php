@@ -21,7 +21,7 @@
                     </tr>
                     <tr>
                         <td>
-                            <span class="glyphicon glyphicon-check"></span><a href="<?php echo base_url('index.php/#'); ?>">Daily Attendance</a>
+                            <span class="glyphicon glyphicon-check"></span><a href="<?php echo base_url('index.php/leave/leaves_report'); ?>">Leaves Report</a>
                         </td>
                     </tr>
                 </table>
