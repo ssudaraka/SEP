@@ -1,5 +1,5 @@
 <?php
-class leave_model extends CI_Model {
+class Leave_Model extends CI_Model {
 	//loading database on class creationorderMainAddress
 	public function __construct() {
 			$this->load->database();
@@ -23,7 +23,7 @@ class leave_model extends CI_Model {
     //Get a list of applied leaves according to the teacher id
     public function get_applied_leaves_list($uid){
         try{
-            $query = $this->db->query("SELECT lt.name,al.applied_date,al.start_date,al.end_date,al.no_of_days,ls.status FROM apply_leaves al,leave_types lt,leave_status ls where (al.id = lt.id) AND al.leave_status = ls.id AND al.user_id='$uid' ORDER BY al.applied_date desc LIMIT 5");
+            $query = $this->db->query("SELECT lt.name,al.applied_date,al.start_date,al.end_date,al.no_of_days,ls.status FROM apply_leaves al,leave_types lt,leave_status ls where (al.leave_type_id  = lt.id) AND al.leave_status = ls.id AND al.user_id='$uid' ORDER BY al.applied_date desc LIMIT 5");
 //            $query = $this->db->query("SELECT lt.name,al.applied_date,al.start_date,al.end_date,al.no_of_days,al.leave_status FROM apply_leaves al,leave_types lt where (al.id = lt.id)");
             return $query->result();
         } catch(Exception $ex) {
@@ -130,6 +130,36 @@ class leave_model extends CI_Model {
         try{
             $query = $this->db->query("SELECT * FROM apply_leaves ORDER BY applied_date desc ");
             return $query->result();
+        } catch(Exception $ex) {
+            return FALSE;
+        }
+    }
+
+    //Get all leaves applied by a teacher within a time period
+    public function get_leaves_for_report($uid, $startdate, $enddate){
+        try{
+            $query = $this->db->query("SELECT lt.name,al.applied_date,al.start_date,al.end_date,al.no_of_days,ls.status FROM apply_leaves al,leave_types lt,leave_status ls where (al.leave_type_id  = lt.id) AND al.leave_status = ls.id AND al.user_id='$uid' AND (al.applied_date BETWEEN '$startdate' and '$enddate') ORDER BY al.applied_date desc");
+                return $query->result();
+        } catch(Exception $ex) {
+            return FALSE;
+        }
+    }
+
+    //Get All teachers list
+    public function get_teachers(){
+        try{
+            $query = $this->db->query("SELECT * FROM teachers");
+                return $query->result();
+        } catch(Exception $ex) {
+            return FALSE;
+        }
+    }
+
+    //Get All teachers by id
+    public function get_teacher_by_id($id){
+        try{
+            $query = $this->db->query("SELECT * FROM teachers where user_id='$id'");
+                return $query->result();
         } catch(Exception $ex) {
             return FALSE;
         }

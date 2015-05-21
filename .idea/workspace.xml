@@ -2,14 +2,7 @@
 <project version="4">
   <component name="ChangeListManager">
     <list default="true" id="0a79ea55-3457-4f7b-af37-53f2a971ce03" name="Default" comment="">
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/application/controllers/admin.php" afterPath="$PROJECT_DIR$/application/controllers/admin.php" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/application/views/teacher/check_teacher_profile.php" afterPath="$PROJECT_DIR$/application/views/teacher/check_teacher_profile.php" />
       <change type="MODIFICATION" beforePath="$PROJECT_DIR$/application/config/config.php" afterPath="$PROJECT_DIR$/application/config/config.php" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/application/views/login_form.php" afterPath="$PROJECT_DIR$/application/views/login_form.php" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/application/controllers/teacher.php" afterPath="$PROJECT_DIR$/application/controllers/teacher.php" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/application/models/teacher_Model.php" afterPath="$PROJECT_DIR$/application/models/teacher_Model.php" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/application/views/teacher/teacher_reg_form.php" afterPath="$PROJECT_DIR$/application/views/teacher/teacher_reg_form.php" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/application/views/teacher/teacher_update_form.php" afterPath="$PROJECT_DIR$/application/views/teacher/teacher_update_form.php" />
     </list>
     <ignored path="sep.iws" />
     <ignored path=".idea/workspace.xml" />
@@ -394,8 +387,8 @@
     <servers />
   </component>
   <component name="ToolWindowManager">
-    <frame x="-8" y="-8" width="1382" height="784" extended-state="7" />
-    <editor active="true" />
+    <frame x="-8" y="-8" width="1382" height="784" extended-state="6" />
+    <editor active="false" />
     <layout>
       <window_info id="Changes" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.33" sideWeight="0.5" order="7" side_tool="false" content_ui="tabs" />
       <window_info id="Terminal" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.33" sideWeight="0.5" order="7" side_tool="false" content_ui="tabs" />

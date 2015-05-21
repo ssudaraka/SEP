@@ -46,7 +46,7 @@
                                     <td><?php echo $row->lastvisit_at; ?></td>
                                     <td>
                                         <a href="#" data-toggle="tooltip" title="edit"><i class="fa fa-pencil-square-o" style="font-size: 22px;" ></i></a>&nbsp;
-                                        <a href="<?php echo base_url('index.php/admin/delete') . '/' . $row->id; ?>"  data-toggle="tooltip" title="edit"><i class="fa fa-trash" style="font-size: 22px;"></i></a>&nbsp;
+                                        <a href="<?php echo base_url('index.php/admin/delete') . '/' . $row->id; ?>"  data-toggle="tooltip" title="edit" ><i class="fa fa-trash" style="font-size: 22px;" onclick="return confirm('Are you sure want to delete?');"></i></a>&nbsp;
                                     </td>
                                 </tr>
                             <?php } ?>

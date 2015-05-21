@@ -17,7 +17,7 @@
         <div class="col-md-9">
             <div class="panel panel-default">
                 <div class="panel-heading">
-                    <strong>PENIDING LEAVES</strong>
+                    <strong>PENDING LEAVES</strong>
                 </div>
                 <div class="panel-body">
                         <div class="comments-list">
