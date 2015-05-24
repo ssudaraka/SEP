@@ -164,5 +164,16 @@ class Leave_Model extends CI_Model {
             return FALSE;
         }
     }
+
+    //Get user id by teacher
+    function get_user_id($tid){
+        try{
+            $query = $this->db->query("SELECT user_id FROM teachers WHERE id='$tid'");
+            $row = $query->row();
+            return $row->user_id;
+        } catch (Exception $ex) {
+            return FALSE;
+        }
+    }
 }
 ?>

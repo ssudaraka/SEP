@@ -532,16 +532,23 @@ class leave extends CI_Controller {
             $this->load->view('/leave/apply_teacher_leave', $data);
             $this->load->view('/templates/footer');
 
-            //Getting user id and teacher id
-            $userid = $this->session->userdata['id'];
-
         } else {
             //Values
             $startdate = $this->input->post('txt_startdate');
             $enddate = $this->input->post('txt_enddate');
             $reason = $this->input->post('txt_reason');
-            $teacherid = $this->input->post('cmb_teacher');
             $leavetype = $this->input->post('cmb_leavetype');
+
+            //Get teacher id
+            $teacherid = $this->input->post('cmb_teacher');
+
+            //Other essential data
+            $applieddate = date("Y-m-d");
+            $noofdates=date_diff(date_create($startdate),date_create($enddate));
+            $sdate = $noofdates->format("%a");
+
+            $dateold = date_diff(date_create($applieddate),date_create($startdate));
+            $dateoldc = $dateold->format("%R%a");
 
             //checkin for combo boxes
             if($teacherid==0){
@@ -550,8 +557,77 @@ class leave extends CI_Controller {
             } elseif ($leavetype == 0) {
                 //Error Message
                 $data['error_message'] = "Please select a leave type"; 
-            } else {
-                $data['succ_message'] = "Teacher id" . $teacherid;
+            } //validation for dates
+            elseif($sdate == '0'){
+                $data['error_message'] = "Start date cannot be the End date of the leaves";
+            } elseif($dateoldc < 0) {
+                $data['error_message'] = "Start Date cannot be a previous date";
+            } elseif($enddate < $startdate){
+                $data['error_message'] = "End Date cannot be a previous date";
+            }else {
+                //get user id
+                $userid = $this->Leave_Model->get_user_id($teacherid);
+
+                //Get info from the Academic Year
+                $academic_year = $this->Year_Model->get_academic_year_details();
+                foreach ($academic_year as $row)
+                {
+                    $year_structure = $row->structure;
+
+                    //Building the Array from the Database
+                    $string =$year_structure;
+                    $partial = explode(', ', $string);
+                    $final = array();
+                    array_walk($partial, function($val,$key) use(&$final){
+                        list($key, $value) = explode('=', $val);
+                        $final[$key] = $value;
+                    });
+
+                    //Array customized with Year Planner
+                    $dataset = array();
+
+                    $enddate_var = $enddate;
+                    $enddate_var = date('Y-m-d', strtotime('-1 day', strtotime($enddate_var)));
+                    $days=date_diff(date_create($startdate),date_create($enddate_var));
+                    //No of days in between Term 1 start and end 
+                    $t1days = $days->format("%a");
+                    $newdate = $startdate;
+
+                    //Iterating days of Start date to end date
+                    for ($i=0; $i <= $t1days  ; $i++) { 
+                        //Iterating Year Structure
+                        foreach ($final as $key => $value) {
+                            if($key == $newdate){
+                                $dataset[$newdate] = $value;
+                            }
+                        }
+                            $newdate = strtotime($newdate);
+                            $newdate = strtotime("+1 day", $newdate);
+                            $newdate = date('Y-m-d', $newdate);
+                    }
+                }
+
+                //No of days for Medical and Casual
+                $no_of_days_mc=0;
+
+                //Checking Leave type for Medical and Casual
+                if($leavetype == 1 || $leavetype == 2 || $leavetype == 3 || $leavetype == 4 ){
+                    foreach ($dataset as $key => $value) {
+                        if($value == 0 || $value == 5){
+                            $no_of_days_mc++;
+                        }
+                    }
+                } else{
+                    $noofdates=date_diff(date_create($startdate),date_create($enddate_var));
+                    $sdate = $noofdates->format("%a");
+                    $no_of_days_mc = $sdate;
+                }
+
+                if($this->Leave_Model->apply_for_leave($userid, $teacherid, $leavetype, $applieddate, $startdate, $enddate, $reason, $no_of_days_mc) == TRUE){
+                    $data['succ_message'] = "Leave Applied Successfully for ". $no_of_days_mc. " days";
+                } else {
+                    $data['error_message'] = "Failed to save data to the Database";
+                }
             }
 
             //Passing it to the View

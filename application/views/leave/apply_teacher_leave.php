@@ -57,7 +57,7 @@
                                     <option value="0">- Select Name -</option>
                                     <?php
                                   foreach ($teachers as $row) {
-                                    echo "<option value='" . $row->user_id . "'>" . $row->full_name . "</option>" . PHP_EOL;
+                                    echo "<option value='" . $row->id . "'>" . $row->full_name . "</option>" . PHP_EOL;
                                 }
                                 ?>
                                 </select>
