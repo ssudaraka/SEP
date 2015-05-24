@@ -56,7 +56,7 @@
                         // Change the css classes to suit your needs
 
                         $attributes = array('class' => '', 'id' => '');
-                        echo form_open('Year/edit_academic_year/'.$row->id, $attributes);
+                        echo form_open('year/edit_academic_year/'.$row->id, $attributes);
                     ?>
                     <div class="row" style="margin-bottom:5px;">
                         <div class="col-md-4"><b>Name : </b>
@@ -165,7 +165,7 @@
                                 <div class="col-md-12">
                                     <?php 
                                         $attributes = array('class' => 'form-inline', 'id' => '');
-                                        echo form_open('Year/add_holiday/'.$row->id, $attributes);
+                                        echo form_open('year/add_holiday/'.$row->id, $attributes);
                                     ?>
                                     <div class="form-group">
                                     <label>Date</label>

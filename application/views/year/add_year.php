@@ -49,7 +49,7 @@
                         // Change the css classes to suit your needs
 
                         $attributes = array('class' => '', 'id' => '');
-                        echo form_open('Year/add_year', $attributes);
+                        echo form_open('year/add_year', $attributes);
                     ?>
 
                     

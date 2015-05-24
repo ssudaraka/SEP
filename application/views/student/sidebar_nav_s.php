@@ -3,7 +3,7 @@
         <div class="panel-heading">
             <h4 class="panel-title">
                 <a data-toggle="collapse" data-parent="#accordion" href="#collapseOne"><span class="glyphicon glyphicon-folder-close">
-                    </span>Year Management</a>
+                    </span>Student</a>
             </h4>
         </div>
         <div id="collapseOne" class="panel-collapse collapse in">
@@ -11,12 +11,12 @@
                 <table class="table">
                     <tr>
                         <td>
-                            <span class="glyphicon glyphicon-th-large text-primary"></span><a href="<?php echo base_url('index.php/year'); ?>">Year Management</a>
+                            <span class="glyphicon glyphicon-user text-primary"></span><a href="<?php echo base_url('index.php/student'); ?>">Teachers List</a>
                         </td>
                     </tr>
                     <tr>
                         <td>
-                            <span class="glyphicon glyphicon-plus text-primary"></span><a href="<?php echo base_url('index.php/year/add_academic_year'); ?>">Add Academic Year</a>
+                            <span class="glyphicon glyphicon-cog text-warning"></span><a href="<?php echo base_url('index.php/student/account_settings'); ?>">Create Teacher</a>
                         </td>
                     </tr>
                 </table>

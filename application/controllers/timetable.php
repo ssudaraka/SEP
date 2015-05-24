@@ -49,6 +49,37 @@ class Timetable extends CI_Controller {
         }
     }
 
+    function search_by_year() {
+
+        $data['page_title'] = "Timetable Management";
+        $data['navbar'] = 'timetable';
+
+        $keyword = $this->input->post('year');
+        $data['timetable_list'] = $this->timetable_model->search_by_year($keyword);
+
+        $this->load->view('templates/header', $data);
+        $this->load->view('navbar_main', $data);
+        $this->load->view('navbar_sub', $data);
+        $this->load->view('timetable/index', $data);
+        $this->load->view('/templates/footer');
+    }
+    
+    function search_by_class(){
+        $data['page_title'] = "Timetable Management";
+        $data['navbar'] = 'timetable';
+
+        $keyword = $this->input->post('class');
+        $class_id = $this->class_model->get_class_id($keyword);
+        
+        $data['timetable_list'] = $this->timetable_model->search_by_class($class_id);
+
+        $this->load->view('templates/header', $data);
+        $this->load->view('navbar_main', $data);
+        $this->load->view('navbar_sub', $data);
+        $this->load->view('timetable/index', $data);
+        $this->load->view('/templates/footer');
+    }
+
     function open($timetable_id) {
         $data['page_title'] = "Timetable: $timetable_id";
         $data['navbar'] = "timetable";

@@ -54,8 +54,9 @@
                                     <td><?php echo $row->subject_incharge_id; ?></td>
                                     
                                     <td>
-                                        <a href="#" data-toggle="tooltip" title="edit"><i class="fa fa-pencil-square-o" style="font-size: 22px;" ></i></a>&nbsp;
-                                        <a href="<?php echo base_url('index.php/subject/delete') . '/' . $row->id; ?>"  data-toggle="tooltip" title="edit"><i class="fa fa-trash" style="font-size: 22px;"></i></a>&nbsp;
+                                       
+                                        
+                                    <a href="<?php echo base_url('index.php/subject/delete') . '/' . $row->id; ?>" data-original-title="Remove this user" data-toggle="tooltip" type="button" class="btn btn-xs btn-info"><i class="glyphicon glyphicon-trash"></i></a>
                                     </td>
                                 </tr>
                             <?php } ?>
