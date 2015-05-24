@@ -172,7 +172,8 @@
                                          for($day=1; $day<=$month_days; $day++) {
                                                     $pos=($day+$first_day_in_month-1)%7;
                                                     $class = (($day==$current_day) && ($month==$current_month)) ? 'today' : 'day';
-                                                    
+                                                    // $class .= ($pos==6) ? ' weekend' : '';
+                                                    // $class .= ($pos==0) ? ' weekend' : '';
 
                                                     // echo '<td class="'.$class.'">'.$day.'</td>';
                                                     $href = $current_year."-".$month."-".$day;
@@ -193,10 +194,7 @@
 
                                                         else if($sdate == '0' && $value == '2')
                                                             $class .=  ' poya';
-                                                    }
-                                                    //Class set for Holidays
-                                                    // $class .= ($pos==6) ? ' weekend' : '';
-                                                    // $class .= ($pos==0) ? ' weekend' : '';
+                                                    } 
 
                                                     // echo '<td class="'.$class.'">'.'<a href="'.$href.'">' .$day. '</a>' . '</td>'; 
 
@@ -255,6 +253,9 @@
                                 color:#666666;
                                 font-weight: bold;
                             }
+                            .calendar .month .weekend{
+                                color:#0000cc;
+                            }
                             .calendar .month .holi{
                                 /*color:#0000cc;*/
                                 color:#00BCD4;
@@ -267,7 +268,6 @@
                                 background:#ff0000;
                                 color: #ffffff;
                             }
-
                         </style>
                     </div>
 

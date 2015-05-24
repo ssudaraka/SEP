@@ -174,9 +174,11 @@ class leave extends CI_Controller {
                 //Array customized with Year Planner
                 $dataset = array();
 
-                $days=date_diff(date_create($startdate),date_create($enddate));
+                $enddate_var = $enddate;
+                $enddate_var = date('Y-m-d', strtotime('-1 day', strtotime($enddate_var)));
+                $days=date_diff(date_create($startdate),date_create($enddate_var));
                 //No of days in between Term 1 start and end 
-                $t1days = $noofdates->format("%a");
+                $t1days = $days->format("%a");
                 $newdate = $startdate;
 
                 //Iterating days of Start date to end date
@@ -197,14 +199,14 @@ class leave extends CI_Controller {
             $no_of_days_mc=0;
 
             //Checking Leave type for Medical and Casual
-            if($leavetype == 1 || $leavetype == 2){
+            if($leavetype == 1 || $leavetype == 2 || $leavetype == 3 || $leavetype == 4 ){
                 foreach ($dataset as $key => $value) {
                     if($value == 0 || $value == 5){
                         $no_of_days_mc++;
                     }
                 }
             } else{
-                $noofdates=date_diff(date_create($startdate),date_create($enddate));
+                $noofdates=date_diff(date_create($startdate),date_create($enddate_var));
                 $sdate = $noofdates->format("%a");
                 $no_of_days_mc = $sdate;
             }
@@ -217,16 +219,17 @@ class leave extends CI_Controller {
             } elseif($enddate < $startdate){
                 $data['error_message'] = "End Date cannot be a previous date";
             }
-            //bit buggy here
-            elseif($leavetype =='1' && $data['casual_leaves'] == $data['applied_casual_leaves']){
-                $data['error_message'] = "No Casual leaves left to apply";
-            } elseif($leavetype =='2' && $data['medical_leaves'] == $data['applied_medical_leaves']){
-                $data['error_message'] = "No Medical leaves left to apply";
-            }
-            //Need to apply some more logic here when it comes to maternity leaves. But not right now
-            elseif($leavetype =='5' && $data['maternity_leaves'] >= $data['applied_maternity_leaves']){
-                $data['error_message'] = "No Maternity leaves left to apply";
-            }
+            //Commented because No need of validations
+            // //bit buggy here
+            // elseif($leavetype =='1' && $data['casual_leaves'] == $data['applied_casual_leaves']){
+            //     $data['error_message'] = "No Casual leaves left to apply";
+            // } elseif($leavetype =='2' && $data['medical_leaves'] == $data['applied_medical_leaves']){
+            //     $data['error_message'] = "No Medical leaves left to apply";
+            // }
+            // //Need to apply some more logic here when it comes to maternity leaves. But not right now
+            // elseif($leavetype =='5' && $data['maternity_leaves'] >= $data['applied_maternity_leaves']){
+            //     $data['error_message'] = "No Maternity leaves left to apply";
+            // }
             else {
 
 
@@ -378,52 +381,6 @@ class leave extends CI_Controller {
             $this->load->view('/templates/footer');
         }
     }
-    // //View All Leaves
-    // public  function  get_all_leaves(){
-    //     $data['navbar'] = "leave";
-
-    //     //pagination
-    //     $this->load->library('pagination');
-
-    //     $config['base_url'] =  base_url()."index.php/leave/get_all_leaves";
-    //     $config['per_page'] = 2;
-    //     $config["uri_segment"] = 3;
-    //     $config['total_rows'] = $this->db->get('apply_leaves')->num_rows();
-
-
-
-    //     $this->pagination->initialize($config);
-
-    //     $this->db->select('*');
-
-    //     $qry = "SELECT al.id,t.full_name,lt.name,al.applied_date,al.start_date,al.end_date,al.reason,al.no_of_days,ls.status FROM apply_leaves al,leave_status ls,teachers t,leave_types lt WHERE al.leave_status = ls.id AND t.id = al.teacher_id AND lt.id = al.leave_type_id ORDER by al.applied_date desc";
-    //     $limit = 3;
-    //     $offset = ($this->uri->segment(3) != '' ? $this->uri->segment(3):0);
-
-    //     $qry .= " limit {$limit} offset {$offset} ";
-
-    //    $data['query'] = $this->db->query($qry);
-
-    //     $data['pages'] = $this->pagination->create_links();
-
-
-    //     //other
-    //     $data['page_title'] = "All Leaves";
-
-    //     $data['user_type'] = $this->session->userdata['user_type'];
-
-    //     //Get Approve Leave Status
-    //     $data['all_leaves'] = $this->Leave_Model->get_all_leaves(3);
-
-
-    //         //Passing it to the View
-    //         $this->load->view('templates/header', $data);
-    //         $this->load->view('navbar_main', $data);
-    //         $this->load->view('navbar_sub', $data);
-    //         $this->load->view('/leave/all_leaves', $data);
-    //         $this->load->view('/templates/footer');
-
-    // }
 
     //View All Leaves
     public  function  get_all_leaves(){
