@@ -450,11 +450,118 @@ class leave extends CI_Controller {
             $this->load->view('/leave/leaves_report', $data);
             $this->load->view('/templates/footer');
         }
-
-        
-
     }
 
+        //View Leaves Report
+    public  function  all_teacher_leave(){
+        $data['navbar'] = "leave";
+
+        //other
+        $data['page_title'] = "Apply Teacher Leave";
+
+        $data['user_type'] = $this->session->userdata['user_type'];
+
+        //Values
+        $startdate = $this->input->post('txt_startdate');
+        $enddate = $this->input->post('txt_enddate');
+        $userid = $this->input->post('cmb_status');
+
+        //Load form combo
+        $data['leave_types'] = $this->Leave_Model->get_leave_types();
+        //Load teachers
+        $data['teachers'] = $this->Leave_Model->get_teachers();
+
+        if(empty($startdate) || empty($enddate) || $userid==0){
+
+            //Passing it to the View
+            $this->load->view('templates/header', $data);
+            $this->load->view('navbar_main', $data);
+            $this->load->view('navbar_sub', $data);
+            $this->load->view('/leave/apply_teacher_leave', $data);
+            $this->load->view('/templates/footer');
+
+        } else{
+
+            //Get all leaves in a period
+            $data['applied_leaves'] = $this->Leave_Model->get_leaves_for_report($userid, $startdate, $enddate);
+
+            $data['teacher_details'] = $this->Leave_Model->get_teacher_by_id($userid);
+
+            if(empty($data['applied_leaves'])){
+                $var = TRUE;
+            } else {
+                //Setting Values
+                $data['report_results'] = "Not Empty";
+            }
+
+            //Passing it to the View
+            $this->load->view('templates/header', $data);
+            $this->load->view('navbar_main', $data);
+            $this->load->view('navbar_sub', $data);
+            $this->load->view('/leave/apply_teacher_leave', $data);
+            $this->load->view('/templates/footer');
+        }
+    }
+
+    //Apply any teacher leave function
+    public  function  apply_teacher_leave(){
+        $data['navbar'] = "leave";
+
+        //other
+        $data['page_title'] = "Apply Teacher Leave";
+
+        $data['user_type'] = $this->session->userdata['user_type'];
+
+        //Load form combo
+        $data['leave_types'] = $this->Leave_Model->get_leave_types();
+        //Load teachers
+        $data['teachers'] = $this->Leave_Model->get_teachers();
+
+
+        $this->load->library('form_validation');
+        $this->form_validation->set_rules('txt_reason', 'Reason', "required|xss_clean");
+        $this->form_validation->set_rules('txt_startdate', 'Start Date', "required|xss_clean");
+        $this->form_validation->set_rules('txt_enddate', 'End Date', "required|xss_clean");
+
+
+        if($this->form_validation->run() == FALSE){
+            //Passing it to the View
+            $this->load->view('templates/header', $data);
+            $this->load->view('navbar_main', $data);
+            $this->load->view('navbar_sub', $data);
+            $this->load->view('/leave/apply_teacher_leave', $data);
+            $this->load->view('/templates/footer');
+
+            //Getting user id and teacher id
+            $userid = $this->session->userdata['id'];
+
+        } else {
+            //Values
+            $startdate = $this->input->post('txt_startdate');
+            $enddate = $this->input->post('txt_enddate');
+            $reason = $this->input->post('txt_reason');
+            $teacherid = $this->input->post('cmb_teacher');
+            $leavetype = $this->input->post('cmb_leavetype');
+
+            //checkin for combo boxes
+            if($teacherid==0){
+                //Error Message
+                $data['error_message'] = "Please Select a teacher";
+            } elseif ($leavetype == 0) {
+                //Error Message
+                $data['error_message'] = "Please select a leave type"; 
+            } else {
+                $data['succ_message'] = "Teacher id" . $teacherid;
+            }
+
+            //Passing it to the View
+            $this->load->view('templates/header', $data);
+            $this->load->view('navbar_main', $data);
+            $this->load->view('navbar_sub', $data);
+            $this->load->view('/leave/apply_teacher_leave', $data);
+            $this->load->view('/templates/footer');
+        }
+    }
 }
 
 /* Coded by Udara Karunarathna @P0dda */

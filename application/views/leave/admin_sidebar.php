@@ -16,7 +16,7 @@
                     </tr>
                     <tr>
                         <td>
-                            <span class="glyphicon glyphicon-edit"></span><a href="<?php echo base_url('index.php/leave/apply_teacher_leave'); ?>">Apply Leave</a>
+                            <span class="glyphicon glyphicon-edit"></span><a href="<?php echo base_url('index.php/leave/all_teacher_leave'); ?>">Apply Leave</a>
                         </td>
                     </tr>
                     <tr>
