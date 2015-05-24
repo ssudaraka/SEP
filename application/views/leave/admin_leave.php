@@ -34,7 +34,7 @@
                             <?php
                                 echo "<h3 class='media-heading user_name'>".$row->full_name."</h3></a>". PHP_EOL;
                                 echo $row->reason. PHP_EOL;
-                                echo "<p><b>Start Date - </b>".$row->start_date." "."<b>End Date - </b>".$row->end_date."</p>". PHP_EOL;
+                                echo "<p><b>Start Date - </b>".$row->start_date." "."<b>Duty Resuming Date - </b>".$row->end_date."</p>". PHP_EOL;
                                 echo "</div>". PHP_EOL;
                                 echo "</div>". PHP_EOL;
                             }

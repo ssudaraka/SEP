@@ -1,3 +1,5 @@
+
+
 <div class="container">
     <div class="row">
         <div class="col-md-3">
@@ -20,7 +22,12 @@
                     <strong>ALL LEAVES</strong>
                 </div>
                 <div class="panel-body">
-                    <table class="table table-hover">
+                <script type="text/javascript">
+                    $(document).ready(function() {
+                        $('#example').DataTable();
+                    } );
+                </script>
+                    <table id="example" class="table table-hover">
                         <thead>
                         <tr>
                             <th>#</th>
@@ -28,7 +35,7 @@
                             <th>Type</th>
                             <th>Applied Date</th>
                             <th>Start Date</th>
-                            <th>End Date</th>
+                            <th>Resuming Date</th>
                             <th>Days</th>
                             <th>Status</th>
                             <th>View</th>
@@ -36,7 +43,7 @@
                         </thead>
                         <tbody>
                         <?php
-                        foreach($query->result() as $row){
+                        foreach($all_leaves as $row){
 
                             echo "<tr>" . PHP_EOL;
                             echo "<th scope='row'>".$row->id."</th>" . PHP_EOL;
@@ -48,7 +55,7 @@
                             echo "<td>".$row->no_of_days."</td>" . PHP_EOL;
                             echo "<td>".$row->status."</td>" . PHP_EOL;
                             echo "<td>" . PHP_EOL; ?>
-                            <a href='<?php echo base_url('index.php/leave/get_leave_details/'.$row->id); ?>' class='btn btn-primary'><span class='glyphicon glyphicon-list-alt'></span></a>
+                            <a href='<?php echo base_url('index.php/leave/get_leave_details/'.$row->id); ?>' class='btn btn-primary btn-xs'><span class='glyphicon glyphicon-list-alt'></span></a>
                         <?php
                             echo "</td>" . PHP_EOL;
                             echo "</tr>" . PHP_EOL;
@@ -61,10 +68,6 @@
                         </tbody>
                     </table>
 
-
-                    <?php
-                         echo $pages;
-                    ?>
                 </div>
 
             </div>

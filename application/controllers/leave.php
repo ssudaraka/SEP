@@ -378,50 +378,72 @@ class leave extends CI_Controller {
             $this->load->view('/templates/footer');
         }
     }
+    // //View All Leaves
+    // public  function  get_all_leaves(){
+    //     $data['navbar'] = "leave";
+
+    //     //pagination
+    //     $this->load->library('pagination');
+
+    //     $config['base_url'] =  base_url()."index.php/leave/get_all_leaves";
+    //     $config['per_page'] = 2;
+    //     $config["uri_segment"] = 3;
+    //     $config['total_rows'] = $this->db->get('apply_leaves')->num_rows();
+
+
+
+    //     $this->pagination->initialize($config);
+
+    //     $this->db->select('*');
+
+    //     $qry = "SELECT al.id,t.full_name,lt.name,al.applied_date,al.start_date,al.end_date,al.reason,al.no_of_days,ls.status FROM apply_leaves al,leave_status ls,teachers t,leave_types lt WHERE al.leave_status = ls.id AND t.id = al.teacher_id AND lt.id = al.leave_type_id ORDER by al.applied_date desc";
+    //     $limit = 3;
+    //     $offset = ($this->uri->segment(3) != '' ? $this->uri->segment(3):0);
+
+    //     $qry .= " limit {$limit} offset {$offset} ";
+
+    //    $data['query'] = $this->db->query($qry);
+
+    //     $data['pages'] = $this->pagination->create_links();
+
+
+    //     //other
+    //     $data['page_title'] = "All Leaves";
+
+    //     $data['user_type'] = $this->session->userdata['user_type'];
+
+    //     //Get Approve Leave Status
+    //     $data['all_leaves'] = $this->Leave_Model->get_all_leaves(3);
+
+
+    //         //Passing it to the View
+    //         $this->load->view('templates/header', $data);
+    //         $this->load->view('navbar_main', $data);
+    //         $this->load->view('navbar_sub', $data);
+    //         $this->load->view('/leave/all_leaves', $data);
+    //         $this->load->view('/templates/footer');
+
+    // }
+
     //View All Leaves
     public  function  get_all_leaves(){
         $data['navbar'] = "leave";
-
-        //pagination
-        $this->load->library('pagination');
-
-        $config['base_url'] =  base_url()."index.php/leave/get_all_leaves";
-        $config['per_page'] = 2;
-        $config["uri_segment"] = 3;
-        $config['total_rows'] = $this->db->get('apply_leaves')->num_rows();
-
-
-
-        $this->pagination->initialize($config);
-
-        $this->db->select('*');
-
-        $qry = "SELECT al.id,t.full_name,lt.name,al.applied_date,al.start_date,al.end_date,al.reason,al.no_of_days,ls.status FROM apply_leaves al,leave_status ls,teachers t,leave_types lt WHERE al.leave_status = ls.id AND t.id = al.teacher_id AND lt.id = al.leave_type_id ORDER by al.applied_date desc";
-        $limit = 3;
-        $offset = ($this->uri->segment(3) != '' ? $this->uri->segment(3):0);
-
-        $qry .= " limit {$limit} offset {$offset} ";
-
-       $data['query'] = $this->db->query($qry);
-
-        $data['pages'] = $this->pagination->create_links();
-
 
         //other
         $data['page_title'] = "All Leaves";
 
         $data['user_type'] = $this->session->userdata['user_type'];
 
-        //Get Approve Leave Status
-        $data['all_leaves'] = $this->Leave_Model->get_all_leaves(3);
+        $data['teachers'] = $this->Leave_Model->get_teachers();
 
+        $data['all_leaves'] = $this->Leave_Model->get_all_leaves();
 
-            //Passing it to the View
-            $this->load->view('templates/header', $data);
-            $this->load->view('navbar_main', $data);
-            $this->load->view('navbar_sub', $data);
-            $this->load->view('/leave/all_leaves', $data);
-            $this->load->view('/templates/footer');
+        //Passing it to the View
+        $this->load->view('templates/header', $data);
+        $this->load->view('navbar_main', $data);
+        $this->load->view('navbar_sub', $data);
+        $this->load->view('/leave/all_leaves', $data);
+        $this->load->view('/templates/footer');
 
     }
 
@@ -433,9 +455,6 @@ class leave extends CI_Controller {
         $data['page_title'] = "Leaves Report";
 
         $data['user_type'] = $this->session->userdata['user_type'];
-
-        $data['teachers'] = $this->Leave_Model->get_teachers();
-
 
         //Values
         $startdate = $this->input->post('txt_startdate');

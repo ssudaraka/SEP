@@ -120,10 +120,10 @@
                                 <b>Leave Type</b>
                             </div>
                             <div class="col-xs-6 col-md-4">
-                                <b>Start Date</b>
+                                <b>Leave Start Date</b>
                             </div>
                             <div class="col-xs-6 col-md-4">
-                                <b>End Date</b>
+                                <b>Duty Resuming Date</b>
                             </div>
                         </div>
                         <div class="row" style="margin-bottom:15px;">
@@ -144,7 +144,7 @@
                             </div>
                             <div class="col-xs-6 col-md-4">
                                 <div class="input-group">
-                                    <input class="form-control" name="txt_enddate" placeholder="End Date" name="enddate"   type="date">
+                                    <input class="form-control" name="txt_enddate" placeholder="Resuming Date" name="enddate"   type="date">
                                     <div class="input-group-addon"><i class="fa fa-calendar"></i></div>
                                 </div>
                             </div>
@@ -179,7 +179,7 @@
                                 <th>Leave Type</th>
                                 <th>Applied Date</th>
                                 <th>Start Date</th>
-                                <th>End Date</th>
+                                <th>Resuming Date</th>
                                 <th>No Days</th>
                                 <th>Status</th>
                             </tr>

@@ -128,7 +128,7 @@ class Leave_Model extends CI_Model {
     //Get a list of applied leaves according to the teacher id
     public function get_all_leaves(){
         try{
-            $query = $this->db->query("SELECT * FROM apply_leaves ORDER BY applied_date desc ");
+            $query = $this->db->query("SELECT al.id,t.full_name,lt.name,al.applied_date,al.start_date,al.end_date,al.reason,al.no_of_days,ls.status FROM apply_leaves al,leave_status ls,teachers t,leave_types lt WHERE al.leave_status = ls.id AND t.id = al.teacher_id AND lt.id = al.leave_type_id ORDER by al.applied_date desc");
             return $query->result();
         } catch(Exception $ex) {
             return FALSE;
