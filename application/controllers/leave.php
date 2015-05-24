@@ -418,6 +418,8 @@ class leave extends CI_Controller {
         $enddate = $this->input->post('txt_enddate');
         $userid = $this->input->post('cmb_status');
 
+        $data['teachers'] = $this->Leave_Model->get_teachers();
+
         if(empty($startdate) || empty($enddate) || $userid==0){
 
             //Passing it to the View
