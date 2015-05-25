@@ -684,6 +684,20 @@ class leave extends CI_Controller {
             $this->load->view('/leave/short_leaves', $data);
             $this->load->view('/templates/footer');
         } else {
+            //Values for DB
+            $applieddate = date("Y-m-d");
+            $date = $this->input->post('txt_date');
+            $leavetype = $this->input->post('cmb_leavetype');
+            $reason = $this->input->post('txt_reason');
+            //Getting teacher id and user id
+            $userid = $this->session->userdata['id'];
+            $teacherid = $this->Leave_Model-> get_teacher_id($userid);
+
+            if($this->Leave_Model->apply_for_short_leave($userid, $teacherid, $leavetype, $applieddate, $date, $reason) == TRUE){
+                $data['succ_message'] = "Short Leave Applied Successfully";
+            } else {
+                $data['error_message'] = "Failed to save data to the Database";
+            }
             //Passing it to the View
             $this->load->view('templates/header', $data);
             $this->load->view('navbar_main', $data);

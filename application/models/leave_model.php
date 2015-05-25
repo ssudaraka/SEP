@@ -185,5 +185,19 @@ class Leave_Model extends CI_Model {
             return FALSE;
         }
     }
+
+    //Apply for short leave
+    public function apply_for_short_leave($user_id, $teacher_id, $leave_type_id, $applied_date, $date, $reason){
+        try {
+            if($this->db->query("INSERT INTO apply_short_leaves (`id`, `user_id`, `teacher_id`, `leave_Type`, `applied_date`, `date`, `reason`, `status`, `remarks`)
+                VALUES (NULL ,'$user_id', '$teacher_id', '$leave_type_id','$applied_date', '$date', '$reason','0','' );")) {
+                return TRUE;
+            } else {
+                return FALSE;
+            }
+        } catch(Exception $ex) {
+            return FALSE;
+        }
+    }
 }
 ?>
