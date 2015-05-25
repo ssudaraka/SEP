@@ -638,6 +638,85 @@ class leave extends CI_Controller {
             $this->load->view('/templates/footer');
         }
     }
+
+    //Short leave function
+    public  function  short_leave(){
+        $data['navbar'] = "leave";
+
+        //other
+        $data['page_title'] = "Apply Teacher Leave";
+
+        $data['user_type'] = $this->session->userdata['user_type'];
+
+        //Load form combo
+        $data['leave_types'] = $this->Leave_Model->get_short_leave_types();
+
+        //Passing it to the View
+        $this->load->view('templates/header', $data);
+        $this->load->view('navbar_main', $data);
+        $this->load->view('navbar_sub', $data);
+        $this->load->view('/leave/short_leaves', $data);
+        $this->load->view('/templates/footer');
+    }
+
+    //Apply Short leave function
+    public  function  apply_short_leave(){
+        $data['navbar'] = "leave";
+
+        //other
+        $data['page_title'] = "Apply Teacher Leave";
+
+        $data['user_type'] = $this->session->userdata['user_type'];
+
+        //Load form combo
+        $data['leave_types'] = $this->Leave_Model->get_short_leave_types();
+
+        $this->load->library('form_validation');
+        $this->form_validation->set_rules('txt_reason', 'Reason', "required|xss_clean");
+        $this->form_validation->set_rules('txt_date', 'Date', "required|xss_clean|callback_check_date_validations");
+        $this->form_validation->set_rules('cmb_leavetype', 'Leave Type', "required|xss_clean|callback_check_combo_box");
+
+        if($this->form_validation->run() == FALSE){
+            //Passing it to the View
+            $this->load->view('templates/header', $data);
+            $this->load->view('navbar_main', $data);
+            $this->load->view('navbar_sub', $data);
+            $this->load->view('/leave/short_leaves', $data);
+            $this->load->view('/templates/footer');
+        } else {
+            //Passing it to the View
+            $this->load->view('templates/header', $data);
+            $this->load->view('navbar_main', $data);
+            $this->load->view('navbar_sub', $data);
+            $this->load->view('/leave/short_leaves', $data);
+            $this->load->view('/templates/footer');
+        }
+    }
+
+    // Call back Validations
+    function check_combo_box($value){
+        if($value == 0) {
+            $this->form_validation->set_message('check_combo_box', 'Select a Leave Type');
+            return FALSE;
+        } else {
+            return TRUE;
+        }
+    }
+
+    //Date Validation Call back Function
+    function check_date_validations($date){
+        //Other essential data
+        $applieddate = date("Y-m-d");
+        $dateold = date_diff(date_create($applieddate),date_create($date));
+        $dateoldc = $dateold->format("%R%a");
+
+        if($dateoldc < 0){
+            $this->form_validation->set_message('check_date_validations', 'Date cannot be a previous date');
+            return FALSE;
+        } else {
+            return TRUE;
+        }
+    }
 }
 
 /* Coded by Udara Karunarathna @P0dda */

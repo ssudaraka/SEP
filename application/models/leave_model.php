@@ -175,5 +175,15 @@ class Leave_Model extends CI_Model {
             return FALSE;
         }
     }
+
+    //Get Short Leave types table
+    public function get_short_leave_types(){
+        try{
+            $query = $this->db->query("SELECT * FROM `short_leave_types`");
+            return $query->result();
+        } catch(Exception $ex) {
+            return FALSE;
+        }
+    }
 }
 ?>
