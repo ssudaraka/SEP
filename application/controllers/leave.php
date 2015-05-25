@@ -22,7 +22,8 @@ class leave extends CI_Controller {
      */
     public function __construct() {
         parent::__construct();
-        $this->load->model('leave_model');
+        $this->load->model('Leave_Model');
+        $this->load->model('Year_Model');
     }
 
     public function index() {
@@ -37,24 +38,24 @@ class leave extends CI_Controller {
         $userid = $this->session->userdata['id'];
 
         //Load form combo
-        $data['leave_types'] = $this->leave_model->get_leave_types();
+        $data['leave_types'] = $this->Leave_Model->get_leave_types();
 
         //Getting Values from Leaves DB
-        $data['casual_leaves'] = $this->leave_model->get_max_leave_count("Casual");
-        $data['medical_leaves'] = $this->leave_model->get_max_leave_count("Medical");
-        $data['duty_leaves'] = $this->leave_model->get_max_leave_count("Duty");
-        $data['other_leaves'] = $this->leave_model->get_max_leave_count("Other");
-        $data['maternity_leaves'] = $this->leave_model->get_max_leave_count("Maternity");
+        $data['casual_leaves'] = $this->Leave_Model->get_max_leave_count("Casual");
+        $data['medical_leaves'] = $this->Leave_Model->get_max_leave_count("Medical");
+        $data['duty_leaves'] = $this->Leave_Model->get_max_leave_count("Duty");
+        $data['other_leaves'] = $this->Leave_Model->get_max_leave_count("Other");
+        $data['maternity_leaves'] = $this->Leave_Model->get_max_leave_count("Maternity");
 
         //Getting List of Applied Leaves
-        $data['applied_leaves'] = $this->leave_model->get_applied_leaves_list($userid);
+        $data['applied_leaves'] = $this->Leave_Model->get_applied_leaves_list($userid);
 
         //Get Separate leaves count according to the type
-        $data['applied_casual_leaves'] = $this->leave_model->get_no_leaves('1', $userid);
-        $data['applied_medical_leaves'] = $this->leave_model->get_no_leaves('2', $userid);
-        $data['applied_duty_leaves'] = $this->leave_model->get_no_leaves('3', $userid);
-        $data['applied_other_leaves'] = $this->leave_model->get_no_leaves('4', $userid);
-        $data['applied_maternity_leaves'] = $this->leave_model->get_no_leaves('5', $userid);
+        $data['applied_casual_leaves'] = $this->Leave_Model->get_no_leaves('1', $userid);
+        $data['applied_medical_leaves'] = $this->Leave_Model->get_no_leaves('2', $userid);
+        $data['applied_duty_leaves'] = $this->Leave_Model->get_no_leaves('3', $userid);
+        $data['applied_other_leaves'] = $this->Leave_Model->get_no_leaves('4', $userid);
+        $data['applied_maternity_leaves'] = $this->Leave_Model->get_no_leaves('5', $userid);
 
         //total leaves
         $data['total_leaves'] = $data['applied_casual_leaves'] + $data['applied_medical_leaves'] + $data['applied_duty_leaves'] + $data['applied_other_leaves'] + $data['applied_maternity_leaves'];
@@ -65,7 +66,7 @@ class leave extends CI_Controller {
         //For Admin Views
         if($data['user_type'] == 'A'){
             //Get Pending Leaves List
-            $data['admin_pending_list'] = $this->leave_model->get_list_of_pending_leaves();
+            $data['admin_pending_list'] = $this->Leave_Model->get_list_of_pending_leaves();
 
             //Passing it to the View
             $this->load->view('templates/header', $data);
@@ -100,26 +101,26 @@ class leave extends CI_Controller {
         //Basic data to be loaded
         $data['user_type'] = $this->session->userdata['user_type'];
         //Load form combo
-        $data['leave_types'] = $this->leave_model->get_leave_types();
+        $data['leave_types'] = $this->Leave_Model->get_leave_types();
 
         $userid = $this->session->userdata['id'];
 
         //Getting Values from Leaves DB
-        $data['casual_leaves'] = $this->leave_model->get_max_leave_count("Casual");
-        $data['medical_leaves'] = $this->leave_model->get_max_leave_count("Medical");
-        $data['duty_leaves'] = $this->leave_model->get_max_leave_count("Duty");
-        $data['other_leaves'] = $this->leave_model->get_max_leave_count("Other");
-        $data['maternity_leaves'] = $this->leave_model->get_max_leave_count("Maternity");
+        $data['casual_leaves'] = $this->Leave_Model->get_max_leave_count("Casual");
+        $data['medical_leaves'] = $this->Leave_Model->get_max_leave_count("Medical");
+        $data['duty_leaves'] = $this->Leave_Model->get_max_leave_count("Duty");
+        $data['other_leaves'] = $this->Leave_Model->get_max_leave_count("Other");
+        $data['maternity_leaves'] = $this->Leave_Model->get_max_leave_count("Maternity");
 
         //Getting List of Applied Leaves
-        $data['applied_leaves'] = $this->leave_model->get_applied_leaves_list($this->session->userdata['id']);
+        $data['applied_leaves'] = $this->Leave_Model->get_applied_leaves_list($this->session->userdata['id']);
 
         //Get Separate leaves count according to the type
-        $data['applied_casual_leaves'] = $this->leave_model->get_no_leaves('1', $userid);
-        $data['applied_medical_leaves'] = $this->leave_model->get_no_leaves('2', $userid);
-        $data['applied_duty_leaves'] = $this->leave_model->get_no_leaves('3', $userid);
-        $data['applied_other_leaves'] = $this->leave_model->get_no_leaves('4', $userid);
-        $data['applied_maternity_leaves'] = $this->leave_model->get_no_leaves('5', $userid);
+        $data['applied_casual_leaves'] = $this->Leave_Model->get_no_leaves('1', $userid);
+        $data['applied_medical_leaves'] = $this->Leave_Model->get_no_leaves('2', $userid);
+        $data['applied_duty_leaves'] = $this->Leave_Model->get_no_leaves('3', $userid);
+        $data['applied_other_leaves'] = $this->Leave_Model->get_no_leaves('4', $userid);
+        $data['applied_maternity_leaves'] = $this->Leave_Model->get_no_leaves('5', $userid);
 
         //total leaves
         $data['total_leaves'] = $data['applied_casual_leaves'] + $data['applied_medical_leaves'] + $data['applied_duty_leaves'] + $data['applied_other_leaves'] + $data['applied_maternity_leaves'];
@@ -141,12 +142,13 @@ class leave extends CI_Controller {
             $this->load->view('/templates/footer');
 
         } else{
+            //Get Post Data
             $leavetype = $this->input->post('cmb_leavetype');
             $startdate = $this->input->post('txt_startdate');
             $enddate = $this->input->post('txt_enddate');
             $reason = $this->input->post('txt_reason');
             $applieddate = date("Y-m-d");
-            $teacherid = $this->leave_model-> get_teacher_id($userid);
+            $teacherid = $this->Leave_Model-> get_teacher_id($userid);
 
             $noofdates=date_diff(date_create($startdate),date_create($enddate));
             $sdate = $noofdates->format("%a");
@@ -154,6 +156,60 @@ class leave extends CI_Controller {
             $dateold = date_diff(date_create($applieddate),date_create($startdate));
             $dateoldc = $dateold->format("%R%a");
 
+            //Get info from the Academic Year
+            $academic_year = $this->Year_Model->get_academic_year_details();
+            foreach ($academic_year as $row)
+            {
+                $year_structure = $row->structure;
+
+                //Building the Array from the Database
+                $string =$year_structure;
+                $partial = explode(', ', $string);
+                $final = array();
+                array_walk($partial, function($val,$key) use(&$final){
+                    list($key, $value) = explode('=', $val);
+                    $final[$key] = $value;
+                });
+
+                //Array customized with Year Planner
+                $dataset = array();
+
+                $enddate_var = $enddate;
+                $enddate_var = date('Y-m-d', strtotime('-1 day', strtotime($enddate_var)));
+                $days=date_diff(date_create($startdate),date_create($enddate_var));
+                //No of days in between Term 1 start and end 
+                $t1days = $days->format("%a");
+                $newdate = $startdate;
+
+                //Iterating days of Start date to end date
+                for ($i=0; $i <= $t1days  ; $i++) { 
+                    //Iterating Year Structure
+                    foreach ($final as $key => $value) {
+                        if($key == $newdate){
+                            $dataset[$newdate] = $value;
+                        }
+                    }
+                        $newdate = strtotime($newdate);
+                        $newdate = strtotime("+1 day", $newdate);
+                        $newdate = date('Y-m-d', $newdate);
+                }
+            }
+
+            //No of days for Medical and Casual
+            $no_of_days_mc=0;
+
+            //Checking Leave type for Medical and Casual
+            if($leavetype == 1 || $leavetype == 2 || $leavetype == 3 || $leavetype == 4 ){
+                foreach ($dataset as $key => $value) {
+                    if($value == 0 || $value == 5){
+                        $no_of_days_mc++;
+                    }
+                }
+            } else{
+                $noofdates=date_diff(date_create($startdate),date_create($enddate_var));
+                $sdate = $noofdates->format("%a");
+                $no_of_days_mc = $sdate;
+            }
 
             //validation for dates
             if($sdate == '0'){
@@ -163,39 +219,42 @@ class leave extends CI_Controller {
             } elseif($enddate < $startdate){
                 $data['error_message'] = "End Date cannot be a previous date";
             }
-            //bit buggy here
-            elseif($leavetype =='1' && $data['casual_leaves'] == $data['applied_casual_leaves']){
-                $data['error_message'] = "No Casual leaves left to apply";
-            } elseif($leavetype =='2' && $data['medical_leaves'] == $data['applied_medical_leaves']){
-                $data['error_message'] = "No Medical leaves left to apply";
-            }
-            //Need to apply some more logic here when it comes to maternity leaves. But not right now
-            elseif($leavetype =='5' && $data['maternity_leaves'] >= $data['applied_maternity_leaves']){
-                $data['error_message'] = "No Maternity leaves left to apply";
-            }
+            //Commented because No need of validations
+            // //bit buggy here
+            // elseif($leavetype =='1' && $data['casual_leaves'] == $data['applied_casual_leaves']){
+            //     $data['error_message'] = "No Casual leaves left to apply";
+            // } elseif($leavetype =='2' && $data['medical_leaves'] == $data['applied_medical_leaves']){
+            //     $data['error_message'] = "No Medical leaves left to apply";
+            // }
+            // //Need to apply some more logic here when it comes to maternity leaves. But not right now
+            // elseif($leavetype =='5' && $data['maternity_leaves'] >= $data['applied_maternity_leaves']){
+            //     $data['error_message'] = "No Maternity leaves left to apply";
+            // }
             else {
 
-                if($this->leave_model->apply_for_leave($userid, $teacherid, $leavetype, $applieddate, $startdate, $enddate, $reason, $sdate) == TRUE)
+
+                if($this->Leave_Model->apply_for_leave($userid, $teacherid, $leavetype, $applieddate, $startdate, $enddate, $reason, $no_of_days_mc) == TRUE)
                 {
-                    $data['succ_message'] = "Leave Applied Successfully for ". $noofdates->format("%a days");
+                    $data['succ_message'] = "Leave Applied Successfully for ". $no_of_days_mc. " days";
+
 
                     //loading values again
                     //Getting Values from Leaves DB
-                    $data['casual_leaves'] = $this->leave_model->get_max_leave_count("Casual");
-                    $data['medical_leaves'] = $this->leave_model->get_max_leave_count("Medical");
-                    $data['duty_leaves'] = $this->leave_model->get_max_leave_count("Duty");
-                    $data['other_leaves'] = $this->leave_model->get_max_leave_count("Other");
-                    $data['maternity_leaves'] = $this->leave_model->get_max_leave_count("Maternity");
+                    $data['casual_leaves'] = $this->Leave_Model->get_max_leave_count("Casual");
+                    $data['medical_leaves'] = $this->Leave_Model->get_max_leave_count("Medical");
+                    $data['duty_leaves'] = $this->Leave_Model->get_max_leave_count("Duty");
+                    $data['other_leaves'] = $this->Leave_Model->get_max_leave_count("Other");
+                    $data['maternity_leaves'] = $this->Leave_Model->get_max_leave_count("Maternity");
 
                     //Getting List of Applied Leaves
-                    $data['applied_leaves'] = $this->leave_model->get_applied_leaves_list($this->session->userdata['id']);
+                    $data['applied_leaves'] = $this->Leave_Model->get_applied_leaves_list($this->session->userdata['id']);
 
                     //Get Separate leaves count according to the type
-                    $data['applied_casual_leaves'] = $this->leave_model->get_no_leaves('1', $userid);
-                    $data['applied_medical_leaves'] = $this->leave_model->get_no_leaves('2', $userid);
-                    $data['applied_duty_leaves'] = $this->leave_model->get_no_leaves('3', $userid);
-                    $data['applied_other_leaves'] = $this->leave_model->get_no_leaves('4', $userid);
-                    $data['applied_maternity_leaves'] = $this->leave_model->get_no_leaves('5', $userid);
+                    $data['applied_casual_leaves'] = $this->Leave_Model->get_no_leaves('1', $userid);
+                    $data['applied_medical_leaves'] = $this->Leave_Model->get_no_leaves('2', $userid);
+                    $data['applied_duty_leaves'] = $this->Leave_Model->get_no_leaves('3', $userid);
+                    $data['applied_other_leaves'] = $this->Leave_Model->get_no_leaves('4', $userid);
+                    $data['applied_maternity_leaves'] = $this->Leave_Model->get_no_leaves('5', $userid);
 
                     //total leaves
                     $data['total_leaves'] = $data['applied_casual_leaves'] + $data['applied_medical_leaves'] + $data['applied_duty_leaves'] + $data['applied_other_leaves'] + $data['applied_maternity_leaves'];
@@ -227,7 +286,7 @@ class leave extends CI_Controller {
         $data['user_type'] = $this->session->userdata['user_type'];
 
         //Get Leave Details
-        $data['leave_details'] = $this->leave_model->get_leave_details($id);
+        $data['leave_details'] = $this->Leave_Model->get_leave_details($id);
 
         //Passing it to the View
         $this->load->view('templates/header', $data);
@@ -245,7 +304,7 @@ class leave extends CI_Controller {
         $data['id'] = $id;
 
         //Get Approve Leave Status
-        $data['leave_approve_status'] = $this->leave_model->approve_leave($id);
+        $data['leave_approve_status'] = $this->Leave_Model->approve_leave($id);
 
         $data['user_type'] = $this->session->userdata['user_type'];
 
@@ -255,7 +314,7 @@ class leave extends CI_Controller {
 
 
             //Get Leave Details
-            $data['leave_details'] = $this->leave_model->get_leave_details($id);
+            $data['leave_details'] = $this->Leave_Model->get_leave_details($id);
 
             //Passing it to the View
             $this->load->view('templates/header', $data);
@@ -268,7 +327,7 @@ class leave extends CI_Controller {
 
 
             //Get Leave Details
-            $data['leave_details'] = $this->leave_model->get_leave_details($id);
+            $data['leave_details'] = $this->Leave_Model->get_leave_details($id);
 
             //Passing it to the View
             $this->load->view('templates/header', $data);
@@ -291,7 +350,7 @@ class leave extends CI_Controller {
         $data['user_type'] = $this->session->userdata['user_type'];
 
         //Get Approve Leave Status
-        $data['leave_approve_status'] = $this->leave_model->reject_leave($id);
+        $data['leave_approve_status'] = $this->Leave_Model->reject_leave($id);
 
         if($data['leave_approve_status'] == TRUE){
 
@@ -299,7 +358,7 @@ class leave extends CI_Controller {
 
 
             //Get Leave Details
-            $data['leave_details'] = $this->leave_model->get_leave_details($id);
+            $data['leave_details'] = $this->Leave_Model->get_leave_details($id);
 
             //Passing it to the View
             $this->load->view('templates/header', $data);
@@ -312,7 +371,7 @@ class leave extends CI_Controller {
 
 
             //Get Leave Details
-            $data['leave_details'] = $this->leave_model->get_leave_details($id);
+            $data['leave_details'] = $this->Leave_Model->get_leave_details($id);
 
             //Passing it to the View
             $this->load->view('templates/header', $data);
@@ -322,53 +381,342 @@ class leave extends CI_Controller {
             $this->load->view('/templates/footer');
         }
     }
+
     //View All Leaves
     public  function  get_all_leaves(){
         $data['navbar'] = "leave";
 
-        //pagination
-        $this->load->library('pagination');
-
-        $config['base_url'] =  base_url()."index.php/leave/get_all_leaves";
-        $config['per_page'] = 2;
-        $config["uri_segment"] = 3;
-        $config['total_rows'] = $this->db->get('apply_leaves')->num_rows();
-
-
-
-        $this->pagination->initialize($config);
-
-        $this->db->select('*');
-
-        $qry = "SELECT al.id,t.full_name,lt.name,al.applied_date,al.start_date,al.end_date,al.reason,al.no_of_days,ls.status FROM apply_leaves al,leave_status ls,teachers t,leave_types lt WHERE al.leave_status = ls.id AND t.id = al.teacher_id AND lt.id = al.leave_type_id ORDER by al.applied_date desc";
-        $limit = 3;
-        $offset = ($this->uri->segment(3) != '' ? $this->uri->segment(3):0);
-
-        $qry .= " limit {$limit} offset {$offset} ";
-
-       $data['query'] = $this->db->query($qry);
-
-        $data['pages'] = $this->pagination->create_links();
-
-
         //other
-        $data['page_title'] = "Leave Details";
+        $data['page_title'] = "All Leaves";
 
         $data['user_type'] = $this->session->userdata['user_type'];
 
-        //Get Approve Leave Status
-        $data['all_leaves'] = $this->leave_model->get_all_leaves(3);
+        $data['teachers'] = $this->Leave_Model->get_teachers();
 
+        $data['all_leaves'] = $this->Leave_Model->get_all_leaves();
+
+        //Passing it to the View
+        $this->load->view('templates/header', $data);
+        $this->load->view('navbar_main', $data);
+        $this->load->view('navbar_sub', $data);
+        $this->load->view('/leave/all_leaves', $data);
+        $this->load->view('/templates/footer');
+
+    }
+
+    //View Leaves Report
+    public  function  leaves_report(){
+        $data['navbar'] = "leave";
+
+        //other
+        $data['page_title'] = "Leaves Report";
+
+        $data['user_type'] = $this->session->userdata['user_type'];
+
+        //Values
+        $startdate = $this->input->post('txt_startdate');
+        $enddate = $this->input->post('txt_enddate');
+        $userid = $this->input->post('cmb_status');
+
+        $data['teachers'] = $this->Leave_Model->get_teachers();
+
+        if(empty($startdate) || empty($enddate) || $userid==0){
 
             //Passing it to the View
             $this->load->view('templates/header', $data);
             $this->load->view('navbar_main', $data);
             $this->load->view('navbar_sub', $data);
-            $this->load->view('/leave/all_leaves', $data);
+            $this->load->view('/leave/leaves_report', $data);
             $this->load->view('/templates/footer');
 
+        } else{
+
+            //Get all leaves in a period
+            $data['applied_leaves'] = $this->Leave_Model->get_leaves_for_report($userid, $startdate, $enddate);
+
+            $data['teacher_details'] = $this->Leave_Model->get_teacher_by_id($userid);
+
+            if(empty($data['applied_leaves'])){
+                $var = TRUE;
+            } else {
+                //Setting Values
+                $data['report_results'] = "Not Empty";
+            }
+
+            //Passing it to the View
+            $this->load->view('templates/header', $data);
+            $this->load->view('navbar_main', $data);
+            $this->load->view('navbar_sub', $data);
+            $this->load->view('/leave/leaves_report', $data);
+            $this->load->view('/templates/footer');
+        }
     }
 
+        //View Leaves Report
+    public  function  all_teacher_leave(){
+        $data['navbar'] = "leave";
+
+        //other
+        $data['page_title'] = "Apply Teacher Leave";
+
+        $data['user_type'] = $this->session->userdata['user_type'];
+
+        //Values
+        $startdate = $this->input->post('txt_startdate');
+        $enddate = $this->input->post('txt_enddate');
+        $userid = $this->input->post('cmb_status');
+
+        //Load form combo
+        $data['leave_types'] = $this->Leave_Model->get_leave_types();
+        //Load teachers
+        $data['teachers'] = $this->Leave_Model->get_teachers();
+
+        if(empty($startdate) || empty($enddate) || $userid==0){
+
+            //Passing it to the View
+            $this->load->view('templates/header', $data);
+            $this->load->view('navbar_main', $data);
+            $this->load->view('navbar_sub', $data);
+            $this->load->view('/leave/apply_teacher_leave', $data);
+            $this->load->view('/templates/footer');
+
+        } else{
+
+            //Get all leaves in a period
+            $data['applied_leaves'] = $this->Leave_Model->get_leaves_for_report($userid, $startdate, $enddate);
+
+            $data['teacher_details'] = $this->Leave_Model->get_teacher_by_id($userid);
+
+            if(empty($data['applied_leaves'])){
+                $var = TRUE;
+            } else {
+                //Setting Values
+                $data['report_results'] = "Not Empty";
+            }
+
+            //Passing it to the View
+            $this->load->view('templates/header', $data);
+            $this->load->view('navbar_main', $data);
+            $this->load->view('navbar_sub', $data);
+            $this->load->view('/leave/apply_teacher_leave', $data);
+            $this->load->view('/templates/footer');
+        }
+    }
+
+    //Apply any teacher leave function
+    public  function  apply_teacher_leave(){
+        $data['navbar'] = "leave";
+
+        //other
+        $data['page_title'] = "Apply Teacher Leave";
+
+        $data['user_type'] = $this->session->userdata['user_type'];
+
+        //Load form combo
+        $data['leave_types'] = $this->Leave_Model->get_leave_types();
+        //Load teachers
+        $data['teachers'] = $this->Leave_Model->get_teachers();
+
+
+        $this->load->library('form_validation');
+        $this->form_validation->set_rules('txt_reason', 'Reason', "required|xss_clean");
+        $this->form_validation->set_rules('txt_startdate', 'Start Date', "required|xss_clean");
+        $this->form_validation->set_rules('txt_enddate', 'End Date', "required|xss_clean");
+
+
+        if($this->form_validation->run() == FALSE){
+            //Passing it to the View
+            $this->load->view('templates/header', $data);
+            $this->load->view('navbar_main', $data);
+            $this->load->view('navbar_sub', $data);
+            $this->load->view('/leave/apply_teacher_leave', $data);
+            $this->load->view('/templates/footer');
+
+        } else {
+            //Values
+            $startdate = $this->input->post('txt_startdate');
+            $enddate = $this->input->post('txt_enddate');
+            $reason = $this->input->post('txt_reason');
+            $leavetype = $this->input->post('cmb_leavetype');
+
+            //Get teacher id
+            $teacherid = $this->input->post('cmb_teacher');
+
+            //Other essential data
+            $applieddate = date("Y-m-d");
+            $noofdates=date_diff(date_create($startdate),date_create($enddate));
+            $sdate = $noofdates->format("%a");
+
+            $dateold = date_diff(date_create($applieddate),date_create($startdate));
+            $dateoldc = $dateold->format("%R%a");
+
+            //checkin for combo boxes
+            if($teacherid==0){
+                //Error Message
+                $data['error_message'] = "Please Select a teacher";
+            } elseif ($leavetype == 0) {
+                //Error Message
+                $data['error_message'] = "Please select a leave type"; 
+            } //validation for dates
+            elseif($sdate == '0'){
+                $data['error_message'] = "Start date cannot be the End date of the leaves";
+            } elseif($dateoldc < 0) {
+                $data['error_message'] = "Start Date cannot be a previous date";
+            } elseif($enddate < $startdate){
+                $data['error_message'] = "End Date cannot be a previous date";
+            }else {
+                //get user id
+                $userid = $this->Leave_Model->get_user_id($teacherid);
+
+                //Get info from the Academic Year
+                $academic_year = $this->Year_Model->get_academic_year_details();
+                foreach ($academic_year as $row)
+                {
+                    $year_structure = $row->structure;
+
+                    //Building the Array from the Database
+                    $string =$year_structure;
+                    $partial = explode(', ', $string);
+                    $final = array();
+                    array_walk($partial, function($val,$key) use(&$final){
+                        list($key, $value) = explode('=', $val);
+                        $final[$key] = $value;
+                    });
+
+                    //Array customized with Year Planner
+                    $dataset = array();
+
+                    $enddate_var = $enddate;
+                    $enddate_var = date('Y-m-d', strtotime('-1 day', strtotime($enddate_var)));
+                    $days=date_diff(date_create($startdate),date_create($enddate_var));
+                    //No of days in between Term 1 start and end 
+                    $t1days = $days->format("%a");
+                    $newdate = $startdate;
+
+                    //Iterating days of Start date to end date
+                    for ($i=0; $i <= $t1days  ; $i++) { 
+                        //Iterating Year Structure
+                        foreach ($final as $key => $value) {
+                            if($key == $newdate){
+                                $dataset[$newdate] = $value;
+                            }
+                        }
+                            $newdate = strtotime($newdate);
+                            $newdate = strtotime("+1 day", $newdate);
+                            $newdate = date('Y-m-d', $newdate);
+                    }
+                }
+
+                //No of days for Medical and Casual
+                $no_of_days_mc=0;
+
+                //Checking Leave type for Medical and Casual
+                if($leavetype == 1 || $leavetype == 2 || $leavetype == 3 || $leavetype == 4 ){
+                    foreach ($dataset as $key => $value) {
+                        if($value == 0 || $value == 5){
+                            $no_of_days_mc++;
+                        }
+                    }
+                } else{
+                    $noofdates=date_diff(date_create($startdate),date_create($enddate_var));
+                    $sdate = $noofdates->format("%a");
+                    $no_of_days_mc = $sdate;
+                }
+
+                if($this->Leave_Model->apply_for_leave($userid, $teacherid, $leavetype, $applieddate, $startdate, $enddate, $reason, $no_of_days_mc) == TRUE){
+                    $data['succ_message'] = "Leave Applied Successfully for ". $no_of_days_mc. " days";
+                } else {
+                    $data['error_message'] = "Failed to save data to the Database";
+                }
+            }
+
+            //Passing it to the View
+            $this->load->view('templates/header', $data);
+            $this->load->view('navbar_main', $data);
+            $this->load->view('navbar_sub', $data);
+            $this->load->view('/leave/apply_teacher_leave', $data);
+            $this->load->view('/templates/footer');
+        }
+    }
+
+    //Short leave function
+    public  function  short_leave(){
+        $data['navbar'] = "leave";
+
+        //other
+        $data['page_title'] = "Apply Teacher Leave";
+
+        $data['user_type'] = $this->session->userdata['user_type'];
+
+        //Load form combo
+        $data['leave_types'] = $this->Leave_Model->get_short_leave_types();
+
+        //Passing it to the View
+        $this->load->view('templates/header', $data);
+        $this->load->view('navbar_main', $data);
+        $this->load->view('navbar_sub', $data);
+        $this->load->view('/leave/short_leaves', $data);
+        $this->load->view('/templates/footer');
+    }
+
+    //Apply Short leave function
+    public  function  apply_short_leave(){
+        $data['navbar'] = "leave";
+
+        //other
+        $data['page_title'] = "Apply Teacher Leave";
+
+        $data['user_type'] = $this->session->userdata['user_type'];
+
+        //Load form combo
+        $data['leave_types'] = $this->Leave_Model->get_short_leave_types();
+
+        $this->load->library('form_validation');
+        $this->form_validation->set_rules('txt_reason', 'Reason', "required|xss_clean");
+        $this->form_validation->set_rules('txt_date', 'Date', "required|xss_clean|callback_check_date_validations");
+        $this->form_validation->set_rules('cmb_leavetype', 'Leave Type', "required|xss_clean|callback_check_combo_box");
+
+        if($this->form_validation->run() == FALSE){
+            //Passing it to the View
+            $this->load->view('templates/header', $data);
+            $this->load->view('navbar_main', $data);
+            $this->load->view('navbar_sub', $data);
+            $this->load->view('/leave/short_leaves', $data);
+            $this->load->view('/templates/footer');
+        } else {
+            //Passing it to the View
+            $this->load->view('templates/header', $data);
+            $this->load->view('navbar_main', $data);
+            $this->load->view('navbar_sub', $data);
+            $this->load->view('/leave/short_leaves', $data);
+            $this->load->view('/templates/footer');
+        }
+    }
+
+    // Call back Validations
+    function check_combo_box($value){
+        if($value == 0) {
+            $this->form_validation->set_message('check_combo_box', 'Select a Leave Type');
+            return FALSE;
+        } else {
+            return TRUE;
+        }
+    }
+
+    //Date Validation Call back Function
+    function check_date_validations($date){
+        //Other essential data
+        $applieddate = date("Y-m-d");
+        $dateold = date_diff(date_create($applieddate),date_create($date));
+        $dateoldc = $dateold->format("%R%a");
+
+        if($dateoldc < 0){
+            $this->form_validation->set_message('check_date_validations', 'Date cannot be a previous date');
+            return FALSE;
+        } else {
+            return TRUE;
+        }
+    }
 }
 
 /* Coded by Udara Karunarathna @P0dda */

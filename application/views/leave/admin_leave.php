@@ -17,7 +17,7 @@
         <div class="col-md-9">
             <div class="panel panel-default">
                 <div class="panel-heading">
-                    <strong>PENIDING LEAVES</strong>
+                    <strong>PENDING LEAVES</strong>
                 </div>
                 <div class="panel-body">
                         <div class="comments-list">
@@ -34,7 +34,7 @@
                             <?php
                                 echo "<h3 class='media-heading user_name'>".$row->full_name."</h3></a>". PHP_EOL;
                                 echo $row->reason. PHP_EOL;
-                                echo "<p><b>Start Date - </b>".$row->start_date." "."<b>End Date - </b>".$row->end_date."</p>". PHP_EOL;
+                                echo "<p><b>Start Date - </b>".$row->start_date." "."<b>Duty Resuming Date - </b>".$row->end_date."</p>". PHP_EOL;
                                 echo "</div>". PHP_EOL;
                                 echo "</div>". PHP_EOL;
                             }

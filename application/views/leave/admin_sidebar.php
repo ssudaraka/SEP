@@ -16,12 +16,17 @@
                     </tr>
                     <tr>
                         <td>
+                            <span class="glyphicon glyphicon-edit"></span><a href="<?php echo base_url('index.php/leave/all_teacher_leave'); ?>">Apply Leave</a>
+                        </td>
+                    </tr>
+                    <tr>
+                        <td>
                             <span class="glyphicon glyphicon-list-alt"></span><a href="<?php echo base_url('index.php/leave/get_all_leaves'); ?>">All Leaves</a>
                         </td>
                     </tr>
                     <tr>
                         <td>
-                            <span class="glyphicon glyphicon-check"></span><a href="<?php echo base_url('index.php/#'); ?>">Daily Attendance</a>
+                            <span class="glyphicon glyphicon-check"></span><a href="<?php echo base_url('index.php/leave/leaves_report'); ?>">Leaves Report</a>
                         </td>
                     </tr>
                 </table>

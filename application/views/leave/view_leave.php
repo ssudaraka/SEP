@@ -63,11 +63,11 @@
                                     echo"<td>".$row->applied_date."</td>". PHP_EOL;
                                     echo"</tr>". PHP_EOL;
                                     echo"<tr>". PHP_EOL;
-                                    echo"<td><b>Start Date</b></td>". PHP_EOL;
+                                    echo"<td><b>Leave Start Date</b></td>". PHP_EOL;
                                     echo"<td>".$row->start_date."</td>". PHP_EOL;
                                     echo"</tr>". PHP_EOL;
                                     echo"<tr>". PHP_EOL;
-                                    echo"<td><b>End Date</b></td>". PHP_EOL;
+                                    echo"<td><b>Duty Resuming Date</b></td>". PHP_EOL;
                                     echo"<td>".$row->end_date."</td>". PHP_EOL;
                                     echo"</tr>". PHP_EOL;
                                     echo"<tr>". PHP_EOL;

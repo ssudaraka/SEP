@@ -48,10 +48,9 @@ class Teacher_Model extends CI_Model {
         }
     }
     
-    public function set_time($ID , $time) {
+    public function set_time($id , $time) {
         try {
-            if ($data = $this->db->query("UPDATE `teachers` set `created_at` = '$time'  where `id` = '$ID' ")) {
-                
+            if ($data = $this->db->query("UPDATE `teachers` set `created_at` = '$time'  where `id` = '$id' ")) {
                 return TRUE;
             } else {
                 return FALSE;

@@ -25,6 +25,13 @@
                     <?php echo $succ_message; ?>
                 </div>
             <?php } ?>
+<!--             <?php if (isset($succ_message)) { ?>
+                <div class="alert alert-success alert-dismissible" role="alert">
+                    <button type="button" class="close" data-dismiss="alert" aria-label="Close"><span aria-hidden="true">&times;</span></button>
+                    <strong>Success </strong>
+                    <?php echo $succ_message; ?>
+                </div>
+            <?php } ?> -->
             <?php if (validation_errors()) { ?>
                 <div class="alert alert-danger alert-dismissible" role="alert">
                     <button type="button" class="close" data-dismiss="alert" aria-label="Close"><span aria-hidden="true">&times;</span></button>
@@ -113,10 +120,10 @@
                                 <b>Leave Type</b>
                             </div>
                             <div class="col-xs-6 col-md-4">
-                                <b>Start Date</b>
+                                <b>Leave Start Date</b>
                             </div>
                             <div class="col-xs-6 col-md-4">
-                                <b>End Date</b>
+                                <b>Duty Resuming Date</b>
                             </div>
                         </div>
                         <div class="row" style="margin-bottom:15px;">
@@ -130,10 +137,16 @@
                                 ?>
                             </div>
                             <div class="col-xs-6 col-md-4">
-                                <input class="form-control" name="txt_startdate" placeholder="Start Date" name="startdate"   type="date">
+                                <div class="input-group">
+                                    <input class="form-control" name="txt_startdate" placeholder="Start Date" name="startdate"   type="date">
+                                    <div class="input-group-addon"><i class="fa fa-calendar"></i></div>
+                                </div>
                             </div>
                             <div class="col-xs-6 col-md-4">
-                                <input class="form-control" name="txt_enddate" placeholder="End Date" name="enddate"   type="date">
+                                <div class="input-group">
+                                    <input class="form-control" name="txt_enddate" placeholder="Resuming Date" name="enddate"   type="date">
+                                    <div class="input-group-addon"><i class="fa fa-calendar"></i></div>
+                                </div>
                             </div>
                         </div>
                         <div class="row" style="margin-bottom:5px;">
@@ -166,7 +179,7 @@
                                 <th>Leave Type</th>
                                 <th>Applied Date</th>
                                 <th>Start Date</th>
-                                <th>End Date</th>
+                                <th>Resuming Date</th>
                                 <th>No Days</th>
                                 <th>Status</th>
                             </tr>

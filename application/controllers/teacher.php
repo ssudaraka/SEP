@@ -23,6 +23,7 @@ class Teacher extends CI_Controller {
         if($data['user_type'] == 'T'){
             $data['page_title'] = "View Teacher Profile";
             $data['navbar'] = 'teacher';
+            $data['progress'] = 0;
             $teacher_id = $this->Teacher_Model->get_teacher_id($this->session->userdata['id']);
             $data['user_id'] = $this->Teacher_Model->get_staff_details($teacher_id);
             $this->load->view('templates/header', $data);
@@ -224,18 +225,18 @@ class Teacher extends CI_Controller {
 
         $this->load->library('form_validation');
         $this->form_validation->set_rules('NIC', 'NIC', 'required|exact_length[10]|is_unique[teachers.nic_no]|callback_check_NIC');
-        $this->form_validation->set_rules('name', 'name', 'required');
-        $this->form_validation->set_rules('initial', 'initial', '');
-        $this->form_validation->set_rules('birth', 'birth', 'required|callback_check_Birth_day');
-        $this->form_validation->set_rules('gender', 'gender', 'callback_check_gender');
+        $this->form_validation->set_rules('name', 'Full Name', 'required');
+        $this->form_validation->set_rules('initial', 'Initials', '');
+        $this->form_validation->set_rules('birth', 'Birth Day', 'required|callback_check_Birth_day');
+        $this->form_validation->set_rules('gender', 'Gender', 'callback_check_gender');
         $this->form_validation->set_rules('Nationality', 'Nationality', 'callback_check_selection');
-        $this->form_validation->set_rules('religion', 'religion', 'callback_check_selection');
-        $this->form_validation->set_rules('civilstatus', 'civilstatus', 'callback_check_selection_status');
-        $this->form_validation->set_rules('address', 'address', 'required');
-        $this->form_validation->set_rules('contactMob', 'contactMob', 'exact_length[10]|integer|callback_check_Mobile');
-        $this->form_validation->set_rules('contactHome', 'contactHome', 'exact_length[10]|integer');
-        $this->form_validation->set_rules('email', 'email', 'valid_email');
-        $this->form_validation->set_rules('widow', 'widow', '');
+        $this->form_validation->set_rules('religion', 'Religion', 'callback_check_selection');
+        $this->form_validation->set_rules('civilstatus', 'Civil Status', 'callback_check_selection_status');
+        $this->form_validation->set_rules('address', 'Address', 'required');
+        $this->form_validation->set_rules('contactMob', 'Contatct Mobile', 'exact_length[10]|integer|callback_check_Mobile');
+        $this->form_validation->set_rules('contactHome', 'Contact Home', 'exact_length[10]|integer');
+        $this->form_validation->set_rules('email', 'Email', 'valid_email');
+        $this->form_validation->set_rules('widow', 'Widow No', '');
 
         $this->form_validation->set_error_delimiters('<br /><span class="error">', '</span>');
 
@@ -245,9 +246,7 @@ class Teacher extends CI_Controller {
             $this->load->view('navbar_main', $data);
             $this->load->view('navbar_sub', $data);
             $this->load->view('teacher/teacher_reg_form', $data);
-            //$this->load->view('teacher/check_teacher_profile', $data);
             $this->load->view('/templates/footer');
-            //$this->load->view('footer');
         } else { // passed validation proceed to post success logic
             // build array for the model
             $NIC = $this->input->post('NIC');
@@ -352,26 +351,27 @@ class Teacher extends CI_Controller {
         }
     }
 
-    function update_details() {
+    function update_details($id) {
 
         $data['navbar'] = "teacher";
         $data['page_title'] = "Teacher Registration";
-        $data['user_id'] = $this->input->post('NIC');
+        //$data['user_id'] = $this->input->post('NIC');
 
         $this->load->library('form_validation');
-        $this->form_validation->set_rules('NIC', 'NIC', '');
-        $this->form_validation->set_rules('serialno', 'serialno', 'required|exact_length[3]|is_unique[teachers.serial_no]|integer');
-        $this->form_validation->set_rules('signatureno', 'signatureno', 'required|is_unique[teachers.signature_no]|integer');
-        $this->form_validation->set_rules('careerdate', 'careerdate', 'required|callback_check_career_day');
+        //$this->form_validation->set_rules('NIC', 'NIC', '');
+        $this->form_validation->set_rules('serialno', 'Serial No', 'required|exact_length[5]|is_unique[teachers.serial_no]|integer');
+        $this->form_validation->set_rules('signatureno', 'Signature No', 'required|exact_length[3]|is_unique[teachers.signature_no]|integer');
+        $this->form_validation->set_rules('careerdate', 'Date Joined', 'required|callback_check_career_day');
         $this->form_validation->set_rules('medium', 'medium', '');
         $this->form_validation->set_rules('designation', 'designation', '');
         $this->form_validation->set_rules('section', 'section', '');
-        $this->form_validation->set_rules('mainsubject', 'mainsubject', '');
-        $this->form_validation->set_rules('servicegrade', 'servicegrade', 'required');
+        $this->form_validation->set_rules('mainsubject', 'main subject', '');
+        $this->form_validation->set_rules('servicegrade', 'service grade', 'required');
 
         $this->form_validation->set_error_delimiters('<br /><span class="error">', '</span>');
 
         if ($this->form_validation->run() == FALSE) { // validation hasn't been passed
+            $data['user_id'] = $id;
             $this->load->view('templates/header', $data);
             $this->load->view('navbar_main', $data);
             $this->load->view('navbar_sub', $data);
@@ -379,7 +379,7 @@ class Teacher extends CI_Controller {
             $this->load->view('/templates/footer');
         } else { // passed validation proceed to post success logic
             // build array for the model
-            $NIC = $this->input->post('NIC');
+            //$NIC = $this->input->post('NIC');
             $serialno = $this->input->post('serialno');
             $signatureno = $this->input->post('signatureno');
             $careerdate = $this->input->post('careerdate');
@@ -394,10 +394,10 @@ class Teacher extends CI_Controller {
 //            $time = time();
 //            $create = mdate($datestring, $time);
             $create = date('Y-m-d H:i:s');
-            $this->Teacher_Model->set_time($NIC, $create);
+            $this->Teacher_Model->set_time($id, $create);
 
-            if ($id = $this->Teacher_Model->update_new_staff($NIC, $serialno, $signatureno, $careerdate, $medium, $designation, $section, $mainsubject, $servicegrade)) { // the information has therefore been successfully saved in the db
-                $data["user_id"] = $id;
+            if ($t_id = $this->Teacher_Model->update_new_staff($id, $serialno, $signatureno, $careerdate, $medium, $designation, $section, $mainsubject, $servicegrade)) { // the information has therefore been successfully saved in the db
+                $data["user_id"] = $t_id;
                 $data['page_title'] = "Teacher Registration";
                 $this->load->view('templates/header', $data);
                 $this->load->view('navbar_main', $data);
@@ -411,19 +411,21 @@ class Teacher extends CI_Controller {
         }
     }
 
-    function create_log_details() {
+    function create_log_details($id) {
+        $data['user_type'] = $this->session->userdata['user_type'];
         $data['navbar'] = "teacher";
         $data['page_title'] = "Teacher Registration";
         $this->load->library('form_validation');
-        $this->form_validation->set_rules('ID', 'ID', '');
-        $this->form_validation->set_rules('username', 'username', 'required|is_unique[users.username]');
-        $this->form_validation->set_rules('password', 'password', 'required|matches[confirm_password]|min_length[5]|max_length[12]');
-        $this->form_validation->set_rules('confirm_password', 'confirm_password', 'required|matches[confirm_password]');
+        //$this->form_validation->set_rules('ID', 'ID', '');
+        $this->form_validation->set_rules('username', 'User Name', 'required|is_unique[users.username]');
+        $this->form_validation->set_rules('password', 'Password', 'required|matches[confirm_password]|min_length[5]|max_length[12]');
+        $this->form_validation->set_rules('confirm_password', 'Confirm Password', 'required|matches[confirm_password]');
 
-        $data['user_id'] = $this->input->post('ID');
+        //$data['user_id'] = $this->input->post('ID');
         $this->form_validation->set_error_delimiters('<br /><span class="error">', '</span>');
 
         if ($this->form_validation->run() == FALSE) {
+            $data['user_id'] = $id;
             $this->load->view('templates/header', $data);
             $this->load->view('navbar_main', $data);
             $this->load->view('navbar_sub', $data);
@@ -431,7 +433,7 @@ class Teacher extends CI_Controller {
             $this->load->view('/templates/footer');
         } else {
 
-            $ID = $this->input->post('ID');
+            //$ID = $this->input->post('ID');
             $username = $this->input->post('username');
             $password = $this->input->post('password');
             $confirm_password = $this->input->post('confirm_password');
@@ -441,9 +443,10 @@ class Teacher extends CI_Controller {
             $create = date('Y-m-d H:i:s');
             //$this->Teacher_Model->set_time($ID , $create);
 
-            if ($id = $this->Teacher_Model->insert_new_teacher_userdata($username, $password, $create)) { // the information has therefore been successfully saved in the db
-                $this->Teacher_Model->set_user_id($ID, $id);
-                if ($res = $this->Teacher_Model->get_staff_details($ID)) {
+            if ($u_id = $this->Teacher_Model->insert_new_teacher_userdata($username, $password, $create)) { // the information has therefore been successfully saved in the db
+                $this->Teacher_Model->set_user_id($id, $u_id);
+                if ($res = $this->Teacher_Model->get_staff_details($id)) {
+                    $data['progress'] = 1;
                     $data["user_id"] = $res;
                     $this->load->view('templates/header', $data);
                     $this->load->view('navbar_main', $data);
@@ -460,8 +463,11 @@ class Teacher extends CI_Controller {
     }
 
     function view_profile($teacher_id) {
+        
         $data['page_title'] = "View Teacher Profile";
         $data['navbar'] = 'teacher';
+        $data['progress'] = 0;
+        $data['user_type'] = $this->session->userdata['user_type'];
         $data['user_id'] = $this->Teacher_Model->get_staff_details($teacher_id);
         $this->load->view('templates/header', $data);
         $this->load->view('navbar_main', $data);
