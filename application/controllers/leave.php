@@ -705,13 +705,20 @@ class leave extends CI_Controller {
             $userid = $this->session->userdata['id'];
             $teacherid = $this->Leave_Model-> get_teacher_id($userid);
 
-            $tt = TRUE;
-            if($tt == TRUE){
-            // if($this->Leave_Model->apply_for_short_leave($userid, $teacherid, $leavetype, $applieddate, $date, $reason) == TRUE){
-                $data['succ_message'] = "Short Leave Applied Successfully";
+            if($leavetype == 1 && $data['short_leave_count'] >= 2){
+                //Apply a regular short leave
+                $this->Leave_Model->apply_for_short_leave($userid, $teacherid, $leavetype, $applieddate, $date, $reason);
+                //Apply a half day for the extra
+                $this->Leave_Model->apply_for_short_leave($userid, $teacherid, '2', $applieddate, $date, $reason);
+                $data['succ_message'] = "Short Leave Applied Successfully. It will mark as a Half day";
             } else {
-                $data['error_message'] = "Failed to save data to the Database";
+                if($this->Leave_Model->apply_for_short_leave($userid, $teacherid, $leavetype, $applieddate, $date, $reason) == TRUE){
+                $data['succ_message'] = "Short Leave Applied Successfully";
+                } else {
+                    $data['error_message'] = "Failed to save data to the Database";
+                }
             }
+
             //Passing it to the View
             $this->load->view('templates/header', $data);
             $this->load->view('navbar_main', $data);

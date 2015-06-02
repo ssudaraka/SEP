@@ -56,7 +56,7 @@
                         <thead>
                             <tr>
                                 <th>Leave Type</th>
-                                <th>Available</th>
+                                <th>Total</th>
                                 <th>Taken</th>
                             </tr>
                         </thead>

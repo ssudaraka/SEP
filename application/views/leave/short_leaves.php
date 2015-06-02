@@ -102,7 +102,7 @@
                                     $( "#frm_apply" ).submit();
                                 } else {
                                     var count = "<?php echo $short_leave_count; ?>";
-                                    if(count >= 1){
+                                    if(count >= 2){
                                         ShowConfirmYesNo();
                                     } else {
                                         $( "#frm_apply" ).submit();
@@ -155,14 +155,11 @@
 
                         function ShowConfirmYesNo() {
                             var val = AsyncConfirmYesNo(
-                                "<i class='fa fa-exclamation-triangle'></i> - You have already applied 2 Short Leaves this month",
+                                "<i class='fa fa-exclamation-triangle'></i> - You have Already Applied  "+ "<?php echo $short_leave_count; ?>" + " Short Leaves this month",
                                 "Are you sure you wants to continue?",
                                 MyYesFunction,
                                 MyNoFunction
                             );
-
-                            console.log("test");
-                            console.log(val);
 
                             return false;
                         }
