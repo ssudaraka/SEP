@@ -199,5 +199,36 @@ class Leave_Model extends CI_Model {
             return FALSE;
         }
     }
+
+    //Get a list of applied short leaves according to the teacher id
+    public function get_applied_short_leaves_list($uid){
+        try{
+            $query = $this->db->query("SELECT lt.name,al.applied_date,al.date,al.reason,ls.status FROM apply_short_leaves al,short_leave_types lt,leave_status ls where (al.leave_Type  = lt.id) AND al.status = ls.id AND al.user_id='$uid' AND (MONTH(CURDATE())=MONTH(al.date))");
+            return $query->result();
+        } catch(Exception $ex) {
+            return FALSE;
+        }
+    }
+
+    //Get a list of applied short leaves according to the teacher id
+    public function get_recent_applied_short_leaves_list($uid){
+        try{
+            $query = $this->db->query("SELECT lt.name,al.applied_date,al.date,al.reason,ls.status FROM apply_short_leaves al,short_leave_types lt,leave_status ls where (al.leave_Type  = lt.id) AND al.status = ls.id AND al.user_id='$uid' ORDER BY al.applied_date desc LIMIT 10");
+            return $query->result();
+        } catch(Exception $ex) {
+            return FALSE;
+        }
+    }
+
+    //Get a count of applied leaves according to the teacher id
+    public function get_applied_short_leaves_count($uid){
+        try{
+            $query = $this->db->query("SELECT COUNT(*) as count FROM apply_short_leaves al,short_leave_types lt,leave_status ls where (al.leave_Type  = lt.id) AND al.status = ls.id AND al.user_id='$uid' AND ( al.leave_Type = '1' )  AND (MONTH(CURDATE())=MONTH(al.date))");
+            $row = $query->row();
+            return $row->count;
+        } catch(Exception $ex) {
+            return FALSE;
+        }
+    }
 }
 ?>

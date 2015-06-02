@@ -647,9 +647,15 @@ class leave extends CI_Controller {
         $data['page_title'] = "Apply Teacher Leave";
 
         $data['user_type'] = $this->session->userdata['user_type'];
-
+        $userid = $this->session->userdata['id'];
         //Load form combo
         $data['leave_types'] = $this->Leave_Model->get_short_leave_types();
+        //Getting List of Applied Leaves
+        $data['applied_leaves'] = $this->Leave_Model->get_applied_short_leaves_list($userid);
+        $data['recent_applied_leaves'] = $this->Leave_Model->get_recent_applied_short_leaves_list($userid);
+
+        //get current applied short leaves this month
+        $data['short_leave_count'] = $this->Leave_Model->get_applied_short_leaves_count($userid);
 
         //Passing it to the View
         $this->load->view('templates/header', $data);
@@ -667,9 +673,15 @@ class leave extends CI_Controller {
         $data['page_title'] = "Apply Teacher Leave";
 
         $data['user_type'] = $this->session->userdata['user_type'];
-
+        $userid = $this->session->userdata['id'];
         //Load form combo
         $data['leave_types'] = $this->Leave_Model->get_short_leave_types();
+        //Getting List of Applied Leaves
+        $data['applied_leaves'] = $this->Leave_Model->get_applied_short_leaves_list($userid);
+        $data['recent_applied_leaves'] = $this->Leave_Model->get_recent_applied_short_leaves_list($userid);
+
+        //get current applied short leaves this month
+        $data['short_leave_count'] = $this->Leave_Model->get_applied_short_leaves_count($userid);
 
         $this->load->library('form_validation');
         $this->form_validation->set_rules('txt_reason', 'Reason', "required|xss_clean");
@@ -693,7 +705,9 @@ class leave extends CI_Controller {
             $userid = $this->session->userdata['id'];
             $teacherid = $this->Leave_Model-> get_teacher_id($userid);
 
-            if($this->Leave_Model->apply_for_short_leave($userid, $teacherid, $leavetype, $applieddate, $date, $reason) == TRUE){
+            $tt = TRUE;
+            if($tt == TRUE){
+            // if($this->Leave_Model->apply_for_short_leave($userid, $teacherid, $leavetype, $applieddate, $date, $reason) == TRUE){
                 $data['succ_message'] = "Short Leave Applied Successfully";
             } else {
                 $data['error_message'] = "Failed to save data to the Database";
@@ -724,8 +738,38 @@ class leave extends CI_Controller {
         $dateold = date_diff(date_create($applieddate),date_create($date));
         $dateoldc = $dateold->format("%R%a");
 
+        //Getting Year Plan Data
+        //Get info from the Academic Year
+        //Set conditon bool
+        $aca_year_stat = FALSE;
+        $academic_year = $this->Year_Model->get_academic_year_details();
+        foreach ($academic_year as $row)
+        {
+            $year_structure = $row->structure;
+
+            //Building the Array from the Database
+            $string =$year_structure;
+            $partial = explode(', ', $string);
+            $final = array();
+            array_walk($partial, function($val,$key) use(&$final){
+                list($key, $value) = explode('=', $val);
+                $final[$key] = $value;
+            });
+
+
+        }
+
+        if(isset($final[$date])){
+            if($final[$date] == '0' || $final[$date] == '5'){
+                $aca_year_stat = TRUE;
+            }
+        }        
+
         if($dateoldc < 0){
             $this->form_validation->set_message('check_date_validations', 'Date cannot be a previous date');
+            return FALSE;
+        } elseif ($aca_year_stat == FALSE) {
+            $this->form_validation->set_message('check_date_validations', 'You cannot Apply Short Leaves on School Holidays');
             return FALSE;
         } else {
             return TRUE;
