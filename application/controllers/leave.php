@@ -127,8 +127,8 @@ class leave extends CI_Controller {
 
         $this->load->library('form_validation');
         $this->form_validation->set_rules('txt_reason', 'Reason', "required|xss_clean");
-        $this->form_validation->set_rules('txt_startdate', 'Start Date', "required|xss_clean");
-        $this->form_validation->set_rules('txt_enddate', 'End Date', "required|xss_clean");
+        $this->form_validation->set_rules('txt_startdate', 'Start Date', "required|xss_clean|callback_check_date_for_current_year");
+        $this->form_validation->set_rules('txt_enddate', 'End Date', "required|xss_clean|callback_check_date_for_current_year");
 
         $data['page_title'] = "Leave Management";
 
@@ -520,8 +520,8 @@ class leave extends CI_Controller {
 
         $this->load->library('form_validation');
         $this->form_validation->set_rules('txt_reason', 'Reason', "required|xss_clean");
-        $this->form_validation->set_rules('txt_startdate', 'Start Date', "required|xss_clean");
-        $this->form_validation->set_rules('txt_enddate', 'End Date', "required|xss_clean");
+        $this->form_validation->set_rules('txt_startdate', 'Start Date', "required|xss_clean|callback_check_date_for_current_year");
+        $this->form_validation->set_rules('txt_enddate', 'End Date', "required|xss_clean|callback_check_date_for_current_year");
 
 
         if($this->form_validation->run() == FALSE){
@@ -729,6 +729,21 @@ class leave extends CI_Controller {
     }
 
     // Call back Validations
+
+    //check date for current year
+    function check_date_for_current_year($date){
+        $current_year = date('Y');
+        $date = date_create($date);
+        $year = $date->format("Y");
+        if($current_year != $year) {
+            $this->form_validation->set_message('check_date_for_current_year', 'Select a Date from Current Year');
+            return FALSE;
+        } else {
+            return TRUE;
+        }    
+    }
+
+    //Checking combo box on short leaves
     function check_combo_box($value){
         if($value == 0) {
             $this->form_validation->set_message('check_combo_box', 'Select a Leave Type');
