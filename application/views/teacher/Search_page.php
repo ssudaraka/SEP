@@ -62,11 +62,11 @@
                                 <td><?php echo $row->full_name; ?></td>
                                 <td><?php echo $row->gender; ?></td>
                                 <td><?php echo $row->grade; ?></td>
-                                <td><?php echo $row->medium; ?></td>
+                                <td><?php $med =  $row->medium; if($med == 's'){ echo 'sin';} else if($med == 't'){ echo 'eng';} else if($med == 'e'){ echo 'tam';} ?></td>
                                 <td><?php echo $row->contact_mobile; ?></td>
                                 <td><a href="<?php echo base_url("index.php/teacher/view_profile") . "/" . $row->id; ?>" ><span class="glyphicon glyphicon-user" aria-hidden="true"></span></a></td>
                                 <td><a href="<?php echo base_url("index.php/teacher/load_teacher") . "/" . $row->id; ?>"><span class="glyphicon glyphicon-edit" aria-hidden="true"></span></a></td>
-                                <td><a href="<?php echo base_url("index.php/teacher/delete_teacher") . "/" . $row->id; ?>" onclick="return confirm('Are you sure you want to permenantly delete this user?!!!you cannot recover this teacher profile after you delete!!!)');"><span class="glyphicon glyphicon-trash" aria-hidden="true"></span></i></a></td>
+                                <td><a href="<?php echo base_url("index.php/teacher/delete_teacher") . "/" . $row->id; ?>" onclick="return confirm('Are you sure you want to permenantly delete this user?   you cannot recover this teacher profile after you delete');"><span class="glyphicon glyphicon-trash" aria-hidden="true"></span></i></a></td>
 
                             </tr>
                         <?php } ?>

@@ -16,7 +16,17 @@
                     </tr>
                     <tr>
                         <td>
-                            <span class="glyphicon glyphicon-cog text-warning"></span><a href="<?php echo base_url('index.php/teacher/create'); ?>">Create Teacher</a>
+                            <span class="glyphicon glyphicon-cog text-primary"></span><a href="<?php echo base_url('index.php/teacher/create'); ?>">Create Teacher</a>
+                        </td>
+                    </tr>
+                    <tr>
+                        <td>
+                            <span class="glyphicon glyphicon-picture text-primary"></span><a href="<?php echo base_url('index.php/teacher/create_profile'); ?>">Create Teacher Profile</a>
+                        </td>
+                    </tr>
+                    <tr>
+                        <td>
+                            <span class="glyphicon glyphicon-check text-primary"></span><a href="<?php echo base_url('index.php/teacher/teacher_report')."/"."0"; ?>">Teacher Report</a>
                         </td>
                     </tr>
                 </table>

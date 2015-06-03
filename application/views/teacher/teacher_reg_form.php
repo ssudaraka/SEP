@@ -6,7 +6,13 @@
             <?php $this->view('teacher/sidebar_nav'); ?>
         </div>
 
-        <div class="col-md-9"> 
+        <div class="col-md-9">
+            <?php if (validation_errors()) { ?>
+                <div class="alert alert-danger alert-dismissible" role="alert">
+                    <button type="button" class="close" data-dismiss="alert" aria-label="Close"><span aria-hidden="true">&times;</span></button>
+                    <?php echo 'There are some errors while inserting. Please check again!'; ?>
+                </div>
+            <?php } ?>
             <div class="progress" style="border: ">
                 <div class="progress-bar progress-bar-danger progress-bar-striped" role="progressbar"
                      aria-valuenow="40" aria-valuemin="0" aria-valuemax="100" style="width:5%">
@@ -65,10 +71,10 @@
                         <label for="inputEmail3" class="col-sm-2 control-label">*Gender</label>
                         <div class="col-sm-4">
                             <label class="radio-inline">
-                                <input id="male" type="radio" name="gender"  value="m" type="radio"  id="male"> Male
+                                <input id="male" type="radio" name="gender"  value="m" <?php if (set_value('gender') == 'm') { echo "checked"; } ?>> Male
                             </label>
                             <label class="radio-inline">
-                                <input id="female" type="radio" name="gender"  value="f" type="radio" id="female"> Female
+                                <input id="female" type="radio" name="gender" value="f" <?php if (set_value('gender') == 'f') { echo "checked"; } ?>> Female
                             </label>
                             <br>
                             <?php echo form_error('gender'); ?>
@@ -81,12 +87,12 @@
                         <div class="col-sm-4">
 
                             <select id="Nationality" name="Nationality" class="form-control">
-                                <option value="0">Select Your Nationality</option>
-                                <option value="1">Sinhala</option>
-                                <option value="2">Sri Lankan Tamil</option>
-                                <option value="3">Indian Tamil</option>
-                                <option value="4">Muslim</option>
-                                <option value="5">Other</option>
+                                <option value="0" <?php if (set_value('Nationality') == '0') { echo "selected"; } ?>>Select Your Nationality</option>
+                                <option value="1" <?php if (set_value('Nationality') == '1') { echo "selected"; } ?>>Sinhala</option>
+                                <option value="2" <?php if (set_value('Nationality') == '2') { echo "selected"; } ?>>Sri Lankan Tamil</option>
+                                <option value="3" <?php if (set_value('Nationality') == '3') { echo "selected"; } ?>>Indian Tamil</option>
+                                <option value="4" <?php if (set_value('Nationality') == '4') { echo "selected"; } ?>>Muslim</option>
+                                <option value="5" <?php if (set_value('Nationality') == '5') { echo "selected"; } ?>>Other</option>
                             </select>
                             <?php echo form_error('Nationality'); ?>
                         </div>
@@ -98,12 +104,12 @@
 
                             <select id="religion" name="religion" class="form-control">
                                 <option value="0">Select Your Religion</option>
-                                <option value="1">Buddhism</option>
-                                <option value="2">Hinduism</option>
-                                <option value="3">Islam</option>
-                                <option value="4">Catholicism</option>
-                                <option value="5">Christianity</option>
-                                <option value="6">Other</option>
+                                <option value="1" <?php if (set_value('religion') == '1') { echo "selected"; } ?>>Buddhism</option>
+                                <option value="2" <?php if (set_value('religion') == '2') { echo "selected"; } ?>>Hinduism</option>
+                                <option value="3" <?php if (set_value('religion') == '3') { echo "selected"; } ?>>Islam</option>
+                                <option value="4" <?php if (set_value('religion') == '4') { echo "selected"; } ?>>Catholicism</option>
+                                <option value="5" <?php if (set_value('religion') == '5') { echo "selected"; } ?>>Christianity</option>
+                                <option value="6" <?php if (set_value('religion') == '6') { echo "selected"; } ?>>Other</option>
                             </select>
                             <?php echo form_error('religion'); ?>
                         </div>
@@ -114,11 +120,11 @@
                         <div class="col-sm-4">
 
                             <select id="civilstatus" name="civilstatus" class="form-control">
-                                <option value="n">Select Your Status</option>
-                                <option value="s">Single</option>
-                                <option value="m">Married</option>
-                                <option value="w">Widow</option>
-                                <option value="o">Other</option>
+                                <option value="n" <?php if (set_value('civilstatus') == 'n') { echo "selected"; } ?>>Select Your Status</option>
+                                <option value="s" <?php if (set_value('civilstatus') == 's') { echo "selected"; } ?>>Single</option>
+                                <option value="m" <?php if (set_value('civilstatus') == 'm') { echo "selected"; } ?>>Married</option>
+                                <option value="w" <?php if (set_value('civilstatus') == 'w') { echo "selected"; } ?>>Widow</option>
+                                <option value="o" <?php if (set_value('civilstatus') == '0') { echo "selected"; } ?>>Other</option>
                             </select>
                             <?php echo form_error('civilstatus'); ?>
                         </div>

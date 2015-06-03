@@ -7,18 +7,18 @@
         </div>
 
         <div class="col-md-9">
-            <div class="progress" style="border: ">
-                <div class="progress-bar progress-bar-info progress-bar-striped" role="progressbar"
-                     aria-valuenow="40" aria-valuemin="0" aria-valuemax="100" style="width:80%">
-                    80% Complete (success)
-                </div>
-            </div>
+            <?php if (isset($succ_message)) { ?>
+                    <div class="alert alert-success alert-dismissible" role="alert">
+                        <button type="button" class="close" data-dismiss="alert" aria-label="Close"><span aria-hidden="true">&times;</span></button>
+                        <?php echo $succ_message; ?>
+                    </div>
+                <?php } ?>
             <div class="panel panel-default">
                 <div class="panel-heading">
-                    <b>TEACHER REGISTRATION / Personal Details -> Academic Details > System Profile</b>
+                    <b>CREATE PROFILE</b>
                 </div>
                 <div class="panel-body">
-                    <?php echo form_open_multipart('teacher/create_log_details' . "/" . $user_id); ?>
+                    <?php echo form_open_multipart('teacher/create_profile'); ?>
 
                     <div class="panel-body">
                         <div class="row">
@@ -30,10 +30,27 @@
                                 <span class="btn btn-default btn-file">
                                     Upload Image<input type="file" name="profile_img" id="img-inp" onchange="readURL(this);">
                                 </span>
+                                <?php echo form_error('profile_img'); ?>
                             </div>
 
                             <div class=" col-md-9 col-lg-9 "> 
                                 <table class="table table-user-information" >
+                                    <tr>
+                                        <td>
+                                            <div class="form-group">
+                                                <label for="inputEmail3" class="col-sm-3 control-label">Teacher name</label>
+                                                <div class="col-sm-5">
+                                                    <select id="teachername" name="teachername" class="form-control">
+                                                        <?php
+                                                        foreach ($users as $row) {
+                                                            echo "<option value='$row->id'>$row->full_name</option>";
+                                                        }
+                                                        ?>
+                                                    </select>
+                                                </div>
+                                            </div>
+                                        </td>
+                                    </tr>
                                     <tr>
                                         <td>
                                             <div class="form-group">
@@ -70,7 +87,6 @@
                                         <td><div class="form-group">
                                                 <div class="col-sm-offset-3 col-sm-10">
                                                     <button type="submit" class="btn btn-primary">Submit</button>
-                                                    <a href="<?php echo base_url('index.php/teacher/check_profile' . "/" . $user_id); ?>" class="btn btn-success">Skip Now</a>
                                                     <button type="reset" class="btn btn-default">Reset</button>
                                                 </div>
                                             </div>
