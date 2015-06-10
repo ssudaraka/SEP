@@ -15,20 +15,18 @@
                 'class' => 'form-inline'
             );
             ?>
-            <?php echo form_open('admin/search', $attributes); ?>
-            <div class="form-group">
-                <label class="sr-only" for="keyword">Search Keyword</label>
-                <input type="text" class="form-control" id="keyword" name="keyword" placeholder="">
-            </div>
-            <button type="submit" class="btn btn-success"><i class="fa fa-filter"></i> Filter Results</button>
-            <?php echo form_close(); ?>
             <div class="panel panel-default" style="margin-top: 10px;">
                 <div class="panel-heading">Administrator Accounts</div>
                 <div class="panel-body">
-                    <table class="table table-hover" style="margin-top: 10px;">
+                    <script type="text/javascript">
+                        $(document).ready(function() {
+                            $('#admin-user-table').DataTable();
+                        });
+                    </script>
+                    <table id="admin-user-table" class="table table-hover" style="margin-top: 10px;">
                         <thead>
                             <tr>
-                                <td><strong>#</strong></td>
+                                <td><strong>ID&nbsp;&nbsp;</strong></td>
                                 <td><strong>Username</strong></td>
                                 <td><strong>Name</strong></td>
                                 <td><strong>Email</strong></td>
@@ -52,11 +50,6 @@
                             <?php } ?>
                         </tbody>                      
                     </table>
-                    <nav>
-                        <?php foreach ($links as $link) { ?>
-                            <?php echo $link; ?>
-                        <?php } ?>
-                    </nav>
 
                 </div>
             </div>
@@ -65,7 +58,7 @@
     </div>
 </div>
 <script type="text/javascript">
-    $(function () {
+    $(function() {
         $("[data-toggle='tooltip']").tooltip();
     });
 </script>
