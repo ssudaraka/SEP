@@ -107,6 +107,7 @@ class Attendance extends CI_Controller {
         
 
         $data['result'] = $this->attendance_model->get_all_records();
+        $data['absent_list'] = $this->attendance_model->get_temp_absent_records();
         
         $this->load->view('templates/header', $data);
         $this->load->view('navbar_main', $data);
@@ -143,6 +144,9 @@ class Attendance extends CI_Controller {
         $this->attendance_model->delete_temp();
     }
     
+    function confirm(){
+        
+    }
     function search_report_pdf($date){
         
         $this->load->helper(array('dompdf', 'file'));
