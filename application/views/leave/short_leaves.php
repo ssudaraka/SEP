@@ -189,7 +189,6 @@
                             <th>Leave Type</th>
                             <th>Applied Date</th>
                             <th>Date</th>
-                            <th>Resuming Date</th>
                             <th>Reason</th>
                             <th>Status</th>
                         </tr>
@@ -203,7 +202,6 @@
                              echo "<td>" . $row->applied_date . "</td>" . PHP_EOL;
                              echo "<td>" . $row->date . "</td>" . PHP_EOL;
                              echo "<td>" . $row->reason . "</td>" . PHP_EOL;
-                             echo "<td>" . $row->status . "</td>" . PHP_EOL;
 
 
                             if ($row->status == "Pending") {
@@ -233,7 +231,6 @@
                             <th>Leave Type</th>
                             <th>Applied Date</th>
                             <th>Date</th>
-                            <th>Resuming Date</th>
                             <th>Reason</th>
                             <th>Status</th>
                         </tr>
@@ -247,7 +244,6 @@
                              echo "<td>" . $row->applied_date . "</td>" . PHP_EOL;
                              echo "<td>" . $row->date . "</td>" . PHP_EOL;
                              echo "<td>" . $row->reason . "</td>" . PHP_EOL;
-                             echo "<td>" . $row->status . "</td>" . PHP_EOL;
 
 
                             if ($row->status == "Pending") {

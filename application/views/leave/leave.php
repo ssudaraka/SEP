@@ -57,6 +57,7 @@
                             <tr>
                                 <th>Leave Type</th>
                                 <th>Total</th>
+                                <th>Available</th>
                                 <th>Taken</th>
                             </tr>
                         </thead>
@@ -64,30 +65,36 @@
                             <tr>
                                 <td>Casual</td>
                                 <td><?php echo $casual_leaves ?></td>
+                                <td><?php echo ($casual_leaves - $applied_casual_leaves) ?></td>
                                 <td><?php echo $applied_casual_leaves ?></td>
                             </tr>
                             <tr>
                                 <td>Medical</td>
                                 <td><?php echo $medical_leaves ?></td>
+                                <td><?php echo ($medical_leaves - $applied_medical_leaves) ?></td>
                                 <td><?php echo $applied_medical_leaves ?></td>
                             </tr>
                             <tr>
                                 <td>Duty</td>
                                 <td><?php echo $duty_leaves ?></td>
+                                <td><?php echo ($duty_leaves - $applied_duty_leaves) ?></td>
                                 <td><?php echo $applied_duty_leaves ?></td>
                             </tr>
                             <tr>
                                 <td>Other</td>
                                 <td><?php echo $other_leaves ?></td>
+                                <td><?php echo ($other_leaves - $other_leaves) ?></td>
                                 <td><?php echo $applied_other_leaves ?></td>
                             </tr>
                             <tr>
                                 <td>Maternity</td>
                                 <td><?php echo $maternity_leaves ?></td>
+                                <td><?php echo ($maternity_leaves - $applied_maternity_leaves) ?></td>
                                 <td><?php echo $applied_maternity_leaves ?></td>
                             </tr>
                             <tr>
                                 <td><b>Total</b></td>
+                                <td></td>
                                 <td></td>
                                 <td><b><?php echo $total_leaves ?></b></td>
                             </tr>
@@ -133,7 +140,7 @@
                                 foreach ($leave_types as $row) {
                                     echo "<option value='" . $row->id . "'>" . $row->name . "</option>" . PHP_EOL;
                                 }
-                                echo "</select>" . PHP_EOL;
+                                echo "</select>" ;
                                 ?>
                             </div>
                             <div class="col-xs-6 col-md-4">
