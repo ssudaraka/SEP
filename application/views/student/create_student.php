@@ -115,10 +115,10 @@
                                 
                                 <label for="language">Medium</label>
                                 <select  name="language" id="language" class="form-control">
-                                    <option value="n">Select Medium</option>
-                                    <option value="s">Sinhala</option>
-                                    <option value="e">English</option>
-                                    <option value="t">Tamil</option>
+                                    <option value="n"<?php if(set_value('language')=="n"){echo"selected";}?>>Select Medium</option>
+                                    <option value="s"<?php if(set_value('language')=="s"){echo"selected";}?>>Sinhala</option>
+                                    <option value="e"<?php if(set_value('language')=="e"){echo"selected";}?>>English</option>
+                                    <option value="t"<?php if(set_value('language')=="t"){echo"selected";}?>>Tamil</option>
                                 </select>
                                 <div><?php echo form_error('language'); ?></div>
                                 
@@ -127,13 +127,13 @@
                                 
                                 <label for="religion">Religion</label>
                                  <select  name="religion" id="religion" class="form-control">
-                                 <option value="0">Select Religion</option>
-                                <option value="1">Buddhism</option>
-                                <option value="2">Hinduism</option>
-                                <option value="3">Islam</option>
-                                <option value="4">Catholicism</option>
-                                <option value="5">Christianity</option>
-                                <option value="6">Other</option>
+                                 <option value="0" <?php if(set_value('religion')== 0){echo"selected";}?>>Select Religion</option>
+                                <option value="1" <?php if(set_value('religion')== 1){echo"selected";}?>>Buddhism</option>
+                                <option value="2" <?php if(set_value('religion')== 2){echo"selected";}?>>Hinduism</option>
+                                <option value="3" <?php if(set_value('religion')== 3){echo"selected";}?>>Islam</option>
+                                <option value="4" <?php if(set_value('religion')== 4){echo"selected";}?>>Catholicism</option>
+                                <option value="5" <?php if(set_value('religion')== 5){echo"selected";}?>>Christianity</option>
+                                <option value="6" <?php if(set_value('religion')== 6){echo"selected";}?>>Other</option>
                                  </select>
                                 <div><?php echo form_error('religion'); ?></div>
                     </div>
@@ -145,11 +145,11 @@
                                 
                                 <label for="house">House</label>
                                  <select  name="houseid" id="houseid" class="form-control">
-                                 <option value="0">Select House</option>
-                                    <option value="1">H1</option>
-                                    <option value="2">H2</option>
-                                    <option value="3">H3</option>
-                                    <option value="4">H4</option>
+                                 <option value="0" <?php if(set_value('houseid')== 0){echo"selected";}?>>Select House</option>
+                                    <option value="1" <?php if(set_value('houseid')== 1){echo"selected";}?>>H1</option>
+                                    <option value="2" <?php if(set_value('houseid')== 2){echo"selected";}?>>H2</option>
+                                    <option value="3" <?php if(set_value('houseid')== 3){echo"selected";}?>>H3</option>
+                                    <option value="4" <?php if(set_value('houseid')== 4){echo"selected";}?>>H4</option>
                                  </select>
                                 <div><?php echo form_error('houseid'); ?></div>
                      </div>

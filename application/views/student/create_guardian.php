@@ -35,16 +35,13 @@
                    
                     <div class="col-md-3 col-md-push-1  form-group">
                         
-                                <label for="studentid">Student No</label>
-                                <input type="text" name="studentid" value="<?php echo $row->user_id; ?>" class="form-control warning " id="admissionnumber" readonly>
-                                <div><?php echo form_error('studentid'); ?></div>
-                                
-                     </div>
-                     <div class="col-md-3 col-md-offset-4 form-group">
-                                
                                 <label for="studentname">Student Name</label>
                                 <input type="text" name="studentname" value="<?php echo $row->name_with_initials;?>" class="form-control" id="addmissiondate" readonly>
                                 <div><?php echo form_error('studentname'); ?></div>
+                     </div>
+                     <div class="col-md-3 col-md-offset-4 form-group">
+                                
+                                
                                 
                     </div>
                      
@@ -88,10 +85,10 @@
                                 
                                 <label for="relation">Relation</label>
                                 <select  name="relation" id="relation" class="form-control">
-                                 <option value="n">Select Your Relation</option>
-                                    <option value="f">Father</option>
-                                    <option value="m">Mother</option>
-                                    <option value="g">Guardian</option>
+                                 <option value="n" <?php if(set_value('relation')== "n"){echo"selected";}?>>Select Your Relation</option>
+                                    <option value="f" <?php if(set_value('relation')== "f"){echo"selected";}?>>Father</option>
+                                    <option value="m" <?php if(set_value('relation')== "m"){echo"selected";}?>>Mother</option>
+                                    <option value="g" <?php if(set_value('relation')== "g"){echo"selected";}?>>Guardian</option>
                                     
                                  </select>
                                 
@@ -141,10 +138,10 @@
                     <div class="col-sm-3">
                          
                             <label class="radio-inline">
-                                <input id="male" type="radio" name="gender"  value="m" type="radio"  id="male"> Male
+                                <input id="male" type="radio" name="gender"  value="m" type="radio"  id="male" <?php if(set_value('gender')== "m"){echo "checked";}?>> Male
                             </label>
                             <label class="radio-inline">
-                                <input id="female" type="radio" name="gender"  value="f" type="radio" id="female"> Female
+                                <input id="female" type="radio" name="gender"  value="f" type="radio" id="female" <?php if(set_value('gender')== "f"){echo "checked";}?>> Female
                             </label>
                             <?php echo form_error('gender'); ?>
                         </div>
@@ -156,7 +153,7 @@
                  <div class="row">
                      <div class="col-md-5 col-md-push-1 form-group">
                                 <div><?php echo form_error('occupation'); ?></div>
-                                <label for="occupation">Contact No</label>
+                                <label for="occupation">Occupation</label>
                                 <input type="text" name="occupation" value="<?php echo set_value('occupation'); ?>" class="form-control " id="occupation" placeholder="Occupation">
                      </div>
                      

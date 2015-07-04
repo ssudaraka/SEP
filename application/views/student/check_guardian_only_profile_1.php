@@ -2,9 +2,9 @@
 <div class="container">
 
 <div class="row">
-             <?php $this->view('student/sidebar_nav_t'); ?>
+             
 <div class="col-md-3">
-
+            <?php $this->view('student/sidebar_nav_t'); ?>
 </div>
 
 <div class="col-md-9">
