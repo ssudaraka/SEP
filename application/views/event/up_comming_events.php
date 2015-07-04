@@ -133,28 +133,19 @@ if ($type == 1) {
 </div>
 
 <script type="text/javascript">
-    $(function () {
-        $('#event').on('change', function (event) {
-            var opt = this.options[ this.selectedIndex ];
-            //var picked_blue = $(opt).text().matc
-            alert('You did not pick a blue option.');
-
-        });
-    });
-
     function hello() {
         var item = document.getElementById('event').value;
         if (item == 1) {
-            window.location = "http://localhost/sep/index.php/event/view_all_events";
+            window.location = '<?php echo base_url("index.php/event/view_all_events") ?>';
         }
         else if (item == 2) {
-            window.location = "http://localhost/sep/index.php/event/view_upcoming_events";
+            window.location = '<?php echo base_url("index.php/event/view_upcoming_events") ?>';
         }
         else if (item == 3) {
-            window.location = "http://localhost/sep/index.php/event/view_monthly_events";
+            window.location = '<?php echo base_url("index.php/event/view_monthly_events") ?>';
         }
         else if (item == 4) {
-            window.location = "http://localhost/sep/index.php/event/view_completed_events";
+            window.location = '<?php echo base_url("index.php/event/view_completed_events") ?>';
         }
     }
 
