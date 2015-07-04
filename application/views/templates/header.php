@@ -8,6 +8,7 @@
 
         <!-- jQuery (necessary for Bootstrap's JavaScript plugins) -->
         <script src="http://code.jquery.com/jquery-1.11.1.min.js"></script>
+        
         <!-- DataTables Plugin -->
         <script src="<?php echo base_url("assets/js/jquery.dataTables.min.js"); ?>"></script>
         <link rel="stylesheet" type="text/css" href="//cdn.datatables.net/plug-ins/1.10.7/integration/bootstrap/3/dataTables.bootstrap.css">
