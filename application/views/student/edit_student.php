@@ -63,7 +63,7 @@
                     EDIT STUDENT 
                     <span class="pull-right">
                         <a href="<?php echo base_url("index.php/student/load_guardian") . "/" .$result->user_id;?>" data-original-title="Edit this user" data-toggle="tooltip" type="button" class="btn btn-xs btn-primary"><i class="">Guardian Details</i></a>
-                        <a href="<?php base_url("index.php/student") ?>" data-original-title="Remove this user" data-toggle="tooltip" type="button" class="btn btn-xs btn-danger"><i class="glyphicon glyphicon-remove"></i></a>
+                        <a href="<?php echo base_url("index.php/student") ?>" data-original-title="Remove this user" data-toggle="tooltip" type="button" class="btn btn-xs btn-danger"><i class="glyphicon glyphicon-remove"></i></a>
                 </span>
                 </div>
                  <div class="panel panel-body" >

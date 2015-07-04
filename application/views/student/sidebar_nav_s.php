@@ -11,12 +11,12 @@
                 <table class="table">
                     <tr>
                         <td>
-                            <span class="glyphicon glyphicon-user text-primary"></span><a href="<?php echo base_url('index.php/student'); ?>">Teachers List</a>
+                            <span class="glyphicon glyphicon-user text-primary"></span><a href="<?php echo base_url('index.php/student'); ?>">Student List</a>
                         </td>
                     </tr>
                     <tr>
                         <td>
-                            <span class="glyphicon glyphicon-cog text-warning"></span><a href="<?php echo base_url('index.php/student/account_settings'); ?>">Create Teacher</a>
+                            <span class="glyphicon glyphicon-cog text-warning"></span><a href="<?php echo base_url('index.php/student/account_settings'); ?>">Settings</a>
                         </td>
                     </tr>
                 </table>

@@ -318,8 +318,10 @@ class Student extends CI_Controller {
         
          if ($data['user_type'] == 'A') {
         $this->load->view('student/check_student_profile', $data);
-         }else if ($data['user_type'] == 'T'||$data['user_type'] == 'S') {
+         }else if ($data['user_type'] == 'T') {
        $this->load->view('student/check_student_profile_1', $data);
+         }else if($data['user_type'] == 'S'){
+         $this->load->view('student/check_student_profile_1_S', $data);    
          }
           $this->load->view('/templates/footer');
     }
@@ -352,13 +354,21 @@ class Student extends CI_Controller {
      * Function for view guardian profile for a given id
      */
     function view_guardian_profile($student_id){
+        $data['user_type'] = $this->session->userdata['user_type'];
+        
          $data['page_title'] = "Student Profile";
         $data['navbar'] = 'student';
         $data['user_id'] = $this->Student_Model->get_guardian_only($student_id);
         $this->load->view('templates/header', $data);
         $this->load->view('navbar_main', $data);
         $this->load->view('navbar_sub', $data);
-        $this->load->view('student/check_guardian_only_profile', $data);
+        //$this->load->view('student/check_guardian_only_profile', $data);
+
+         if ($data['user_type'] == 'A') {
+       $this->load->view('student/check_guardian_only_profile', $data);
+         }else if ($data['user_type'] == 'T') {
+       $this->load->view('student/check_guardian_only_profile_1', $data);
+         }
         $this->load->view('/templates/footer');
         
     }
@@ -565,9 +575,9 @@ class Student extends CI_Controller {
     function change_password() {
 
         $this->load->library('form_validation');
-        $this->form_validation->set_rules('old_password', 'Old Password', "required|xss_clean|callback_check_old_password");
-        $this->form_validation->set_rules('new_password', 'New Password', "required|min_length[5]|xss_clean|matches[conf_password]");//check password with confirm password
-        $this->form_validation->set_rules('conf_password', 'Confirm Password', "required|xss_clean|matches[new_password]");
+        $this->form_validation->set_rules('oldpassword', 'Old Password', "required|xss_clean|callback_check_old_password");
+        $this->form_validation->set_rules('password', 'New Password', "required|min_length[5]|xss_clean|matches[confirm_password]");//check password with confirm password
+        $this->form_validation->set_rules('confirm_password', 'Confirm Password', "required|xss_clean|matches[password]");
 
         if ($this->form_validation->run() == FALSE) {
             $data['page_title'] = "Account Settings";
@@ -581,15 +591,15 @@ class Student extends CI_Controller {
         } else {
 
             $user_id = $this->session->userdata('id');
-            $new_password = $this->input->post('new_password');
-            if ($this->Student_model->change_password($user_id, $new_password)) {
+            $new_password = $this->input->post('password');
+            if ($this->Student_Model->change_password($user_id, $new_password)) {
                 $data['page_title'] = "Account Seings";
                 $data['navbar'] = 'student';
                 $data['succ_message'] = "Password Changed Successfully";
                 $this->load->view('templates/header', $data);
                 $this->load->view('navbar_main', $data);
                 $this->load->view('navbar_sub', $data);
-                $this->load->view('admin/account_settings', $data);
+                $this->load->view('student/edit_student_logdetails', $data);
                 $this->load->view('templates/footer');
             }
         }
@@ -600,9 +610,9 @@ class Student extends CI_Controller {
      */
         function check_old_password() {
         $user_id = $this->session->userdata('id');
-        $password_hash = $this->Student_model->get_password_hash($user_id);
+        $password_hash = $this->Student_Model->get_password_hash($user_id);
 
-        $inserted_old_password_hash = md5($this->input->post('old_password'));
+        $inserted_old_password_hash = md5($this->input->post('oldpassword'));
         if ($password_hash === $inserted_old_password_hash) {
             return TRUE;
         } else {
@@ -663,7 +673,9 @@ class Student extends CI_Controller {
     function check_NIC($field) {
 
         $res = preg_match('/[0-9][0-9][0-9][0-9][0-9][0-9][0-9][0-9][0-9][vV]/', $field);
-        if ($res == 0) {
+        if ($res==null) {
+            return TRUE;
+        }elseif ($res == 0) {
             $this->form_validation->set_message('check_NIC', 'Please Enter Your Valid NIC!');
             return FALSE;
         } else {
