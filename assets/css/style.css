@@ -425,3 +425,19 @@ margin-bottom: 26px;}
     text-align: center;
     font-size: .75em;
 }
+
+.tab-content {
+    border: 1px solid #ddd;
+    border-top: 0px;
+    margin-top: 0px;
+    padding: 0px 5px 5px 5px;
+}
+
+.tab-content h3 {
+    margin-top: 0px;
+    padding-top: 5px;
+}
+
+.table-wrapper {
+    padding: 10px;
+}

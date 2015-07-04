@@ -32,9 +32,19 @@ class Attendance_Model extends CI_Model {
         } else {
             return FALSE;
         }
-        
     }
 
+    function get_temp_absent_records(){
+        $sql = "SELECT t1.* FROM teachers t1 LEFT JOIN temp_teacher_attendance t2 ON t2.teacher_id = t1.id WHERE t2.teacher_id IS NULL";
+        $query = $this->db->query($sql);
+        
+        if(!$query){
+            return NULL;
+        } else {
+            return $query->result();
+        }
+    }
+    
     function is_valid_signature_no($signature_no) {
         $sql = "SELECT * FROM teachers WHERE signature_no = '{$signature_no}'";
         $query = $this->db->query($sql);

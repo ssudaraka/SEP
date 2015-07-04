@@ -91,12 +91,8 @@ class User extends CI_Model {
         }
     }
 
-    public function get_user_list($keyword = '', $user_type, $limit = 1, $offset = null) {
-        $sql = "SELECT * FROM users WHERE id LIKE '%{$keyword}%' OR username LIKE '%{$keyword}%' ";
-        $sql .= "OR first_name LIKE '%{$keyword}%' OR last_name LIKE '%{$keyword}%' OR email LIKE '%{$keyword}%' HAVING user_type = '{$user_type}' LIMIT {$limit}";
-        if (isset($offset)) {
-            $sql .= " OFFSET {$offset}";
-        }
+    public function get_user_list($user_type) {
+        $sql = "SELECT * FROM users WHERE user_type = '$user_type'";
         $query = $this->db->query($sql);
         return $query;
     }
