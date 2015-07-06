@@ -115,6 +115,18 @@ class Attendance_Model extends CI_Model {
             $query = $this->db->query($sql);
         }
     }
+    
+    function get_absent_list($date) {
+        
+        $sql = "SELECT * FROM teachers t, teacher_attendance a WHERE t.signature_no = a.signature_no AND a.date = '{$date}' AND a.is_present = 0";
+        $query = $this->db->query($sql);
+
+        if ($query->num_rows() == 0) {
+            return null;
+        } else {
+            return $query->result();
+        }
+    }
 
     function search_attendance($date) {
         $sql = "SELECT * FROM teachers t, teacher_attendance a WHERE t.signature_no = a.signature_no AND a.date = '{$date}'";

@@ -149,9 +149,9 @@ class Attendance extends CI_Controller {
         $data['page_title'] = 'Attendance Report For: ' . $data['date'];
 
 
-        //$this->attendance_model->save_attendance();
-        //$absent_list = $this->attendance_model->get_temp_absent_records();
-        //$this->attendance_model->save_absent($absent_list);
+        $this->attendance_model->save_attendance();
+        $absent_list = $this->attendance_model->get_temp_absent_records();
+        $this->attendance_model->save_absent($absent_list);
 
         $this->load->view('templates/header', $data);
         $this->load->view('navbar_main', $data);
@@ -161,14 +161,28 @@ class Attendance extends CI_Controller {
     }
 
     function present_pdf($date = "") {
-        //$this->load->helper(array('dompdf', 'file'));
+        $data['date'] = "";
 
-        $data['date'] = '2015-05-22';
+        if ($date = ""):
+            $data['date'] = date('Y-m-d');
+        else :
+            $data['date'] = $date;
+        endif;
+
         $data['present_list'] = $this->attendance_model->search_attendance($data['date']);
-        //$filename = "attendance_report_" . $data['date'];
-        //$html = 
-                $this->load->view('attendance/report_pdf_present', $data);
-        //pdf_create($html, $filename);
+        $this->load->view('attendance/report_pdf_present', $data);
+    }
+
+    function absent_pdf($date = "") {
+        $data['date'] = "";
+
+        if ($date = ""):
+            $data['date'] = date('Y-m-d');
+        else :
+            $data['date'] = $date;
+        endif;
+        $data['present_list'] = $this->attendance_model->get_absent_list($data['date']);
+        $this->load->view('attendance/report_pdf_present', $data);
     }
 
     function search_report_pdf($date) {

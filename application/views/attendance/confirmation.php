@@ -20,14 +20,14 @@
             <div class="row" style="margin-top: 10px;">
             <div class="admin-btn">
                 <i class="fa fa-file-pdf-o"></i>
-                <a href="#">
+                <a href="<?php echo base_url('index.php/attendance/present_pdf'); ?>">
                     <span class="main">Present List</span>
                     <span class="sub"></span>
                 </a>
             </div>
                 <div class="admin-btn">
                 <i class="fa fa-file-pdf-o"></i>
-                <a href="#">
+                <a href="<?php echo base_url('index.php/attendance/absent_pdf'); ?>">
                     <span class="main">Absent List</span>
                     <span class="sub"></span>
                 </a>
