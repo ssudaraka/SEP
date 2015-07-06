@@ -125,6 +125,9 @@ class Student extends CI_Controller {
     public function create_student(){
         $data['page_title'] = "Admission";
         $data['navbar'] = "student";
+
+        //getting the user type
+        $data['user_type'] = $this->session->userdata['user_type'];
         
         //checking validations
          $this->load->library('form_validation');
@@ -213,6 +216,9 @@ class Student extends CI_Controller {
      */
     function account_settings() {
 
+        //Getting user type
+        $data['user_type'] = $this->session->userdata['user_type'];
+
         if ($this->session->userdata('user_type') !== "S") {//only enable for students
             redirect('login', 'refresh');
         }
@@ -238,6 +244,9 @@ class Student extends CI_Controller {
       public function create_guardian() {
         $data['page_title'] = "Admission";
         $data['navbar'] = "student";
+
+        //getting the user type
+        $data['user_type'] = $this->session->userdata['user_type'];
 
 
         $this->load->library('form_validation');
@@ -382,6 +391,9 @@ class Student extends CI_Controller {
         }
         $data['navbar'] = "teacher";
 
+        //getting the user type
+        $data['user_type'] = $this->session->userdata['user_type'];
+
 
         if ($this->Student_Model->delete_student($id)) {
 
@@ -417,6 +429,10 @@ class Student extends CI_Controller {
     * function for edit a specific guardian
     */
     public function edit_guardian() {
+
+        //getting the user type
+        $data['user_type'] = $this->session->userdata['user_type'];
+
         if (!$this->session->userdata('id')) {
             redirect('login', 'refresh');
         }
@@ -482,6 +498,9 @@ class Student extends CI_Controller {
      * Load guardian details in to update view
      */
     public function load_guardian($id) {
+        //getting the user type
+        $data['user_type'] = $this->session->userdata['user_type'];
+
             if (!$this->session->userdata('id')) {
                 redirect('login', 'refresh');
             }
@@ -500,6 +519,9 @@ class Student extends CI_Controller {
     * function for edit a specific student
     */
     function edit_student(){
+
+        //getting the user type
+        $data['user_type'] = $this->session->userdata['user_type'];
         
              $data['navbar'] = "student";
              $this->load->library('form_validation');
@@ -555,6 +577,10 @@ class Student extends CI_Controller {
      * Load student details in to update view
      */
     public function load_student($id){
+
+        //getting the user type
+        $data['user_type'] = $this->session->userdata['user_type'];
+
                 if (!$this->session->userdata('id')) {
                     redirect('login', 'refresh');
                 }
@@ -573,6 +599,9 @@ class Student extends CI_Controller {
      * change Student's account password
      */
     function change_password() {
+
+        //getting the user type
+        $data['user_type'] = $this->session->userdata['user_type'];
 
         $this->load->library('form_validation');
         $this->form_validation->set_rules('oldpassword', 'Old Password', "required|xss_clean|callback_check_old_password");

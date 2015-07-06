@@ -14,7 +14,7 @@
             </div>
             <div class="admin-btn">
                 <i class="fa fa-globe"></i>
-                <a href="#">
+                <a href="<?php echo base_url('index.php/year'); ?>">
                     <span class="main">Year Planner</span>
                     <span class="sub">Setup, Manage Holidays...</span>
                 </a>

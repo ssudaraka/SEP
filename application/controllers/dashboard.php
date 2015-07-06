@@ -13,6 +13,9 @@ class Dashboard extends CI_Controller {
 
         $data['navbar'] = "dashboard";
 
+        //Getting user type
+        $data['user_type'] = $this->session->userdata['user_type'];
+
         $data['page_title'] = 'Dashboard';
         $data['first_name'] = $this->session->userdata('first_name');
         $this->load->view('templates/header', $data);
