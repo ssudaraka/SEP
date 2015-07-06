@@ -26,7 +26,7 @@ class Attendance extends CI_Controller {
              * recorded in the database currently. We are using a callback function to insert the data
              * into the database and it will do all the hard work.
              */
-            $data['result'] = $this->attendance_model->get_all_records();
+            $data['result'] = $this->attendance_model->get_all_temp_records();
             $this->load->view('templates/header', $data);
             $this->load->view('navbar_main', $data);
             $this->load->view('navbar_sub', $data);
@@ -38,7 +38,7 @@ class Attendance extends CI_Controller {
              * If you are still unsure what the heck is happening reffer to the callback function defined below.
              */
 
-            $data['result'] = $this->attendance_model->get_all_records();
+            $data['result'] = $this->attendance_model->get_all_temp_records();
             $this->load->view('templates/header', $data);
             $this->load->view('navbar_main', $data);
             $this->load->view('navbar_sub', $data);
@@ -104,17 +104,16 @@ class Attendance extends CI_Controller {
         $data['date'] = date('Y-m-d');
         $data['navbar'] = "attendance";
         $data['page_title'] = 'Attendance Report For: ' . $data['date'];
-        
 
-        $data['result'] = $this->attendance_model->get_all_records();
+
+        $data['result'] = $this->attendance_model->get_all_temp_records();
         $data['absent_list'] = $this->attendance_model->get_temp_absent_records();
-        
+
         $this->load->view('templates/header', $data);
         $this->load->view('navbar_main', $data);
         $this->load->view('navbar_sub', $data);
         $this->load->view('attendance/report', $data);
         $this->load->view('/templates/footer');
- 
     }
 
     function report_pdf() {
@@ -122,16 +121,15 @@ class Attendance extends CI_Controller {
         $date_string = "%Y-%m-%d";
         $time = time();
         $data['date'] = mdate($date_string, $time);
-        
+
         /**
          * REMINDER!
          * School name is hardcoded here. Change it to get the value from database so it can be extended
          * to different schools.
          */
-        
         $data['school_name'] = "D. S. Senanayake College";
-        
-        
+
+
         $data['result'] = $this->attendance_model->get_all_records();
         $filename = "attendance_report_" . $data['date'];
         // page info here, db calls, etc.     
@@ -143,14 +141,61 @@ class Attendance extends CI_Controller {
         $this->attendance_model->save_attendance();
         $this->attendance_model->delete_temp();
     }
-    
-    function confirm(){
-        
+
+    function confirm() {
+
+        $data['date'] = date('Y-m-d');
+        $data['navbar'] = "attendance";
+        $data['page_title'] = 'Attendance Report For: ' . $data['date'];
+
+
+        $this->attendance_model->save_attendance();
+        $absent_list = $this->attendance_model->get_temp_absent_records();
+        $this->attendance_model->save_absent($absent_list);
+        $this->attendance_model->delete_temp();
+
+        $this->load->view('templates/header', $data);
+        $this->load->view('navbar_main', $data);
+        $this->load->view('navbar_sub', $data);
+        $this->load->view('attendance/confirmation', $data);
+        $this->load->view('/templates/footer');
     }
-    function search_report_pdf($date){
+
+    function present_pdf($date = "") {
+        $data['report_type'] = "AT";
+        $data['date'] = "";
+
+        if ($date == ""):
+            $data['date'] = date('Y-m-d');
+        else :
+            $data['date'] = $date;
+        endif;
         
+        $data['page_title'] = "Attendance Report For: {$data['date']}";
+
+        $data['result'] = $this->attendance_model->search_attendance($data['date']);
+        $this->load->view('attendance/report_pdf', $data);
+    }
+
+    function absent_pdf($date = "") {
+        $data['report_type'] = "AB";
+        $data['date'] = "";
+
+        if ($date == ""):
+            $data['date'] = date('Y-m-d');
+        else :
+            $data['date'] = $date;
+        endif;
+        
+        $data['page_title'] = "Absent Report For: {$data['date']}";
+        $data['result'] = $this->attendance_model->get_absent_list($data['date']);
+        $this->load->view('attendance/report_pdf', $data);
+    }
+
+    function search_report_pdf($date) {
+
         $this->load->helper(array('dompdf', 'file'));
-        
+
         /**
          * REMINDER!
          * School name is hardcoded here. Change it to get the value from database so it can be extended
@@ -161,13 +206,13 @@ class Attendance extends CI_Controller {
         $data['result'] = $this->attendance_model->search_attendance($date);
         $filename = "attendance_report_" . $date;
         $html = $this->load->view('attendance/report_pdf', $data, true);
-        pdf_create($html, $filename);   
+        pdf_create($html, $filename);
     }
 
     function reports() {
         $data['page_title'] = "Attendance Reports";
         $data['navbar'] = "attendance";
-        
+
         $this->form_validation->set_rules("date", "Date", "required|callback_have_reports_for");
 
         if ($this->form_validation->run() == FALSE) {
@@ -186,41 +231,20 @@ class Attendance extends CI_Controller {
             $this->load->view('/templates/footer');
         }
     }
-    
+
     /**
      * This function is used to check whether there are teacher attendence reports for a given
      * date. If not available, we can display that there are no reports.
      * @return boolean
      */
-    
-    function have_reports_for(){
+    function have_reports_for() {
         $date = $this->input->post('date');
-        if(!$this->attendance_model->search_attendance($date)){
+        if (!$this->attendance_model->search_attendance($date)) {
             $this->form_validation->set_message('have_reports_for', "Attendance for date <strong>{$date}</strong> is not yet recorded.");
             return FALSE;
-        } else  {
+        } else {
             return TRUE;
         }
     }
-    
-    function test(){
-        
-        $this->load->helper(array('dompdf', 'file'));
-        
-        /**
-         * REMINDER!
-         * School name is hardcoded here. Change it to get the value from database so it can be extended
-         * to different schools.
-         */
-        
-        $data['page_title'] = "Daily Attendance Report";
-        $data['school_name'] = "D. S. Senanayake College";
-        $data['date'] = date('Y-m-d');
-        $data['result'] = $this->attendance_model->get_all_records();
-        //$this->load->view('attendance/report_pdf', $data);
-        $html = $this->load->view('attendance/report_pdf', $data, true);
-        pdf_create($html, "test");
-    }
-    
 
 }
