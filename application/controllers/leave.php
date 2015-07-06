@@ -523,6 +523,11 @@ class leave extends CI_Controller {
 
             $data['teacher_details'] = $this->Leave_Model->get_teacher_by_id($userid);
 
+            //Values for hidden form
+            $data['uid'] = $userid;
+            $data['sd'] = $startdate;
+            $data['ed'] = $enddate;
+
             if(empty($data['applied_leaves'])){
                 $var = TRUE;
             } else {
@@ -537,6 +542,23 @@ class leave extends CI_Controller {
             $this->load->view('/leave/leaves_report', $data);
             $this->load->view('/templates/footer');
         }
+    }
+
+    public function leaves_report_print(){
+        $this->load->helper(array('dompdf', 'file'));
+
+        //Get Form Data
+        $startdate = $this->input->post('startdate');
+        $enddate = $this->input->post('enddate');
+        $userid = $this->input->post('userid');
+
+        $data['applied_leaves'] = $this->Leave_Model->get_leaves_for_report($userid, $startdate, $enddate);
+        $data['teacher_details'] = $this->Leave_Model->get_teacher_by_id($userid);
+        $data['school_name'] = "D. S. Senanayake College";
+
+        $filename = "Teacher_leave_report";    
+        $html = $this->load->view('leave/teacher_leave_pdf', $data, true);
+        pdf_create($html, $filename);
     }
 
         //View Leaves Report

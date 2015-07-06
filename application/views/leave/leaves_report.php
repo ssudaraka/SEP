@@ -21,20 +21,15 @@
                 </div>
                 <div class="panel-body">
                     <div class="row">
-                       <div class="col-md-3"><label>Name</label></div>
-                       <div class="col-md-3"><label>Start Date</label></div> 
-                       <div class="col-md-2"><label>End Date</label></div>  
-                    </div>
-                    <div class="row">
                         <div class="col-md-12">
                                 <?php
                                     // Change the css classes to suit your needs
 
-                                    $attributes = array('class' => 'form-inline', 'id' => '');
+                                    $attributes = array('class' => '', 'id' => '');
                                     echo form_open('leave/leaves_report', $attributes);
                                 ?>
-                              <div class="form-group">
-                                
+                              <div class="form-group ">
+                                <label >Name</label>
                                 <select name="cmb_status" class="form-control">
                                     <option value="0">- Select Name -</option>
                                     <?php
@@ -44,31 +39,51 @@
                                 ?>
                                 </select>
                               </div>
-                              <div class="form-group">
-                                
-                                <div class="input-group">
-                                    <input type="date" name="txt_startdate" class="form-control" placeholder="Start Date">
-                                    <div class="input-group-addon"><i class="fa fa-calendar"></i></div>
-                                </div> 
-                              </div>
-                              <div class="form-group">
-                                
-                                <div class="input-group">
-                                    <input type="date" name="txt_enddate" class="form-control" placeholder="End Date">
-                                    <div class="input-group-addon"><i class="fa fa-calendar"></i></div>
-                                </div> 
-                              </div>
-                              <button type="submit" class="btn btn-primary"><i class="fa fa-search"></i></button>
+                              <div class="row">
+                                <div class="col-md-4">
+                                      <div class="form-group">
+                                        <label >Start Date</label>
+                                        <div class="input-group">
+                                            <input type="date" name="txt_startdate" class="form-control" placeholder="Start Date">
+                                            <div class="input-group-addon"><i class="fa fa-calendar"></i></div>
+                                        </div> 
+                                      </div>
+                                  </div>
+                                  <div class="col-md-4">
+                                      <div class="form-group">
+                                        <label >End Date</label>
+                                        <div class="input-group">
+                                            <input type="date" name="txt_enddate" class="form-control" placeholder="End Date">
+                                            <div class="input-group-addon"><i class="fa fa-calendar"></i></div>
+                                        </div> 
+                                      </div>
+                                    </div>
+                                    <div class="col-md-4">
+                                        
+                                    </div>
+                                </div>
+                                <div class="form-group">
+                                            <button type="submit" class="btn btn-primary"><i class="fa fa-search"></i> Search</button>
+                                        </div>
+
+                              
                             <?php echo form_close(); ?>
                         </div>
                     </div>
                     <hr>
                     <?php if (isset($report_results)) { ?>
+                        <!-- Report Generation Form -->
+                        <?php echo form_open('leave/leaves_report_print'); ?>
+                        <input type="hidden" name="userid" value="<?php echo $uid; ?>" >
+                        <input type="hidden" name="startdate" value="<?php echo $sd; ?>" >
+                        <input type="hidden" name="enddate" value="<?php echo $ed; ?>" >
                         <div class="row">
                             <div class="col-md-4">
                                 <button type="submit" class="btn btn-primary"><i class="fa fa-print"></i> Print</button>
                             </div>
                         </div>
+                        <?php echo form_close(); ?>
+                        <!-- End of Report Generation -->
                         <hr>
                         <!-- Report Details -->
                         <?php
