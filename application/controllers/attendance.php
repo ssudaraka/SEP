@@ -143,22 +143,32 @@ class Attendance extends CI_Controller {
     }
 
     function confirm() {
-        
+
         $data['date'] = date('Y-m-d');
         $data['navbar'] = "attendance";
         $data['page_title'] = 'Attendance Report For: ' . $data['date'];
-        
+
 
         //$this->attendance_model->save_attendance();
         //$absent_list = $this->attendance_model->get_temp_absent_records();
-        
         //$this->attendance_model->save_absent($absent_list);
-        
+
         $this->load->view('templates/header', $data);
         $this->load->view('navbar_main', $data);
         $this->load->view('navbar_sub', $data);
         $this->load->view('attendance/confirmation', $data);
         $this->load->view('/templates/footer');
+    }
+
+    function present_pdf($date = "") {
+        //$this->load->helper(array('dompdf', 'file'));
+
+        $data['date'] = '2015-05-22';
+        $data['present_list'] = $this->attendance_model->search_attendance($data['date']);
+        //$filename = "attendance_report_" . $data['date'];
+        //$html = 
+                $this->load->view('attendance/report_pdf_present', $data);
+        //pdf_create($html, $filename);
     }
 
     function search_report_pdf($date) {
