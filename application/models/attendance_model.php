@@ -129,7 +129,7 @@ class Attendance_Model extends CI_Model {
     }
 
     function search_attendance($date) {
-        $sql = "SELECT * FROM teachers t, teacher_attendance a WHERE t.signature_no = a.signature_no AND a.date = '{$date}'";
+        $sql = "SELECT * FROM teachers t, teacher_attendance a WHERE t.signature_no = a.signature_no AND a.date = '{$date}' AND a.is_present=1";
         $query = $this->db->query($sql);
 
         if ($query->num_rows() == 0) {
