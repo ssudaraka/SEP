@@ -54,6 +54,9 @@ class Teacher extends CI_Controller {
 
     //Table search
     public function search_one() {
+        //getting the user type
+        $data['user_type'] = $this->session->userdata['user_type'];
+
 
         if (!$this->session->userdata('id')) {
             redirect('login', 'refresh');
@@ -77,6 +80,9 @@ class Teacher extends CI_Controller {
 
     //Load teacher details in to update view
     public function load_teacher($id) {
+        //getting the user type
+        $data['user_type'] = $this->session->userdata['user_type'];
+
         if (!$this->session->userdata('id')) {
             redirect('login', 'refresh');
         }
@@ -93,6 +99,9 @@ class Teacher extends CI_Controller {
 
     //edit teacher
     public function edit_teacher($id) {
+        //getting the user type
+        $data['user_type'] = $this->session->userdata['user_type'];
+
         if (!$this->session->userdata('id')) {
             redirect('login', 'refresh');
         }
@@ -215,6 +224,9 @@ class Teacher extends CI_Controller {
 
     //deleate teacher recode
     public function delete_teacher($id) {
+        //getting the user type
+        $data['user_type'] = $this->session->userdata['user_type'];
+
         if(!$this->session->userdata('id')){
             redirect('login', 'refresh');
         }
@@ -249,6 +261,9 @@ class Teacher extends CI_Controller {
     }
 
     function create() {
+        //getting the user type
+        $data['user_type'] = $this->session->userdata['user_type'];
+
         if (!$this->session->userdata('id')) {
             redirect('login', 'refresh');
         }
@@ -314,6 +329,9 @@ class Teacher extends CI_Controller {
     
 
     function update_details($id) {
+        //getting the user type
+        $data['user_type'] = $this->session->userdata['user_type'];
+
         if (!$this->session->userdata('id')) {
             redirect('login', 'refresh');
         }
@@ -386,6 +404,9 @@ class Teacher extends CI_Controller {
     }
 
     function create_log_details($id) {
+        //getting the user type
+        $data['user_type'] = $this->session->userdata['user_type'];
+
         if (!$this->session->userdata('id')) {
             redirect('login', 'refresh');
         }
@@ -446,6 +467,9 @@ class Teacher extends CI_Controller {
     }
     
     function check_profile($id){
+        //getting the user type
+        $data['user_type'] = $this->session->userdata['user_type'];
+
         if (!$this->session->userdata('id')) {
             redirect('login', 'refresh');
         }
@@ -464,6 +488,9 @@ class Teacher extends CI_Controller {
     }
             
     function create_profile() {
+        //getting the user type
+        $data['user_type'] = $this->session->userdata['user_type'];
+
         if (!$this->session->userdata('id')) {
             redirect('login', 'refresh');
         }
@@ -524,6 +551,9 @@ class Teacher extends CI_Controller {
     }
 
     function view_profile($teacher_id) {
+        //getting the user type
+        $data['user_type'] = $this->session->userdata['user_type'];
+
         if (!$this->session->userdata('id')) {
             redirect('login', 'refresh');
         }
@@ -541,6 +571,9 @@ class Teacher extends CI_Controller {
     }
     
     function teacher_report($val) {
+        //getting the user type
+        $data['user_type'] = $this->session->userdata['user_type'];
+
         if (!$this->session->userdata('id')) {
             redirect('login', 'refresh');
         }
@@ -557,6 +590,9 @@ class Teacher extends CI_Controller {
     }
     
     function report_pdf($l) {
+        //getting the user type
+        $data['user_type'] = $this->session->userdata['user_type'];
+        
         if (!$this->session->userdata('id')) {
             redirect('login', 'refresh');
         }

@@ -20,6 +20,9 @@ class Profile extends CI_Controller {
      */
 
     function index() {
+        //getting the user type
+        $data['user_type'] = $this->session->userdata['user_type'];
+
         $result = $this->user->get_details($this->session->userdata('id'));
         foreach ($result as $row) {
             $data['first_name'] = $row->first_name;
@@ -38,6 +41,8 @@ class Profile extends CI_Controller {
     }
 
     function account_settings() {
+        //getting the user type
+        $data['user_type'] = $this->session->userdata['user_type'];
 
         $result = $this->user->get_details($this->session->userdata('id'));
         foreach ($result as $row) {
@@ -58,6 +63,8 @@ class Profile extends CI_Controller {
      * This performs password change. 
      */
     function change_password() {
+        //getting the user type
+        $data['user_type'] = $this->session->userdata['user_type'];
 
         $this->load->library('form_validation');
         $this->form_validation->set_rules('old_password', 'Old Password', "required|xss_clean|callback_check_old_password");
@@ -116,6 +123,8 @@ class Profile extends CI_Controller {
     }
 
     function update_profile() {
+        //getting the user type
+        $data['user_type'] = $this->session->userdata['user_type'];
 
         $this->load->library('form_validation');
         $this->form_validation->set_rules('first_name', 'first name', "required|xss_clean|alpha");

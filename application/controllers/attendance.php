@@ -18,6 +18,10 @@ class Attendance extends CI_Controller {
         $data['navbar'] = "attendance";
         $data['date'] = date('Y-m-d');
 
+        //getting the user type
+        $data['user_type'] = $this->session->userdata['user_type'];
+
+
         $this->form_validation->set_rules("signature_no", "Signature Number", "required|min_length[5]|integer|callback_add_record");
 
         if ($this->form_validation->run() == FALSE) {
@@ -85,6 +89,9 @@ class Attendance extends CI_Controller {
      * Parameters: $signature_no
      */
     function delete_record($signature_no) {
+        //getting the user type
+        $data['user_type'] = $this->session->userdata['user_type'];
+
         $data['page_title'] = "Attendance";
         $data['navbar'] = "attendance";
 
@@ -101,6 +108,9 @@ class Attendance extends CI_Controller {
     }
 
     function generate_report() {
+        //getting the user type
+        $data['user_type'] = $this->session->userdata['user_type'];
+
         $data['date'] = date('Y-m-d');
         $data['navbar'] = "attendance";
         $data['page_title'] = 'Attendance Report For: ' . $data['date'];
@@ -165,6 +175,9 @@ class Attendance extends CI_Controller {
     }
 
     function reports() {
+        //getting the user type
+        $data['user_type'] = $this->session->userdata['user_type'];
+
         $data['page_title'] = "Attendance Reports";
         $data['navbar'] = "attendance";
         
@@ -204,6 +217,8 @@ class Attendance extends CI_Controller {
     }
     
     function test(){
+        //getting the user type
+        $data['user_type'] = $this->session->userdata['user_type'];
         
         $this->load->helper(array('dompdf', 'file'));
         

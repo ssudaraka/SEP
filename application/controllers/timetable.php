@@ -10,6 +10,9 @@ class Timetable extends CI_Controller {
     }
 
     function index() {
+        //getting the user type
+        $data['user_type'] = $this->session->userdata['user_type'];
+
         $data['page_title'] = "Timetable Management";
         $data['navbar'] = "timetable";
 
@@ -23,6 +26,9 @@ class Timetable extends CI_Controller {
     }
 
     function create() {
+        //getting the user type
+        $data['user_type'] = $this->session->userdata['user_type'];
+
         $data['page_title'] = "Create Timetable";
         $data['navbar'] = "timetable";
 
@@ -50,6 +56,8 @@ class Timetable extends CI_Controller {
     }
 
     function search_by_year() {
+        //getting the user type
+        $data['user_type'] = $this->session->userdata['user_type'];
 
         $data['page_title'] = "Timetable Management";
         $data['navbar'] = 'timetable';
@@ -65,6 +73,9 @@ class Timetable extends CI_Controller {
     }
     
     function search_by_class(){
+        //getting the user type
+        $data['user_type'] = $this->session->userdata['user_type'];
+
         $data['page_title'] = "Timetable Management";
         $data['navbar'] = 'timetable';
 
@@ -81,6 +92,9 @@ class Timetable extends CI_Controller {
     }
 
     function open($timetable_id) {
+        //getting the user type
+        $data['user_type'] = $this->session->userdata['user_type'];
+
         $data['page_title'] = "Timetable: $timetable_id";
         $data['navbar'] = "timetable";
         $data['timetable_id'] = $timetable_id;
@@ -142,6 +156,8 @@ class Timetable extends CI_Controller {
     }
 
     function delete($timetable_id) {
+        //getting the user type
+        $data['user_type'] = $this->session->userdata['user_type'];
 
         $data['page_title'] = "Test Timetable";
         $data['navbar'] = "timetable";
@@ -161,6 +177,8 @@ class Timetable extends CI_Controller {
     }
 
     function test() {
+        //getting the user type
+        $data['user_type'] = $this->session->userdata['user_type'];
 
         $data['page_title'] = "Test Timetable";
         $data['navbar'] = "timetable";
@@ -172,6 +190,9 @@ class Timetable extends CI_Controller {
     }
 
     function add_slot($timetable_id, $slot_id) {
+        //getting the user type
+        $data['user_type'] = $this->session->userdata['user_type'];
+        
         $data['page_title'] = "Test Timetable";
         $data['navbar'] = "timetable";
         $data['timetable'] = $this->timetable_model->get_class_timetable($timetable_id);

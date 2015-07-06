@@ -15,6 +15,8 @@ class Admin extends CI_Controller {
      * Main function for Admin section for now. Maybe changed in future. This will just load the current user's profile.
      */
     function index() {
+        //getting the user type
+        $data['user_type'] = $this->session->userdata['user_type'];
 
         $data['page_title'] = "System Administration";
         $data['navbar'] = "admin";
@@ -32,6 +34,9 @@ class Admin extends CI_Controller {
      */
 
     function system_settings() {
+        //getting the user type
+        $data['user_type'] = $this->session->userdata['user_type'];
+
         if ($this->session->userdata('user_type') !== "A") {
             redirect('login');
         }
@@ -47,6 +52,8 @@ class Admin extends CI_Controller {
     }
 
     function create() {
+        //getting the user type
+        $data['user_type'] = $this->session->userdata['user_type'];
 
         $this->load->library('form_validation');
         $this->form_validation->set_rules('username', 'username', "trim|required|xss_clean|min_length[5]|alpha_dash");
@@ -92,6 +99,9 @@ class Admin extends CI_Controller {
     }
 
     function manage_admins() {
+        //getting the user type
+        $data['user_type'] = $this->session->userdata['user_type'];
+
         $data['page_title'] = "Manage Administrators";
         $data['navbar'] = 'admin';
 
@@ -107,6 +117,8 @@ class Admin extends CI_Controller {
     }
 
     function search() {
+        //getting the user type
+        $data['user_type'] = $this->session->userdata['user_type'];
 
         $this->load->library('pagination');
         $config = array();
@@ -139,6 +151,8 @@ class Admin extends CI_Controller {
     }
 
     function delete($user_id) {
+        //getting the user type
+        $data['user_type'] = $this->session->userdata['user_type'];
 
         if ($this->session->userdata('user_type') !== "A") {
             show_404();
