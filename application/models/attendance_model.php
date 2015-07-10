@@ -6,8 +6,8 @@
  */
 
 class Attendance_Model extends CI_Model {
-    
-    function get_all_records() {
+
+    function get_all_temp_records() {
         $sql = "SELECT * FROM teachers t, temp_teacher_attendance a WHERE t.signature_no = a.signature_no";
         $query = $this->db->query($sql);
 
@@ -20,13 +20,13 @@ class Attendance_Model extends CI_Model {
 
         if ($query->num_rows == 1) {
             return TRUE;
-        } 
-        
+        }
+
         $date = date("Y-m-d");
-        
+
         $sql = "SELECT * FROM teacher_attendance WHERE signature_no = '{$signature_no}' AND date = '{$date}'";
         $query = $this->db->query($sql);
-        
+
         if ($query->num_rows == 1) {
             return TRUE;
         } else {
@@ -34,17 +34,17 @@ class Attendance_Model extends CI_Model {
         }
     }
 
-    function get_temp_absent_records(){
+    function get_temp_absent_records() {
         $sql = "SELECT t1.* FROM teachers t1 LEFT JOIN temp_teacher_attendance t2 ON t2.teacher_id = t1.id WHERE t2.teacher_id IS NULL";
         $query = $this->db->query($sql);
-        
-        if(!$query){
+
+        if (!$query) {
             return NULL;
         } else {
             return $query->result();
         }
     }
-    
+
     function is_valid_signature_no($signature_no) {
         $sql = "SELECT * FROM teachers WHERE signature_no = '{$signature_no}'";
         $query = $this->db->query($sql);
@@ -98,22 +98,44 @@ class Attendance_Model extends CI_Model {
         $date = date("Y-m-d");
 
         $result = $query->result();
-  
+
         foreach ($result as $row) {
             $sql = "INSERT INTO teacher_attendance (teacher_id, signature_no, is_present, date) ";
             $sql .= "VALUES ($row->teacher_id, $row->signature_no, 1, '$date')";
             $query = $this->db->query($sql);
         }
     }
-    
-    function search_attendance($date){
-        $sql = "SELECT * FROM teachers t, teacher_attendance a WHERE t.signature_no = a.signature_no AND a.date = '{$date}'";
-        $query = $this->db->query($sql);
+
+    function save_absent($absent_list) {
         
-        if($query->num_rows == 0){
+        $date = date("Y-m-d");
+        foreach ($absent_list as $absent) {
+            $sql = "INSERT INTO teacher_attendance (teacher_id, signature_no, is_present, date) ";
+            $sql .= "VALUES ($absent->id, $absent->signature_no, 0, '$date')";
+            $query = $this->db->query($sql);
+        }
+    }
+    
+    function get_absent_list($date) {
+        
+        $sql = "SELECT * FROM teachers t, teacher_attendance a WHERE t.signature_no = a.signature_no AND a.date = '{$date}' AND a.is_present = 0";
+        $query = $this->db->query($sql);
+
+        if ($query->num_rows() == 0) {
             return null;
         } else {
-             return $query->result();
+            return $query->result();
+        }
+    }
+
+    function search_attendance($date) {
+        $sql = "SELECT * FROM teachers t, teacher_attendance a WHERE t.signature_no = a.signature_no AND a.date = '{$date}' AND a.is_present=1";
+        $query = $this->db->query($sql);
+
+        if ($query->num_rows() == 0) {
+            return null;
+        } else {
+            return $query->result();
         }
     }
 
