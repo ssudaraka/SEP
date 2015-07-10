@@ -1,7 +1,7 @@
 
 
 <!-- Admin Nav Bar Start -->
-<?php if($user_type == 'A'){ ?>
+<?php if($user_type == 'A' || $user_type == 'P'){ ?>
 <div class="subnavbar">
   <div class="subnavbar-inner">
     <div class="container">

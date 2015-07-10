@@ -321,4 +321,19 @@ class Event_model extends CI_Model {
         }
     }
 
+    //get count of upcoming events
+    public function get_count_upcoming_events($today) {
+        try {
+
+            if ($data = $this->db->query("select count(*) as count from `events` where start_date >= '$today' and status = 'success'")) {
+                $row = $data->row();
+                return $row->count;
+            } else {
+                return null;
+            }
+        } catch (Exception $ex) {
+            return null;
+        }
+    }
+
 }

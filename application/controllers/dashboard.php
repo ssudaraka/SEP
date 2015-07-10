@@ -4,6 +4,9 @@ class Dashboard extends CI_Controller {
 
     function __construct() {
         parent::__construct();
+        //Load Models
+        $this->load->model('Leave_Model');
+        $this->load->model('event_model');
     }
 
     function index() {
@@ -12,6 +15,11 @@ class Dashboard extends CI_Controller {
         }
 
         $data['navbar'] = "dashboard";
+
+        //Stats on Dashboard
+        $data['leaves'] = $this->Leave_Model->get_count_of_pending_leaves();
+        $today = date('Y-m-d');
+        $data['events'] = $this->event_model->get_count_upcoming_events($today);
 
         //Getting user type
         $data['user_type'] = $this->session->userdata['user_type'];
