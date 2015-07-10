@@ -307,5 +307,17 @@ class Leave_Model extends CI_Model {
             return FALSE;
         }
     }
+    //Get a Count of pending leaves for dashboard
+    public function get_count_of_pending_leaves(){
+        try {
+            $query = $this->db->query("SELECT COUNT(*) as count FROM apply_leaves al WHERE al.leave_status = '0'");
+            $row = $query->row();
+            return $row->count;
+
+        } catch(Exception $ex) {
+            return FALSE;
+        }
+    }
+
 }
 ?>
