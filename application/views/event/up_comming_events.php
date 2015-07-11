@@ -4,11 +4,13 @@
 
         <div class="col-md-3">
             <?php
-            if ($user_type == 'A') {
-                $this->view('event/sidebar_nav');
-            } elseif ($user_type == 'P') {
+            if($user_type == 'A'){
                 $this->view('event/admin_sidebar_nav');
-            } else {
+            }
+            elseif($user_type == 'P'){
+                $this->view('event/sidebar_nav');
+            }
+            else{
                 $this->view('event/sidebar_nav_teacher');
             }
             ?>

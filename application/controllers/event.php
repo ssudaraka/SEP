@@ -21,13 +21,13 @@ class Event extends CI_Controller {
         $data['result'] = $this->event_model->get_event_type_details();
         $data['navbar'] = "Sports";
             if($user_t == 'A'){
-            $this->create_event(); //if user type is 'A', it will call this function
+             $this->check_event_details();//if user type is 'A', it will call this function
             }
             elseif($user_t == 'P'){
-            $this->check_event_details();
+            $this->create_event();
             }
             else{
-            $this->view_all_events();
+            $this->create_event();;
             }
     }
 
