@@ -21,13 +21,13 @@ class Event extends CI_Controller {
         $data['result'] = $this->event_model->get_event_type_details();
         $data['navbar'] = "Sports";
             if($user_t == 'A'){
-            $this->create_event(); //if user type is 'A', it will call this function
+                $this->check_event_details(); //if user type is 'A', it will call this function
             }
-            elseif($user_t == 'P'){
-            $this->check_event_details();
+            elseif($user_t == 'T'){
+                $this->create_event();
             }
             else{
-            $this->view_all_events();
+                $this->view_all_events();
             }
     }
 
@@ -39,6 +39,8 @@ class Event extends CI_Controller {
             redirect('login', 'refresh');
         }
         $data['user_type'] = $this->session->userdata['user_type'];
+        $log_id = $this->session->userdata['id'];
+        $data['nic'] = $this->event_model->get_logged_user_nic($log_id);
         $data['navbar'] = "event";
         $data['result'] = $this->event_model->get_event_type_details();
         $this->load->library('form_validation');

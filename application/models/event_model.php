@@ -336,4 +336,15 @@ class Event_model extends CI_Model {
         }
     }
 
+    //Get Logged in user nic
+    public function get_logged_user_nic($user) {
+        try {
+            if($data=  $this->db->query("select nic_no from teachers where user_id='$user'")){
+                return $data->row()->nic_no;
+            }
+        } catch (Exception $exc) {
+            return NULL;
+        }
+    }
+
 }
