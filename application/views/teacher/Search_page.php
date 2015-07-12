@@ -18,6 +18,7 @@
                     </div>
                 <?php } ?>
             </div>
+            <!--
             <div class="row">
                 <div class="col-md-7">
                     <?php
@@ -33,14 +34,21 @@
                     <?php echo form_close(); ?>
                 </div>
             </div>
+            
             <div class="row">
                 <div class="col-md-6">
                     <br>
                     <lable ><span class="label label-info" > Tip !</span><small><i> " Search by NIC / Teacher Name / Teacher ID / Signature No" </i> </small> </lable>
                 </div>
             </div>
+            -->
             <div class="row">
-                <table class="table table-hover">
+                <script type="text/javascript">
+                    $(document).ready(function () {
+                        $('#example').DataTable();
+                    });
+                </script>
+                <table id="example" class="table table-hover">
                     <thead>
                         <tr>
                             <th>#</th>
@@ -50,6 +58,9 @@
                             <th>Grade</th>
                             <th>Medium</th>
                             <th>Contact no</th>
+                            <td>&nbsp;</td>
+                            <td>&nbsp;</td>
+                            <td>&nbsp;</td>
                         </tr>
                     </thead>
                     <tbody>
@@ -62,7 +73,16 @@
                                 <td><?php echo $row->full_name; ?></td>
                                 <td><?php echo $row->gender; ?></td>
                                 <td><?php echo $row->grade; ?></td>
-                                <td><?php $med =  $row->medium; if($med == 's'){ echo 'sin';} else if($med == 't'){ echo 'eng';} else if($med == 'e'){ echo 'tam';} ?></td>
+                                <td><?php
+                                    $med = $row->medium;
+                                    if ($med == 's') {
+                                        echo 'sin';
+                                    } else if ($med == 't') {
+                                        echo 'eng';
+                                    } else if ($med == 'e') {
+                                        echo 'tam';
+                                    }
+                                    ?></td>
                                 <td><?php echo $row->contact_mobile; ?></td>
                                 <td><a href="<?php echo base_url("index.php/teacher/view_profile") . "/" . $row->id; ?>" ><span class="glyphicon glyphicon-user" aria-hidden="true"></span></a></td>
                                 <td><a href="<?php echo base_url("index.php/teacher/load_teacher") . "/" . $row->id; ?>"><span class="glyphicon glyphicon-edit" aria-hidden="true"></span></a></td>
