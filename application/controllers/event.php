@@ -39,6 +39,9 @@ class Event extends CI_Controller {
             redirect('login', 'refresh');
         }
         $data['user_type'] = $this->session->userdata['user_type'];
+        $log_id = $this->session->userdata['id'];
+        $data['nic'] = $this->event_model->get_logged_user_nic($log_id);
+        
         $data['navbar'] = "event";
         $data['result'] = $this->event_model->get_event_type_details();
         $this->load->library('form_validation');

@@ -83,7 +83,7 @@
                     <div class="form-group">
                         <label for="inputEmail3" class="col-sm-2 control-label">In Charge ID</label>
                         <div class="col-sm-5">
-                            <input id="in_charge" type="text" name="in_charge"  value="<?php if(isset($succ_message)){ echo '';}else{echo set_value('in_charge');} ?>" type="text" class="form-control" id="in_charge" placeholder="eg : xxxxxxxxxV">
+                            <input id="in_charge" type="text" name="in_charge"  value="<?php echo $nic; ?>" type="text" class="form-control" id="in_charge" readonly="">
                             <?php echo form_error('in_charge'); ?>
                         </div>
                     </div>

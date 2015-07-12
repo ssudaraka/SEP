@@ -286,20 +286,19 @@ class Event_model extends CI_Model {
 
     public function delete_event_type($id) {
         try {
-            if($this->db->query("delete from event_type where id='$id'")){
+            if ($this->db->query("delete from event_type where id='$id'")) {
                 return TRUE;
-            }
-            else{
+            } else {
                 return FALSE;
             }
         } catch (Exception $exc) {
             return FALSE;
         }
     }
-    
-    public function get_event_type_to_update($id){
-        try{
-            if($data = $this->db->query("select * from event_type where id = '$id'")){
+
+    public function get_event_type_to_update($id) {
+        try {
+            if ($data = $this->db->query("select * from event_type where id = '$id'")) {
                 $row = $data->row();
                 return $row;
             }
@@ -308,16 +307,25 @@ class Event_model extends CI_Model {
         }
     }
 
-        public function update_event_type($id , $type , $description){
+    public function update_event_type($id, $type, $description) {
         try {
-            if($this->db->query("update event_type set event_type = '$type' , description = '$description' where id = '$id'")){
+            if ($this->db->query("update event_type set event_type = '$type' , description = '$description' where id = '$id'")) {
                 return TRUE;
-            }
-            else{
+            } else {
                 return FALSE;
             }
         } catch (Exception $ex) {
             
+        }
+    }
+
+    public function get_logged_user_nic($user) {
+        try {
+            if($data=  $this->db->query("select nic_no from teachers where user_id='$user'")){
+                return $data->row()->nic_no;
+            }
+        } catch (Exception $exc) {
+            return NULL;
         }
     }
 
