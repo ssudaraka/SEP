@@ -557,7 +557,7 @@ class Student extends CI_Controller {
                 $this->load->view('/templates/header', $data);
                 $this->load->view('navbar_main', $data);
                 $this->load->view('navbar_sub', $data);
-                $this->load->view('/student/edit_Student', $data);
+                $this->load->view('/student/edit_student', $data);
                 $this->load->view('/templates/footer');
                 }else{
                   $data['err_message'] = "Student details update error";
