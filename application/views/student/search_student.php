@@ -1,16 +1,4 @@
 
-<link rel="stylesheet" type="text/css" href="/DataTables-1.10.7/media/css/jquery.dataTables.css">
-  
-<!-- jQuery -->
-<script type="text/javascript" charset="utf8" src="/DataTables-1.10.7/media/js/jquery.js"></script>
-  
-<!-- DataTables -->
-<script type="text/javascript" charset="utf8" src="/DataTables-1.10.7/media/js/jquery.dataTables.js"></script>
-<script>
-$(document).ready( function () {
-    $('#student_table').DataTable();
-} );
-</script>
 <div class="container">
     <div class="row">
         <div class="col-md-3">
@@ -31,29 +19,7 @@ $(document).ready( function () {
                     </div>
                 <?php } ?>
             </div>
-            <div class="row">
-                <div class="col-md-7">
-                    <?php
-                    $attributes = array(
-                        'class' => 'form-inline'
-                    );
-                    echo form_open('student/search_one', $attributes);
-                    ?>
-                    <div class="form-group">
-                        <input type="text" id="id" name="id" class="form-control" placeholder="Search.." size="20">
-                    </div>
-                     <button type="submit" class="btn btn-success"><i class="fa fa-filter"></i> Filter Results</button>
-                    <?php echo form_close(); ?>
-                </div>
-            </div>
-            <div class="row">
-                <div class="col-md-6">
-                    <br>
-                    <lable ><span class="label label-info" > Tip !</span><small><i> " Search by Student No/ Admission No / Student Name " </i> </small> </lable>
-                  
-                </div>
-            </div>
-            <br>
+            
             <div class="row">
                 <script type="text/javascript">
                     $(document).ready(function() {
@@ -67,7 +33,10 @@ $(document).ready( function () {
                             <th>#</th>
                             <th>Admission No</th>
                             <th>Name</th>
-                            <th>Contact no</th>
+                            <th>Contact No</th>
+                            <th>View</th>
+                            <th>Edit</th>
+                            <th>Delete</th>
                         </tr>
                     </thead>
                     <tbody>

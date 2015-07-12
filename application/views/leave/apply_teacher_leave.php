@@ -87,7 +87,7 @@
                         <div class="col-md-4">
                             <div class="form-group">
                                 <div class="input-group">
-                                    <input class="form-control" value="<?php echo set_value('txt_enddate'); ?>" name="txt_startdate" placeholder="Start Date" name="startdate"   type="date">
+                                    <input class="form-control" value="<?php echo set_value('txt_startdate'); ?>" name="txt_startdate" placeholder="Start Date" name="startdate"   type="date">
                                     <div class="input-group-addon"><i class="fa fa-calendar"></i></div>
                                 </div>
                             </div>

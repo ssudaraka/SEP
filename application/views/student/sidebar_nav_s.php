@@ -11,7 +11,7 @@
                 <table class="table">
                     <tr>
                         <td>
-                            <span class="glyphicon glyphicon-user text-primary"></span><a href="<?php echo base_url('index.php/student'); ?>">Student List</a>
+                            <span class="glyphicon glyphicon-user text-primary"></span><a href="<?php echo base_url('index.php/student'); ?>">View Profile</a>
                         </td>
                     </tr>
                     <tr>
