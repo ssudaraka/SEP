@@ -20,6 +20,7 @@ class Dashboard extends CI_Controller {
         $data['leaves'] = $this->Leave_Model->get_count_of_pending_leaves();
         $today = date('Y-m-d');
         $data['events'] = $this->event_model->get_count_upcoming_events($today);
+        $data['eventslist'] = $this->event_model->get_upcoming_events($today);
 
         //Getting user type
         $data['user_type'] = $this->session->userdata['user_type'];
