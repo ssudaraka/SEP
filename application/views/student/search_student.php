@@ -55,6 +55,12 @@ $(document).ready( function () {
             </div>
             <br>
             <div class="row">
+                <script type="text/javascript">
+                    $(document).ready(function() {
+                        $('#table_id').DataTable();
+                    } );
+                </script>
+
                 <table class="table table-hover" id="table_id">
                     <thead>
                         <tr>
