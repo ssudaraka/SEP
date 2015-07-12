@@ -4,10 +4,10 @@
 
         <div class="col-md-3">
             <?php
-            if($user_type == 'A'){
+            if($user_type == 'T'){
                 $this->view('event/sidebar_nav');
             }
-            elseif($user_type == 'P'){
+            elseif($user_type == 'A'){
                 $this->view('event/admin_sidebar_nav');
             }
             else{

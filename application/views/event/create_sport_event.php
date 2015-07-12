@@ -4,10 +4,10 @@
 
         <div class="col-md-3">
             <?php
-            if($user_type == 'A'){
+            if($user_type == 'T'){
                 $this->view('event/sidebar_nav');
             }
-            elseif($user_type == 'P'){
+            elseif($user_type == 'A'){
                 $this->view('event/admin_sidebar_nav');
             }
             else{
@@ -83,7 +83,7 @@
                     <div class="form-group">
                         <label for="inputEmail3" class="col-sm-2 control-label">In Charge ID</label>
                         <div class="col-sm-5">
-                            <input id="in_charge" type="text" name="in_charge"  value="<?php if(isset($succ_message)){ echo '';}else{echo set_value('in_charge');} ?>" type="text" class="form-control" id="in_charge" placeholder="eg : xxxxxxxxxV">
+                            <input id="in_charge" type="text" name="in_charge"  value="<?php echo $nic; ?>" type="text" readonly class="form-control" id="in_charge" placeholder="eg : xxxxxxxxxV">
                             <?php echo form_error('in_charge'); ?>
                         </div>
                     </div>
@@ -148,7 +148,7 @@
                 </div>
                 <div class="panel-body">
                     <table class="table table-hover">
-                        <thead style="background-color: gray">
+                        <thead>
                             <tr>
                                 <th>Event Name</th>
                                 <th>Start Date</th>
