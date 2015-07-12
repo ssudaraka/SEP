@@ -21,7 +21,7 @@ class Attendance extends CI_Controller {
         //Getting user type
         $data['user_type'] = $this->session->userdata['user_type'];
 
-        $this->form_validation->set_rules("signature_no", "Signature Number", "required|min_length[5]|integer|callback_add_record");
+        $this->form_validation->set_rules("signature_no", "Signature Number", "required|integer|callback_add_record");
 
         if ($this->form_validation->run() == FALSE) {
             /*
@@ -95,7 +95,7 @@ class Attendance extends CI_Controller {
         $data['navbar'] = "attendance";
 
         if ($this->attendance_model->delete_record($signature_no)) {
-            $data['result'] = $this->attendance_model->get_all_records();
+            $data['result'] = $this->attendance_model->get_all_temp_records();
             $data['del_msg'] = "Record removed for {$signature_no}";
             $data['date'] = date('Y-m-d');
             $this->load->view('templates/header', $data);
@@ -142,7 +142,7 @@ class Attendance extends CI_Controller {
         $data['school_name'] = "D. S. Senanayake College";
 
 
-        $data['result'] = $this->attendance_model->get_all_records();
+        $data['result'] = $this->attendance_model->get_all_temp_records();
         $filename = "attendance_report_" . $data['date'];
         // page info here, db calls, etc.     
         $html = $this->load->view('attendance/report_pdf', $data, true);

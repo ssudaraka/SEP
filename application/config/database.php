@@ -48,10 +48,10 @@
 $active_group = 'default';
 $active_record = TRUE;
 
-$db['default']['hostname'] = '198.58.93.2';
-$db['default']['username'] = 'ssudarak_sep_db';
-$db['default']['password'] = 'HFOmuYKpHurr';
-$db['default']['database'] = 'ssudarak_sep_db';
+$db['default']['hostname'] = 'localhost';
+$db['default']['username'] = 'root';
+$db['default']['password'] = '';
+$db['default']['database'] = 'sep_db';
 $db['default']['dbdriver'] = 'mysql';
 $db['default']['dbprefix'] = '';
 $db['default']['pconnect'] = TRUE;
