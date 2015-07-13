@@ -159,7 +159,7 @@ class Timetable extends CI_Controller {
         //getting the user type
         $data['user_type'] = $this->session->userdata['user_type'];
 
-        $data['page_title'] = "Test Timetable";
+        $data['page_title'] = "Timetable Management";
         $data['navbar'] = "timetable";
 
         if ($this->timetable_model->delete($timetable_id)) {
@@ -193,7 +193,7 @@ class Timetable extends CI_Controller {
         //getting the user type
         $data['user_type'] = $this->session->userdata['user_type'];
         
-        $data['page_title'] = "Test Timetable";
+        $data['page_title'] = "Timetable Management";
         $data['navbar'] = "timetable";
         $data['timetable'] = $this->timetable_model->get_class_timetable($timetable_id);
         $data['slot_id'] = $slot_id;
