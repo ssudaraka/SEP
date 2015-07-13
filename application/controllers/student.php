@@ -9,9 +9,7 @@ class Student extends CI_Controller {
         $this->load->model('user');
     }
 
-    function index($uri_segment = "3") {
-
-        $this->load->library('pagination');
+    function index() {
 
         if (!$this->session->userdata('id')) {
             redirect('login', 'refresh');
@@ -27,32 +25,8 @@ class Student extends CI_Controller {
         $data['navbar'] = 'student';
 
 
-/**
- * Get all student recodes and display in a table
- */
-        $this->load->library('pagination');
-        $config = array();
-        $config['base_url'] = base_url() . "index.php/student/student";
-        $total_row = $this->db->get('students')->num_rows();
-        $config["total_rows"] = $total_row;
-        $config["per_page"] = 10;
-        $config['uri_segment'] = 3;
-        $config['use_page_numbers'] = TRUE;
-        $config['num_links'] = $total_row;
-        $config['cur_tag_open'] = '&nbsp;<a class="current">';
-        $config['cur_tag_close'] = '</a>';
-        $config['next_link'] = 'Next';
-        $config['prev_link'] = 'Previous';
-
-        $this->pagination->initialize($config);
-
-//  if there is no uri segment null value will be sent
-        $config['offset'] = ($this->uri->segment(3) ? $this->uri->segment(3) : null);
-        $data["query"] = $this->Student_Model->get_all_students($config["per_page"], $config['offset']);
-//      $data["query"] = $this->Student_Model->get_all_students_2();
+         $data["query"] = $this->Student_Model->get_all_students_2();
         $data['result'] = $data['query']->result();
-        $str_links = $this->pagination->create_links();
-        $data["links"] = explode('&nbsp;', $str_links);
 
 
 

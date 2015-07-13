@@ -77,7 +77,7 @@ if ($type == 1) {
                     <br>
 
                     <table class="table table-hover">
-                        <thead style="background-color: gray">
+                        <thead>
                             <tr>
                                 <th>Event Name</th>
                                 <th>Start Date</th>

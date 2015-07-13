@@ -77,7 +77,7 @@
                 </div>
                 <div class="panel-body">
                     <table class="table table-hover">
-                    <thead style="background-color: gray">
+                    <thead>
                         <tr>
                             <th>Event Type</th>
                             <th>Event Description</th>

@@ -57,16 +57,6 @@
                         <?php } ?>
                     </tbody>
                 </table>
-               <div id="pagination">
-                <nav><?php if(isset($links)){ ?>
-                        <?php foreach ($links as $link) { ?>
-                            <?php echo $link; ?>
-                        <?php }
-                }
-                        ?>
-                    
-                    </nav>
-                </div>
             </div>
         </div>
     </div>
