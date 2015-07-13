@@ -34,7 +34,9 @@
                   </a>
                 </div>
     <div class="row" style="margin-top:10px">
+    
     <div class="col-md-6">
+            <?php if($user_type == 'A'){ ?>
             <div class="panel panel-default">
                 <div class="panel-heading">
                     <strong><i class="fa fa-ellipsis-h" style="margin-right:10px"></i> NEED YOUR ATTENTION</strong>
@@ -67,8 +69,10 @@
                     </div>
                 </div>
             </div>
-        </div>
+            <?php } ?>
 
+        </div>
+        
 
 		
 	    <div class="col-md-6">
