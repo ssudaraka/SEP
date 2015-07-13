@@ -135,7 +135,7 @@ class Event_model extends CI_Model {
     public function get_upcoming_events($today) {
         try {
 
-            if ($data = $this->db->query("select * from `events` where start_date >= '$today' and status = 'success'")) {
+            if ($data = $this->db->query("select * from `events` where start_date >= '$today' and status = 'success' ORDER BY start_date ASC")) {
                 $row = $data->result();
                 return $row;
             } else {

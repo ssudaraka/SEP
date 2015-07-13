@@ -37,7 +37,7 @@
                 </div>
                 <div class="panel-body">
                     <table class="table table-hover">
-                    <thead style="background-color: gray">
+                    <thead>
                         <tr>
                             <th>Event Name</th>
                             <th>Start Date</th>
@@ -53,7 +53,7 @@
                                 <td><?php echo $row->title; ?></td>
                                 <td><?php echo $row->start_date; ?></td>
                                 <td><?php echo $row->end_date; ?></td>
-                                <td><a href="<?php echo base_url("index.php/event/load_selected_pending_event") . "/" . $row->id; ?>" ><span class="glyphicon glyphicon-eye-open" aria-hidden="true">Check</span></a></td>
+                                <td><a href="<?php echo base_url("index.php/event/load_selected_pending_event") . "/" . $row->id; ?>" ><span class="glyphicon glyphicon-eye-open" aria-hidden="true"></span></a></td>
                                 
                             </tr>
                         <?php } ?>
@@ -70,7 +70,7 @@
                 </div>
                 <div class="panel-body">
                     <table class="table table-hover">
-                    <thead style="background-color: gray">
+                    <thead>
                         <tr>
                             <th>Event Name</th>
                             <th>Start Date</th>
@@ -86,7 +86,7 @@
                                 <td><?php echo $row->title; ?></td>
                                 <td><?php echo $row->start_date; ?></td>
                                 <td><?php echo $row->end_date; ?></td>
-                                <td><a href="<?php echo base_url("index.php/event/view_upcoming_event_details") . "/" . $row->id; ?>" ><span class="glyphicon glyphicon-user" aria-hidden="true"></span></a></td>
+                                <td><a href="<?php echo base_url("index.php/event/view_upcoming_event_details") . "/" . $row->id; ?>" ><span class="glyphicon glyphicon-eye-open" aria-hidden="true"></span></a></td>
                                 
                             </tr>
                         <?php } ?>

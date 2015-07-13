@@ -82,16 +82,19 @@
 	            </div>
 	            <div class="panel-body">
                     <ul class="news-items">
+                        <?php foreach ($eventslist as $row) {?>
                         <li>
-                            <?php foreach ($eventslist as $row) {?>
-                            <div class="news-item-date"> <span class="news-item-day">
-                                <?php 
-                                    $day=$row->start_date; 
-                                    $get_date = explode("-",$day); 
-                                    echo $get_date[2];
-                                ?>
-                                </span> <span class="news-item-month">
-                                <?php 
+
+                            <div class="news-item-date"> 
+                                <span class="news-item-day">
+                                    <?php 
+                                        $day=$row->start_date; 
+                                        $get_date = explode("-",$day); 
+                                        echo $get_date[2];
+                                    ?>
+                                </span> 
+                                <span class="news-item-month">
+                                    <?php 
                                     if($get_date[1] == 1){
                                         echo 'Jan';
                                     }
@@ -105,7 +108,7 @@
                                         echo 'Apr';
                                     }
                                     else if($get_date[1] == 5){
-                                        echo 'may';
+                                        echo 'May';
                                     }
                                     else if($get_date[1] == 6){
                                         echo 'Jun';
@@ -129,20 +132,24 @@
                                         echo 'Dec';
                                     }
                                 ?>
-                                </span> </div>
+                                </span>
+                            </div>
                             <div class="news-item-detail"> <a href="<?php echo base_url("index.php/event/view_upcoming_event_details")."/".$row->id; ?>" class="news-item-title" target="_blank"><?php echo $row->title; ?></a>
                                 <p class="news-item-preview"><?php echo $row->description; ?></p>
                             </div>
-                            <?php }?>
+
                         </li>
-                        <!-- <li>
+                        <?php }?>
+
+                        
+                        <li>
 
                             <div class="news-item-date"> <span class="news-item-day"></span> <span class="news-item-month"></span> </div>
                             <div class="news-item-detail"> <i class="news-item-title" target="_blank">No more events</i>
                                 <p class="news-item-preview"></p>
                             </div>
 
-                        </li> -->
+                        </li>
                     </ul>
 	            </div>
 	    	</div>
