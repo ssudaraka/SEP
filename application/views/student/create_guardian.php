@@ -36,13 +36,16 @@
                     <div class="col-md-3 col-md-push-1  form-group">
                         
                                 <label for="studentname">Student Name</label>
-                                <input type="text" name="studentname" value="<?php echo $row->name_with_initials;?>" class="form-control" id="addmissiondate" readonly>
+                                <input type="text" name="studentname" value="<?php echo $stud_data['nameWithInitials'];// $row->name_with_initials;?>" class="form-control" id="addmissiondate" readonly>
                                 <div><?php echo form_error('studentname'); ?></div>
                      </div>
                      <div class="col-md-3 col-md-offset-4 form-group">
+                                <?php
                                 
+                              foreach($stud_data as $value){
                                 
-                                
+                       echo  '<input type="hidden" name="studentdata[]" value="' .$value.' " /> ';        
+                              } ?>    
                     </div>
                      
                    
