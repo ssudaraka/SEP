@@ -124,12 +124,14 @@ class Student extends CI_Controller {
      */
 
     public function create_student() {
+
+        if (!$this->session->userdata('id')) {
+            redirect('login', 'refresh');
+        }
+
         $data['page_title'] = "Admission";
         $data['navbar'] = "student";
-
-        //getting the user type
-        $data['user_type'] = $this->session->userdata['user_type'];
-
+        $data['user_type'] = $this->session->userdata['user_type']; //getting the user type
         //checking validations
         $this->load->library('form_validation');
         $this->form_validation->set_rules('admissionnumber', 'Admission Number', 'required|is_unique[students.admission_no]|exact_length[4]');
@@ -155,6 +157,7 @@ class Student extends CI_Controller {
             $this->load->view('navbar_main', $data);
             $this->load->view('navbar_sub', $data);
             $this->load->view('student/create_student', $data);
+
             $this->load->view('/templates/footer');
         } else {//validation ok
             $student_data = array(
@@ -173,7 +176,6 @@ class Student extends CI_Controller {
                 'contactHome' => $this->input->post('contact_home'),
                 'email' => $this->input->post('email')
             );
-            //  if ($id = $this->Student_Model->insert_new_student($student_data)) { // the information has therefore been successfully saved in the db
 
             $data['page_title'] = "Admission";
             $data['navbar'] = "student";
@@ -191,15 +193,17 @@ class Student extends CI_Controller {
      */
 
     public function create_guardian() {
+
+        if (!$this->session->userdata('id')) {
+            redirect('login', 'refresh');
+        }
+
         $data['page_title'] = "Admission";
         $data['navbar'] = "student";
-
-        //getting the user type
-        $data['user_type'] = $this->session->userdata['user_type'];
+        $data['user_type'] = $this->session->userdata['user_type']; //getting the user type
 
 
         $this->load->library('form_validation');
-
         $this->form_validation->set_rules('fullname', 'fullname', 'required');
         $this->form_validation->set_rules('initial', 'initial', 'required');
         $this->form_validation->set_rules('relation', 'relation', 'required');
@@ -208,9 +212,6 @@ class Student extends CI_Controller {
         $this->form_validation->set_rules('address', 'address', 'required');
         $this->form_validation->set_rules('contact_home', 'contact_home', 'required|exact_length[10]|integer');
         $this->form_validation->set_rules('contact_mobile', 'contact_mobile', 'exact_length[10]|integer');
-
-
-
         $this->form_validation->set_error_delimiters('<br /><span class="error">', '</span>');
 
         if ($this->form_validation->run() == FALSE) { // validation hasn't been passed
@@ -223,7 +224,6 @@ class Student extends CI_Controller {
             $this->load->view('/templates/footer');
         } else {
 
-
             if (isset($_POST['pastpupil'])) {
                 $pastpupil = 1; // get the value of checked checkbox.
             } else {
@@ -231,14 +231,12 @@ class Student extends CI_Controller {
                 ;
             }
 
-            //getting last student user_id
-            $last_row = $this->Student_Model->get_last_row();
+            $last_row = $this->Student_Model->get_last_row(); //getting last student user_id
             $student_id = $last_row->id;
-
             $studentd = array();
             $studentd = $this->input->post('studentdata');
-            
-             $student_data = array(
+
+            $student_data = array(
                 // 'studentid' => $student_id,
                 'admissionno' => $studentd[0],
                 'admissiondate' => $studentd[1],
@@ -254,20 +252,21 @@ class Student extends CI_Controller {
                 'contactHome' => $studentd[11],
                 'email' => $studentd[12]
             );
-            
+
             if ($id = $this->Student_Model->insert_new_student($student_data)) {
 
-
-                //creating and inserting login credentials for the student
+                /*
+                 * creating and inserting login credentials for the student
+                 */
                 $data['row'] = $this->Student_Model->get_last_inserted_student($id);
                 $ID = $data['row']->id;
                 $username = $data['row']->admission_no;
                 $password = "PW_" . $username;
                 $create = date('Y-m-d H:i:s');
+
                 if ($id = $this->Student_Model->insert_new_student_userdata($username, $password, $create)) {
+
                     $this->Student_Model->set_user_id($ID, $id);
-
-
 
                     $guardian_data = array(
                         'studentid' => $this->input->post('studentid'),
@@ -282,10 +281,10 @@ class Student extends CI_Controller {
                         'contact_home' => $this->input->post('contact_home'),
                         'contact_mobile' => $this->input->post('contact_mobile')
                     );
+
                     if ($id = $this->Student_Model->insert_new_Guardian($guardian_data)) { // the information has therefore been successfully saved in the db
                         $last_row = $this->Student_Model->get_last_row();
                         $student_id = $last_row->user_id;
-
                         $this->view_profile($student_id);
                     } else {
                         echo 'An error occurred saving your information. Please try again later';
@@ -305,8 +304,11 @@ class Student extends CI_Controller {
 
     function account_settings() {
 
-        //Getting user type
-        $data['user_type'] = $this->session->userdata['user_type'];
+        if (!$this->session->userdata('id')) {
+            redirect('login', 'refresh');
+        }
+
+        $data['user_type'] = $this->session->userdata['user_type']; //Getting user type
 
         if ($this->session->userdata('user_type') !== "S") {//only enable for students
             redirect('login', 'refresh');
@@ -332,8 +334,12 @@ class Student extends CI_Controller {
      */
 
     function view_profile($student_id) {
-        $data['user_type'] = $this->session->userdata['user_type'];
 
+        if (!$this->session->userdata('id')) {
+            redirect('login', 'refresh');
+        }
+
+        $data['user_type'] = $this->session->userdata['user_type'];
         $data['page_title'] = "Profile";
         $data['navbar'] = 'student';
         $data['user_id'] = $this->Student_Model->get_student_only($student_id);
@@ -352,26 +358,27 @@ class Student extends CI_Controller {
         $this->load->view('/templates/footer');
     }
 
+    /*
+     * uploading student profile picture 
+     */
+
     function upload_pro_pic() {
+
+        if (!$this->session->userdata('id')) {
+            redirect('login', 'refresh');
+        }
 
         $config['upload_path'] = './uploads/';
         $config['allowed_types'] = 'gif|jpg|png';
         $config['max_size'] = '0';
         $config['max_width'] = '1024';
         $config['max_height'] = '768';
-        $this->load->library('upload', $config);
 
+        $this->load->library('upload', $config);
         $last_row = $this->Student_Model->get_last_row();
         $student_id = $last_row->user_id;
-
-
-
-
-
         //$image = $this->user->get_profile_img($student_id);
         $ss = $this->upload->do_upload('profile_img');
-
-
         $image_data = $this->upload->data();
         $image = base_url() . "uploads/" . $image_data['file_name'];
 
@@ -410,8 +417,12 @@ class Student extends CI_Controller {
      */
 
     function view_student_profile($student_id) {
-        $data['user_type'] = $this->session->userdata['user_type'];
 
+        if (!$this->session->userdata('id')) {
+            redirect('login', 'refresh');
+        }
+
+        $data['user_type'] = $this->session->userdata['user_type'];
         $data['page_title'] = "Student Profile";
         $data['navbar'] = 'student';
         $data['user_id'] = $this->Student_Model->get_student_only($student_id);
@@ -434,8 +445,12 @@ class Student extends CI_Controller {
      */
 
     function view_guardian_profile($student_id) {
-        $data['user_type'] = $this->session->userdata['user_type'];
 
+        if (!$this->session->userdata('id')) {
+            redirect('login', 'refresh');
+        }
+
+        $data['user_type'] = $this->session->userdata['user_type'];
         $data['page_title'] = "Student Profile";
         $data['navbar'] = 'student';
         $data['user_id'] = $this->Student_Model->get_guardian_only($student_id);
@@ -457,22 +472,18 @@ class Student extends CI_Controller {
      */
 
     public function delete_student($id) {
+
         if (!$this->session->userdata('id')) {
             redirect('login', 'refresh');
         }
         $data['navbar'] = "teacher";
-
-        //getting the user type
         $data['user_type'] = $this->session->userdata['user_type'];
-
 
         if ($this->Student_Model->delete_student($id)) {
 
             //reload table
             $data['query'] = $this->Student_Model->get_all_students_2();
             $data['result'] = $data['query']->result();
-
-
             $data['succ_message'] = "Student details deleted successfully";
             $data['page_title'] = "Search Student";
             $this->load->view('/templates/header', $data);
@@ -484,9 +495,6 @@ class Student extends CI_Controller {
 
             $data['query'] = $this->Student_Model->get_all_students_2();
             $data['result'] = $data['query']->result();
-
-
-
             $data['page_title'] = "Search Student";
             $this->load->view('/templates/header', $data);
             $this->load->view('navbar_main', $data);
@@ -502,16 +510,13 @@ class Student extends CI_Controller {
 
     public function edit_guardian() {
 
-        //getting the user type
-        $data['user_type'] = $this->session->userdata['user_type'];
-
         if (!$this->session->userdata('id')) {
             redirect('login', 'refresh');
         }
+        $data['user_type'] = $this->session->userdata['user_type'];
         $data['navbar'] = "student";
-        $this->load->library('form_validation');
 
-        // validations
+        $this->load->library('form_validation');
         $this->form_validation->set_rules('fullname', 'fullname', 'required');
         $this->form_validation->set_rules('initials', 'initial', 'required');
         $this->form_validation->set_rules('dob', 'dob', 'required|callback_check_guardian_Birth_day');
@@ -520,13 +525,11 @@ class Student extends CI_Controller {
         $this->form_validation->set_rules('contact_home', 'contact_home', 'required|exact_length[10]|integer');
         $this->form_validation->set_rules('contact_mobile', 'contact_mobile', 'exact_length[10]|integer');
 
-
         if ($this->form_validation->run() == FALSE) {
-            $myid = $this->input->post('studentid');
-            //if validations are fualse load form with same details
+
+            $myid = $this->input->post('studentid'); //if validations are fualse load form with same details
             $this->load_guardian($myid);
         } else {
-
             //validations passed
             $myid = $this->input->post('studentid');
             $guardian = array(
@@ -539,12 +542,11 @@ class Student extends CI_Controller {
                 'contact_mobile' => $this->input->post('contact_mobile')
             );
 
-
             if ($this->Student_Model->update_guardian($guardian, $myid)) {
+
                 $data['page_title'] = "Guardian Profile";
                 $data['succ_message'] = "Guardian details updated successfully";
                 $data['result'] = $this->Student_Model->get_guardian_only($myid);
-
                 $data['page_title'] = "Edit Guardian";
                 $this->load->view('/templates/header', $data);
                 $this->load->view('navbar_main', $data);
@@ -569,16 +571,15 @@ class Student extends CI_Controller {
      */
 
     public function load_guardian($id) {
-        //getting the user type
-        $data['user_type'] = $this->session->userdata['user_type'];
 
         if (!$this->session->userdata('id')) {
             redirect('login', 'refresh');
         }
         $data['navbar'] = "student";
+        $data['user_type'] = $this->session->userdata['user_type'];
         $data['result'] = $this->Student_Model->get_guardian_only($id);
-
         $data['page_title'] = "Edit Guardian";
+
         $this->load->view('/templates/header', $data);
         $this->load->view('navbar_main', $data);
         $this->load->view('navbar_sub', $data);
@@ -592,23 +593,25 @@ class Student extends CI_Controller {
 
     function edit_student() {
 
-        //getting the user type
-        $data['user_type'] = $this->session->userdata['user_type'];
+        if (!$this->session->userdata('id')) {
+            redirect('login', 'refresh');
+        }
 
         $data['navbar'] = "student";
-        $this->load->library('form_validation');
+        $data['user_type'] = $this->session->userdata['user_type'];
 
+        $this->load->library('form_validation');
         $this->form_validation->set_rules('fullname', 'fullname', 'required');
         $this->form_validation->set_rules('initials', 'initial', 'required');
-
         $this->form_validation->set_rules('address', 'address', 'required');
         $this->form_validation->set_rules('contact_home', 'contact_home', 'required|exact_length[10]|integer');
 
-
         if ($this->form_validation->run() == FALSE) {
+
             $myid = $this->input->post('studentid');
             $this->load_student($myid);
         } else {
+
             $myid = $this->input->post('studentid');
             $student = array(
                 'name' => $this->input->post('fullname'),
@@ -618,19 +621,20 @@ class Student extends CI_Controller {
                 'email' => $this->input->post('email')
             );
 
-
             if ($this->Student_Model->update_student($student, $myid)) {
+
                 $data['page_title'] = "Student Profile";
                 $data['succ_message'] = "Student details updated successfully";
                 $data['result'] = $this->Student_Model->get_student_only($myid);
-
                 $data['page_title'] = "Student Profile";
+
                 $this->load->view('/templates/header', $data);
                 $this->load->view('navbar_main', $data);
                 $this->load->view('navbar_sub', $data);
                 $this->load->view('/student/edit_student', $data);
                 $this->load->view('/templates/footer');
             } else {
+
                 $data['err_message'] = "Student details update error";
                 $data['page_title'] = "Student Profile";
                 $this->load->view('/templates/header', $data);
@@ -647,17 +651,15 @@ class Student extends CI_Controller {
      */
 
     public function load_student($id) {
-
-        //getting the user type
-        $data['user_type'] = $this->session->userdata['user_type'];
-
         if (!$this->session->userdata('id')) {
             redirect('login', 'refresh');
         }
+
+        $data['user_type'] = $this->session->userdata['user_type'];
         $data['navbar'] = "student";
         $data['result'] = $this->Student_Model->get_student_only($id);
-
         $data['page_title'] = "Edit Student";
+
         $this->load->view('/templates/header', $data);
         $this->load->view('navbar_main', $data);
         $this->load->view('navbar_sub', $data);
@@ -670,16 +672,18 @@ class Student extends CI_Controller {
      */
 
     function change_password() {
+        if (!$this->session->userdata('id')) {
+            redirect('login', 'refresh');
+        }
 
-        //getting the user type
         $data['user_type'] = $this->session->userdata['user_type'];
-
         $this->load->library('form_validation');
         $this->form_validation->set_rules('oldpassword', 'Old Password', "required|xss_clean|callback_check_old_password");
         $this->form_validation->set_rules('password', 'New Password', "required|min_length[5]|xss_clean|matches[confirm_password]"); //check password with confirm password
         $this->form_validation->set_rules('confirm_password', 'Confirm Password', "required|xss_clean|matches[password]");
 
         if ($this->form_validation->run() == FALSE) {
+
             $data['page_title'] = "Account Settings";
             $data['err_message'] = "Errer Occured";
             $data['navbar'] = 'student';
@@ -692,7 +696,9 @@ class Student extends CI_Controller {
 
             $user_id = $this->session->userdata('id');
             $new_password = $this->input->post('password');
+
             if ($this->Student_Model->change_password($user_id, $new_password)) {
+
                 $data['page_title'] = "Account Seings";
                 $data['navbar'] = 'student';
                 $data['succ_message'] = "Password Changed Successfully";
@@ -710,13 +716,20 @@ class Student extends CI_Controller {
      */
 
     function check_old_password() {
+
+        if (!$this->session->userdata('id')) {
+            redirect('login', 'refresh');
+        }
+
         $user_id = $this->session->userdata('id');
         $password_hash = $this->Student_Model->get_password_hash($user_id);
-
         $inserted_old_password_hash = md5($this->input->post('oldpassword'));
+
         if ($password_hash === $inserted_old_password_hash) {
+
             return TRUE;
         } else {
+
             $this->form_validation->set_message('check_old_password', "Your old password is incorrect");
             return FALSE;
         }
