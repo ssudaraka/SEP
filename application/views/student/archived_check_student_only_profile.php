@@ -2,15 +2,15 @@
 <div class="container">
 
 <div class="row">
-     
+           
 <div class="col-md-3">
-      <?php $this->view('student/sidebar_nav_s'); ?>
+            <?php $this->view('admin/sidebar_nav'); ?>
 </div>
 
 <div class="col-md-9">
-               
 
-<div class="panel panel-default">
+
+
 <!--                <div class="panel-body">-->
 <?php
 $attributes = array('class' => 'form-horizontal', 'id' => '');
@@ -18,41 +18,32 @@ echo form_open('teacher/create', $attributes);
 ?>
 
 <div class="well">
-<ul class="nav nav-tabs" style="border: 0px;">
-    <li class="active"><a href="#student" data-toggle="tab">Student Details</a></li>
-    <li><a href="#guardian" data-toggle="tab">Guardian Details</a></li>
-    <div class="panel-footer">
-        <!--                            <a data-original-title="Broadcast Message" data-toggle="tooltip" type="button" class="btn btn-sm btn-primary"><i class="glyphicon glyphicon-envelope"></i></a>-->
-                           
-    </div>
-</ul>
-<div id="myTabContent" class="tab-content active" style="border: 0px; padding: 0px;">
-<div class="tab-pane active in" id="student">
+
+
+                 <div class="panel-heading panel-default" >
+                    PERSONAL DETAILS
+                    <span class="pull-right">
+                        <a style="display:none;" href="<?php echo base_url("index.php/student/view_guardian_profile") . "/" .$user_id->user_id;?>" data-original-title="Edit this user" data-toggle="tooltip" type="button" class="btn btn-xs btn-primary"><i class="">Guardian Details</i></a>
+                        <a href="<?php echo base_url("index.php/student/load_all_archived_students"); ?>" data-original-title="Remove this user" data-toggle="tooltip" type="button" class="btn btn-xs btn-danger"><i class="glyphicon glyphicon-remove"></i></a>
+                </span>
+                </div>
+                 <div class="panel panel-body" >
     <form id="tab">
 
 
 
-        <div class="panel panel-info" >
-            <div class="panel-heading panel-info" >
-                <h3 class="panel-title" ><?php echo $user_id->full_name; ?></h3>
+        <div class="panel panel-info">
+            <div class="panel-heading" >
+                <h3 class="panel-title"><?php echo $user_id->full_name; ?></h3>
             </div>
             <div class="panel-body">
                 <div class="row">
-                    <div class="col-md-3 col-lg-3 " align="center"> <!--<img alt="User Pic" src="https://lh5.googleusercontent.com/-b0-k99FZlyE/AAAAAAAAAAI/AAAAAAAAAAA/eu7opA4byxI/photo.jpg?sz=100" class="img-circle"> --></div>
+                    <div class="col-md-3 col-lg-3 " align="center"><!-- <img alt="User Pic" src="https://lh5.googleusercontent.com/-b0-k99FZlyE/AAAAAAAAAAI/AAAAAAAAAAA/eu7opA4byxI/photo.jpg?sz=100" class="img-circle">--></div>
 
                     <div class=" col-md-9 col-lg-9 ">
                         <table class="table table-user-information">
                             <tbody>
-                            <tr>
-                                <td>
-                                    <label>Student ID</label>
-
-                                </td>
-                                <td>
-
-                                    <label><?php echo $user_id->user_id; ?></label>
-                                </td>
-                            </tr>
+                         
                             <tr>
                                 <td><label>Admission No</label></td>
                                 <td><label><?php echo $user_id->admission_no; ?></label></td>
@@ -169,111 +160,14 @@ echo form_open('teacher/create', $attributes);
 
     </form>
 </div>
-<div class="tab-pane fade" id="guardian">
-<form id="tab2">
-<div class="panel panel-info">
-<div class="panel-heading panel-info" >
-    <h3 class="panel-title"><?php echo $user_id->name_with_initials; ?></h3>
-</div>
-<div class="panel-body">
-<div class="row">
-<div class="col-md-3 col-lg-3 " align="center"><!-- <img alt="User Pic" src="https://lh5.googleusercontent.com/-b0-k99FZlyE/AAAAAAAAAAI/AAAAAAAAAAA/eu7opA4byxI/photo.jpg?sz=100" class="img-circle"> --></div>
-<div class=" col-md-9 col-lg-9 ">
-<table class="table table-user-information">
-    <tbody>
-    <tr>
-        <td>
-            <label>Name</label>
 
-        </td>
-        <td>
-
-            <label><?php echo $user_id_2->name_with_initials; ?></label>
-        </td>
-    </tr>
-    <tr>
-        <td><label>Relation</label></td>
-        <td><label>
-                 <?php $relation = $user_id_2->relation;
-                                        if($relation =='f'){
-                                            echo "Father";
-                                        }
-                                        else if($relation == 'm'){
-                                            echo "Mother";
-                                        }
-                                        else if($relation == "g"){
-                                            echo "Guardian";
-                                        }
-                                       
-                                        ?>
-            </label></td>
-    </tr>
-    <tr>
-        <td><label>Contact Home</label></td>
-        <td><label><?php echo $user_id_2->contact_home; ?></label></td>
-    </tr>
-    <tr>
-        <td><label>Contact Mobile</label></td>
-        <td><label><?php echo $user_id_2->contact_mobile; ?></label></td>
-    </tr>
-    <tr>
-        <td><label>Birthday</label></td>
-        <td><label><?php echo $user_id_2->dob; ?></label></td>
-    </tr>
-    <tr>
-        <td><label>Address</label></td>
-        <td><label><?php echo $user_id_2->addr; ?></label></td>
-    </tr>
-    
-    <tr>
-        <td><label>Gender</label></td>
-        <td><label>
-                <?php $val = $user_id_2->gender;
-                                        if($val == 'm'){
-                                            echo "Male";
-                                        }
-                                        else{
-                                            echo "Female";
-                                        }
-                                        ?>
-            </label></td>
-    </tr>
-    <tr>
-        <td><label>Past Pupil</label></td>
-        <td><label>
-                <?php $val = $user_id_2->is_pastpupil;
-                                        if($val == 1){
-                                            echo "Yes";
-                                        }
-                                        else{
-                                            echo "No";
-                                        }
-                                        ?>
-            </label></td>
-    </tr>
-    
-
-    </tbody>
-</table>
-</div>
-</div>
-</div>
-
-</div>
-
-
-
-
-</form>
-
-</div>
 </div>
 
 
 
 </div>
 
-</div>
+
 
 </div>
 

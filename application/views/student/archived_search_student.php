@@ -2,7 +2,7 @@
 <div class="container">
     <div class="row">
         <div class="col-md-3">
-            <?php $this->view('student/sidebar_nav'); ?>
+            <?php $this->view('admin/sidebar_nav'); ?>
         </div>
         <div class="col-md-9">
             <div class="row">
@@ -35,12 +35,12 @@
                             <th>Name</th>
                             <th>Contact No</th>
                             <th>View</th>
-                            <th>Edit</th>
+<!--                            <th>Edit</th>-->
                             <th>Delete</th>
                         </tr>
                     </thead>
                     <tbody>
-                        <?php foreach ($result as $row) { ?>
+                        <?php if($result){foreach ($result as $row) { ?>
 
 
                             <tr>
@@ -49,12 +49,12 @@
                                 <td><?php echo $row->name_with_initials; ?></td>
                                 <td><?php echo $row->contact_home; ?></td>
                                 
-                                <td><a href="<?php echo base_url("index.php/student/view_student_profile") . "/" . $row->user_id; ?>" ><span class="glyphicon glyphicon-user" aria-hidden="true"></span></a></td>
-                                <td><a href="<?php echo base_url("index.php/student/load_student") . "/" . $row->user_id; ?>"><span class="glyphicon glyphicon-edit" aria-hidden="true"></span></a></td>
-                                <td><a href="<?php echo base_url("index.php/student/archive_student") . "/" . $row->user_id; ?>" onclick="return confirm('Are you sure you want to permenantly delete this student?!!!you cannot recover this student profile after you delete!!!)');"><span class="glyphicon glyphicon-trash" aria-hidden="true"></span></i></a></td>
+                                <td><a href="<?php echo base_url("index.php/student/view_archived_student_profile") . "/" . $row->user_id; ?>" ><span class="glyphicon glyphicon-user" aria-hidden="true"></span></a></td>
+                                <!--<td><a href="<?php //echo base_url("index.php/student/load_student") . "/" . $row->user_id; ?>"><span class="glyphicon glyphicon-edit" aria-hidden="true"></span></a></td>-->
+                                <td><a href="<?php echo base_url("index.php/student/delete_student") . "/" . $row->user_id; ?>" onclick="return confirm('Are you sure you want to permenantly delete this student?!!!you cannot recover this student profile after you delete!!!)');"><span class="glyphicon glyphicon-trash" aria-hidden="true"></span></i></a></td>
 
                             </tr>
-                        <?php } ?>
+                        <?php } }?>
                     </tbody>
                 </table>
             </div>

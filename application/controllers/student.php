@@ -263,8 +263,9 @@ class Student extends CI_Controller {
                 $username = $data['row']->admission_no;
                 $password = "PW_" . $username;
                 $create = date('Y-m-d H:i:s');
-
-                if ($id = $this->Student_Model->insert_new_student_userdata($username, $password, $create)) {
+                $fname = $studentd[2];    
+                $lname = $studentd[3];    
+                if ($id = $this->Student_Model->insert_new_student_userdata($username, $password, $create ,$fname , $lname)) {
 
                     $this->Student_Model->set_user_id($ID, $id);
 
@@ -476,31 +477,39 @@ class Student extends CI_Controller {
         if (!$this->session->userdata('id')) {
             redirect('login', 'refresh');
         }
-        $data['navbar'] = "teacher";
+        $data['navbar'] = "student";
         $data['user_type'] = $this->session->userdata['user_type'];
+        
+        if ($data['user_type'] == 'A') {
+            if ($this->Student_Model->delete_student($id)) {
+                
+                $data['query'] = $this->Student_Model->get_all_archive_students();
+                $data['result'] = $data['query'];
+                $data['succ_message'] = "Student details deleted successfully";
+                $data['page_title'] = "Search Archived Student";
+                $this->load->view('/templates/header', $data);
+                $this->load->view('navbar_main', $data);
+                $this->load->view('navbar_sub', $data);
+                $this->load->view('/student/archived_search_student', $data);
+                $this->load->view('/templates/footer');
+                
+            } else {
 
-        if ($this->Student_Model->delete_student($id)) {
-
-            //reload table
-            $data['query'] = $this->Student_Model->get_all_students_2();
-            $data['result'] = $data['query']->result();
-            $data['succ_message'] = "Student details deleted successfully";
-            $data['page_title'] = "Search Student";
-            $this->load->view('/templates/header', $data);
-            $this->load->view('navbar_main', $data);
-            $this->load->view('navbar_sub', $data);
-            $this->load->view('/student/search_student', $data);
-            $this->load->view('/templates/footer');
+                $data['query'] = $this->Student_Model->get_all_archive_students();
+                $data['result'] = $data['query'];
+                $data['err_message'] = "Error occured";
+                $data['page_title'] = "Search Archived Student";
+                $this->load->view('/templates/header', $data);
+                $this->load->view('navbar_main', $data);
+                $this->load->view('navbar_sub', $data);
+                $this->load->view('/student/archived_search_student', $data);
+                $this->load->view('/templates/footer');
+                
+            }
         } else {
-
-            $data['query'] = $this->Student_Model->get_all_students_2();
-            $data['result'] = $data['query']->result();
-            $data['page_title'] = "Search Student";
-            $this->load->view('/templates/header', $data);
-            $this->load->view('navbar_main', $data);
-            $this->load->view('navbar_sub', $data);
-            $this->load->view('/student/search_student', $data);
-            $this->load->view('/templates/footer');
+            
+            redirect('login', 'refresh');
+            
         }
     }
 
@@ -733,6 +742,99 @@ class Student extends CI_Controller {
             $this->form_validation->set_message('check_old_password', "Your old password is incorrect");
             return FALSE;
         }
+    }
+
+    /*
+     * function for archive student+guardian recode
+     */
+
+    public function archive_student($id) {
+
+        if (!$this->session->userdata('id')) {
+            redirect('login', 'refresh');
+        }
+        $data['navbar'] = "student";
+        $data['user_type'] = $this->session->userdata['user_type'];
+
+
+        if ($this->Student_Model->archive_student($id)) {
+
+            //reload table
+            $data['query'] = $this->Student_Model->get_all_students_2();
+            $data['result'] = $data['query']->result();
+            $data['succ_message'] = "Student details deleted successfully";
+            $data['page_title'] = "Search Student";
+            $this->load->view('/templates/header', $data);
+            $this->load->view('navbar_main', $data);
+            $this->load->view('navbar_sub', $data);
+            $this->load->view('/student/search_student', $data);
+            $this->load->view('/templates/footer');
+        } else {
+
+            $data['query'] = $this->Student_Model->get_all_students_2();
+            $data['result'] = $data['query']->result();
+            $data['page_title'] = "Search Student";
+            $this->load->view('/templates/header', $data);
+            $this->load->view('navbar_main', $data);
+            $this->load->view('navbar_sub', $data);
+            $this->load->view('/student/search_student', $data);
+            $this->load->view('/templates/footer');
+        }
+    }
+
+    /*
+     * get archive student details
+     */
+
+    public function load_all_archived_students() {
+
+        if (!$this->session->userdata('id')) {
+            redirect('login', 'refresh');
+        }
+        $data['navbar'] = "admin";
+        $data['user_type'] = $this->session->userdata['user_type'];
+
+        if ($data['user_type'] == 'A') {
+
+            $data['query'] = $this->Student_Model->get_all_archive_students();
+            $data['result'] = $data['query'];
+            $data['page_title'] = "Search Archived Student";
+            $this->load->view('/templates/header', $data);
+            $this->load->view('navbar_main', $data);
+            $this->load->view('navbar_sub', $data);
+            $this->load->view('/student/archived_search_student', $data);
+            $this->load->view('/templates/footer');
+        } else {
+            redirect('login', 'refresh');
+        }
+    }
+
+    /*
+     * Function for view archived student profile for a given id
+     */
+
+    function view_archived_student_profile($student_id) {
+
+        if (!$this->session->userdata('id')) {
+            redirect('login', 'refresh');
+        }
+
+        $data['user_type'] = $this->session->userdata['user_type'];
+        $data['page_title'] = "Archived Student Profile";
+        $data['navbar'] = 'admin';
+        $data['user_id'] = $this->Student_Model->get_archived_student_only($student_id);
+        $this->load->view('templates/header', $data);
+        $this->load->view('navbar_main', $data);
+        $this->load->view('navbar_sub', $data);
+
+        if ($data['user_type'] == 'A') {
+            $this->load->view('student/archived_check_student_only_profile', $data);
+        } else {
+            redirect('login', 'refresh');
+        }
+
+
+        $this->load->view('/templates/footer');
     }
 
     /*

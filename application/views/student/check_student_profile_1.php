@@ -18,7 +18,7 @@ echo form_open('teacher/create', $attributes);
 ?>
 
 <div class="well">
-<ul class="nav nav-tabs">
+<ul class="nav nav-tabs" style="border:0px;">
     <li class="active"><a href="#student" data-toggle="tab">Student Details</a></li>
     <li><a href="#guardian" data-toggle="tab">Guardian Details</a></li>
     <div class="panel-footer">
@@ -29,7 +29,7 @@ echo form_open('teacher/create', $attributes);
                             </span>
     </div>
 </ul>
-<div id="myTabContent" class="tab-content active">
+<div id="myTabContent" class="tab-content active" style="border: 0px; padding: 0px;">
 <div class="tab-pane active in" id="student">
     <form id="tab">
 
