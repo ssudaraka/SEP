@@ -21,22 +21,22 @@
                         <?php echo form_open('admin/create'); ?>
                         <div class="form-group">
                             <label for="username">Username</label>
-                            <input type="text" name="username" id="username" class="form-control" value="">
+                            <input type="text" name="username" id="username" class="form-control" value="<?php echo set_value('username'); ?>">
                             <?php echo form_error('username', $error_prefix, $error_suffix); ?>
                         </div>
                         <div class="form-group">
                             <label for="email">Email Address</label>
-                            <input type="email" name="email" id="username" class="form-control" value="">
+                            <input type="email" name="email" id="username" class="form-control" value="<?php echo set_value('email'); ?>">
                             <?php echo form_error('email', $error_prefix, $error_suffix); ?>
                         </div>
                         <div class="form-group">
                             <label for="first_name">First Name</label>
-                            <input type="text" name="first_name" id="first_name" class="form-control" value="">
+                            <input type="text" name="first_name" id="first_name" class="form-control" value="<?php echo set_value('first_name'); ?>">
                             <?php echo form_error('first_name', $error_prefix, $error_suffix); ?>
                         </div>
                         <div class="form-group">
                             <label for="last_name">Last Name</label>
-                            <input type="text" name="last_name" id="last_name" class="form-control" value="">
+                            <input type="text" name="last_name" id="last_name" class="form-control" value="<?php echo set_value('last_name'); ?>">
                             <?php echo form_error('last_name', $error_prefix, $error_suffix); ?>
                         </div>
                         <div class="form-group">

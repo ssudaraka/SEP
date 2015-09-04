@@ -2,6 +2,10 @@
 
 class User extends CI_Model {
 
+    public function __construct() {
+        parent::__construct();
+    }
+
     public function login($username, $password) {
         $this->db->select('*');
         $this->db->from('users');
@@ -58,37 +62,15 @@ class User extends CI_Model {
     }
 
     public function create($new_user_data, $user_type) {
-        $this->load->helper('date');
-        $datestring = "%Y-%m-%d %h:%i:%s";
-        $time = time();
-        $created_at = mdate($datestring, $time);
-
-        $username = $new_user_data['username'];
-        $email = $new_user_data['email'];
-        $first_name = $new_user_data['first_name'];
-        $last_name = $new_user_data['last_name'];
-        $password = $new_user_data['password'];
-        $sql = "INSERT INTO users (username, password, first_name, last_name, email, user_type, created_at";
-
-        if ($user_type === "A") {
-            $sql .= ", superuser";
+        $new_user_data['created_at'] = date("Y-m-d H:i:s");
+        $new_user_data['user_type'] = $user_type;
+        
+        if($user_type == 'A'){
+            $new_user_data['superuser'] = 1;
         }
-
-        $sql .= ") VALUES ('{$username}', '{$password}', '{$first_name}', '{$last_name}', '{$email}', '{$user_type}', '{$created_at}'";
-
-        if ($user_type === "A") {
-            $sql .= ", 1";
-        }
-
-        $sql .= ")";
-
-        $result = $this->db->query($sql);
-
-        if (!$result) {
-            return FALSE;
-        } else {
-            return $this->db->insert_id();
-        }
+        
+        $this->db->insert('users', $new_user_data);
+        return $this->db->insert_id();
     }
 
     public function get_user_list($user_type) {
