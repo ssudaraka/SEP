@@ -153,45 +153,49 @@ class Admin extends CI_Controller {
         if ($this->session->userdata('user_type') !== "A") {
             show_404();
         }
+        
+        $this->user->delete($user_id);
+        
+        redirect('admin/manage_admins');
 
-        if ($this->user->delete($user_id)) {
-            $data['delete_msg'] = "User ID " . $user_id . " has been removed from the database. This cannot be reverted";
-            $data['page_title'] = "Manage Administrators";
-            $data['navbar'] = 'admin';
-
-
-
-
-            /**
-             * setting up paginations
-             */
-            $this->load->library('pagination');
-            $config = array();
-            $config['base_url'] = base_url() . "index.php/admin/manage_admins";
-            $config['total_rows'] = $this->user->get_user_total();
-            $config['per_page'] = 2;
-            $config['use_page_numbers'] = TRUE;
-            $config['num_links'] = 5;
-
-            $config['cur_tag_open'] = '<a href="#">';
-            $config['cur_tag_close'] = '</a>';
-
-            $config['offset'] = ($this->uri->segment(3) ? $this->uri->segment(3) : null);
-
-            $data['query'] = $this->user->get_user_list('', 'A', $config['per_page'], $config['offset']);
-
-            $data['result'] = $data['query']->result();
-            $this->pagination->initialize($config);
-            $str_links = $this->pagination->create_links();
-            $data["links"] = explode('&nbsp;', $str_links);
-
-            $data['result'] = $data['query']->result();
-            $this->load->view('templates/header', $data);
-            $this->load->view('navbar_main', $data);
-            $this->load->view('navbar_sub', $data);
-            $this->load->view('admin/manage_admins', $data);
-            $this->load->view('templates/footer');
-        }
+//        if () {
+//            $data['delete_msg'] = "User ID " . $user_id . " has been removed from the database. This cannot be reverted";
+//            $data['page_title'] = "Manage Administrators";
+//            $data['navbar'] = 'admin';
+//
+//
+//
+//
+//            /**
+//             * setting up paginations
+//             */
+//            $this->load->library('pagination');
+//            $config = array();
+//            $config['base_url'] = base_url() . "index.php/admin/manage_admins";
+//            $config['total_rows'] = $this->user->get_user_total();
+//            $config['per_page'] = 2;
+//            $config['use_page_numbers'] = TRUE;
+//            $config['num_links'] = 5;
+//
+//            $config['cur_tag_open'] = '<a href="#">';
+//            $config['cur_tag_close'] = '</a>';
+//
+//            $config['offset'] = ($this->uri->segment(3) ? $this->uri->segment(3) : null);
+//
+//            $data['query'] = $this->user->get_user_list('', 'A', $config['per_page'], $config['offset']);
+//
+//            $data['result'] = $data['query']->result();
+//            $this->pagination->initialize($config);
+//            $str_links = $this->pagination->create_links();
+//            $data["links"] = explode('&nbsp;', $str_links);
+//
+//            $data['result'] = $data['query']->result();
+//            $this->load->view('templates/header', $data);
+//            $this->load->view('navbar_main', $data);
+//            $this->load->view('navbar_sub', $data);
+//            $this->load->view('admin/manage_admins', $data);
+//            $this->load->view('templates/footer');
+//        }
     }
 
 }
