@@ -113,5 +113,21 @@ class User extends CI_Model {
             return FALSE;
         }
     }
+    
+    public function get_user($user_id = null){
+        if($user_id == NULL){
+            return FALSE;
+        }
+        
+        $query = $this->db->get_where('users', array('id' => $user_id));
+        if($query->num_rows()>0){
+            return $query->row();
+        }
+    }
+    
+    public function edit_user($user_id, $data){
+        $this->db->update('users', $data, array('id' => $user_id));
+        return true;
+    }
 }
     

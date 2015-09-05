@@ -60,7 +60,7 @@ class Admin extends CI_Controller {
         $this->form_validation->set_rules('last_name', 'last name', "trim|required|xss_clean|alpha");
         $this->form_validation->set_rules('password', 'Password', "required|min_length[5]|xss_clean|matches[conf_password]");
         $this->form_validation->set_rules('conf_password', 'confirm password', "required|xss_clean|matches[password]");
-        
+
 
         if ($this->form_validation->run() == FALSE) {
             $data['page_title'] = "Create Admin Account";
@@ -153,49 +153,49 @@ class Admin extends CI_Controller {
         if ($this->session->userdata('user_type') !== "A") {
             show_404();
         }
-        
-        $this->user->delete($user_id);
-        
-        redirect('admin/manage_admins');
 
-//        if () {
-//            $data['delete_msg'] = "User ID " . $user_id . " has been removed from the database. This cannot be reverted";
-//            $data['page_title'] = "Manage Administrators";
-//            $data['navbar'] = 'admin';
-//
-//
-//
-//
-//            /**
-//             * setting up paginations
-//             */
-//            $this->load->library('pagination');
-//            $config = array();
-//            $config['base_url'] = base_url() . "index.php/admin/manage_admins";
-//            $config['total_rows'] = $this->user->get_user_total();
-//            $config['per_page'] = 2;
-//            $config['use_page_numbers'] = TRUE;
-//            $config['num_links'] = 5;
-//
-//            $config['cur_tag_open'] = '<a href="#">';
-//            $config['cur_tag_close'] = '</a>';
-//
-//            $config['offset'] = ($this->uri->segment(3) ? $this->uri->segment(3) : null);
-//
-//            $data['query'] = $this->user->get_user_list('', 'A', $config['per_page'], $config['offset']);
-//
-//            $data['result'] = $data['query']->result();
-//            $this->pagination->initialize($config);
-//            $str_links = $this->pagination->create_links();
-//            $data["links"] = explode('&nbsp;', $str_links);
-//
-//            $data['result'] = $data['query']->result();
-//            $this->load->view('templates/header', $data);
-//            $this->load->view('navbar_main', $data);
-//            $this->load->view('navbar_sub', $data);
-//            $this->load->view('admin/manage_admins', $data);
-//            $this->load->view('templates/footer');
-//        }
+        $this->user->delete($user_id);
+
+        redirect('admin/manage_admins');
+    }
+
+    function edit($user_id = null) {
+
+        $data['user_type'] = $this->session->userdata['user_type'];
+        $data['page_title'] = "Edit User";
+        $data['navbar'] = "admin";
+
+        if ($this->session->userdata('user_type') !== "A") {
+            redirect('login');
+        }
+
+        $data['user'] = $this->user->get_user($user_id);
+        $this->form_validation->set_rules('email', 'email', "trim|required|xss_clean|valid_email");
+        $this->form_validation->set_rules('first_name', 'first name', "trim|required|xss_clean|alpha");
+        $this->form_validation->set_rules('last_name', 'last name', "trim|required|xss_clean|alpha");
+
+        if ($this->form_validation->run() == FALSE) {
+            $this->load->view('templates/header', $data);
+            $this->load->view('navbar_main', $data);
+            $this->load->view('navbar_sub', $data);
+            $this->load->view('admin/edit_admin', $data);
+            $this->load->view('templates/footer');
+        } else {
+
+            $edited_user = array(
+                'email' => $this->input->post('email'),
+                'first_name' => $this->input->post('first_name'),
+                'last_name' => $this->input->post('last_name'),
+            );
+            $this->user->edit_user($user_id, $edited_user);
+            $data['user'] = $this->user->get_user($user_id);
+            $data['succ_message'] = "User edited successfully.";
+            $this->load->view('templates/header', $data);
+            $this->load->view('navbar_main', $data);
+            $this->load->view('navbar_sub', $data);
+            $this->load->view('admin/edit_admin', $data);
+            $this->load->view('templates/footer');
+        }
     }
 
 }
