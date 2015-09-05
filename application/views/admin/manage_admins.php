@@ -15,7 +15,7 @@
                 'class' => 'form-inline'
             );
             ?>
-            <div class="panel panel-default" style="margin-top: 10px;">
+            <div class="panel panel-default">
                 <div class="panel-heading">Administrator Accounts</div>
                 <div class="panel-body">
                     <script type="text/javascript">
