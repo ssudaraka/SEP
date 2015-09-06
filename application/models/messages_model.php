@@ -22,10 +22,10 @@ class Messages_model extends CI_Model {
          * Inserting new conversation into the database
          */
         $this->db->insert('inbox_conversations', $conversation);
-        $conversation['id'] = $this->db->insert_id();
+        $return_data['conv_id'] = $this->db->insert_id();
         
         $message = array(
-            'conversation_id' => $conversation['id'],
+            'conversation_id' => $return_data['conv_id'],
             'created_time' => date("Y-m-d H:i:s"),
             'sender_id' => $sender,
             'receiver_id' => $receiver,
@@ -35,20 +35,101 @@ class Messages_model extends CI_Model {
         /*
          * Inserting the first message related to the new conversation
          */
-        $this->db->insert('inbox_conversations', $conversation);
-        $conversation['message_id'] = $this->db->insert_id();
-        return $conversation;
+        $this->db->insert('inbox_messages', $message);
+        $return_data['message_id'] = $this->db->insert_id();
+        return $return_data;
     }
     
+    /*
+     * Returns messages sent by a user
+     */
     public function get_sent_list($user_id){
-        $query = $this->db->get_where('inbox_conversations', array('sender_id' => $user_id, 'sender_deleted' => 0));
+        $sql  = "SELECT * FROM inbox_conversations WHERE sender_id = {$user_id} AND sender_deleted = 0 ";
+        $sql .= "ORDER BY last_updated_time DESC";
+        
+        $query = $this->db->query($sql);
         return $query->result();
     }
     
+    /*
+     * Returns messages received by a user
+     */
     public function get_received_list($user_id){
-        $query = $this->db->get_where('inbox_conversations', array('receiver_id' => $user_id, 'receiver_deleted' => 0));
+        $sql  = "SELECT * FROM inbox_conversations WHERE receiver_id = {$user_id} AND receiver_deleted = 0 ";
+        $sql .= "ORDER BY last_updated_time DESC";
+        
+        $query = $this->db->query($sql);
         return $query->result();
     }
     
+    /*
+     * Returns messages received by a user
+     */
+    public function get_all_messages($user_id){
+        $sql  = "SELECT * FROM inbox_conversations WHERE sender_id = {$user_id} OR receiver_id = {$user_id} ";
+        $sql .= "ORDER BY last_updated_time DESC";
+        
+        $query = $this->db->query($sql);
+        return $query->result();
+    }
+    
+    /*
+     * Adds a reply to a conversation
+     */
+    
+    public function add_reply($conversation, $sender, $receiver, $content){
+        $message = array(
+            'conversation_id' => $conversation,
+            'created_time' => date("Y-m-d H:i:s"),
+            'sender_id' => $sender,
+            'receiver_id' => $receiver,
+            'content' => $content
+        );
+        
+        $this->db->insert('inbox_messages', $message);
+    }
+    
+    public function get_conversation($id){
+        $sql  = "SELECT * FROM inbox_messages WHERE conversation_id = {$id}";
+        
+        $query = $this->db->query($sql);
+        return $query->result();
+    }
+    
+    public function get_conversation_subject($id){
+        $query = $this->db->get_where('inbox_conversations', array('conversation_id' => $id));
+        $row = $query->row();
+        return $row->subject;
+    }
+    
+    public function delete($conversation_id){
+        $query = $this->db->get_where('inbox_conversations', array('conversation_id' => $conversation_id));
+        $conversation = $query->row();
+        
+        if($conversation->sender_id == $this->session->userdata('id')){
+            $data = array(
+                'sender_deleted' => 1
+            );
+            $this->db->update('inbox_conversations', $data, array('conversation_id' => $conversation_id));
+        } else {
+            $data = array(
+                'receiver_deleted' => 1
+            );
+            $this->db->update('inbox_conversations', $data, array('conversation_id' => $conversation_id));
+        }
+    }
+    
+    public function mark_as_read($conv_id){
+        $data = array(
+            'is_read' => 1
+        );
+        
+        $messages = $this->db->get_where('inbox_messages', array('conversation_id' => $conv_id, 'is_read' => 0))->result();
+        foreach ($messages as $message) {
+            if($message->receiver_id == $this->session->userdata('id')){
+                $this->db->update('inbox_messages', $data, array('message_id' => $message->message_id));
+            }
+        }
+    }
 
 }

@@ -63,6 +63,7 @@ class Admin extends CI_Controller {
 
 
         if ($this->form_validation->run() == FALSE) {
+            $data['to_user'] = $this->input->post('to_user');
             $data['page_title'] = "Create Admin Account";
             $data['navbar'] = 'admin';
             $this->load->view('templates/header', $data);

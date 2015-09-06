@@ -11,17 +11,20 @@
                 <table class="table">
                     <tr>
                         <td>
-                            <i class="fa fa-paper-plane-o text-warning"></i>&nbsp;<a href="#">Compose Message</a>
+                            <i class="fa fa-pencil-square-o text-warning"></i>&nbsp;
+                            <a href="<?php echo base_url('index.php/inbox/compose'); ?>">
+                                Compose Message
+                            </a>
                         </td>
                     </tr>
                     <tr>
                         <td>
-                            <i class="fa fa-paper-plane-o text-warning"></i>&nbsp;<a href="#">Sent Messages</a>
+                            <i class="fa fa-paper-plane-o text-warning"></i>&nbsp;<a href="<?php echo base_url('index.php/inbox/sent'); ?>">Sent Messages</a>
                         </td>
                     </tr>
                     <tr>
                         <td>
-                            <i class="fa fa-inbox text-warning"></i>&nbsp;<a href="#">Received Messages</a>
+                            <i class="fa fa-inbox text-warning"></i>&nbsp;<a href="<?php echo base_url('index.php/inbox/received'); ?>">Received Messages</a>
                         </td>
                     </tr>
                 </table>
