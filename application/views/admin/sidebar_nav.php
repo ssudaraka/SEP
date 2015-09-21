@@ -40,14 +40,14 @@
                 <table class="table">
                     <tr>
                         <td>
-                            <span class="glyphicon glyphicon-wrench text-warning"></span><a href="<?php echo base_url('index.php/student/load_all_archived_students'); ?>">Student Recodes</a>
+                            <span class="glyphicon glyphicon-list-alt  text-warning"></span><a href="<?php echo base_url('index.php/student/load_all_archived_students'); ?>">Student Recodes</a>
                         </td>
                     </tr>
-<!--                    <tr>
+                    <tr>
                         <td>
-                            <span class="glyphicon glyphicon-star text-warning"></span><a href="<?php echo base_url('index.php/#'); ?>">Leave Status</a>
+                            <span class="glyphicon glyphicon-list-alt  text-warning"></span><a href="<?php echo base_url('index.php/teacher/load_all_archived_teachers'); ?>">Teacher Recodes</a>
                         </td>
-                    </tr>-->
+                    </tr>
                 </table>
             </div>
         </div>

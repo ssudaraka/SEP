@@ -19,7 +19,9 @@ class Student extends CI_Controller {
 
         $data['navbar'] = "student";
 
-        //Getting user type
+        /*
+         * Getting user type
+         */
         $data['user_type'] = $this->session->userdata['user_type'];
 
 
@@ -46,17 +48,21 @@ class Student extends CI_Controller {
 
         $this->pagination->initialize($config);
 
-//  if there is no uri segment null value will be sent
+        /*
+         *  if there is no uri segment null value will be sent
+         */
         $config['offset'] = ($this->uri->segment(3) ? $this->uri->segment(3) : null);
         $data["query"] = $this->Student_Model->get_all_students($config["per_page"], $config['offset']);
-//      $data["query"] = $this->Student_Model->get_all_students_2();
+        //$data["query"] = $this->Student_Model->get_all_students_2();
         $data['result'] = $data['query']->result();
         $str_links = $this->pagination->create_links();
         $data["links"] = explode('&nbsp;', $str_links);
 
 
 
-//Load the view  + with pagination
+        /*
+         * Load the student details in the grid   + with pagination
+         */
 
 
         if ($data['user_type'] == 'A') {
@@ -95,12 +101,16 @@ class Student extends CI_Controller {
         $id = $this->input->post('id');
         $data['query'] = $this->Student_Model->search_student($id);
 
-        //if there is no any matching result should display a error message
+        /*
+         * if there is no any matching result should display a error message
+         */
         if ($data['query']->num_rows() <= 0) {
 
             $data['err_message'] = "No result is found";
         }
-        //getting the user type
+        /*
+         * getting the user type
+         */
         $data['user_type'] = $this->session->userdata['user_type'];
 
         $data['result'] = $data['query']->result();
@@ -132,7 +142,9 @@ class Student extends CI_Controller {
         $data['page_title'] = "Admission";
         $data['navbar'] = "student";
         $data['user_type'] = $this->session->userdata['user_type']; //getting the user type
-        //checking validations
+        /*
+         * checking validations
+         */
         $this->load->library('form_validation');
         $this->form_validation->set_rules('admissionnumber', 'Admission Number', 'required|is_unique[students.admission_no]|exact_length[4]');
         $this->form_validation->set_rules('admissiondate', 'Admission Date', 'required|callback_check_admission_date');
@@ -263,9 +275,9 @@ class Student extends CI_Controller {
                 $username = $data['row']->admission_no;
                 $password = "PW_" . $username;
                 $create = date('Y-m-d H:i:s');
-                $fname = $studentd[2];    
-                $lname = $studentd[3];    
-                if ($id = $this->Student_Model->insert_new_student_userdata($username, $password, $create ,$fname , $lname)) {
+                $fname = $studentd[2];
+                $lname = $studentd[3];
+                if ($id = $this->Student_Model->insert_new_student_userdata($username, $password, $create, $fname, $lname)) {
 
                     $this->Student_Model->set_user_id($ID, $id);
 
@@ -479,10 +491,10 @@ class Student extends CI_Controller {
         }
         $data['navbar'] = "student";
         $data['user_type'] = $this->session->userdata['user_type'];
-        
+
         if ($data['user_type'] == 'A') {
             if ($this->Student_Model->delete_student($id)) {
-                
+
                 $data['query'] = $this->Student_Model->get_all_archive_students();
                 $data['result'] = $data['query'];
                 $data['succ_message'] = "Student details deleted successfully";
@@ -492,7 +504,6 @@ class Student extends CI_Controller {
                 $this->load->view('navbar_sub', $data);
                 $this->load->view('/student/archived_search_student', $data);
                 $this->load->view('/templates/footer');
-                
             } else {
 
                 $data['query'] = $this->Student_Model->get_all_archive_students();
@@ -504,12 +515,10 @@ class Student extends CI_Controller {
                 $this->load->view('navbar_sub', $data);
                 $this->load->view('/student/archived_search_student', $data);
                 $this->load->view('/templates/footer');
-                
             }
         } else {
-            
+
             redirect('login', 'refresh');
-            
         }
     }
 
