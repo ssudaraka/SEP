@@ -13,19 +13,27 @@
                 </a>
             </div>
             <div class="admin-btn">
-                <i class="fa fa-globe"></i>
+                <i class="fa fa-calendar"></i>
                 <a href="<?php echo base_url('index.php/year'); ?>">
                     <span class="main">Year Planner</span>
                     <span class="sub">Setup, Manage Holidays...</span>
                 </a>
             </div>
             <div class="admin-btn">
-                <i class="fa fa-globe"></i>
+                <i class="fa fa-users"></i>
                 <a href="<?php echo base_url('index.php/admin/manage_admins'); ?>">
                     <span class="main">Administrators</span>
                     <span class="sub">Add, Update, Delete...</span>
                 </a>
             </div>
+            <div class="admin-btn">
+                <i class="fa fa-university"></i>
+                <a href="<?php echo base_url('index.php/classes'); ?>">
+                    <span class="main">Classes</span>
+                    <span class="sub">Manage Classes...</span>
+                </a>
+            </div>
+
         </div>
     </div>
 </div>
