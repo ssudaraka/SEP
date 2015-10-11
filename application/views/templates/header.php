@@ -38,6 +38,10 @@
             })
         </script>
 
+        <!-- colour box styles & script -->
+        <link href="http://cdnjs.cloudflare.com/ajax/libs/jquery.colorbox/1.4.33/example1/colorbox.min.css" rel="stylesheet"/>
+        <script src="http://cdnjs.cloudflare.com/ajax/libs/jquery.colorbox/1.4.33/jquery.colorbox-min.js"></script>
+
 
     </head>
     <body>

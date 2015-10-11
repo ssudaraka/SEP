@@ -5,8 +5,10 @@ class Attendance extends CI_Controller {
     function __construct() {
         parent::__construct();
         $this->load->model('attendance_model');
+        $this->load->model('student_model');
         $this->load->library('form_validation');
         $this->load->helper('date');
+        $this->load->library('session');
     }
 
     /*
@@ -187,7 +189,7 @@ class Attendance extends CI_Controller {
         else :
             $data['date'] = $date;
         endif;
-        
+
         $data['page_title'] = "Attendance Report For: {$data['date']}";
 
         $data['result'] = $this->attendance_model->search_attendance($data['date']);
@@ -206,7 +208,7 @@ class Attendance extends CI_Controller {
         else :
             $data['date'] = $date;
         endif;
-        
+
         $data['page_title'] = "Absent Report For: {$data['date']}";
         $data['result'] = $this->attendance_model->get_absent_list($data['date']);
         $this->load->view('attendance/report_pdf', $data);
@@ -235,7 +237,7 @@ class Attendance extends CI_Controller {
     function reports() {
         //Getting user type
         $data['user_type'] = $this->session->userdata['user_type'];
-        
+
         $data['page_title'] = "Attendance Reports";
         $data['navbar'] = "attendance";
 
@@ -270,6 +272,123 @@ class Attendance extends CI_Controller {
             return FALSE;
         } else {
             return TRUE;
+        }
+    }
+
+    /*
+     * 
+     *<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<< FOR STUDENT >>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>> 
+     * 
+     */
+
+    /**
+     * This is for retrieving attendance recodes of students
+     */
+    public function load_students() {
+        if (!$this->session->userdata('id')) {
+            redirect('login', 'refresh');
+        }
+
+        $data['query2'] = $this->attendance_model->load_student_attendance_log();
+        $data['result2'] = $data['query2']->result();
+        $data["query"] = $this->student_model->get_all_students_2();
+        $data['result'] = $data['query']->result();
+        $data['page_title'] = "Student attendance";
+        $data['navbar'] = 'attendance';
+        $data['user_type'] = $this->session->userdata['user_type'];
+
+        $data['page_title'] = "Manage Student";
+        $this->load->view('/templates/header', $data);
+        $this->load->view('navbar_main', $data);
+        $this->load->view('navbar_sub', $data);
+        $this->load->view('/attendance/student_attendance', $data);
+        $this->load->view('/templates/footer');
+    }
+
+    /**
+     * This is for the student attendance marking..we get the absent students (checked rows)
+     *  and put them to db .. 
+     */
+    public function get_selected_students() {
+
+        $attendance_date = $this->input->post('attendancedate');
+        $user_id = $this->session->userdata('id');
+        $absent_students = $this->input->post('checkboxs');
+
+        $today = date('Y-m-d');
+        if ($attendance_date <= $today) {
+            if (!$absent_students) {
+                $absent_students = array();
+            }
+
+            $students = $this->attendance_model->get_all_student_ids()->result();
+            $all_students = array();
+            foreach ($students as $value) {
+                array_push($all_students, $value->id);
+            }
+
+
+            $present_students = array_diff($all_students, $absent_students);
+
+            if ($this->attendance_model->check_student_attendance_log($attendance_date)) {
+
+                $this->session->set_flashdata('err_message', 'Student Attendance Already Marked for <b>' . $attendance_date . '</b>');
+                redirect('attendance/load_students', 'refresh');
+            } else {
+
+                if ($this->attendance_model->save_attendence_students($absent_students, $present_students, $attendance_date, $user_id)) {
+
+                    $this->session->set_flashdata('succ_message', 'Class Attendance Marked Successfully for <b>' . $attendance_date . '</b>');
+                    redirect('attendance/load_students', 'refresh');
+                } else {
+                    $this->session->set_flashdata('err_message', 'Error Occured');
+                    redirect('attendance/load_students', 'refresh');
+                }
+            }
+        } else {
+            $this->session->set_flashdata('err_message', 'Cannot mark attendance for a future date');
+            redirect('attendance/load_students', 'refresh');
+        }
+    }
+    
+    /*
+     * getting the student attendence recodes for a speific student attendance log detail
+     */
+    public function view_one_attendance() {
+        $id = $this->uri->segment(3);
+        $data['query'] = $this->attendance_model->get_attendance_data($id);
+        $data['result'] = $data['query']->result();
+
+        $this->load->view('attendance/edit_student_attendance_pop', $data);
+    }
+
+    /*
+     * edit  student attendence recodes for a speific student attendance log detail
+     */
+    public function edit_one_attendance() {
+
+        $data = json_decode($this->input->post('data'));
+        $attendance_date = json_decode($this->input->post('date'));
+
+
+        $new_absent = array();
+        foreach ($data as $d) {
+            array_push($new_absent, $d);
+        }
+
+        $students = $this->attendance_model->get_all_student_ids()->result();
+        $all_students = array();
+        foreach ($students as $value) {
+            array_push($all_students, $value->id);
+        }
+
+        $new_present = array_diff($all_students, $new_absent);
+
+        if ($this->attendance_model->edit_attendence_students($new_absent, $new_present, $attendance_date)) {
+
+            echo "Recode updated sucessfully";
+        } else {
+            echo "Error occured";
         }
     }
 

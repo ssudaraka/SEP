@@ -152,7 +152,7 @@ class Teacher_Model extends CI_Model {
 
     //delete teacher
     public function DeleteTeacher($id) {
-        $sql = "DELETE FROM teachers WHERE id='$id'";
+        $sql = "DELETE FROM archived_teachers WHERE id='$id'";
         if ($query = $this->db->query($sql)) {
             return TRUE;
         } else {
@@ -209,14 +209,68 @@ class Teacher_Model extends CI_Model {
 
     public function check_userid($teacher_log_id) {
         try {
-            if($this->db->query("SELECT * FROM users WHERE id = '$teacher_log_id'")){
+            if ($this->db->query("SELECT * FROM users WHERE id = '$teacher_log_id'")) {
                 return TRUE;
-            }
-            else{
+            } else {
                 return FALSE;
             }
         } catch (Exception $exc) {
-            return FALSE;;
+            return FALSE;
+            ;
+        }
+    }
+
+    function archive_teacher($id) {
+
+        try {
+            if ($data_t = $this->db->query("SELECT * FROM teachers  WHERE user_id = '$id'")) {
+                $teachr_data = $data_t->row();
+                
+                
+                $NIC = $teachr_data->nic_no;
+                $name = $teachr_data->full_name;
+                $initial = $teachr_data->name_with_initials;
+                $birth = $teachr_data->dob;
+                $gender = $teachr_data->gender;
+                $Nationality = $teachr_data->nationality_id;
+                $religion = $teachr_data->religion_id;
+                $civilstatus = $teachr_data->civil_status;
+                $address = $teachr_data->permanent_addr;
+                $contactMob = $teachr_data->contact_mobile;
+                $contactHome = $teachr_data->contact_home;
+                $email = $teachr_data->email;
+                $widow = $teachr_data->wnop_no;
+
+                if ($this->db->query("INSERT INTO archived_teachers(`id`,`nic_no`, `full_name`, `name_with_initials` , `dob` , `gender`, `nationality_id` , `religion_id` , `civil_status` , `permanent_addr` , `contact_mobile` , `contact_home` , `email` , `wnop_no`) 
+    			VALUES ('$id','$NIC', '$name' , '$initial' , '$birth', '$gender' , '$Nationality' , '$religion' , '$civilstatus' , '$address' , '$contactMob' , '$contactHome' , '$email' , '$widow')")) {
+
+
+                    $sql1 = "DELETE FROM teachers  WHERE id = '$id'";
+                    if ($query = $this->db->query($sql1)) {
+                        return TRUE;
+                    } else {
+                        return FALSE;
+                    }
+                }
+            } else {
+
+                return FALSE;
+            }
+        } catch (Exception $exc) {
+            return null;
+        }
+    }
+    
+     /*
+     * get all archived student recodes
+     */
+     function get_all_archive_teachers() {
+         $query = $this->db->query("SELECT * FROM  archived_teachers");
+     
+        if ($query->num_rows() > 0) {
+            return $query->result();
+        } else {
+            return FALSE;
         }
     }
 

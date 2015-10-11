@@ -24,7 +24,7 @@
                     // Change the css classes to suit your needs    
 
                     $attributes = array('class' => 'formCon', 'id' => '');
-                    echo form_open('student/create_student', $attributes);
+                    echo form_open_multipart('student/create_student', $attributes);
                     ?>
                    
                 <div class="panel panel-warning" style="background-color: #fef7ee">
