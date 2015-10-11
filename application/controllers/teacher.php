@@ -5,6 +5,7 @@ class Teacher extends CI_Controller {
     function __construct() {
         parent::__construct();
         $this->load->model('Teacher_Model');
+        $this->load->model('News_Model');
         $this->load->helper('date');
         $this->load->model('user');
     }
@@ -51,9 +52,6 @@ class Teacher extends CI_Controller {
 
     //Table search
     public function search_one() {
-        //getting the user type
-        $data['user_type'] = $this->session->userdata['user_type'];
-
 
         if (!$this->session->userdata('id')) {
             redirect('login', 'refresh');
@@ -77,9 +75,6 @@ class Teacher extends CI_Controller {
 
     //Load teacher details in to update view
     public function load_teacher($id) {
-        //getting the user type
-        $data['user_type'] = $this->session->userdata['user_type'];
-
         if (!$this->session->userdata('id')) {
             redirect('login', 'refresh');
         }
@@ -96,9 +91,6 @@ class Teacher extends CI_Controller {
 
     //edit teacher
     public function edit_teacher($id) {
-        //getting the user type
-        $data['user_type'] = $this->session->userdata['user_type'];
-
         if (!$this->session->userdata('id')) {
             redirect('login', 'refresh');
         }
@@ -201,6 +193,11 @@ class Teacher extends CI_Controller {
                 $data['page_title'] = "Teacher Profile";
                 $data['succ_message'] = "Teacher details updated successfully";
                 $data['row'] = $this->Teacher_Model->getTeacherProfile($id);
+                //For news field
+                $tech_id = $this->session->userdata('id');
+                $tech_details = $this->Teacher_Model->user_details($tech_id);
+                $this->News_Model->insert_action_details($tech_id, "Update Teacher Record", $tech_details->photo_file_name, $tech_details->full_name);
+                //////
                 $this->load->view('/templates/header', $data);
                 $this->load->view('navbar_main', $data);
                 $this->load->view('navbar_sub', $data);
@@ -221,30 +218,30 @@ class Teacher extends CI_Controller {
 
     //deleate teacher recode
     public function delete_teacher($id) {
-        //getting the user type
-        $data['user_type'] = $this->session->userdata['user_type'];
-
         if (!$this->session->userdata('id')) {
             redirect('login', 'refresh');
         }
-        $data['navbar'] = "admin";
+        $data['navbar'] = "teacher";
 
 
         if ($this->Teacher_Model->DeleteTeacher($id)) {
 
-            $data['result'] = $this->Teacher_Model->get_all_archive_teachers();
-
-
+            $data['result'] = $this->Teacher_Model->SearchAllTeachers();
+            //For news field
+            $tech_id = $this->session->userdata('id');
+            $tech_details = $this->Teacher_Model->user_details($tech_id);
+            $this->News_Model->insert_action_details($tech_id, "Delete Teacher Record", $tech_details->photo_file_name, $tech_details->full_name);
+            //////
             $data['succ_message'] = "Teacher details deleted successfully";
             $data['page_title'] = "Search Teacher";
             $this->load->view('/templates/header', $data);
             $this->load->view('navbar_main', $data);
             $this->load->view('navbar_sub', $data);
-            $this->load->view('/teacher/archived_search_teacher', $data);
+            $this->load->view('/teacher/Search_page', $data);
             $this->load->view('/templates/footer');
         } else {
 
-            $data['result'] = $this->Teacher_Model->get_all_archive_teachers();
+            $data['result'] = $this->Teacher_Model->SearchAllTeachers();
 
 
             $data['succ_message'] = "Teacher details deleted successfully";
@@ -252,15 +249,12 @@ class Teacher extends CI_Controller {
             $this->load->view('/templates/header', $data);
             $this->load->view('navbar_main', $data);
             $this->load->view('navbar_sub', $data);
-            $this->load->view('/teacher/archived_search_teacher', $data);
+            $this->load->view('/teacher/Search_page', $data);
             $this->load->view('/templates/footer');
         }
     }
 
     function create() {
-        //getting the user type
-        $data['user_type'] = $this->session->userdata['user_type'];
-
         if (!$this->session->userdata('id')) {
             redirect('login', 'refresh');
         }
@@ -311,6 +305,11 @@ class Teacher extends CI_Controller {
                 $data["user_id"] = $id;
                 $data['page_title'] = "Teacher Registration";
                 $data['navbar'] = "teacher";
+                //For news field
+                $tech_id = $this->session->userdata('id');
+                $tech_details = $this->Teacher_Model->user_details($tech_id);
+                $this->News_Model->insert_action_details($tech_id, "Insert New Teacher Record", $tech_details->photo_file_name, $tech_details->full_name);
+                //////
                 $this->load->view('templates/header', $data);
                 $this->load->view('navbar_main', $data);
                 $this->load->view('navbar_sub', $data);
@@ -324,9 +323,6 @@ class Teacher extends CI_Controller {
     }
 
     function update_details($id) {
-        //getting the user type
-        $data['user_type'] = $this->session->userdata['user_type'];
-
         if (!$this->session->userdata('id')) {
             redirect('login', 'refresh');
         }
@@ -398,9 +394,6 @@ class Teacher extends CI_Controller {
     }
 
     function create_log_details($id) {
-        //getting the user type
-        $data['user_type'] = $this->session->userdata['user_type'];
-
         if (!$this->session->userdata('id')) {
             redirect('login', 'refresh');
         }
@@ -444,6 +437,11 @@ class Teacher extends CI_Controller {
                 $this->Teacher_Model->upload_pic($id, $image);
                 $data['propic'] = $this->Teacher_Model->get_profile_img($id);
                 if ($res = $this->Teacher_Model->get_staff_details($id)) {
+                    //For news field
+                    $tech_id = $this->session->userdata('id');
+                    $tech_details = $this->Teacher_Model->user_details($tech_id);
+                    $this->News_Model->insert_action_details($tech_id, "Create new user account", $tech_details->photo_file_name, $tech_details->full_name);
+                    //////
                     $data['progress'] = 1;
                     $data["user_id"] = $res;
                     $this->load->view('templates/header', $data);
@@ -460,9 +458,6 @@ class Teacher extends CI_Controller {
     }
 
     function check_profile($id) {
-        //getting the user type
-        $data['user_type'] = $this->session->userdata['user_type'];
-
         if (!$this->session->userdata('id')) {
             redirect('login', 'refresh');
         }
@@ -481,9 +476,6 @@ class Teacher extends CI_Controller {
     }
 
     function create_profile() {
-        //getting the user type
-        $data['user_type'] = $this->session->userdata['user_type'];
-
         if (!$this->session->userdata('id')) {
             redirect('login', 'refresh');
         }
@@ -525,9 +517,20 @@ class Teacher extends CI_Controller {
             if ($teacher_log_id == 0) {
                 $u_id = $this->Teacher_Model->insert_new_teacher_userdata($username, $password, $create);
                 $this->Teacher_Model->set_user_id($teacher, $u_id);
+                //For news field
+                $tech_id = $this->session->userdata('id');
+                $tech_details = $this->Teacher_Model->user_details($tech_id);
+                $this->News_Model->insert_action_details($tech_id, "Create new user account", $tech_details->photo_file_name, $tech_details->full_name);
+                //////
             } else {
                 $this->Teacher_Model->update_new_teacher_userdata($username, $password, $create, $teacher_log_id);
                 $this->Teacher_Model->set_user_id($teacher, $teacher_log_id);
+                //For news field
+                $techer_id = $this->Teacher_Model->get_staff_details($teacher);
+                $tech_id = $this->session->userdata('id');
+                $tech_details = $this->Teacher_Model->user_details($tech_id);
+                $this->News_Model->insert_action_details($tech_id, "Update user account " . $techer_id->full_name, $tech_details->photo_file_name, $tech_details->full_name);
+                //////
             }
 
             $data['succ_message'] = "Successfully created";
@@ -541,9 +544,6 @@ class Teacher extends CI_Controller {
     }
 
     function view_profile($teacher_id) {
-        //getting the user type
-        $data['user_type'] = $this->session->userdata['user_type'];
-
         if (!$this->session->userdata('id')) {
             redirect('login', 'refresh');
         }
@@ -559,11 +559,10 @@ class Teacher extends CI_Controller {
         $this->load->view('teacher/check_teacher_profile', $data);
         $this->load->view('/templates/footer');
     }
-
+/*
+ * This is used to view the reporting page
+ */
     function teacher_report($val) {
-        //getting the user type
-        $data['user_type'] = $this->session->userdata['user_type'];
-
         if (!$this->session->userdata('id')) {
             redirect('login', 'refresh');
         }
@@ -578,11 +577,10 @@ class Teacher extends CI_Controller {
         $this->load->view('teacher/teacher_report_form', $data);
         $this->load->view('/templates/footer');
     }
-
+/*
+ * This function is used to download the html page. use dompdf library for that
+ */
     function report_pdf($l) {
-        //getting the user type
-        $data['user_type'] = $this->session->userdata['user_type'];
-
         if (!$this->session->userdata('id')) {
             redirect('login', 'refresh');
         }
@@ -591,7 +589,7 @@ class Teacher extends CI_Controller {
         $this->form_validation->set_rules('reporttype', 'reporttype', 'callback_check_selection');
         $this->form_validation->set_rules('report', 'report', '');
         $this->form_validation->set_error_delimiters('<br /><span class="error">', '</span>');
-
+        date_default_timezone_set('Asia/Kolkata'); //get the timezone
         if ($this->form_validation->run() == FALSE) {
             $data['page_title'] = "Teacher Report";
             $data['navbar'] = 'teacher';
@@ -605,6 +603,11 @@ class Teacher extends CI_Controller {
         } else {
             $report = $this->input->post('report');
             if ($l == 1) {
+                //For news field
+                $tech_id = $this->session->userdata('id');
+                $tech_details = $this->Teacher_Model->user_details($tech_id);
+                $this->News_Model->insert_action_details($tech_id, "Generate section teacher reports", $tech_details->photo_file_name, $tech_details->full_name);
+                //////
                 $data['section'] = $report;
                 $data['school_name'] = "D. S. Senanayake College";
                 $data['result'] = $this->Teacher_Model->get_section_teacher_details($report);
@@ -612,6 +615,11 @@ class Teacher extends CI_Controller {
                 $html = $this->load->view('teacher/report_pdf', $data, true);
                 pdf_create($html, $filename);
             } else if ($l == 2) {
+                //For news field
+                $tech_id = $this->session->userdata('id');
+                $tech_details = $this->Teacher_Model->user_details($tech_id);
+                $this->News_Model->insert_action_details($tech_id, "Generate personal teacher reports", $tech_details->photo_file_name, $tech_details->full_name);
+                //////
                 $data['school_name'] = "D. S. Senanayake College";
                 $data['propic'] = $this->Teacher_Model->get_profile_img($report);
                 $data['result'] = $this->Teacher_Model->get_staff_details($report);
@@ -619,80 +627,6 @@ class Teacher extends CI_Controller {
                 $html = $this->load->view('teacher/report_teacher_pdf', $data, true);
                 pdf_create($html, $filename);
             }
-        }
-    }
-
-    /*
-     * archive student recode
-     */
-
-    public function archive_teacher($id) {
-
-        if (!$this->session->userdata('id')) {
-            redirect('login', 'refresh');
-        }
-        $data['navbar'] = "teacher";
-        $data['user_type'] = $this->session->userdata['user_type'];
-
-
-        if ($this->Teacher_Model->archive_teacher($id)) {
-            $data['navbar'] = "teacher";
-            $data['result'] = $this->Teacher_Model->SearchAllTeachers();
-            $data['page_title'] = "Search Teacher";
-            $data['succ_message'] = "Teacher details deleted successfully";
-            $this->load->view('/templates/header', $data);
-            $this->load->view('navbar_main', $data);
-            $this->load->view('navbar_sub', $data);
-            $this->load->view('/teacher/Search_page', $data);
-            $this->load->view('/templates/footer');
-            $result = $this->user->get_details($this->session->userdata('id'));
-            foreach ($result as $row) {
-                $data['first_name'] = $row->first_name;
-                $data['last_name'] = $row->last_name;
-            }
-            //reload table
-        } else {
-
-            $data['navbar'] = "teacher";
-            $data['result'] = $this->Teacher_Model->SearchAllTeachers();
-            $data['page_title'] = "Search Teacher";
-            $this->load->view('/templates/header', $data);
-            $this->load->view('navbar_main', $data);
-            $this->load->view('navbar_sub', $data);
-            $this->load->view('/teacher/Search_page', $data);
-            $this->load->view('/templates/footer');
-            $result = $this->user->get_details($this->session->userdata('id'));
-            foreach ($result as $row) {
-                $data['first_name'] = $row->first_name;
-                $data['last_name'] = $row->last_name;
-            }
-        }
-    }
-    
-     /*
-     * get archive teacher details
-     */
-
-    public function load_all_archived_teachers() {
-
-        if (!$this->session->userdata('id')) {
-            redirect('login', 'refresh');
-        }
-        $data['navbar'] = "admin";
-        $data['user_type'] = $this->session->userdata['user_type'];
-
-        if ($data['user_type'] == 'A') {
-
-            $data['query'] = $this->Teacher_Model->get_all_archive_teachers();
-            $data['result'] = $data['query'];
-            $data['page_title'] = "Search Archived Teachers";
-            $this->load->view('/templates/header', $data);
-            $this->load->view('navbar_main', $data);
-            $this->load->view('navbar_sub', $data);
-            $this->load->view('/teacher/archived_search_teacher', $data);
-            $this->load->view('/templates/footer');
-        } else {
-            redirect('login', 'refresh');
         }
     }
 

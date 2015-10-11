@@ -19,7 +19,7 @@
     } else {
         echo "";
     }
-    ?> Section List</h5>
+    ?> Section Teacher List</h5>
 
 <div class="row" style="margin-left: 5em">
     <table class="table table-hover">

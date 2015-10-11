@@ -6,13 +6,12 @@ class Timetable extends CI_Controller {
         parent::__construct();
         $this->load->model('class_model');
         $this->load->model('timetable_model');
+        $this->load->model('Teacher_Model');
+        $this->load->model('News_Model');
         $this->load->library('form_validation');
     }
 
     function index() {
-        //getting the user type
-        $data['user_type'] = $this->session->userdata['user_type'];
-
         $data['page_title'] = "Timetable Management";
         $data['navbar'] = "timetable";
 
@@ -26,9 +25,6 @@ class Timetable extends CI_Controller {
     }
 
     function create() {
-        //getting the user type
-        $data['user_type'] = $this->session->userdata['user_type'];
-
         $data['page_title'] = "Create Timetable";
         $data['navbar'] = "timetable";
 
@@ -47,6 +43,11 @@ class Timetable extends CI_Controller {
             $data['year'] = $this->input->post('year');
             $data['timetable_id'] = $this->timetable_model->create_class_timetable($data['class_id'], $data['year']);
             $data['class_name'] = $this->class_model->get_class_name($data['class_id']);
+            //For news field
+            $tech_id = $this->session->userdata('id');
+            $tech_details = $this->Teacher_Model->user_details($tech_id);
+            $this->News_Model->insert_action_details($tech_id, "Insert a new time table", $tech_details->photo_file_name, $tech_details->full_name);
+            //////
             $this->load->view('templates/header', $data);
             $this->load->view('navbar_main', $data);
             $this->load->view('navbar_sub', $data);
@@ -56,8 +57,6 @@ class Timetable extends CI_Controller {
     }
 
     function search_by_year() {
-        //getting the user type
-        $data['user_type'] = $this->session->userdata['user_type'];
 
         $data['page_title'] = "Timetable Management";
         $data['navbar'] = 'timetable';
@@ -73,9 +72,6 @@ class Timetable extends CI_Controller {
     }
     
     function search_by_class(){
-        //getting the user type
-        $data['user_type'] = $this->session->userdata['user_type'];
-
         $data['page_title'] = "Timetable Management";
         $data['navbar'] = 'timetable';
 
@@ -92,9 +88,6 @@ class Timetable extends CI_Controller {
     }
 
     function open($timetable_id) {
-        //getting the user type
-        $data['user_type'] = $this->session->userdata['user_type'];
-
         $data['page_title'] = "Timetable: $timetable_id";
         $data['navbar'] = "timetable";
         $data['timetable_id'] = $timetable_id;
@@ -156,10 +149,8 @@ class Timetable extends CI_Controller {
     }
 
     function delete($timetable_id) {
-        //getting the user type
-        $data['user_type'] = $this->session->userdata['user_type'];
 
-        $data['page_title'] = "Timetable Management";
+        $data['page_title'] = "Test Timetable";
         $data['navbar'] = "timetable";
 
         if ($this->timetable_model->delete($timetable_id)) {
@@ -167,7 +158,11 @@ class Timetable extends CI_Controller {
             $data['timetable_list'] = $this->timetable_model->get_timetable_list();
 
             $this->timetable_model->delete_slots($timetable_id);
-
+            //For news field
+            $tech_id = $this->session->userdata('id');
+            $tech_details = $this->Teacher_Model->user_details($tech_id);
+            $this->News_Model->insert_action_details($tech_id, "Delete a time table", $tech_details->photo_file_name, $tech_details->full_name);
+            //////
             $this->load->view('templates/header', $data);
             $this->load->view('navbar_main', $data);
             $this->load->view('navbar_sub', $data);
@@ -177,8 +172,6 @@ class Timetable extends CI_Controller {
     }
 
     function test() {
-        //getting the user type
-        $data['user_type'] = $this->session->userdata['user_type'];
 
         $data['page_title'] = "Test Timetable";
         $data['navbar'] = "timetable";
@@ -190,10 +183,7 @@ class Timetable extends CI_Controller {
     }
 
     function add_slot($timetable_id, $slot_id) {
-        //getting the user type
-        $data['user_type'] = $this->session->userdata['user_type'];
-        
-        $data['page_title'] = "Timetable Management";
+        $data['page_title'] = "Test Timetable";
         $data['navbar'] = "timetable";
         $data['timetable'] = $this->timetable_model->get_class_timetable($timetable_id);
         $data['slot_id'] = $slot_id;
