@@ -31,7 +31,12 @@
         <script src="<?php echo base_url("assets/plugins/sweetalert/sweetalert.min.js"); ?>"></script>
         <link rel="stylesheet" type="text/css" href="<?php echo base_url("assets/plugins/sweetalert/sweetalert.css"); ?>">
 
-
+        <!-- Tooltip Init -->
+        <script type="text/javascript">
+            $(function () {
+              $('[data-toggle="tooltip"]').tooltip()
+            })
+        </script>
 
 
     </head>
