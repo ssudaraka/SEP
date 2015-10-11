@@ -8,7 +8,7 @@
 
         <!-- jQuery (necessary for Bootstrap's JavaScript plugins) -->
         <script src="http://code.jquery.com/jquery-1.11.1.min.js"></script>
-        
+
         <!-- DataTables Plugin -->
         <script src="<?php echo base_url("assets/js/jquery.dataTables.min.js"); ?>"></script>
         <link rel="stylesheet" type="text/css" href="http://cdn.datatables.net/plug-ins/1.10.7/integration/bootstrap/3/dataTables.bootstrap.css">
@@ -17,7 +17,7 @@
         <link href="<?php echo base_url("assets/css/style.css"); ?>" rel="stylesheet">
         <!-- <link href="https://cdn.datatables.net/1.10.7/css/jquery.dataTables.css" rel="stylesheet"> -->
         <script type="text/javascript" language="javascript" src="http://cdn.datatables.net/plug-ins/1.10.7/integration/bootstrap/3/dataTables.bootstrap.js"></script>
-        
+
         <!-- Font Awesome -->
         <link rel="stylesheet" href="<?php echo base_url("assets/css/font-awesome.min.css"); ?>">
         <!-- HTML5 shim and Respond.js for IE8 support of HTML5 elements and media queries -->
@@ -27,8 +27,12 @@
           <script src="https://oss.maxcdn.com/respond/1.4.2/respond.min.js"></script>
         <![endif]-->
 
-        
-        
-        
+        <!-- SweetAlert -->
+        <script src="<?php echo base_url("assets/plugins/sweetalert/sweetalert.min.js"); ?>"></script>
+        <link rel="stylesheet" type="text/css" href="<?php echo base_url("assets/plugins/sweetalert/sweetalert.css"); ?>">
+
+
+
+
     </head>
     <body>
