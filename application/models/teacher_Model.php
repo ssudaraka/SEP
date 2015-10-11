@@ -219,6 +219,12 @@ class Teacher_Model extends CI_Model {
             return FALSE;;
         }
     }
+    
+    public function user_details($id) {
+        $sql = "SELECT * FROM teachers WHERE user_id='$id'";
+        $query = $this->db->query($sql);
+        return $query->row();
+    }
 
 }
 

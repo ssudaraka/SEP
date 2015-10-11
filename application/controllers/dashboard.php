@@ -4,13 +4,18 @@ class Dashboard extends CI_Controller {
 
     function __construct() {
         parent::__construct();
+        $this->load->model('event_model');
+        $this->load->model('news_model');
     }
 
     function index() {
         if (!$this->session->userdata('logged_in')) {
             redirect('login', 'refresh');
         }
-
+        $today = date('Y-m-d');
+        $data['count'] = $this->event_model->get_upcoming_events($today);
+        $data['news'] = $this->news_model->get_all_news_details();
+        $data['activity'] = $this->news_model->get_news_details();
         $data['navbar'] = "dashboard";
 
         $data['page_title'] = 'Dashboard';
@@ -25,6 +30,11 @@ class Dashboard extends CI_Controller {
     function logout() {
         $this->session->sess_destroy();
         redirect('login', 'refresh');
+    }
+    
+    function get_news(){
+        $data['news'] = $this->news_model->get_all_news_details();
+        $this->load->view('dashboard_news_form',$data);
     }
 
 }

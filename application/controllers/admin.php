@@ -9,6 +9,8 @@ class Admin extends CI_Controller {
     function __construct() {
         parent::__construct();
         $this->load->model('user');
+        $this->load->model('Teacher_Model');
+        $this->load->model('News_Model');
     }
 
     /**
@@ -18,7 +20,7 @@ class Admin extends CI_Controller {
 
         $data['page_title'] = "System Administration";
         $data['navbar'] = "admin";
-        
+
         $this->load->view('templates/header', $data);
         $this->load->view('navbar_main', $data);
         $this->load->view('navbar_sub', $data);
@@ -30,7 +32,6 @@ class Admin extends CI_Controller {
      * This will just load the view used to change account settings.
      * as a kickstart, I have added password change here.
      */
-
     function system_settings() {
         if ($this->session->userdata('user_type') !== "A") {
             redirect('login');
@@ -79,6 +80,11 @@ class Admin extends CI_Controller {
                 'password' => md5($this->input->post('password'))
             );
             if ($this->user->create($input_data, "A")) {
+                //For news field
+                $tech_id = $this->session->userdata('id');
+                $tech_details = $this->Teacher_Model->user_details($tech_id);
+                $this->News_Model->insert_action_details($tech_id, "Create new admin account", $tech_details->photo_file_name, $tech_details->full_name);
+                //////
                 $data['page_title'] = "Create Admin Account";
                 $data['navbar'] = 'admin';
                 $data['succ_message'] = "New Admin Created Successfully";
@@ -98,7 +104,7 @@ class Admin extends CI_Controller {
         $data['query'] = $this->user->get_user_list('A');
 
         $data['result'] = $data['query']->result();
-        
+
         $this->load->view('templates/header', $data);
         $this->load->view('navbar_main', $data);
         $this->load->view('navbar_sub', $data);

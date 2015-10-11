@@ -20,24 +20,24 @@ class Subject extends CI_Controller {
             redirect('login');
         }
 
-       /*
-        * in the index funtion will load the create_subject page
-        */
-        
-        
+        /*
+         * in the index funtion will load the create_subject page
+         */
+
+
         /*
          * validations (for subject name and subject code cannot enter null values)
          */
         $this->load->library('form_validation');
         $this->form_validation->set_rules('subjectname', 'subjectname', "trim|required|xss_clean|min_length[5]|alpha_dash");
         $this->form_validation->set_rules('subjectcode', 'subjectcode', "trim|required|xss_clean");
-        
-       
-         
+
+
+
         if ($this->form_validation->run() == FALSE) {
             $data['page_title'] = "Create Subject";
             $data['navbar'] = 'subject';
-            $data["query"]=$this->db->query("SELECT * FROM teachers");
+            $data["query"] = $this->db->query("SELECT * FROM teachers");
             $data['result'] = $data['query']->result();
             $this->load->view('templates/header', $data);
             $this->load->view('navbar_main', $data);
@@ -50,13 +50,18 @@ class Subject extends CI_Controller {
                 'subjectcode' => $this->input->post('subjectcode'),
                 'sectionid' => $this->input->post('sectionid'),
                 'subjectinchargeid' => $this->input->post('subjectinchargeid')
-                );
+            );
             if ($this->Subject_model->create($subject_data)) {
+                //For news field
+                $tech_id = $this->session->userdata('id');
+                $tech_details = $this->Teacher_Model->user_details($tech_id);
+                $this->News_Model->insert_action_details($tech_id, "Insert new subject", $tech_details->photo_file_name, $tech_details->full_name);
+                //////
                 $data['page_title'] = "Create Subject ";
-                 $data['navbar'] = 'subject';
+                $data['navbar'] = 'subject';
                 $data['succ_message'] = "New subject Created Successfully";
-                 $data["query"]=$this->db->query("SELECT * FROM teachers");
-                 $data['result'] = $data['query']->result();
+                $data["query"] = $this->db->query("SELECT * FROM teachers");
+                $data['result'] = $data['query']->result();
                 $this->load->view('templates/header', $data);
                 $this->load->view('navbar_main', $data);
                 $this->load->view('navbar_sub', $data);
@@ -66,19 +71,9 @@ class Subject extends CI_Controller {
         }
     }
 
-
-
-  
-   
-
-  
-
-    
-   
-
-   /*
-    * getting a list of subjects so can delete or edit them
-    */
+    /*
+     * getting a list of subjects so can delete or edit them
+     */
 
     function manage_subjects() {
         $data['page_title'] = "Manage Subjects";
@@ -103,7 +98,7 @@ class Subject extends CI_Controller {
 
         $config['offset'] = ($this->uri->segment(3) ? $this->uri->segment(3) : null);
 
-        $data['query'] = $this->Subject_model->get_subjects( $config['per_page'], $config['offset']);
+        $data['query'] = $this->Subject_model->get_subjects($config['per_page'], $config['offset']);
 
         $data['result'] = $data['query']->result();
         $this->pagination->initialize($config);
@@ -167,32 +162,32 @@ class Subject extends CI_Controller {
             /**
              * setting up paginations
              */
-        $this->load->library('pagination');
-        $config = array();
-        $config['base_url'] = base_url() . "index.php/subject/manage_subjects";
-        $config['total_rows'] = $this->Subject_model->get_subject_total();
-        $config['per_page'] = 2;
-        $config['use_page_numbers'] = TRUE;
-        $config['num_links'] = 5;
+            $this->load->library('pagination');
+            $config = array();
+            $config['base_url'] = base_url() . "index.php/subject/manage_subjects";
+            $config['total_rows'] = $this->Subject_model->get_subject_total();
+            $config['per_page'] = 2;
+            $config['use_page_numbers'] = TRUE;
+            $config['num_links'] = 5;
 
-        $config['cur_tag_open'] = '<a href="#">';
-        $config['cur_tag_close'] = '</a>';
+            $config['cur_tag_open'] = '<a href="#">';
+            $config['cur_tag_close'] = '</a>';
 
-        $config['offset'] = ($this->uri->segment(3) ? $this->uri->segment(3) : null);
+            $config['offset'] = ($this->uri->segment(3) ? $this->uri->segment(3) : null);
 
-        $data['query'] = $this->Subject_model->get_subjects( $config['per_page'], $config['offset']);
+            $data['query'] = $this->Subject_model->get_subjects($config['per_page'], $config['offset']);
 
-        $data['result'] = $data['query']->result();
-        $this->pagination->initialize($config);
-        $str_links = $this->pagination->create_links();
-        $data["links"] = explode('&nbsp;', $str_links);
+            $data['result'] = $data['query']->result();
+            $this->pagination->initialize($config);
+            $str_links = $this->pagination->create_links();
+            $data["links"] = explode('&nbsp;', $str_links);
 
-        $data['result'] = $data['query']->result();
-        $this->load->view('templates/header', $data);
-        $this->load->view('navbar_main', $data);
-        $this->load->view('navbar_sub', $data);
-        $this->load->view('subject/manage_subjects', $data);
-        $this->load->view('templates/footer');
+            $data['result'] = $data['query']->result();
+            $this->load->view('templates/header', $data);
+            $this->load->view('navbar_main', $data);
+            $this->load->view('navbar_sub', $data);
+            $this->load->view('subject/manage_subjects', $data);
+            $this->load->view('templates/footer');
         }
     }
 

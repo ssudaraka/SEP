@@ -6,6 +6,8 @@ class Timetable extends CI_Controller {
         parent::__construct();
         $this->load->model('class_model');
         $this->load->model('timetable_model');
+        $this->load->model('Teacher_Model');
+        $this->load->model('News_Model');
         $this->load->library('form_validation');
     }
 
@@ -41,6 +43,11 @@ class Timetable extends CI_Controller {
             $data['year'] = $this->input->post('year');
             $data['timetable_id'] = $this->timetable_model->create_class_timetable($data['class_id'], $data['year']);
             $data['class_name'] = $this->class_model->get_class_name($data['class_id']);
+            //For news field
+            $tech_id = $this->session->userdata('id');
+            $tech_details = $this->Teacher_Model->user_details($tech_id);
+            $this->News_Model->insert_action_details($tech_id, "Insert a new time table", $tech_details->photo_file_name, $tech_details->full_name);
+            //////
             $this->load->view('templates/header', $data);
             $this->load->view('navbar_main', $data);
             $this->load->view('navbar_sub', $data);
@@ -151,7 +158,11 @@ class Timetable extends CI_Controller {
             $data['timetable_list'] = $this->timetable_model->get_timetable_list();
 
             $this->timetable_model->delete_slots($timetable_id);
-
+            //For news field
+            $tech_id = $this->session->userdata('id');
+            $tech_details = $this->Teacher_Model->user_details($tech_id);
+            $this->News_Model->insert_action_details($tech_id, "Delete a time table", $tech_details->photo_file_name, $tech_details->full_name);
+            //////
             $this->load->view('templates/header', $data);
             $this->load->view('navbar_main', $data);
             $this->load->view('navbar_sub', $data);
