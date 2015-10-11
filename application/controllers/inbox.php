@@ -8,12 +8,17 @@ class Inbox extends CI_Controller {
         $this->load->helper('messages_helper');
         $this->load->helper('users_helper');
     }
+    
+    /*
+     * Loads the main page of messages inbox
+     */
 
     public function index() {
         $data['navbar'] = 'inbox';
         $data['user_type'] = $this->session->userdata('user_type');
         $data['page_title'] = "Profile Settings";
         $data['inbox_type'] = "inbox";
+        // Get the list of received messages
         $data['conversations'] = $this->messages_model->get_received_list($this->session->userdata('id'));
         $this->load->view('templates/header', $data);
         $this->load->view('navbar_main', $data);
@@ -22,6 +27,9 @@ class Inbox extends CI_Controller {
         $this->load->view('templates/footer');
     }
 
+    /*
+     * Loads the page to compose a new messages.
+     */
     public function compose() {
         $data['page_title'] = "Compose a new message";
         $data['user_type'] = $this->session->userdata('user_type');
@@ -48,6 +56,10 @@ class Inbox extends CI_Controller {
         }
     }
 
+    /*
+     * Input validation function where it checks user is selected to send 
+     * a message
+     */
     public function user_select_check() {
         $selected_user = $this->input->post('to_user');
 
@@ -58,6 +70,10 @@ class Inbox extends CI_Controller {
             return TRUE;
         }
     }
+    
+    /*
+     * Open the conversation
+     */
 
     public function read($conv_id) {
         $data['conversation'] = $this->messages_model->get_conversation($conv_id);
@@ -94,6 +110,9 @@ class Inbox extends CI_Controller {
         }
     }
 
+    /*
+     * Open sent messages
+     */
     public function sent() {
         $data['page_title'] = "Sent Messages";
         $data['conversations'] = $this->messages_model->get_sent_list($this->session->userdata("id"));

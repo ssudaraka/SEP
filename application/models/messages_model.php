@@ -89,6 +89,9 @@ class Messages_model extends CI_Model {
         $this->db->insert('inbox_messages', $message);
     }
     
+    /*
+     * Returns a list of messages according to conversation id
+     */
     public function get_conversation($id){
         $sql  = "SELECT * FROM inbox_messages WHERE conversation_id = {$id}";
         
@@ -96,12 +99,18 @@ class Messages_model extends CI_Model {
         return $query->result();
     }
     
+    /*
+     * Returns a subject of a conversation according to conversation's id
+     */
     public function get_conversation_subject($id){
         $query = $this->db->get_where('inbox_conversations', array('conversation_id' => $id));
         $row = $query->row();
         return $row->subject;
     }
     
+    /*
+     * Mark the message as deleted when an user wants to delete message
+     */
     public function delete($conversation_id){
         $query = $this->db->get_where('inbox_conversations', array('conversation_id' => $conversation_id));
         $conversation = $query->row();
@@ -118,6 +127,10 @@ class Messages_model extends CI_Model {
             $this->db->update('inbox_conversations', $data, array('conversation_id' => $conversation_id));
         }
     }
+    
+    /*
+     * Mark message as read when user opens a message.
+     */
     
     public function mark_as_read($conv_id){
         $data = array(
