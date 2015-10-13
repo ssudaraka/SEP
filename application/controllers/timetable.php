@@ -14,6 +14,8 @@ class Timetable extends CI_Controller {
     function index() {
         $data['page_title'] = "Timetable Management";
         $data['navbar'] = "timetable";
+        //Getting user type
+        $data['user_type'] = $this->session->userdata['user_type'];
 
         $data['timetable_list'] = $this->timetable_model->get_timetable_list();
 
@@ -27,6 +29,8 @@ class Timetable extends CI_Controller {
     function create() {
         $data['page_title'] = "Create Timetable";
         $data['navbar'] = "timetable";
+        //Getting user type
+        $data['user_type'] = $this->session->userdata['user_type'];
 
         $data['class_list'] = $this->class_model->get_class_list();
         $this->form_validation->set_rules("year", " Year", "required|integer|callback_check_year");
@@ -60,6 +64,8 @@ class Timetable extends CI_Controller {
 
         $data['page_title'] = "Timetable Management";
         $data['navbar'] = 'timetable';
+        //Getting user type
+        $data['user_type'] = $this->session->userdata['user_type'];
 
         $keyword = $this->input->post('year');
         $data['timetable_list'] = $this->timetable_model->search_by_year($keyword);
@@ -74,6 +80,8 @@ class Timetable extends CI_Controller {
     function search_by_class(){
         $data['page_title'] = "Timetable Management";
         $data['navbar'] = 'timetable';
+        //Getting user type
+        $data['user_type'] = $this->session->userdata['user_type'];
 
         $keyword = $this->input->post('class');
         $class_id = $this->class_model->get_class_id($keyword);
@@ -91,6 +99,8 @@ class Timetable extends CI_Controller {
         $data['page_title'] = "Timetable: $timetable_id";
         $data['navbar'] = "timetable";
         $data['timetable_id'] = $timetable_id;
+        //Getting user type
+        $data['user_type'] = $this->session->userdata['user_type'];
 
         $timetable = $this->timetable_model->get_class_timetable($timetable_id);
 
@@ -152,6 +162,8 @@ class Timetable extends CI_Controller {
 
         $data['page_title'] = "Test Timetable";
         $data['navbar'] = "timetable";
+        //Getting user type
+        $data['user_type'] = $this->session->userdata['user_type'];
 
         if ($this->timetable_model->delete($timetable_id)) {
             $data['delete_msg'] = "Timetable ID: {$timetable_id} is successfully deleted.";
@@ -175,6 +187,8 @@ class Timetable extends CI_Controller {
 
         $data['page_title'] = "Test Timetable";
         $data['navbar'] = "timetable";
+        //Getting user type
+        $data['user_type'] = $this->session->userdata['user_type'];
         $this->load->view('templates/header', $data);
         $this->load->view('navbar_main', $data);
         $this->load->view('navbar_sub', $data);
@@ -185,6 +199,8 @@ class Timetable extends CI_Controller {
     function add_slot($timetable_id, $slot_id) {
         $data['page_title'] = "Test Timetable";
         $data['navbar'] = "timetable";
+        //Getting user type
+        $data['user_type'] = $this->session->userdata['user_type'];
         $data['timetable'] = $this->timetable_model->get_class_timetable($timetable_id);
         $data['slot_id'] = $slot_id;
         $data['teacher_list'] = $this->timetable_model->get_teacher_list();

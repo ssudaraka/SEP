@@ -18,6 +18,7 @@ class Dashboard extends CI_Controller {
         $data['count'] = $this->event_model->get_upcoming_events($today);
         $data['news'] = $this->news_model->get_all_news_details();
         $data['activity'] = $this->news_model->get_news_details();
+        $data['events'] = $this->event_model->get_count_upcoming_events($today);
         $data['navbar'] = "dashboard";
 
         //Stats on Dashboard

@@ -22,6 +22,8 @@ class News extends CI_Controller {
             $data['page_title'] = "History";
             $data['navbar'] = 'history';
             $data['result'] = $this->News_Model->get_news_details();
+            //Getting user type
+            $data['user_type'] = $this->session->userdata['user_type'];
             $this->load->view('templates/header', $data);
             $this->load->view('navbar_main', $data);
             $this->load->view('navbar_sub', $data);
@@ -43,6 +45,8 @@ class News extends CI_Controller {
             $data['page_title'] = "News History";
             $data['navbar'] = 'news';
             $data['details'] = $this->News_Model->get_all_news_details();
+            //Getting user type
+            $data['user_type'] = $this->session->userdata['user_type'];
             $this->load->view('templates/header', $data);
             $this->load->view('navbar_main', $data);
             $this->load->view('navbar_sub', $data);
@@ -77,6 +81,8 @@ class News extends CI_Controller {
         if (!$this->session->userdata('logged_in')) {
             redirect('login', 'refresh');
         } else if ($this->session->userdata['user_type'] == 'A') {
+            //Getting user type
+            $data['user_type'] = $this->session->userdata['user_type'];
             date_default_timezone_set('Asia/Kolkata');             //get the current timezone
             $this->load->library('form_validation');
             $this->form_validation->set_rules('news', 'News Name', 'required');
@@ -127,6 +133,8 @@ class News extends CI_Controller {
         if (!$this->session->userdata('logged_in')) {
             redirect('login', 'refresh');
         } else if ($this->session->userdata['user_type'] == 'A') {
+            //Getting user type
+            $data['user_type'] = $this->session->userdata['user_type'];
             $this->load->library('form_validation');
             $this->form_validation->set_rules('name', 'News Name', 'required');
             $this->form_validation->set_rules('desc', 'description', 'required');
@@ -159,6 +167,8 @@ class News extends CI_Controller {
         if (!$this->session->userdata('logged_in')) {
             redirect('login', 'refresh');
         }
+        //Getting user type
+        $data['user_type'] = $this->session->userdata['user_type'];
         $id = $this->uri->segment(3);
         $data['details'] = $this->News_Model->get_particular_news($id);
         $this->load->view('news/edit', $data);
@@ -172,6 +182,8 @@ class News extends CI_Controller {
         if (!$this->session->userdata('logged_in')) {
             redirect('login', 'refresh');
         }
+        //Getting user type
+        $data['user_type'] = $this->session->userdata['user_type'];
         $data['succ_message'] = "Successfully deleted";
         $this->News_Model->delete_news($id);
         redirect('news/get_news', 'refresh');
