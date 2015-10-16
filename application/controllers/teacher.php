@@ -56,6 +56,7 @@ class Teacher extends CI_Controller {
         if (!$this->session->userdata('id')) {
             redirect('login', 'refresh');
         }
+        $data['user_type'] = $this->session->userdata['user_type'];
         $data['navbar'] = "teacher";
         $id = $this->input->post('nic');
         $data['query'] = $this->Teacher_Model->SearchTeacher($id);
@@ -78,6 +79,7 @@ class Teacher extends CI_Controller {
         if (!$this->session->userdata('id')) {
             redirect('login', 'refresh');
         }
+        $data['user_type'] = $this->session->userdata['user_type'];
         $data['navbar'] = "teacher";
         $data['row'] = $this->Teacher_Model->getTeacherProfile($id);
         $data['attempt'] = 1;
@@ -96,7 +98,7 @@ class Teacher extends CI_Controller {
         }
         $data['navbar'] = "teacher";
         $this->load->library('form_validation');
-
+        $data['user_type'] = $this->session->userdata['user_type'];
         //edit_teacher_profile view validations
         $this->form_validation->set_rules('NIC', 'NIC', 'required|exact_length[10]|callback_check_NIC');
         $this->form_validation->set_rules('name', 'Full Name', 'required');
@@ -196,7 +198,7 @@ class Teacher extends CI_Controller {
                 //For news field
                 $tech_id = $this->session->userdata('id');
                 $tech_details = $this->Teacher_Model->user_details($tech_id);
-                $this->News_Model->insert_action_details($tech_id, "Update Teacher Record", $tech_details->photo_file_name, $tech_details->full_name);
+                $this->News_Model->insert_action_details($tech_id, "Update Teacher Record", $tech_details->profile_img, $tech_details->first_name);
                 //////
                 $this->load->view('/templates/header', $data);
                 $this->load->view('navbar_main', $data);
@@ -223,14 +225,14 @@ class Teacher extends CI_Controller {
         }
         $data['navbar'] = "teacher";
 
-
+        $data['user_type'] = $this->session->userdata['user_type'];
         if ($this->Teacher_Model->DeleteTeacher($id)) {
 
             $data['result'] = $this->Teacher_Model->SearchAllTeachers();
             //For news field
             $tech_id = $this->session->userdata('id');
             $tech_details = $this->Teacher_Model->user_details($tech_id);
-            $this->News_Model->insert_action_details($tech_id, "Delete Teacher Record", $tech_details->photo_file_name, $tech_details->full_name);
+            $this->News_Model->insert_action_details($tech_id, "Delete Teacher Record", $tech_details->profile_img, $tech_details->first_name);
             //////
             $data['succ_message'] = "Teacher details deleted successfully";
             $data['page_title'] = "Search Teacher";
@@ -259,7 +261,7 @@ class Teacher extends CI_Controller {
             redirect('login', 'refresh');
         }
         $data['navbar'] = "teacher";
-
+        $data['user_type'] = $this->session->userdata['user_type'];
         $this->load->library('form_validation');
         $this->form_validation->set_rules('NIC', 'NIC', 'required|exact_length[10]|is_unique[teachers.nic_no]|callback_check_NIC');
         $this->form_validation->set_rules('name', 'Full Name', 'required');
@@ -308,7 +310,7 @@ class Teacher extends CI_Controller {
                 //For news field
                 $tech_id = $this->session->userdata('id');
                 $tech_details = $this->Teacher_Model->user_details($tech_id);
-                $this->News_Model->insert_action_details($tech_id, "Insert New Teacher Record", $tech_details->photo_file_name, $tech_details->full_name);
+                $this->News_Model->insert_action_details($tech_id, "Insert New Teacher Record", $tech_details->profile_img, $tech_details->first_name);
                 //////
                 $this->load->view('templates/header', $data);
                 $this->load->view('navbar_main', $data);
@@ -329,7 +331,7 @@ class Teacher extends CI_Controller {
 
         $data['navbar'] = "teacher";
         $data['page_title'] = "Teacher Registration";
-
+        $data['user_type'] = $this->session->userdata['user_type'];
         $this->load->library('form_validation');
         $this->form_validation->set_rules('regno', 'Register No', 'required');
         $this->form_validation->set_rules('serialno', 'Serial No', 'required|less_than[100000]|is_unique[teachers.serial_no]|integer');
@@ -431,8 +433,9 @@ class Teacher extends CI_Controller {
             $this->upload->do_upload('profile_img');
             $image_data = $this->upload->data();
             $image = base_url() . "uploads/" . $image_data['file_name'];
+            $teacher_log_details = $this->Teacher_Model->get_staff_details($id);
 
-            if ($u_id = $this->Teacher_Model->insert_new_teacher_userdata($username, $password, $create)) { // the information has therefore been successfully saved in the db
+            if ($u_id = $this->Teacher_Model->insert_new_teacher_userdata($username, $password, $create, $teacher_log_details->full_name, $teacher_log_details->full_name, $teacher_log_details->photo_file_name)) { // the information has therefore been successfully saved in the db
                 $this->Teacher_Model->set_user_id($id, $u_id);
                 $this->Teacher_Model->upload_pic($id, $image);
                 $data['propic'] = $this->Teacher_Model->get_profile_img($id);
@@ -440,7 +443,7 @@ class Teacher extends CI_Controller {
                     //For news field
                     $tech_id = $this->session->userdata('id');
                     $tech_details = $this->Teacher_Model->user_details($tech_id);
-                    $this->News_Model->insert_action_details($tech_id, "Create new user account", $tech_details->photo_file_name, $tech_details->full_name);
+                    $this->News_Model->insert_action_details($tech_id, "Create teacher profile", $tech_details->profile_img, $tech_details->first_name);
                     //////
                     $data['progress'] = 1;
                     $data["user_id"] = $res;
@@ -520,7 +523,7 @@ class Teacher extends CI_Controller {
                 //For news field
                 $tech_id = $this->session->userdata('id');
                 $tech_details = $this->Teacher_Model->user_details($tech_id);
-                $this->News_Model->insert_action_details($tech_id, "Create new user account", $tech_details->photo_file_name, $tech_details->full_name);
+                $this->News_Model->insert_action_details($tech_id, "Create new teacher profile", $tech_details->profile_img, $tech_details->first_name);
                 //////
             } else {
                 $this->Teacher_Model->update_new_teacher_userdata($username, $password, $create, $teacher_log_id);
@@ -529,7 +532,7 @@ class Teacher extends CI_Controller {
                 $techer_id = $this->Teacher_Model->get_staff_details($teacher);
                 $tech_id = $this->session->userdata('id');
                 $tech_details = $this->Teacher_Model->user_details($tech_id);
-                $this->News_Model->insert_action_details($tech_id, "Update user account " . $techer_id->full_name, $tech_details->photo_file_name, $tech_details->full_name);
+                $this->News_Model->insert_action_details($tech_id, "Update teacher profile" . $techer_id->full_name, $tech_details->photo_file_name, $tech_details->full_name);
                 //////
             }
 
@@ -559,9 +562,11 @@ class Teacher extends CI_Controller {
         $this->load->view('teacher/check_teacher_profile', $data);
         $this->load->view('/templates/footer');
     }
-/*
- * This is used to view the reporting page
- */
+
+    /*
+     * This is used to view the reporting page
+     */
+
     function teacher_report($val) {
         if (!$this->session->userdata('id')) {
             redirect('login', 'refresh');
@@ -577,9 +582,11 @@ class Teacher extends CI_Controller {
         $this->load->view('teacher/teacher_report_form', $data);
         $this->load->view('/templates/footer');
     }
-/*
- * This function is used to download the html page. use dompdf library for that
- */
+
+    /*
+     * This function is used to download the html page. use dompdf library for that
+     */
+
     function report_pdf($l) {
         if (!$this->session->userdata('id')) {
             redirect('login', 'refresh');
@@ -606,7 +613,7 @@ class Teacher extends CI_Controller {
                 //For news field
                 $tech_id = $this->session->userdata('id');
                 $tech_details = $this->Teacher_Model->user_details($tech_id);
-                $this->News_Model->insert_action_details($tech_id, "Generate section teacher reports", $tech_details->photo_file_name, $tech_details->full_name);
+                $this->News_Model->insert_action_details($tech_id, "Generate sectionwise teacher report", $tech_details->profile_img, $tech_details->first_name);
                 //////
                 $data['section'] = $report;
                 $data['school_name'] = "D. S. Senanayake College";

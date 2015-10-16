@@ -82,7 +82,7 @@ class Event extends CI_Controller {
                 //For news field
                 $tech_id = $this->session->userdata('id');
                 $tech_details = $this->Teacher_Model->user_details($tech_id);
-                $this->News_Model->insert_action_details($tech_id, "Create new event", $tech_details->photo_file_name, $tech_details->full_name);
+                $this->News_Model->insert_action_details($tech_id, "Create new event", $tech_details->profile_img, $tech_details->first_name);
                 //////
                 $data['details'] = $this->event_model->get_pending_event_details();
                 $data['page_title'] = "Create Sports Event";
@@ -132,7 +132,7 @@ class Event extends CI_Controller {
                 //For news field
                 $tech_id = $this->session->userdata('id');
                 $tech_details = $this->Teacher_Model->user_details($tech_id);
-                $this->News_Model->insert_action_details($tech_id, "Publish approved event", $tech_details->photo_file_name, $tech_details->full_name);
+                $this->News_Model->insert_action_details($tech_id, "Published approved event", $tech_details->profile_img, $tech_details->first_name);
                 //////
                 $data['details'] = $this->event_model->get_all_events();
                 $data['succ_message'] = "Successfully Updated!";
@@ -200,7 +200,7 @@ class Event extends CI_Controller {
                 //For news field
                 $tech_id = $this->session->userdata('id');
                 $tech_details = $this->Teacher_Model->user_details($tech_id);
-                $this->News_Model->insert_action_details($tech_id, "Create new event type", $tech_details->photo_file_name, $tech_details->full_name);
+                $this->News_Model->insert_action_details($tech_id, "Create new event type", $tech_details->profile_img, $tech_details->first_name);
                 //////
                 $data['details'] = $this->event_model->get_event_type_details();
                 $data['succ_message'] = "Successfully created the event type";
@@ -267,7 +267,7 @@ class Event extends CI_Controller {
                 //For news field
                 $tech_id = $this->session->userdata('id');
                 $tech_details = $this->Teacher_Model->user_details($tech_id);
-                $this->News_Model->insert_action_details($tech_id, "Update event type", $tech_details->photo_file_name, $tech_details->full_name);
+                $this->News_Model->insert_action_details($tech_id, "Update event type", $tech_details->profile_img, $tech_details->first_name);
                 //////
                 $data['details'] = $this->event_model->get_event_type_details();
                 $data['succ_message'] = "Successfully created the event type";
@@ -294,7 +294,7 @@ class Event extends CI_Controller {
         //For news field
         $tech_id = $this->session->userdata('id');
         $tech_details = $this->Teacher_Model->user_details($tech_id);
-        $this->News_Model->insert_action_details($tech_id, "Delete event type", $tech_details->photo_file_name, $tech_details->full_name);
+        $this->News_Model->insert_action_details($tech_id, "Delete event type", $tech_details->profile_img, $tech_details->first_name);
         //////
         $data['succ_message'] = "Successfully deleted";
         $data['user_type'] = $this->session->userdata['user_type'];
@@ -416,7 +416,7 @@ class Event extends CI_Controller {
         //For news field
         $tech_id = $this->session->userdata('id');
         $tech_details = $this->Teacher_Model->user_details($tech_id);
-        $this->News_Model->insert_action_details($tech_id, "Cancelled the event", $tech_details->photo_file_name, $tech_details->full_name);
+        $this->News_Model->insert_action_details($tech_id, "Cancelled the event", $tech_details->profile_img, $tech_details->first_name);
         //////
         $data['user_type'] = $this->session->userdata['user_type'];
         $this->event_model->cancel_event($id);
@@ -477,7 +477,7 @@ class Event extends CI_Controller {
         //For news field
         $tech_id = $this->session->userdata('id');
         $tech_details = $this->Teacher_Model->user_details($tech_id);
-        $this->News_Model->insert_action_details($tech_id, "Approved the event", $tech_details->photo_file_name, $tech_details->full_name);
+        $this->News_Model->insert_action_details($tech_id, "Approved the event", $tech_details->profile_img, $tech_details->first_name);
         //////
         $data['succ_message'] = "Successfully completed";
         $data['user_type'] = $this->session->userdata['user_type'];
@@ -503,7 +503,7 @@ class Event extends CI_Controller {
         //For news field
         $tech_id = $this->session->userdata('id');
         $tech_details = $this->Teacher_Model->user_details($tech_id);
-        $this->News_Model->insert_action_details($tech_id, "Reject the event", $tech_details->photo_file_name, $tech_details->full_name);
+        $this->News_Model->insert_action_details($tech_id, "Reject the event", $tech_details->profile_img, $tech_details->first_name);
         //////
         $data['succ_message'] = "Successfully completed";
         $data['user_type'] = $this->session->userdata['user_type'];

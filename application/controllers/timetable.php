@@ -50,7 +50,7 @@ class Timetable extends CI_Controller {
             //For news field
             $tech_id = $this->session->userdata('id');
             $tech_details = $this->Teacher_Model->user_details($tech_id);
-            $this->News_Model->insert_action_details($tech_id, "Insert a new time table", $tech_details->photo_file_name, $tech_details->full_name);
+            $this->News_Model->insert_action_details($tech_id, "Create new time table", $tech_details->profile_img, $tech_details->first_name);
             //////
             $this->load->view('templates/header', $data);
             $this->load->view('navbar_main', $data);
@@ -76,8 +76,8 @@ class Timetable extends CI_Controller {
         $this->load->view('timetable/index', $data);
         $this->load->view('/templates/footer');
     }
-    
-    function search_by_class(){
+
+    function search_by_class() {
         $data['page_title'] = "Timetable Management";
         $data['navbar'] = 'timetable';
         //Getting user type
@@ -85,7 +85,7 @@ class Timetable extends CI_Controller {
 
         $keyword = $this->input->post('class');
         $class_id = $this->class_model->get_class_id($keyword);
-        
+
         $data['timetable_list'] = $this->timetable_model->search_by_class($class_id);
 
         $this->load->view('templates/header', $data);
@@ -173,7 +173,7 @@ class Timetable extends CI_Controller {
             //For news field
             $tech_id = $this->session->userdata('id');
             $tech_details = $this->Teacher_Model->user_details($tech_id);
-            $this->News_Model->insert_action_details($tech_id, "Delete a time table", $tech_details->photo_file_name, $tech_details->full_name);
+            $this->News_Model->insert_action_details($tech_id, "Delete the time table", $tech_details->profile_img, $tech_details->first_name);
             //////
             $this->load->view('templates/header', $data);
             $this->load->view('navbar_main', $data);

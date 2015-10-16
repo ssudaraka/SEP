@@ -26,7 +26,7 @@
                     </tr>
                     <tr>
                         <td>
-                            <span class="glyphicon glyphicon-bookmark"></span><a href="<?php echo base_url('index.php/sport/management_details'); ?>">Assign Management Details</a>
+                            <span class="glyphicon glyphicon-bookmark"></span><a href="<?php echo base_url('index.php/sports/management_details'); ?>">Assign Management Details</a>
                         </td>
                     </tr>
                 </table>

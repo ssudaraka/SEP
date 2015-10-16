@@ -94,7 +94,6 @@ class leave extends CI_Controller {
             $this->load->view('/leave/leave', $data);
             $this->load->view('/templates/footer');
         }
-
     }
 
     //Main function to apply leaves
@@ -190,9 +189,9 @@ class leave extends CI_Controller {
                             $dataset[$newdate] = $value;
                         }
                     }
-                        $newdate = strtotime($newdate);
-                        $newdate = strtotime("+1 day", $newdate);
-                        $newdate = date('Y-m-d', $newdate);
+                    $newdate = strtotime($newdate);
+                    $newdate = strtotime("+1 day", $newdate);
+                    $newdate = date('Y-m-d', $newdate);
                 }
             }
 
@@ -267,7 +266,7 @@ class leave extends CI_Controller {
             //For news field
             $tech_id = $this->session->userdata('id');
             $tech_details = $this->Teacher_Model->user_details($tech_id);
-            $this->News_Model->insert_action_details($tech_id, "Apply a leave", $tech_details->photo_file_name, $tech_details->full_name);
+            $this->News_Model->insert_action_details($tech_id, "Apply a leave", $tech_details->profile_img, $tech_details->first_name);
             //////
             //Passing it to the View
             $this->load->view('templates/header', $data);
@@ -276,7 +275,6 @@ class leave extends CI_Controller {
             $this->load->view('/leave/leave', $data);
             $this->load->view('/templates/footer');
         }
-
     }
 
     //Get One Leave details
@@ -321,7 +319,7 @@ class leave extends CI_Controller {
             //For news field
             $tech_id = $this->session->userdata('id');
             $tech_details = $this->Teacher_Model->user_details($tech_id);
-            $this->News_Model->insert_action_details($tech_id, "Approve leave", $tech_details->photo_file_name, $tech_details->full_name);
+            $this->News_Model->insert_action_details($tech_id, "Approve the leave", $tech_details->profile_img, $tech_details->first_name);
             //////
             //Passing it to the View
             $this->load->view('templates/header', $data);
@@ -343,8 +341,6 @@ class leave extends CI_Controller {
             $this->load->view('/leave/view_leave', $data);
             $this->load->view('/templates/footer');
         }
-
-
     }
 
     //Approve Short Leave
@@ -382,7 +378,7 @@ class leave extends CI_Controller {
             //For news field
             $tech_id = $this->session->userdata('id');
             $tech_details = $this->Teacher_Model->user_details($tech_id);
-            $this->News_Model->insert_action_details($tech_id, "Approve short leave", $tech_details->photo_file_name, $tech_details->full_name);
+            $this->News_Model->insert_action_details($tech_id, "Approve the short leave", $tech_details->profile_img, $tech_details->first_name);
             //////
             //Passing it to the View
             $this->load->view('templates/header', $data);
@@ -391,8 +387,6 @@ class leave extends CI_Controller {
             $this->load->view('/leave/view_short_leave', $data);
             $this->load->view('/templates/footer');
         }
-
-
     }
 
     //Rejected Leave
@@ -430,7 +424,7 @@ class leave extends CI_Controller {
             //For news field
             $tech_id = $this->session->userdata('id');
             $tech_details = $this->Teacher_Model->user_details($tech_id);
-            $this->News_Model->insert_action_details($tech_id, "Reject leave", $tech_details->photo_file_name, $tech_details->full_name);
+            $this->News_Model->insert_action_details($tech_id, "Reject the leave", $tech_details->profile_img, $tech_details->first_name);
             //////
             //Passing it to the View
             $this->load->view('templates/header', $data);
@@ -463,7 +457,7 @@ class leave extends CI_Controller {
             //For news field
             $tech_id = $this->session->userdata('id');
             $tech_details = $this->Teacher_Model->user_details($tech_id);
-            $this->News_Model->insert_action_details($tech_id, "Reject short leave", $tech_details->photo_file_name, $tech_details->full_name);
+            $this->News_Model->insert_action_details($tech_id, "Reject the short leave", $tech_details->profile_img, $tech_details->first_name);
             //////
             //Passing it to the View
             $this->load->view('templates/header', $data);
@@ -506,7 +500,6 @@ class leave extends CI_Controller {
         $this->load->view('navbar_sub', $data);
         $this->load->view('/leave/all_leaves', $data);
         $this->load->view('/templates/footer');
-
     }
 
     //View Leaves Report
@@ -533,7 +526,7 @@ class leave extends CI_Controller {
             $this->load->view('navbar_sub', $data);
             $this->load->view('/leave/leaves_report', $data);
             $this->load->view('/templates/footer');
-        } else{
+        } else {
 
             //Get all leaves in a period
             $data['applied_leaves'] = $this->Leave_Model->get_leaves_for_report($userid, $startdate, $enddate);
@@ -556,7 +549,7 @@ class leave extends CI_Controller {
         }
     }
 
-    public function leaves_report_print(){
+    public function leaves_report_print() {
         $this->load->helper(array('dompdf', 'file'));
 
         //Get Form Data
@@ -568,12 +561,12 @@ class leave extends CI_Controller {
         $data['teacher_details'] = $this->Leave_Model->get_teacher_by_id($userid);
         $data['school_name'] = "D. S. Senanayake College";
 
-        $filename = "Teacher_leave_report";    
+        $filename = "Teacher_leave_report";
         $html = $this->load->view('leave/teacher_leave_pdf', $data, true);
         pdf_create($html, $filename);
     }
 
-        //View Leaves Report
+    //View Leaves Report
     public function all_teacher_leave() {
         $data['navbar'] = "leave";
 
@@ -600,7 +593,7 @@ class leave extends CI_Controller {
             $this->load->view('navbar_sub', $data);
             $this->load->view('/leave/apply_teacher_leave', $data);
             $this->load->view('/templates/footer');
-        } else{
+        } else {
 
             //Get all leaves in a period
             $data['applied_leaves'] = $this->Leave_Model->get_leaves_for_report($userid, $startdate, $enddate);
@@ -651,7 +644,6 @@ class leave extends CI_Controller {
             $this->load->view('navbar_sub', $data);
             $this->load->view('/leave/apply_teacher_leave', $data);
             $this->load->view('/templates/footer');
-
         } else {
             //Values
             $startdate = $this->input->post('txt_startdate');
@@ -676,7 +668,7 @@ class leave extends CI_Controller {
                 $data['error_message'] = "Please Select a teacher";
             } elseif ($leavetype == 0) {
                 //Error Message
-                $data['error_message'] = "Please select a leave type"; 
+                $data['error_message'] = "Please select a leave type";
             } //validation for dates
             elseif ($sdate == '0') {
                 $data['error_message'] = "Start date cannot be the End date of the leaves";
@@ -720,9 +712,9 @@ class leave extends CI_Controller {
                                 $dataset[$newdate] = $value;
                             }
                         }
-                            $newdate = strtotime($newdate);
-                            $newdate = strtotime("+1 day", $newdate);
-                            $newdate = date('Y-m-d', $newdate);
+                        $newdate = strtotime($newdate);
+                        $newdate = strtotime("+1 day", $newdate);
+                        $newdate = date('Y-m-d', $newdate);
                     }
                 }
 
@@ -851,7 +843,6 @@ class leave extends CI_Controller {
                         //Getting List of Applied Leaves
                         $data['applied_leaves'] = $this->Leave_Model->get_applied_short_leaves_list($userid);
                         $data['recent_applied_leaves'] = $this->Leave_Model->get_recent_applied_short_leaves_list($userid);
-                        
                     } else {
                         $data['error_message'] = "Failed to save data to the Database";
                     }
@@ -862,12 +853,10 @@ class leave extends CI_Controller {
                         //Getting List of Applied Leaves
                         $data['applied_leaves'] = $this->Leave_Model->get_applied_short_leaves_list($userid);
                         $data['recent_applied_leaves'] = $this->Leave_Model->get_recent_applied_short_leaves_list($userid);
-
                     } else {
                         $data['error_message'] = "Failed to save data to the Database";
                     }
                 }
-                
             }
 
             //Passing it to the View
@@ -900,7 +889,6 @@ class leave extends CI_Controller {
     }
 
     // Call back Validations
-
     //check date for current year
     function check_date_for_current_year($date) {
         $current_year = date('Y');
@@ -911,7 +899,7 @@ class leave extends CI_Controller {
             return FALSE;
         } else {
             return TRUE;
-        }    
+        }
     }
 
     //Checking combo box on short leaves
@@ -947,15 +935,13 @@ class leave extends CI_Controller {
                 list($key, $value) = explode('=', $val);
                 $final[$key] = $value;
             });
-
-
         }
 
         if (isset($final[$date])) {
             if ($final[$date] == '0' || $final[$date] == '5') {
                 $aca_year_stat = TRUE;
             }
-        }        
+        }
 
         if ($dateoldc < 0) {
             $this->form_validation->set_message('check_date_validations', 'Date cannot be a previous date');

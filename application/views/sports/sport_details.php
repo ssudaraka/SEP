@@ -29,14 +29,14 @@
                     // Change the css classes to suit your needs    
 
                     $attributes = array('class' => 'form-horizontal', 'id' => '');
-                    echo form_open('', $attributes);
+                    echo form_open('sports/add_sport_category', $attributes);
                     ?>
 
                     <div class="form-group">
                         <label for="inputEmail3" class="col-sm-2 control-label">Sport Name</label>
                         <div class="col-sm-5">
-                            <input id="event_name" type="text" name="event_name"  value="<?php if(isset($succ_message)){ echo '';}else{echo set_value('event_name');} ?>" type="text" class="form-control" id="event_name" placeholder="Event Name">
-                            <?php echo form_error('event_name'); ?>
+                            <input id="sport_name" type="text" name="sport_name"  value="<?php if(isset($succ_message)){ echo '';}else{echo set_value('sport_name');} ?>" type="text" class="form-control" id="event_name" placeholder="Event Name">
+                            <?php echo form_error('sport_name'); ?>
                         </div>
                     </div>
 
@@ -53,14 +53,14 @@
                         <label for="inputEmail3" class="col-sm-2 control-label">Age Category</label>
                         <div class="col-sm-6">
                             <label class="radio-inline">
-                                <input id="age1" type="radio" name="agecat"  value="m" <?php if (set_value('gender') == 'm') { echo "checked"; } ?>> Under 10,12,14,16,18,20
+                                <input id="age1" type="radio" name="agecat"  value="1" <?php if (set_value('gender') == 'm') { echo "checked"; } ?>> Under 10,12,14,16,18,20
                             </label>
                             <br>
                             <label class="radio-inline">
-                                <input id="age2" type="radio" name="agecat" value="f" <?php if (set_value('gender') == 'f') { echo "checked"; } ?>> Under 13,15,17,19
+                                <input id="age2" type="radio" name="agecat" value="2" <?php if (set_value('gender') == 'f') { echo "checked"; } ?>> Under 13,15,17,19
                             </label>
                             <br>
-                            <?php echo form_error('gender'); ?>
+                            <?php echo form_error('agecat'); ?>
                         </div>
                     </div>
 
@@ -89,14 +89,27 @@
                                 <th></th>
                             </tr>
                         </thead>
-                        <tbody>
+                        <tbody id="fillgrid">
+                            <?php foreach ($det as $row) { ?>
                             <tr>
-                                <td>1</td>
-                                <td>Cricket</td>
-                                <td>One of the greatest sport</td>
-                                <td>under 12</td>
-                                <td></td>
+                                <td><?php echo $row->id; ?></td>
+                                <td><?php echo $row->name; ?></td>
+                                <td><?php echo $row->description; ?></td>
+                                <td><?php
+                                    $age = $row->age_category;
+                                    if ($age == 1) {
+                                        echo 'Under 10,12,14,16,18,20';
+                                    } else if ($age == 2) {
+                                        echo 'Under 13,15,17,19';
+                                    } else{
+                                        echo '';
+                                    }
+                                    ?>
+                                </td>
+                                <td><a href="<?php echo base_url("index.php/sports/view_category"); ?>" data-id='<?php echo $row->id ?>' class='btnedit' title='edit'><span class="glyphicon glyphicon-edit" aria-hidden="true"></span></a></td>
+                                <td><a href="<?php echo base_url("index.php/sports/delete_news")."/".$row->id; ?>" onclick="return confirm('Are you sure you want to delete this news?');"><span class="glyphicon glyphicon-trash" aria-hidden="true"></span></i></a></td>
                             </tr>
+                        <?php } ?>
                         </tbody>
                     </table>
 
@@ -108,5 +121,72 @@
     </div>
 
 </div>
+<script>
+    $(document).ready(function () {
+        var btnedit = '';
+        var btndelete = '';
+        fillgrid();
+        function fillgrid() {
+            btnedit = $("#fillgrid .btnedit");
+            btndelete = $("#fillgrid .btndelete");
+            var deleteurl = btndelete.attr('href');
+            var editurl = btnedit.attr('href');
+            //delete record
+            btndelete.on('click', function (e) {
+                e.preventDefault();
+                var deleteid = $(this).data('id');
+                if (confirm("Do you want to delete this category?")) {
+                    $.ajax({
+                        url: deleteurl,
+                        type: 'POST',
+                        data: 'id=' + deleteid
+                    }).done(function (data) {
+                        $("#response").html(data);
+                        $("#loader").hide();
+                    });
+                }
+            });
 
+            //edit record
+            btnedit.on('click', function (e) {
+                e.preventDefault();
+                var editid = $(this).data('id');
+                $.colorbox({
+                    href: "<?php echo base_url() ?>index.php/sports/view_category/" + editid,
+                    top: 50,
+                    width: 500,
+                    onClosed: function () {
+                        fillgrid();
+                    }
+                });
+            });
+        }
 
+    });
+</script>
+<script>
+    $(document).ready(function () {
+        $(document).on('click',"#updateitem",function (e) {
+            e.preventDefault();
+            formdata = new FormData();
+            var n_id = document.getElementById('newsid').value;
+            var n_name = document.getElementById('newsname').value;
+            var n_description = document.getElementById('newsdescription').value;
+            if (formdata) {
+                formdata.append("id", n_id);
+                formdata.append("name", n_name);
+                formdata.append("desc", n_description);
+            }
+
+            $.ajax({
+                url: '<?php echo base_url() ?>index.php/news/update_news',
+                type: 'POST',
+                data: formdata,
+                processData: false,
+                contentType: false,
+            }).done(function (data) {
+                $("#errorresponse").html(data);
+            });
+        });
+    });
+</script>

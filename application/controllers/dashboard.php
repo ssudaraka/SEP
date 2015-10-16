@@ -35,7 +35,12 @@ class Dashboard extends CI_Controller {
         $this->load->view('templates/header', $data);
         $this->load->view('navbar_main', $data);
         $this->load->view('navbar_sub', $data);
-        $this->load->view('dashboard');
+        if($this->session->userdata['user_type'] == 'A'){
+            $this->load->view('dashboard_admin');
+        }
+        else{
+            $this->load->view('dashboard');
+        }
         $this->load->view('templates/footer');
     }
 

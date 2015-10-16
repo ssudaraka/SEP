@@ -106,9 +106,9 @@ class News extends CI_Controller {
 
                 if ($this->News_Model->create_news($news_name, $description)) {
                     //For news field
-                    $tech_id = $this->session->userdata('id'); //getting the user id from the session
+                    $tech_id = $this->session->userdata('id');
                     $tech_details = $this->Teacher_Model->user_details($tech_id);
-                    $this->News_Model->insert_action_details($tech_id, "Publish a news", $tech_details->photo_file_name, $tech_details->full_name);
+                    $this->News_Model->insert_action_details($tech_id, "Publish a news", $tech_details->profile_img, $tech_details->first_name);
                     //////
                     $data['details'] = $this->News_Model->get_all_news_details();
                     $data['page_title'] = "Publish News";
@@ -151,7 +151,7 @@ class News extends CI_Controller {
                 //For news field
                 $tech_id = $this->session->userdata('id');
                 $tech_details = $this->Teacher_Model->user_details($tech_id);
-                $this->News_Model->insert_action_details($tech_id, "Update a news", $tech_details->photo_file_name, $tech_details->full_name);
+                $this->News_Model->insert_action_details($tech_id, "Update news", $tech_details->profile_img, $tech_details->first_name);
                 //////
 
                 $this->News_Model->update_news($news_id, $news_name, $description);

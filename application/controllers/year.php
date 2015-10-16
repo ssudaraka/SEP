@@ -265,7 +265,7 @@ class Year extends CI_Controller {
                     //For news field
                     $tech_id = $this->session->userdata('id');
                     $tech_details = $this->Teacher_Model->user_details($tech_id);
-                    $this->News_Model->insert_action_details($tech_id, "Acedamic year has been created", $tech_details->photo_file_name, $tech_details->full_name);
+                    $this->News_Model->insert_action_details($tech_id, "Acedamic year has been created", $tech_details->profile_img, $tech_details->first_name);
                     //////
                     //Passing it to the View
                     $this->load->view('templates/header', $data);
@@ -498,7 +498,7 @@ class Year extends CI_Controller {
                     //For news field
                     $tech_id = $this->session->userdata('id');
                     $tech_details = $this->Teacher_Model->user_details($tech_id);
-                    $this->News_Model->insert_action_details($tech_id, "Update year plan", $tech_details->photo_file_name, $tech_details->full_name);
+                    $this->News_Model->insert_action_details($tech_id, "Update year plan", $tech_details->profile_img, $tech_details->first_name);
                     //////
                     //Passing it to the View with errors
                     $this->load->view('templates/header', $data);

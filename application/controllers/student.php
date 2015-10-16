@@ -96,7 +96,7 @@ class Student extends CI_Controller {
         $data['navbar'] = "student";
         $id = $this->input->post('id');
         $data['query'] = $this->Student_Model->search_student($id);
-
+        $data['user_type'] = $this->session->userdata['user_type'];
         //if there is no any matching result should display a error message
         if ($data['query']->num_rows() <= 0) {
 
@@ -128,7 +128,7 @@ class Student extends CI_Controller {
     public function create_student() {
         $data['page_title'] = "Admission";
         $data['navbar'] = "student";
-
+        $data['user_type'] = $this->session->userdata['user_type'];
         //checking validations
         $this->load->library('form_validation');
         $this->form_validation->set_rules('admissionnumber', 'Admission Number', 'required|is_unique[students.admission_no]|exact_length[4]');
@@ -180,7 +180,7 @@ class Student extends CI_Controller {
                 //For news field
                 $tech_id = $this->session->userdata('id');
                 $tech_details = $this->Teacher_Model->user_details($tech_id);
-                $this->News_Model->insert_action_details($tech_id, "Insert a new student", $tech_details->photo_file_name, $tech_details->full_name);
+                $this->News_Model->insert_action_details($tech_id, "Insert a new student", $tech_details->profile_img, $tech_details->first_name);
                 //////
                 $data['row'] = $this->Student_Model->get_last_inserted_student($id);
                 $data['page_title'] = "Admission";
@@ -299,7 +299,7 @@ class Student extends CI_Controller {
                 //For news field
                 $tech_id = $this->session->userdata('id');
                 $tech_details = $this->Teacher_Model->user_details($tech_id);
-                $this->News_Model->insert_action_details($tech_id, "Gurdian details recorded", $tech_details->photo_file_name, $tech_details->full_name);
+                $this->News_Model->insert_action_details($tech_id, "Create gardian details", $tech_details->profile_img, $tech_details->first_name);
                 //////
                 $this->view_profile($student_id);
             } else {
@@ -397,10 +397,10 @@ class Student extends CI_Controller {
             $data['query'] = $this->Student_Model->get_all_students_2();
             $data['result'] = $data['query']->result();
             //For news field
-            $tech_id = $this->session->userdata('id');
-            $tech_details = $this->Teacher_Model->user_details($tech_id);
-            $this->News_Model->insert_action_details($tech_id, "Delete student record", $tech_details->photo_file_name, $tech_details->full_name);
-            //////
+                $tech_id = $this->session->userdata('id');
+                $tech_details = $this->Teacher_Model->user_details($tech_id);
+                $this->News_Model->insert_action_details($tech_id, "Delete student record", $tech_details->profile_img, $tech_details->first_name);
+                //////
 
             $data['succ_message'] = "Student details deleted successfully";
             $data['page_title'] = "Search Student";
@@ -472,7 +472,7 @@ class Student extends CI_Controller {
                 //For news field
                 $tech_id = $this->session->userdata('id');
                 $tech_details = $this->Teacher_Model->user_details($tech_id);
-                $this->News_Model->insert_action_details($tech_id, "Edit student's guardian details", $tech_details->photo_file_name, $tech_details->full_name);
+                $this->News_Model->insert_action_details($tech_id, "Edit guardian details", $tech_details->profile_img, $tech_details->first_name);
                 //////
                 $data['page_title'] = "Edit Guardian";
                 $this->load->view('/templates/header', $data);
@@ -549,7 +549,7 @@ class Student extends CI_Controller {
                 //For news field
                 $tech_id = $this->session->userdata('id');
                 $tech_details = $this->Teacher_Model->user_details($tech_id);
-                $this->News_Model->insert_action_details($tech_id, "Update student record", $tech_details->photo_file_name, $tech_details->full_name);
+                $this->News_Model->insert_action_details($tech_id, "Update student record", $tech_details->profile_img, $tech_details->first_name);
                 //////
                 $data['page_title'] = "Student Profile";
                 $this->load->view('/templates/header', $data);
