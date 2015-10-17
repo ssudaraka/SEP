@@ -219,6 +219,9 @@ class leave extends CI_Controller {
             } elseif ($enddate < $startdate) {
                 $data['error_message'] = "End Date cannot be a previous date";
             }
+            elseif ($no_of_days_mc == 0) {
+                $data['error_message'] = "No of days are 0. May be you applied a leave on School Holidays. Check with Year Plan";
+            }
             //Commented because No need of validations
             // //bit buggy here
             // elseif($leavetype =='1' && $data['casual_leaves'] == $data['applied_casual_leaves']){
@@ -733,12 +736,15 @@ class leave extends CI_Controller {
                     $sdate = $noofdates->format("%a");
                     $no_of_days_mc = $sdate;
                 }
-
-                if ($this->Leave_Model->apply_for_leave($userid, $teacherid, $leavetype, $applieddate, $startdate, $enddate, $reason, $no_of_days_mc) == TRUE) {
+                if ($no_of_days_mc == 0) {
+                    $data['error_message'] = "No of days are 0. May be you applied a leave on School Holidays. Check with Year Plan";
+                } else{
+                    if ($this->Leave_Model->apply_for_leave($userid, $teacherid, $leavetype, $applieddate, $startdate, $enddate, $reason, $no_of_days_mc) == TRUE) {
                     $data['succ_message'] = "Leave Applied Successfully for " . $no_of_days_mc . " days";
-                } else {
-                    $data['error_message'] = "Failed to save data to the Database";
-                }
+                    } else {
+                        $data['error_message'] = "Failed to save data to the Database";
+                    }
+                }         
             }
 
             //Passing it to the View
