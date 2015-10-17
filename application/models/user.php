@@ -129,5 +129,19 @@ class User extends CI_Model {
         $this->db->update('users', $data, array('id' => $user_id));
         return true;
     }
+    
+    public function get_user_type($user_id){
+        
+         $sql = "SELECT user_type FROM users where id='$user_id'";
+        $query = $this->db->query($sql);
+        $row = $query->row();
+        
+        if($user_type=$query->row()->user_type) {
+            return $user_type;
+        } else {
+            return FALSE;
+        }
+        
+    }
 }
     
