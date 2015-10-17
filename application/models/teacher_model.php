@@ -88,10 +88,10 @@ class Teacher_Model extends CI_Model {
         }
     }
 
-    public function insert_new_teacher_userdata($username, $password, $create) {
+    public function insert_new_teacher_userdata($username, $password, $create , $first_name , $last_name , $photo) {
         try {
             $encryptpwd = md5($password);
-            if ($this->db->query("INSERT INTO users (`username`, `password` , `created_at`, `user_type`) VALUES ('$username', '$encryptpwd' , '$create', 'T')")) {
+            if ($this->db->query("INSERT INTO users (`username`, `password` , `created_at`, `user_type` , `first_name` , `last_name` , `profile_img`) VALUES ('$username', '$encryptpwd' , '$create', 'T' , '$first_name' , '$last_name' , '$photo')")) {
                 $id = $this->db->insert_id();
                 return $id;
             } else {
@@ -208,25 +208,21 @@ class Teacher_Model extends CI_Model {
     }
 
     public function check_userid($teacher_log_id) {
-        try {
-            if ($this->db->query("SELECT * FROM users WHERE id = '$teacher_log_id'")) {
-                return TRUE;
-            } else {
-                return FALSE;
-            }
-        } catch (Exception $exc) {
+
+        if ($this->db->query("SELECT * FROM users WHERE id = '$teacher_log_id'")) {
+            return TRUE;
+        } else {
             return FALSE;
-            ;
         }
     }
 
-    function archive_teacher($id) {
+    public function archive_teacher($id) {
 
         try {
             if ($data_t = $this->db->query("SELECT * FROM teachers  WHERE user_id = '$id'")) {
                 $teachr_data = $data_t->row();
-                
-                
+
+
                 $NIC = $teachr_data->nic_no;
                 $name = $teachr_data->full_name;
                 $initial = $teachr_data->name_with_initials;
@@ -257,21 +253,14 @@ class Teacher_Model extends CI_Model {
                 return FALSE;
             }
         } catch (Exception $exc) {
-            return null;
-        }
-    }
-    
-     /*
-     * get all archived student recodes
-     */
-     function get_all_archive_teachers() {
-         $query = $this->db->query("SELECT * FROM  archived_teachers");
-     
-        if ($query->num_rows() > 0) {
-            return $query->result();
-        } else {
             return FALSE;
         }
+    }
+
+    public function user_details($id) {
+        $sql = "SELECT * FROM users WHERE id='$id'";
+        $query = $this->db->query($sql);
+        return $query->row();
     }
 
 }

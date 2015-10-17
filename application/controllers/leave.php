@@ -24,6 +24,8 @@ class leave extends CI_Controller {
         parent::__construct();
         $this->load->model('Leave_Model');
         $this->load->model('Year_Model');
+        $this->load->model('Teacher_Model');
+        $this->load->model('News_Model');
     }
 
     public function index() {
@@ -64,7 +66,7 @@ class leave extends CI_Controller {
         $data['user_type'] = $this->session->userdata['user_type'];
 
         //For Admin Views
-        if($data['user_type'] == 'A'){
+        if ($data['user_type'] == 'A') {
             //Get Pending Leaves List
             $data['admin_pending_list'] = $this->Leave_Model->get_list_of_pending_leaves();
             $data['admin_pending_short_list'] = $this->Leave_Model->get_list_of_pending_short_leaves();
@@ -75,7 +77,7 @@ class leave extends CI_Controller {
             $this->load->view('navbar_sub', $data);
             $this->load->view('/leave/admin_leave', $data);
             $this->load->view('/templates/footer');
-        } elseif($data['user_type'] == 'T'){
+        } elseif ($data['user_type'] == 'T') {
 
 
             //Passing it to the View
@@ -92,7 +94,6 @@ class leave extends CI_Controller {
             $this->load->view('/leave/leave', $data);
             $this->load->view('/templates/footer');
         }
-
     }
 
     //Main function to apply leaves
@@ -103,7 +104,7 @@ class leave extends CI_Controller {
         $data['user_type'] = $this->session->userdata['user_type'];
         //Load form combo
         $data['leave_types'] = $this->Leave_Model->get_leave_types();
-
+        date_default_timezone_set('Asia/Kolkata');
         $userid = $this->session->userdata['id'];
 
         //Getting Values from Leaves DB
@@ -133,7 +134,7 @@ class leave extends CI_Controller {
 
         $data['page_title'] = "Leave Management";
 
-        if($this->form_validation->run() == FALSE){
+        if ($this->form_validation->run() == FALSE) {
 
             //Passing it to the View
             $this->load->view('templates/header', $data);
@@ -141,33 +142,31 @@ class leave extends CI_Controller {
             $this->load->view('navbar_sub', $data);
             $this->load->view('/leave/leave', $data);
             $this->load->view('/templates/footer');
-
-        } else{
+        } else {
             //Get Post Data
             $leavetype = $this->input->post('cmb_leavetype');
             $startdate = $this->input->post('txt_startdate');
             $enddate = $this->input->post('txt_enddate');
             $reason = $this->input->post('txt_reason');
             $applieddate = date("Y-m-d");
-            $teacherid = $this->Leave_Model-> get_teacher_id($userid);
+            $teacherid = $this->Leave_Model->get_teacher_id($userid);
 
-            $noofdates=date_diff(date_create($startdate),date_create($enddate));
+            $noofdates = date_diff(date_create($startdate), date_create($enddate));
             $sdate = $noofdates->format("%a");
 
-            $dateold = date_diff(date_create($applieddate),date_create($startdate));
+            $dateold = date_diff(date_create($applieddate), date_create($startdate));
             $dateoldc = $dateold->format("%R%a");
 
             //Get info from the Academic Year
             $academic_year = $this->Year_Model->get_academic_year_details();
-            foreach ($academic_year as $row)
-            {
+            foreach ($academic_year as $row) {
                 $year_structure = $row->structure;
 
                 //Building the Array from the Database
-                $string =$year_structure;
+                $string = $year_structure;
                 $partial = explode(', ', $string);
                 $final = array();
-                array_walk($partial, function($val,$key) use(&$final){
+                array_walk($partial, function($val, $key) use(&$final) {
                     list($key, $value) = explode('=', $val);
                     $final[$key] = $value;
                 });
@@ -177,47 +176,47 @@ class leave extends CI_Controller {
 
                 $enddate_var = $enddate;
                 $enddate_var = date('Y-m-d', strtotime('-1 day', strtotime($enddate_var)));
-                $days=date_diff(date_create($startdate),date_create($enddate_var));
+                $days = date_diff(date_create($startdate), date_create($enddate_var));
                 //No of days in between Term 1 start and end 
                 $t1days = $days->format("%a");
                 $newdate = $startdate;
 
                 //Iterating days of Start date to end date
-                for ($i=0; $i <= $t1days  ; $i++) { 
+                for ($i = 0; $i <= $t1days; $i++) {
                     //Iterating Year Structure
                     foreach ($final as $key => $value) {
-                        if($key == $newdate){
+                        if ($key == $newdate) {
                             $dataset[$newdate] = $value;
                         }
                     }
-                        $newdate = strtotime($newdate);
-                        $newdate = strtotime("+1 day", $newdate);
-                        $newdate = date('Y-m-d', $newdate);
+                    $newdate = strtotime($newdate);
+                    $newdate = strtotime("+1 day", $newdate);
+                    $newdate = date('Y-m-d', $newdate);
                 }
             }
 
             //No of days for Medical and Casual
-            $no_of_days_mc=0;
+            $no_of_days_mc = 0;
 
             //Checking Leave type for Medical and Casual
-            if($leavetype == 1 || $leavetype == 2 || $leavetype == 3 || $leavetype == 4 ){
+            if ($leavetype == 1 || $leavetype == 2 || $leavetype == 3 || $leavetype == 4) {
                 foreach ($dataset as $key => $value) {
-                    if($value == 0 || $value == 5){
+                    if ($value == 0 || $value == 5) {
                         $no_of_days_mc++;
                     }
                 }
-            } else{
-                $noofdates=date_diff(date_create($startdate),date_create($enddate_var));
+            } else {
+                $noofdates = date_diff(date_create($startdate), date_create($enddate_var));
                 $sdate = $noofdates->format("%a");
                 $no_of_days_mc = $sdate;
             }
 
             //validation for dates
-            if($sdate == '0'){
+            if ($sdate == '0') {
                 $data['error_message'] = "Start date cannot be the End date of the leaves";
-            } elseif($dateoldc < 0) {
+            } elseif ($dateoldc < 0) {
                 $data['error_message'] = "Start Date cannot be a previous date";
-            } elseif($enddate < $startdate){
+            } elseif ($enddate < $startdate) {
                 $data['error_message'] = "End Date cannot be a previous date";
             }
             //Commented because No need of validations
@@ -234,9 +233,8 @@ class leave extends CI_Controller {
             else {
 
 
-                if($this->Leave_Model->apply_for_leave($userid, $teacherid, $leavetype, $applieddate, $startdate, $enddate, $reason, $no_of_days_mc) == TRUE)
-                {
-                    $data['succ_message'] = "Leave Applied Successfully for ". $no_of_days_mc. " days";
+                if ($this->Leave_Model->apply_for_leave($userid, $teacherid, $leavetype, $applieddate, $startdate, $enddate, $reason, $no_of_days_mc) == TRUE) {
+                    $data['succ_message'] = "Leave Applied Successfully for " . $no_of_days_mc . " days";
 
 
                     //loading values again
@@ -259,14 +257,17 @@ class leave extends CI_Controller {
 
                     //total leaves
                     $data['total_leaves'] = $data['applied_casual_leaves'] + $data['applied_medical_leaves'] + $data['applied_duty_leaves'] + $data['applied_other_leaves'] + $data['applied_maternity_leaves'];
-
-                } else{
+                } else {
                     $data['error_message'] = "Failed to save data to the Database";
                 }
             }
 
 
-
+            //For news field
+            $tech_id = $this->session->userdata('id');
+            $tech_details = $this->Teacher_Model->user_details($tech_id);
+            $this->News_Model->insert_action_details($tech_id, "Apply a leave", $tech_details->profile_img, $tech_details->first_name);
+            //////
             //Passing it to the View
             $this->load->view('templates/header', $data);
             $this->load->view('navbar_main', $data);
@@ -274,11 +275,10 @@ class leave extends CI_Controller {
             $this->load->view('/leave/leave', $data);
             $this->load->view('/templates/footer');
         }
-
     }
 
     //Get One Leave details
-    public function get_leave_details($id){
+    public function get_leave_details($id) {
         $data['navbar'] = "leave";
 
         $data['page_title'] = "Leave Details";
@@ -298,7 +298,7 @@ class leave extends CI_Controller {
     }
 
     //Approve Leave
-    public  function  approve_leave($id){
+    public function approve_leave($id) {
         $data['navbar'] = "leave";
 
         $data['page_title'] = "Leave Details";
@@ -309,21 +309,25 @@ class leave extends CI_Controller {
 
         $data['user_type'] = $this->session->userdata['user_type'];
 
-        if($data['leave_approve_status'] == TRUE){
+        if ($data['leave_approve_status'] == TRUE) {
 
             $data['succ_message'] = "Successfully Approved the leave";
 
 
             //Get Leave Details
             $data['leave_details'] = $this->Leave_Model->get_leave_details($id);
-
+            //For news field
+            $tech_id = $this->session->userdata('id');
+            $tech_details = $this->Teacher_Model->user_details($tech_id);
+            $this->News_Model->insert_action_details($tech_id, "Approve the leave", $tech_details->profile_img, $tech_details->first_name);
+            //////
             //Passing it to the View
             $this->load->view('templates/header', $data);
             $this->load->view('navbar_main', $data);
             $this->load->view('navbar_sub', $data);
             $this->load->view('/leave/view_leave', $data);
             $this->load->view('/templates/footer');
-        } else{
+        } else {
             $data['error_message'] = "Failed to Approved the leave";
 
 
@@ -337,12 +341,10 @@ class leave extends CI_Controller {
             $this->load->view('/leave/view_leave', $data);
             $this->load->view('/templates/footer');
         }
-
-
     }
 
     //Approve Short Leave
-    public  function  approve_short_leave($id){
+    public function approve_short_leave($id) {
         $data['navbar'] = "leave";
 
         $data['page_title'] = "Leave Details";
@@ -353,7 +355,7 @@ class leave extends CI_Controller {
 
         $data['user_type'] = $this->session->userdata['user_type'];
 
-        if($data['leave_approve_status'] == TRUE){
+        if ($data['leave_approve_status'] == TRUE) {
 
             $data['succ_message'] = "Successfully Approved the Short Leave";
 
@@ -367,13 +369,17 @@ class leave extends CI_Controller {
             $this->load->view('navbar_sub', $data);
             $this->load->view('/leave/view_short_leave', $data);
             $this->load->view('/templates/footer');
-        } else{
+        } else {
             $data['error_message'] = "Failed to Approved the Short Leave";
 
 
             //Get Leave Details
             $data['leave_details'] = $this->Leave_Model->get_short_leave_details($id);
-
+            //For news field
+            $tech_id = $this->session->userdata('id');
+            $tech_details = $this->Teacher_Model->user_details($tech_id);
+            $this->News_Model->insert_action_details($tech_id, "Approve the short leave", $tech_details->profile_img, $tech_details->first_name);
+            //////
             //Passing it to the View
             $this->load->view('templates/header', $data);
             $this->load->view('navbar_main', $data);
@@ -381,12 +387,10 @@ class leave extends CI_Controller {
             $this->load->view('/leave/view_short_leave', $data);
             $this->load->view('/templates/footer');
         }
-
-
     }
 
     //Rejected Leave
-    public  function  reject_leave($id){
+    public function reject_leave($id) {
         $data['navbar'] = "leave";
 
         $data['page_title'] = "Leave Details";
@@ -397,7 +401,7 @@ class leave extends CI_Controller {
         //Get Approve Leave Status
         $data['leave_approve_status'] = $this->Leave_Model->reject_leave($id);
 
-        if($data['leave_approve_status'] == TRUE){
+        if ($data['leave_approve_status'] == TRUE) {
 
             $data['succ_message'] = "Successfully Rejected the leave";
 
@@ -411,13 +415,17 @@ class leave extends CI_Controller {
             $this->load->view('navbar_sub', $data);
             $this->load->view('/leave/view_leave', $data);
             $this->load->view('/templates/footer');
-        } else{
+        } else {
             $data['error_message'] = "Failed to Reject the leave";
 
 
             //Get Leave Details
             $data['leave_details'] = $this->Leave_Model->get_leave_details($id);
-
+            //For news field
+            $tech_id = $this->session->userdata('id');
+            $tech_details = $this->Teacher_Model->user_details($tech_id);
+            $this->News_Model->insert_action_details($tech_id, "Reject the leave", $tech_details->profile_img, $tech_details->first_name);
+            //////
             //Passing it to the View
             $this->load->view('templates/header', $data);
             $this->load->view('navbar_main', $data);
@@ -428,7 +436,7 @@ class leave extends CI_Controller {
     }
 
     //Rejected Leave
-    public  function  reject_short_leave($id){
+    public function reject_short_leave($id) {
         $data['navbar'] = "leave";
 
         $data['page_title'] = "Leave Details";
@@ -439,21 +447,25 @@ class leave extends CI_Controller {
         //Get Approve Leave Status
         $data['leave_approve_status'] = $this->Leave_Model->reject_short_leave($id);
 
-        if($data['leave_approve_status'] == TRUE){
+        if ($data['leave_approve_status'] == TRUE) {
 
             $data['succ_message'] = "Successfully Rejected the Short Leave";
 
 
             //Get Leave Details
             $data['leave_details'] = $this->Leave_Model->get_short_leave_details($id);
-
+            //For news field
+            $tech_id = $this->session->userdata('id');
+            $tech_details = $this->Teacher_Model->user_details($tech_id);
+            $this->News_Model->insert_action_details($tech_id, "Reject the short leave", $tech_details->profile_img, $tech_details->first_name);
+            //////
             //Passing it to the View
             $this->load->view('templates/header', $data);
             $this->load->view('navbar_main', $data);
             $this->load->view('navbar_sub', $data);
             $this->load->view('/leave/view_short_leave', $data);
             $this->load->view('/templates/footer');
-        } else{
+        } else {
             $data['error_message'] = "Failed to Reject the Short Leave";
 
 
@@ -470,7 +482,7 @@ class leave extends CI_Controller {
     }
 
     //View All Leaves
-    public  function  get_all_leaves(){
+    public function get_all_leaves() {
         $data['navbar'] = "leave";
 
         //other
@@ -488,11 +500,10 @@ class leave extends CI_Controller {
         $this->load->view('navbar_sub', $data);
         $this->load->view('/leave/all_leaves', $data);
         $this->load->view('/templates/footer');
-
     }
 
     //View Leaves Report
-    public  function  leaves_report(){
+    public function leaves_report() {
         $data['navbar'] = "leave";
 
         //other
@@ -507,7 +518,7 @@ class leave extends CI_Controller {
 
         $data['teachers'] = $this->Leave_Model->get_teachers();
 
-        if(empty($startdate) || empty($enddate) || $userid==0){
+        if (empty($startdate) || empty($enddate) || $userid == 0) {
 
             //Passing it to the View
             $this->load->view('templates/header', $data);
@@ -515,20 +526,14 @@ class leave extends CI_Controller {
             $this->load->view('navbar_sub', $data);
             $this->load->view('/leave/leaves_report', $data);
             $this->load->view('/templates/footer');
-
-        } else{
+        } else {
 
             //Get all leaves in a period
             $data['applied_leaves'] = $this->Leave_Model->get_leaves_for_report($userid, $startdate, $enddate);
 
             $data['teacher_details'] = $this->Leave_Model->get_teacher_by_id($userid);
 
-            //Values for hidden form
-            $data['uid'] = $userid;
-            $data['sd'] = $startdate;
-            $data['ed'] = $enddate;
-
-            if(empty($data['applied_leaves'])){
+            if (empty($data['applied_leaves'])) {
                 $var = TRUE;
             } else {
                 //Setting Values
@@ -544,7 +549,7 @@ class leave extends CI_Controller {
         }
     }
 
-    public function leaves_report_print(){
+    public function leaves_report_print() {
         $this->load->helper(array('dompdf', 'file'));
 
         //Get Form Data
@@ -556,13 +561,13 @@ class leave extends CI_Controller {
         $data['teacher_details'] = $this->Leave_Model->get_teacher_by_id($userid);
         $data['school_name'] = "D. S. Senanayake College";
 
-        $filename = "Teacher_leave_report";    
+        $filename = "Teacher_leave_report";
         $html = $this->load->view('leave/teacher_leave_pdf', $data, true);
         pdf_create($html, $filename);
     }
 
-        //View Leaves Report
-    public  function  all_teacher_leave(){
+    //View Leaves Report
+    public function all_teacher_leave() {
         $data['navbar'] = "leave";
 
         //other
@@ -580,7 +585,7 @@ class leave extends CI_Controller {
         //Load teachers
         $data['teachers'] = $this->Leave_Model->get_teachers();
 
-        if(empty($startdate) || empty($enddate) || $userid==0){
+        if (empty($startdate) || empty($enddate) || $userid == 0) {
 
             //Passing it to the View
             $this->load->view('templates/header', $data);
@@ -588,15 +593,14 @@ class leave extends CI_Controller {
             $this->load->view('navbar_sub', $data);
             $this->load->view('/leave/apply_teacher_leave', $data);
             $this->load->view('/templates/footer');
-
-        } else{
+        } else {
 
             //Get all leaves in a period
             $data['applied_leaves'] = $this->Leave_Model->get_leaves_for_report($userid, $startdate, $enddate);
 
             $data['teacher_details'] = $this->Leave_Model->get_teacher_by_id($userid);
 
-            if(empty($data['applied_leaves'])){
+            if (empty($data['applied_leaves'])) {
                 $var = TRUE;
             } else {
                 //Setting Values
@@ -613,7 +617,7 @@ class leave extends CI_Controller {
     }
 
     //Apply any teacher leave function
-    public  function  apply_teacher_leave(){
+    public function apply_teacher_leave() {
         $data['navbar'] = "leave";
 
         //other
@@ -633,14 +637,13 @@ class leave extends CI_Controller {
         $this->form_validation->set_rules('txt_enddate', 'End Date', "required|xss_clean|callback_check_date_for_current_year");
 
 
-        if($this->form_validation->run() == FALSE){
+        if ($this->form_validation->run() == FALSE) {
             //Passing it to the View
             $this->load->view('templates/header', $data);
             $this->load->view('navbar_main', $data);
             $this->load->view('navbar_sub', $data);
             $this->load->view('/leave/apply_teacher_leave', $data);
             $this->load->view('/templates/footer');
-
         } else {
             //Values
             $startdate = $this->input->post('txt_startdate');
@@ -653,41 +656,40 @@ class leave extends CI_Controller {
 
             //Other essential data
             $applieddate = date("Y-m-d");
-            $noofdates=date_diff(date_create($startdate),date_create($enddate));
+            $noofdates = date_diff(date_create($startdate), date_create($enddate));
             $sdate = $noofdates->format("%a");
 
-            $dateold = date_diff(date_create($applieddate),date_create($startdate));
+            $dateold = date_diff(date_create($applieddate), date_create($startdate));
             $dateoldc = $dateold->format("%R%a");
 
             //checkin for combo boxes
-            if($teacherid==0){
+            if ($teacherid == 0) {
                 //Error Message
                 $data['error_message'] = "Please Select a teacher";
             } elseif ($leavetype == 0) {
                 //Error Message
-                $data['error_message'] = "Please select a leave type"; 
+                $data['error_message'] = "Please select a leave type";
             } //validation for dates
-            elseif($sdate == '0'){
+            elseif ($sdate == '0') {
                 $data['error_message'] = "Start date cannot be the End date of the leaves";
-            } elseif($dateoldc < 0) {
+            } elseif ($dateoldc < 0) {
                 $data['error_message'] = "Start Date cannot be a previous date";
-            } elseif($enddate < $startdate){
+            } elseif ($enddate < $startdate) {
                 $data['error_message'] = "End Date cannot be a previous date";
-            }else {
+            } else {
                 //get user id
                 $userid = $this->Leave_Model->get_user_id($teacherid);
 
                 //Get info from the Academic Year
                 $academic_year = $this->Year_Model->get_academic_year_details();
-                foreach ($academic_year as $row)
-                {
+                foreach ($academic_year as $row) {
                     $year_structure = $row->structure;
 
                     //Building the Array from the Database
-                    $string =$year_structure;
+                    $string = $year_structure;
                     $partial = explode(', ', $string);
                     $final = array();
-                    array_walk($partial, function($val,$key) use(&$final){
+                    array_walk($partial, function($val, $key) use(&$final) {
                         list($key, $value) = explode('=', $val);
                         $final[$key] = $value;
                     });
@@ -697,43 +699,43 @@ class leave extends CI_Controller {
 
                     $enddate_var = $enddate;
                     $enddate_var = date('Y-m-d', strtotime('-1 day', strtotime($enddate_var)));
-                    $days=date_diff(date_create($startdate),date_create($enddate_var));
+                    $days = date_diff(date_create($startdate), date_create($enddate_var));
                     //No of days in between Term 1 start and end 
                     $t1days = $days->format("%a");
                     $newdate = $startdate;
 
                     //Iterating days of Start date to end date
-                    for ($i=0; $i <= $t1days  ; $i++) { 
+                    for ($i = 0; $i <= $t1days; $i++) {
                         //Iterating Year Structure
                         foreach ($final as $key => $value) {
-                            if($key == $newdate){
+                            if ($key == $newdate) {
                                 $dataset[$newdate] = $value;
                             }
                         }
-                            $newdate = strtotime($newdate);
-                            $newdate = strtotime("+1 day", $newdate);
-                            $newdate = date('Y-m-d', $newdate);
+                        $newdate = strtotime($newdate);
+                        $newdate = strtotime("+1 day", $newdate);
+                        $newdate = date('Y-m-d', $newdate);
                     }
                 }
 
                 //No of days for Medical and Casual
-                $no_of_days_mc=0;
+                $no_of_days_mc = 0;
 
                 //Checking Leave type for Medical and Casual
-                if($leavetype == 1 || $leavetype == 2 || $leavetype == 3 || $leavetype == 4 ){
+                if ($leavetype == 1 || $leavetype == 2 || $leavetype == 3 || $leavetype == 4) {
                     foreach ($dataset as $key => $value) {
-                        if($value == 0 || $value == 5){
+                        if ($value == 0 || $value == 5) {
                             $no_of_days_mc++;
                         }
                     }
-                } else{
-                    $noofdates=date_diff(date_create($startdate),date_create($enddate_var));
+                } else {
+                    $noofdates = date_diff(date_create($startdate), date_create($enddate_var));
                     $sdate = $noofdates->format("%a");
                     $no_of_days_mc = $sdate;
                 }
 
-                if($this->Leave_Model->apply_for_leave($userid, $teacherid, $leavetype, $applieddate, $startdate, $enddate, $reason, $no_of_days_mc) == TRUE){
-                    $data['succ_message'] = "Leave Applied Successfully for ". $no_of_days_mc. " days";
+                if ($this->Leave_Model->apply_for_leave($userid, $teacherid, $leavetype, $applieddate, $startdate, $enddate, $reason, $no_of_days_mc) == TRUE) {
+                    $data['succ_message'] = "Leave Applied Successfully for " . $no_of_days_mc . " days";
                 } else {
                     $data['error_message'] = "Failed to save data to the Database";
                 }
@@ -749,7 +751,7 @@ class leave extends CI_Controller {
     }
 
     //Short leave function
-    public  function  short_leave(){
+    public function short_leave() {
         $data['navbar'] = "leave";
 
         //other
@@ -775,7 +777,7 @@ class leave extends CI_Controller {
     }
 
     //Apply Short leave function
-    public  function  apply_short_leave(){
+    public function apply_short_leave() {
         $data['navbar'] = "leave";
 
         //other
@@ -797,7 +799,7 @@ class leave extends CI_Controller {
         $this->form_validation->set_rules('txt_date', 'Date', "required|xss_clean|callback_check_date_validations");
         $this->form_validation->set_rules('cmb_leavetype', 'Leave Type', "required|xss_clean|callback_check_combo_box");
 
-        if($this->form_validation->run() == FALSE){
+        if ($this->form_validation->run() == FALSE) {
             //Passing it to the View
             $this->load->view('templates/header', $data);
             $this->load->view('navbar_main', $data);
@@ -812,9 +814,9 @@ class leave extends CI_Controller {
             $reason = $this->input->post('txt_reason');
             //Getting teacher id and user id
             $userid = $this->session->userdata['id'];
-            $teacherid = $this->Leave_Model-> get_teacher_id($userid);
+            $teacherid = $this->Leave_Model->get_teacher_id($userid);
 
-            if($leavetype == 1 && $data['short_leave_count'] >= 2){
+            if ($leavetype == 1 && $data['short_leave_count'] >= 2) {
                 //Apply a regular short leave
                 $this->Leave_Model->apply_for_short_leave($userid, $teacherid, $leavetype, $applieddate, $date, $reason);
                 //Apply a half day for the extra
@@ -833,31 +835,28 @@ class leave extends CI_Controller {
 
                 $data['succ_message'] = "Short Leave Applied Successfully. It will mark as a Half day";
             } else {
-                if($leavetype == 2){
+                if ($leavetype == 2) {
                     $reason = $reason . " | Half Day";
-                    if($this->Leave_Model->apply_for_halfday($userid, $teacherid, $applieddate, $date, $reason) == TRUE){
+                    if ($this->Leave_Model->apply_for_halfday($userid, $teacherid, $applieddate, $date, $reason) == TRUE) {
                         $data['succ_message'] = "Half Day Applied Successfully";
 
                         //Getting List of Applied Leaves
                         $data['applied_leaves'] = $this->Leave_Model->get_applied_short_leaves_list($userid);
                         $data['recent_applied_leaves'] = $this->Leave_Model->get_recent_applied_short_leaves_list($userid);
-                        
                     } else {
                         $data['error_message'] = "Failed to save data to the Database";
                     }
-                } else{
-                    if($this->Leave_Model->apply_for_short_leave($userid, $teacherid, $leavetype, $applieddate, $date, $reason) == TRUE){
+                } else {
+                    if ($this->Leave_Model->apply_for_short_leave($userid, $teacherid, $leavetype, $applieddate, $date, $reason) == TRUE) {
                         $data['succ_message'] = "Short Leave Applied Successfully";
 
                         //Getting List of Applied Leaves
                         $data['applied_leaves'] = $this->Leave_Model->get_applied_short_leaves_list($userid);
                         $data['recent_applied_leaves'] = $this->Leave_Model->get_recent_applied_short_leaves_list($userid);
-
                     } else {
                         $data['error_message'] = "Failed to save data to the Database";
                     }
                 }
-                
             }
 
             //Passing it to the View
@@ -870,7 +869,7 @@ class leave extends CI_Controller {
     }
 
     //Get One Short Leave details
-    public function get_short_leave_details($id){
+    public function get_short_leave_details($id) {
         $data['navbar'] = "leave";
 
         $data['page_title'] = "Short Leave Details";
@@ -890,23 +889,22 @@ class leave extends CI_Controller {
     }
 
     // Call back Validations
-
     //check date for current year
-    function check_date_for_current_year($date){
+    function check_date_for_current_year($date) {
         $current_year = date('Y');
         $date = date_create($date);
         $year = $date->format("Y");
-        if($current_year != $year) {
+        if ($current_year != $year) {
             $this->form_validation->set_message('check_date_for_current_year', 'Select a Date from Current Year');
             return FALSE;
         } else {
             return TRUE;
-        }    
+        }
     }
 
     //Checking combo box on short leaves
-    function check_combo_box($value){
-        if($value == 0) {
+    function check_combo_box($value) {
+        if ($value == 0) {
             $this->form_validation->set_message('check_combo_box', 'Select a Leave Type');
             return FALSE;
         } else {
@@ -915,10 +913,10 @@ class leave extends CI_Controller {
     }
 
     //Date Validation Call back Function
-    function check_date_validations($date){
+    function check_date_validations($date) {
         //Other essential data
         $applieddate = date("Y-m-d");
-        $dateold = date_diff(date_create($applieddate),date_create($date));
+        $dateold = date_diff(date_create($applieddate), date_create($date));
         $dateoldc = $dateold->format("%R%a");
 
         //Getting Year Plan Data
@@ -926,29 +924,26 @@ class leave extends CI_Controller {
         //Set conditon bool
         $aca_year_stat = FALSE;
         $academic_year = $this->Year_Model->get_academic_year_details();
-        foreach ($academic_year as $row)
-        {
+        foreach ($academic_year as $row) {
             $year_structure = $row->structure;
 
             //Building the Array from the Database
-            $string =$year_structure;
+            $string = $year_structure;
             $partial = explode(', ', $string);
             $final = array();
-            array_walk($partial, function($val,$key) use(&$final){
+            array_walk($partial, function($val, $key) use(&$final) {
                 list($key, $value) = explode('=', $val);
                 $final[$key] = $value;
             });
-
-
         }
 
-        if(isset($final[$date])){
-            if($final[$date] == '0' || $final[$date] == '5'){
+        if (isset($final[$date])) {
+            if ($final[$date] == '0' || $final[$date] == '5') {
                 $aca_year_stat = TRUE;
             }
-        }        
+        }
 
-        if($dateoldc < 0){
+        if ($dateoldc < 0) {
             $this->form_validation->set_message('check_date_validations', 'Date cannot be a previous date');
             return FALSE;
         } elseif ($aca_year_stat == FALSE) {
@@ -958,6 +953,7 @@ class leave extends CI_Controller {
             return TRUE;
         }
     }
+
 }
 
 /* Coded by Udara Karunarathna @P0dda */

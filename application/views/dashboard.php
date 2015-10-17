@@ -36,43 +36,40 @@
     <div class="row" style="margin-top:10px">
     
     <div class="col-md-6">
-            <?php if($user_type == 'A'){ ?>
             <div class="panel panel-default">
                 <div class="panel-heading">
-                    <strong><i class="fa fa-ellipsis-h" style="margin-right:10px"></i> NEED YOUR ATTENTION</strong>
+                    <strong><i class="fa fa-newspaper-o" style="margin-right:10px"></i> RECENT NEWS</strong>
                 </div>
                 <div class="panel-body">
-                    <div class="row" style="padding:20px">
-
-                    <div id="big_stats" class="cf">
-                    <div class="stat"> <i class="fa fa-bed"></i> <span class="value"><?php echo $leaves; ?></span>
-                        <br/>Leaves
-                    </div>
-                    <!-- .stat -->
-                    
-                    <div class="stat"> <i class="glyphicon glyphicon-bullhorn"></i> <span class="value"><?php echo $events; ?></span>
-                        <br/>Events
-                    </div>
-                    <!-- .stat -->
-                    
-                    <div class="stat"> <i class="fa fa-newspaper-o"></i> <span class="value">22</span>
-                        <br/>News
-                    </div>
-                    <!-- .stat -->
-                    
-                    <div class="stat"> <i class="fa fa-envelope"></i> <span class="value">25</span>
-                        <br/>Messages
-                    </div>
-                    <!-- .stat --> 
-                  </div>
-
-                    </div>
+                    <ul class="news-items">
+                        <?php
+                        $cnt = 0;
+                        foreach ($news as $row) {
+                            $cnt = $cnt + 1;
+                            ?>
+                            <?php if ($cnt < 3) { ?>
+                                <li>
+                                    <div class = "media">
+                                        <div class="pull-right">
+                                            <small>Published on <?php echo $row->create_at ?></small>
+                                        </div>
+                                        <div class = "media-body">
+                                            <strong><?php echo $row->name ?></strong>
+                                            <p class="news-item-preview"><?php echo $row->description ?></p>
+                                        </div>
+                                    </div>
+                                </li>
+                                <?php
+                            }
+                        }
+                        ?>
+                        <li>
+                            <a href=""  id="fillgrid" title='view'>view more</a>
+                        </li>
+                    </ul>
                 </div>
             </div>
-            <?php } ?>
-
         </div>
-        
 
 		
 	    <div class="col-md-6">
@@ -156,3 +153,21 @@
 	    </div>
     </div>
 </div>
+<script>
+    $(document).ready(function () {
+        var btnedit = '';
+        btnedit = $("#fillgrid");
+        btnedit.on('click', function (e) {
+            e.preventDefault();
+            $.colorbox({
+                href: "<?php echo base_url() ?>index.php/dashboard/get_news",
+                top: 50,
+                width: 700,
+                onClosed: function () {
+                    fillgrid();
+                }
+            });
+        });
+
+    });
+</script>

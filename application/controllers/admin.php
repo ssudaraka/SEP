@@ -9,6 +9,8 @@ class Admin extends CI_Controller {
     function __construct() {
         parent::__construct();
         $this->load->model('user');
+        $this->load->model('Teacher_Model');
+        $this->load->model('News_Model');
     }
 
     /**
@@ -83,6 +85,9 @@ class Admin extends CI_Controller {
 
 
             $this->user->create($user, "A");
+            $tech_id = $this->session->userdata('id');
+            $tech_details = $this->Teacher_Model->user_details($tech_id);
+            $this->News_Model->insert_action_details($tech_id, "Create new admin account", $tech_details->photo_file_name, $tech_details->full_name);
 
             $data['page_title'] = "Create Admin Account";
             $data['navbar'] = 'admin';

@@ -135,7 +135,7 @@ class Event_model extends CI_Model {
     public function get_upcoming_events($today) {
         try {
 
-            if ($data = $this->db->query("select * from `events` where start_date >= '$today' and status = 'success' ORDER BY start_date ASC")) {
+            if ($data = $this->db->query("select * from `events` where start_date >= '$today' and status = 'success'")) {
                 $row = $data->result();
                 return $row;
             } else {
@@ -286,20 +286,19 @@ class Event_model extends CI_Model {
 
     public function delete_event_type($id) {
         try {
-            if($this->db->query("delete from event_type where id='$id'")){
+            if ($this->db->query("delete from event_type where id='$id'")) {
                 return TRUE;
-            }
-            else{
+            } else {
                 return FALSE;
             }
         } catch (Exception $exc) {
             return FALSE;
         }
     }
-    
-    public function get_event_type_to_update($id){
-        try{
-            if($data = $this->db->query("select * from event_type where id = '$id'")){
+
+    public function get_event_type_to_update($id) {
+        try {
+            if ($data = $this->db->query("select * from event_type where id = '$id'")) {
                 $row = $data->row();
                 return $row;
             }
@@ -308,12 +307,11 @@ class Event_model extends CI_Model {
         }
     }
 
-        public function update_event_type($id , $type , $description){
+    public function update_event_type($id, $type, $description) {
         try {
-            if($this->db->query("update event_type set event_type = '$type' , description = '$description' where id = '$id'")){
+            if ($this->db->query("update event_type set event_type = '$type' , description = '$description' where id = '$id'")) {
                 return TRUE;
-            }
-            else{
+            } else {
                 return FALSE;
             }
         } catch (Exception $ex) {
@@ -324,7 +322,6 @@ class Event_model extends CI_Model {
     //get count of upcoming events
     public function get_count_upcoming_events($today) {
         try {
-
             if ($data = $this->db->query("select count(*) as count from `events` where start_date >= '$today' and status = 'success'")) {
                 $row = $data->row();
                 return $row->count;
@@ -336,7 +333,6 @@ class Event_model extends CI_Model {
         }
     }
 
-    //Get Logged in user nic
     public function get_logged_user_nic($user) {
         try {
             if($data=  $this->db->query("select nic_no from teachers where user_id='$user'")){

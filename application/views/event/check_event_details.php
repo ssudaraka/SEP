@@ -4,11 +4,11 @@
 
         <div class="col-md-3">
             <?php
-            if($user_type == 'T'){
-                $this->view('event/sidebar_nav');
-            }
-            elseif($user_type == 'A'){
+            if($user_type == 'A'){
                 $this->view('event/admin_sidebar_nav');
+            }
+            elseif($user_type == 'P'){
+                $this->view('event/sidebar_nav');
             }
             else{
                 $this->view('event/sidebar_nav_teacher');
@@ -37,7 +37,7 @@
                 </div>
                 <div class="panel-body">
                     <table class="table table-hover">
-                    <thead>
+                    <thead style="background-color: gray">
                         <tr>
                             <th>Event Name</th>
                             <th>Start Date</th>
@@ -53,7 +53,7 @@
                                 <td><?php echo $row->title; ?></td>
                                 <td><?php echo $row->start_date; ?></td>
                                 <td><?php echo $row->end_date; ?></td>
-                                <td><a href="<?php echo base_url("index.php/event/load_selected_pending_event") . "/" . $row->id; ?>" ><span class="glyphicon glyphicon-eye-open" aria-hidden="true"></span></a></td>
+                                <td><a href="<?php echo base_url("index.php/event/load_selected_pending_event") . "/" . $row->id; ?>" ><span class="glyphicon glyphicon-eye-open" aria-hidden="true">Check</span></a></td>
                                 
                             </tr>
                         <?php } ?>
@@ -70,7 +70,7 @@
                 </div>
                 <div class="panel-body">
                     <table class="table table-hover">
-                    <thead>
+                    <thead style="background-color: gray">
                         <tr>
                             <th>Event Name</th>
                             <th>Start Date</th>
@@ -86,7 +86,7 @@
                                 <td><?php echo $row->title; ?></td>
                                 <td><?php echo $row->start_date; ?></td>
                                 <td><?php echo $row->end_date; ?></td>
-                                <td><a href="<?php echo base_url("index.php/event/view_upcoming_event_details") . "/" . $row->id; ?>" ><span class="glyphicon glyphicon-eye-open" aria-hidden="true"></span></a></td>
+                                <td><a href="<?php echo base_url("index.php/event/view_upcoming_event_details") . "/" . $row->id; ?>" ><span class="glyphicon glyphicon-user" aria-hidden="true"></span></a></td>
                                 
                             </tr>
                         <?php } ?>

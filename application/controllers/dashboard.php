@@ -7,19 +7,24 @@ class Dashboard extends CI_Controller {
         //Load Models
         $this->load->model('Leave_Model');
         $this->load->model('event_model');
+        $this->load->model('news_model');
     }
 
     function index() {
         if (!$this->session->userdata('logged_in')) {
             redirect('login', 'refresh');
         }
-
+        $today = date('Y-m-d');
+        $data['count'] = $this->event_model->get_upcoming_events($today);
+        $data['news'] = $this->news_model->get_all_news_details();
+        $data['activity'] = $this->news_model->get_news_details();
+        $data['events'] = $this->event_model->get_count_upcoming_events($today);
         $data['navbar'] = "dashboard";
 
         //Stats on Dashboard
         $data['leaves'] = $this->Leave_Model->get_count_of_pending_leaves();
         $today = date('Y-m-d');
-        $data['events'] = $this->event_model->get_count_upcoming_events($today);
+        //$data['events'] = $this->event_model->get_count_upcoming_events($today);
         $data['eventslist'] = $this->event_model->get_upcoming_events($today);
 
         //Getting user type
@@ -30,7 +35,12 @@ class Dashboard extends CI_Controller {
         $this->load->view('templates/header', $data);
         $this->load->view('navbar_main', $data);
         $this->load->view('navbar_sub', $data);
-        $this->load->view('dashboard');
+        if($this->session->userdata['user_type'] == 'A'){
+            $this->load->view('dashboard_admin');
+        }
+        else{
+            $this->load->view('dashboard');
+        }
         $this->load->view('templates/footer');
     }
 
@@ -38,5 +48,10 @@ class Dashboard extends CI_Controller {
         $this->session->sess_destroy();
         redirect('login', 'refresh');
     }
+
+    function get_news(){
+        $data['news'] = $this->news_model->get_all_news_details();
+        $this->load->view('dashboard_news_form',$data);
+}
 
 }
