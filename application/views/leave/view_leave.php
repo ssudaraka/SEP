@@ -15,6 +15,21 @@
             ?>
         </div>
         <div class="col-md-9">
+            <!-- Varialbles -->
+            <?php
+                if (isset($_GET['action']) && $_GET['action'] == "approve" && isset($_GET['status']) && $_GET['action'] == true){
+                    $succ_message = "Successfully Approved the leave";
+                } 
+                if(isset($_GET['action']) && $_GET['action'] == "approve" && isset($_GET['status']) && $_GET['action'] == false){
+                    $error_message = "Failed to Approved the leave";
+                }
+                if (isset($_GET['action']) && $_GET['action'] == "reject" && isset($_GET['status']) && $_GET['action'] == true){
+                    $succ_message = "Successfully Rejected the leave";
+                } 
+                if(isset($_GET['action']) && $_GET['action'] == "reject" && isset($_GET['status']) && $_GET['action'] == false){
+                    $error_message = "Failed to Reject the leave";
+                }
+            ?>
             <!--    Messages         -->
             <?php if (isset($error_message)) { ?>
                 <div class="alert alert-danger alert-dismissible" role="alert">
@@ -95,9 +110,11 @@
 
 
                                     echo"</table>". PHP_EOL; ?>
-
-                            <a href="<?php echo base_url('index.php/leave/approve_leave/'.$row->id); ?>" class="btn btn-success">Approve</a>
-                            <a href="<?php echo base_url('index.php/leave/reject_leave/'.$row->id); ?>" class="btn btn-danger">Reject</a>
+                            <!-- Check if the leave is pending -->
+                            <?php if ($row->status == "Pending") { ?>
+                            <a id="btnApprove" data-leave-id="<?php echo $row->id; ?>" class="btn btn-success">Approve</a>
+                            <a id="btnReject" data-leave-id="<?php echo $row->id; ?>"  class="btn btn-danger">Reject</a>
+                            <?php } ?>
                                 <?php
                                     }
                                 ?>
@@ -109,3 +126,46 @@
         </div>
     </div>
 </div>
+
+<script>
+ // Approve Leave
+  $('#btnApprove').click(function() {
+    var leaveid = $(this).attr("data-leave-id");
+    approve(leaveid);
+  });
+
+  function approve(leaveid) {
+    swal({
+      title: "Are you sure?", 
+      text: "Are you sure that you want to Appove this Leave?", 
+      type: "warning",
+      showCancelButton: true,
+      closeOnConfirm: false,
+      confirmButtonText: "Yes, Approve it!",
+      confirmButtonColor: "#5cb85c"
+    }, function() {
+        window.location.href = "<?php echo base_url("index.php/leave/approve_leave"); ?>" + "/" + leaveid;
+    });  
+  }
+
+  // Reject Leave
+  $('#btnReject').click(function() {
+    var leaveid = $(this).attr("data-leave-id");
+    reject(leaveid);
+  });
+
+  function reject(leaveid) {
+    swal({
+      title: "Are you sure?", 
+      text: "Are you sure that you want to Reject this Leave?", 
+      type: "warning",
+      showCancelButton: true,
+      closeOnConfirm: false,
+      confirmButtonText: "Yes, Approve it!",
+      confirmButtonColor: "#ec6c62"
+    }, function() {
+        window.location.href = "<?php echo base_url("index.php/leave/reject_leave"); ?>" + "/" + leaveid;
+    });  
+  }
+  
+  </script>
