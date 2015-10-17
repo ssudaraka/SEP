@@ -70,7 +70,7 @@ class Student extends CI_Controller {
             $this->load->view('/templates/header', $data);
             $this->load->view('navbar_main', $data);
             $this->load->view('navbar_sub', $data);
-            $this->load->view('/Student/search_student', $data);
+            $this->load->view('/student/search_student', $data);
             $this->load->view('/templates/footer');
         } else if ($data['user_type'] == 'T') {
             $data['page_title'] = "Manage Student";
