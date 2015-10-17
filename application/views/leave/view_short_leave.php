@@ -160,7 +160,7 @@
       type: "warning",
       showCancelButton: true,
       closeOnConfirm: false,
-      confirmButtonText: "Yes, Approve it!",
+      confirmButtonText: "Yes, Reject it!",
       confirmButtonColor: "#ec6c62"
     }, function() {
         window.location.href = "<?php echo base_url("index.php/leave/reject_short_leave"); ?>" + "/" + leaveid;
