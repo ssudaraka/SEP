@@ -18,16 +18,16 @@
             <!-- Varialbles -->
             <?php
                 if (isset($_GET['action']) && $_GET['action'] == "approve" && isset($_GET['status']) && $_GET['action'] == true){
-                    $succ_message = "Successfully Approved the leave";
+                    $succ_message = "Successfully Approved the Leave";
                 } 
                 if(isset($_GET['action']) && $_GET['action'] == "approve" && isset($_GET['status']) && $_GET['action'] == false){
-                    $error_message = "Failed to Approved the leave";
+                    $error_message = "Failed to Approved the Leave";
                 }
                 if (isset($_GET['action']) && $_GET['action'] == "reject" && isset($_GET['status']) && $_GET['action'] == true){
-                    $succ_message = "Successfully Rejected the leave";
+                    $succ_message = "Successfully Rejected the Leave";
                 } 
                 if(isset($_GET['action']) && $_GET['action'] == "reject" && isset($_GET['status']) && $_GET['action'] == false){
-                    $error_message = "Failed to Reject the leave";
+                    $error_message = "Failed to Reject the Leave";
                 }
             ?>
             <!--    Messages         -->

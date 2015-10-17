@@ -337,36 +337,9 @@ class leave extends CI_Controller {
         $data['user_type'] = $this->session->userdata['user_type'];
 
         if ($data['leave_approve_status'] == TRUE) {
-
-            $data['succ_message'] = "Successfully Approved the Short Leave";
-
-
-            //Get Leave Details
-            $data['leave_details'] = $this->Leave_Model->get_short_leave_details($id);
-
-            //Passing it to the View
-            $this->load->view('templates/header', $data);
-            $this->load->view('navbar_main', $data);
-            $this->load->view('navbar_sub', $data);
-            $this->load->view('/leave/view_short_leave', $data);
-            $this->load->view('/templates/footer');
+            redirect('leave/get_short_leave_details/'. $id . '?action=approve&status=true', 'refresh');
         } else {
-            $data['error_message'] = "Failed to Approved the Short Leave";
-
-
-            //Get Leave Details
-            $data['leave_details'] = $this->Leave_Model->get_short_leave_details($id);
-            //For news field
-            $tech_id = $this->session->userdata('id');
-            $tech_details = $this->Teacher_Model->user_details($tech_id);
-            $this->News_Model->insert_action_details($tech_id, "Approve the short leave", $tech_details->profile_img, $tech_details->first_name);
-            //////
-            //Passing it to the View
-            $this->load->view('templates/header', $data);
-            $this->load->view('navbar_main', $data);
-            $this->load->view('navbar_sub', $data);
-            $this->load->view('/leave/view_short_leave', $data);
-            $this->load->view('/templates/footer');
+            redirect('leave/get_short_leave_details/'. $id . '?action=approve&status=false', 'refresh');
         }
     }
 
@@ -402,36 +375,9 @@ class leave extends CI_Controller {
         $data['leave_approve_status'] = $this->Leave_Model->reject_short_leave($id);
 
         if ($data['leave_approve_status'] == TRUE) {
-
-            $data['succ_message'] = "Successfully Rejected the Short Leave";
-
-
-            //Get Leave Details
-            $data['leave_details'] = $this->Leave_Model->get_short_leave_details($id);
-            //For news field
-            $tech_id = $this->session->userdata('id');
-            $tech_details = $this->Teacher_Model->user_details($tech_id);
-            $this->News_Model->insert_action_details($tech_id, "Reject the short leave", $tech_details->profile_img, $tech_details->first_name);
-            //////
-            //Passing it to the View
-            $this->load->view('templates/header', $data);
-            $this->load->view('navbar_main', $data);
-            $this->load->view('navbar_sub', $data);
-            $this->load->view('/leave/view_short_leave', $data);
-            $this->load->view('/templates/footer');
+            redirect('leave/get_short_leave_details/'. $id . '?action=reject&status=true', 'refresh');
         } else {
-            $data['error_message'] = "Failed to Reject the Short Leave";
-
-
-            //Get Leave Details
-            $data['leave_details'] = $this->Leave_Model->get_short_leave_details($id);
-
-            //Passing it to the View
-            $this->load->view('templates/header', $data);
-            $this->load->view('navbar_main', $data);
-            $this->load->view('navbar_sub', $data);
-            $this->load->view('/leave/view_short_leave', $data);
-            $this->load->view('/templates/footer');
+            redirect('leave/get_short_leave_details/'. $id . '?action=reject&status=false', 'refresh');
         }
     }
 
