@@ -29,7 +29,16 @@
                 if(isset($_GET['action']) && $_GET['action'] == "reject" && isset($_GET['status']) && $_GET['action'] == false){
                     $error_message = "Failed to Reject the Leave";
                 }
-            ?>
+                // Redirect on success
+                if (isset($_GET['action']) && isset($_GET['status'])){ ?>
+                    <script type="text/javascript">
+                        var redirect = function() {
+                            window.location = "<?php echo base_url("index.php/leave"); ?>";
+                        };
+
+                        setTimeout(redirect, 3000);
+                    </script>
+            <?php } ?> 
             <!--    Messages         -->
             <?php if (isset($error_message)) { ?>
                 <div class="alert alert-danger alert-dismissible" role="alert">
