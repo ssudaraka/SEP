@@ -318,6 +318,19 @@ class leave extends CI_Controller {
         $data['user_type'] = $this->session->userdata['user_type'];
 
         if ($data['leave_approve_status'] == TRUE) {
+            // Send Email
+            $leave_details = $this->Leave_Model->get_leave_details($id);
+            foreach ($leave_details as $row) {
+                $userid = $row->user_id;
+                $applydate = $row->applied_date;
+                $startdate = $row->start_date;
+                $enddate = $row->end_date;
+                $no_of_days_mc = $row->no_of_days;
+            }
+            $messagesubject = "Leave Approval";
+            $messagestring = "Your requested leaves on <strong>". $applydate ."</strong> from <strong>". $startdate ."</strong> to <strong>". $enddate ."</strong> (". $no_of_days_mc ." days) has been Approved by the Principal.";
+            $this->Email_Model->send_basic_email($userid, $messagestring, $messagesubject);
+
             redirect('leave/get_leave_details/'. $id . '?action=approve&status=true', 'refresh');
         } else {
             redirect('leave/get_leave_details/'. $id . '?action=approve&status=false', 'refresh');
@@ -356,6 +369,19 @@ class leave extends CI_Controller {
         $data['leave_approve_status'] = $this->Leave_Model->reject_leave($id);
 
         if ($data['leave_approve_status'] == TRUE) {
+            // Send Email
+            $leave_details = $this->Leave_Model->get_leave_details($id);
+            foreach ($leave_details as $row) {
+                $userid = $row->user_id;
+                $applydate = $row->applied_date;
+                $startdate = $row->start_date;
+                $enddate = $row->end_date;
+                $no_of_days_mc = $row->no_of_days;
+            }
+            $messagesubject = "Leave Rejection";
+            $messagestring = "Your requested leaves on <strong>". $applydate ."</strong> from <strong>". $startdate ."</strong> to <strong>". $enddate ."</strong> (". $no_of_days_mc ." days) has been Rejected by the Principal.";
+            $this->Email_Model->send_basic_email($userid, $messagestring, $messagesubject);
+
             redirect('leave/get_leave_details/'. $id . '?action=reject&status=true', 'refresh');
         } else {
             redirect('leave/get_leave_details/'. $id . '?action=reject&status=false', 'refresh');
