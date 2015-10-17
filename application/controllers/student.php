@@ -219,10 +219,10 @@ class Student extends CI_Controller {
         $this->form_validation->set_rules('fullname', 'fullname', 'required');
         $this->form_validation->set_rules('initial', 'initial', 'required');
         $this->form_validation->set_rules('relation', 'relation', 'required');
-        $this->form_validation->set_rules('dob', 'dob', 'required|callback_check_guardian_Birth_day');
+        $this->form_validation->set_rules('dobg', 'dob', 'required|callback_check_guardian_Birth_day');
         $this->form_validation->set_rules('occupation', 'occupation', 'required');
         $this->form_validation->set_rules('address', 'address', 'required');
-        $this->form_validation->set_rules('contact_home', 'contact_home', 'required|exact_length[10]|integer');
+        $this->form_validation->set_rules('contact_homeg', 'contact_home', 'required|exact_length[10]|integer');
         $this->form_validation->set_rules('contact_mobile', 'contact_mobile', 'exact_length[10]|integer');
         $this->form_validation->set_error_delimiters('<br /><span class="error">', '</span>');
 
@@ -286,12 +286,12 @@ class Student extends CI_Controller {
                         'fullname' => $this->input->post('fullname'),
                         'relation' => $this->input->post('relation'),
                         'namewithinitials' => $this->input->post('initial'),
-                        'birthday' => $this->input->post('dob'),
+                        'birthday' => $this->input->post('dobg'),
                         'gender' => $this->input->post('gender'),
                         'occupation' => $this->input->post('occupation'),
                         'pastpupil' => $pastpupil,
                         'address' => $this->input->post('address'),
-                        'contact_home' => $this->input->post('contact_home'),
+                        'contact_home' => $this->input->post('contact_homeg'),
                         'contact_mobile' => $this->input->post('contact_mobile')
                     );
 

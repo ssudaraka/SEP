@@ -17,28 +17,97 @@ class Profile extends CI_Controller {
 
     /*
      * Main (index) function. This will load current user's profile to edit general information
-     * like First Name, Last Name and profile picture.
+     * 
      */
 
     function index() {
-        //getting the user type
-        $data['user_type'] = $this->session->userdata['user_type'];
 
-        $result = $this->user->get_details($this->session->userdata('id'));
-        foreach ($result as $row) {
-            $data['first_name'] = $row->first_name;
-            $data['last_name'] = $row->last_name;
-            $data['profile_image'] = $row->profile_img;
+        if ((empty($_GET)) || ($_GET['key'] == '')) {
+
+
+            $user_id = $this->session->userdata('id');
+            $user_type = $this->session->userdata['user_type'];
+            if ($user_type == 'S') {
+                $data['page_title'] = "Profile";
+                $data['navbar'] = 'student';
+                $data['edit'] = true;
+                $data['user_type'] = $this->session->userdata['user_type'];
+                $data['prof_navbar'] = 'profile_s';
+                $data['personal'] = $this->student_model->get_student_only($user_id);
+                $data['guardian'] = $this->student_model->get_guardian_only($user_id);
+                $data['user_d'] = $this->user->get_user($user_id);
+
+
+                $this->load->view('templates/header', $data);
+                $this->load->view('navbar_main', $data);
+                $this->load->view('navbar_sub', $data);
+                $this->load->view('profile/student_profile', $data);
+                $this->load->view('/templates/footer');
+            }
+            if ($user_type == 'T') {
+                
+            }
+            if ($user_type == 'A') {
+                $data['page_title'] = "Profile";
+                $data['navbar'] = 'admin';
+                $data['edit'] = true;
+                $data['user_type'] = $this->session->userdata['user_type'];
+                //$data['prof_navbar'] = 'profile_s';
+
+                $data['user_d'] = $this->user->get_user($user_id);
+
+
+                $this->load->view('templates/header', $data);
+                $this->load->view('navbar_main', $data);
+                $this->load->view('navbar_sub', $data);
+                $this->load->view('profile/admin_profile', $data);
+                $this->load->view('/templates/footer');
+            }
+        } else {
+            $user_id = $_GET['key'];
+
+            if ($user_type = $this->user->get_user_type($user_id)) {
+
+                if ($user_type == 'S') {
+                    $data['page_title'] = "Profile";
+                    $data['navbar'] = 'student';
+                    $data['edit'] = false;
+                    $data['user_type'] = $this->session->userdata['user_type'];
+                    $data['prof_navbar'] = 'profile_s';
+                    $data['personal'] = $this->student_model->get_student_only($user_id);
+                    $data['guardian'] = $this->student_model->get_guardian_only($user_id);
+                    $data['user_d'] = $this->user->get_user($user_id);
+
+
+                    $this->load->view('templates/header', $data);
+                    $this->load->view('navbar_main', $data);
+                    $this->load->view('navbar_sub', $data);
+                    $this->load->view('profile/student_profile', $data);
+                    $this->load->view('/templates/footer');
+                }
+                if ($user_type == 'T') {
+                    
+                }
+                if ($user_type == 'A') {
+                    $data['page_title'] = "Profile";
+                    $data['navbar'] = 'admin';
+                    $data['edit'] = false;
+                    $data['user_type'] = $this->session->userdata['user_type'];
+                    //$data['prof_navbar'] = 'profile_s';
+
+                    $data['user_d'] = $this->user->get_user($user_id);
+
+
+                    $this->load->view('templates/header', $data);
+                    $this->load->view('navbar_main', $data);
+                    $this->load->view('navbar_sub', $data);
+                    $this->load->view('profile/admin_profile', $data);
+                    $this->load->view('/templates/footer');
+                }
+            } else {
+                redirect(dashboard);
+            }
         }
-
-        $data['navbar'] = 'admin';
-
-        $data['page_title'] = "Profile Settings";
-        $this->load->view('templates/header', $data);
-        $this->load->view('navbar_main', $data);
-        $this->load->view('navbar_sub', $data);
-        $this->load->view('profile/profile_settings', $data);
-        $this->load->view('templates/footer');
     }
 
     function account_settings() {
@@ -223,54 +292,25 @@ class Profile extends CI_Controller {
         $this->load->view('templates/footer');
     }
 
-    function load_user_profile() {
+    function profile_settings() {
+        //getting the user type
+        $data['user_type'] = $this->session->userdata['user_type'];
 
-        if ((empty($_GET)) || ($_GET['key'] == '')) {
-
-
-            $user_type = $this->session->userdata['user_type'];
-
-            if ($user_type == 'S') {
-                
-            }
-            if ($user_type == 'T') {
-                
-            }
-            if ($user_type == 'A') {
-                
-            }
-        } else {
-            $user_id = $_GET['key'];
-
-            if ($user_type = $this->user->get_user_type($user_id)) {
-
-                if ($user_type == 'S') {
-                    $data['page_title'] = "Profile";
-                    $data['navbar'] = 'student';
-                    $data['edit']=true;
-                    $data['user_type']=$this->session->userdata['user_type'];
-                    $data['prof_navbar'] = 'profile_s';
-                    $data['personal'] = $this->student_model->get_student_only($user_id);
-                    $data['guardian'] = $this->student_model->get_guardian_only($user_id);
-                    $data['user_d'] =$this->user->get_user($user_id);
-                    
-
-                    $this->load->view('templates/header', $data);
-                    $this->load->view('navbar_main', $data);
-                    $this->load->view('navbar_sub', $data);
-                    $this->load->view('profile/student_profile', $data);
-                    $this->load->view('/templates/footer');
-                }
-                if ($user_type == 'T') {
-                    
-                }
-                if ($user_type == 'A') {
-                    
-                }
-            } else {
-                redirect(dashboard);
-            }
+        $result = $this->user->get_details($this->session->userdata('id'));
+        foreach ($result as $row) {
+            $data['first_name'] = $row->first_name;
+            $data['last_name'] = $row->last_name;
+            $data['profile_image'] = $row->profile_img;
         }
+
+        $data['navbar'] = 'admin';
+
+        $data['page_title'] = "Profile Settings";
+        $this->load->view('templates/header', $data);
+        $this->load->view('navbar_main', $data);
+        $this->load->view('navbar_sub', $data);
+        $this->load->view('profile/profile_settings', $data);
+        $this->load->view('templates/footer');
     }
 
 }

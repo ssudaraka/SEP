@@ -104,9 +104,9 @@
                      
                     <div class="col-md-5 col-md-push-1 form-group">
                                 
-                                <label for="contact_home">Contact No</label>
-                                <input type="text" name="contact_home" value="<?php echo set_value('contact_home'); ?>" class="form-control " id="contact_home" placeholder="Contact No">
-                                <div><?php echo form_error('contact_home'); ?></div>
+                                <label for="contact_homeg">Contact No</label>
+                                <input type="text" name="contact_homeg" value="<?php echo set_value('contact_homeg'); ?>" class="form-control " id="contact_homeg" placeholder="Contact No">
+                                <div><?php echo form_error('contact_homeg'); ?></div>
                                 
                      </div>
                      <div class="col-md-5 col-md-push-1 form-group">
@@ -124,9 +124,9 @@
                     
                     <div class="col-md-5 col-md-push-1 form-group">
                                 
-                                <label for="dob">Date of Birth</label>
-                                <input type="date" name="dob" value="<?php echo set_value('dob'); ?>" class="form-control " id="dob" placeholder="DOB">
-                                <div> <?php echo form_error('dob'); ?></div>
+                                <label for="dobg">Date of Birth</label>
+                                <input type="date" name="dobg" value="<?php echo set_value('dobg'); ?>" class="form-control " id="dobg" placeholder="DOB">
+                                <div> <?php echo form_error('dobg'); ?></div>
                                 
                      </div>
                     
