@@ -33,6 +33,20 @@
                     <span class="sub">Manage Classes...</span>
                 </a>
             </div>
+            <div class="admin-btn">
+                <i class="fa fa-newspaper-o"></i>
+                <a href="<?php echo base_url('index.php/news/get_news'); ?>">
+                    <span class="main">News</span>
+                    <span class="sub">Publish News...</span>
+                </a>
+            </div>
+            <div class="admin-btn">
+                <i class="fa fa-history"></i>
+                <a href="<?php echo base_url('index.php/news'); ?>">
+                    <span class="main">Logs</span>
+                    <span class="sub">View Activity Logs...</span>
+                </a>
+            </div>
 
         </div>
     </div>
