@@ -55,15 +55,13 @@
                         foreach ($news as $row) {
                             $cnt = $cnt + 1;
                             ?>
-                            <?php if ($cnt < 3) { ?>
+                            <?php if ($cnt < 5) { ?>
                                 <li>
                                     <div class = "media">
-                                        <div class="pull-right">
-                                            <small>Published on <?php echo $row->create_at ?></small>
-                                        </div>
+                                        
                                         <div class = "media-body">
-                                            <strong><?php echo $row->name ?></strong>
-                                            <p class="news-item-preview"><?php echo $row->description ?></p>
+                                            <strong><a target="_blank" href="<?php echo base_url("index.php/news/view_news/".$row->id ); ?>"><?php echo substr($row->name,0,60)."..."; ?></strong></a><span class="pull-right"><small>Published on <?php echo $row->create_at ?></small></span>
+                                            <p class="news-item-preview"><?php echo strip_tags(substr($row->description,0,150))."..."; ?></p>
                                         </div>
                                     </div>
                                 </li>
@@ -71,9 +69,6 @@
                             }
                         }
                         ?>
-                        <li>
-                            <a href=""  id="fillgrid" title='view'>view more</a>
-                        </li>
                     </ul>
                 </div>
             </div>
@@ -91,7 +86,7 @@
                     $add = 0;
                     foreach ($activity as $row) {
                         $add = $add + 1;
-                        if ($add < 3) {
+                        if ($add < 4) {
                             ?>
                             <div class="row">
                                 <div class="col-sm-2">
@@ -107,7 +102,7 @@
                                                 <div class="pull-right"> <?php echo $row->created_at; ?></span></div>
                                     </div>
                                     <div class="panel-body">
-        <?php echo $row->content; ?>
+                                        <?php echo $row->content; ?>
                                     </div><!-- /panel-body -->
                                 </div><!-- /panel panel-default -->
                             </div><!-- /col-sm-5 -->
@@ -182,21 +177,3 @@
     </div>
 </div>
 </div>
-<script>
-    $(document).ready(function () {
-        var btnedit = '';
-        btnedit = $("#fillgrid");
-        btnedit.on('click', function (e) {
-            e.preventDefault();
-            $.colorbox({
-                href: "<?php echo base_url() ?>index.php/dashboard/get_news",
-                top: 50,
-                width: 700,
-                onClosed: function () {
-                    fillgrid();
-                }
-            });
-        });
-
-    });
-</script>
