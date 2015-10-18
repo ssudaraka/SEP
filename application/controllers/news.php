@@ -42,7 +42,7 @@ class News extends CI_Controller {
         if (!$this->session->userdata('logged_in')) {
             redirect('login', 'refresh');
         } else if ($this->session->userdata['user_type'] == 'A') {
-            $data['page_title'] = "News History";
+            $data['page_title'] = "View All News";
             $data['navbar'] = 'news';
             $data['details'] = $this->News_Model->get_all_news_details();
             //Getting user type
@@ -163,15 +163,20 @@ class News extends CI_Controller {
      * In this function, news details will be displayed as a pop up window
      */
 
-    public function view_news() {
+    public function view_news($id) {
         if (!$this->session->userdata('logged_in')) {
             redirect('login', 'refresh');
         }
         //Getting user type
         $data['user_type'] = $this->session->userdata['user_type'];
-        $id = $this->uri->segment(3);
         $data['details'] = $this->News_Model->get_particular_news($id);
-        $this->load->view('news/edit', $data);
+        $data['page_title'] = "View News";
+        $data['navbar'] = 'admin';
+        $this->load->view('templates/header', $data);
+        $this->load->view('navbar_main', $data);
+        $this->load->view('navbar_sub', $data);
+        $this->load->view('news/view_news', $data);
+        $this->load->view('templates/footer');
     }
 
     /*
@@ -184,9 +189,8 @@ class News extends CI_Controller {
         }
         //Getting user type
         $data['user_type'] = $this->session->userdata['user_type'];
-        $data['succ_message'] = "Successfully deleted";
         $this->News_Model->delete_news($id);
-        redirect('news/get_news', 'refresh');
+        redirect('news/get_news?delete=true', 'refresh');
     }
 
     /*
@@ -204,6 +208,7 @@ class News extends CI_Controller {
             $this->form_validation->set_rules('news', 'News Title', 'required');
             $this->form_validation->set_rules('description', 'News Body', 'required');
             $this->form_validation->set_error_delimiters('<br /><span class="error">', '</span>');
+            $userid = $this->session->userdata['id'];
 
             if ($this->form_validation->run() == FALSE) {
                 $data['page_title'] = "Publish News";
@@ -219,7 +224,7 @@ class News extends CI_Controller {
                 $news_name = $this->input->post('news');
                 $description = $this->input->post('description');
 
-                if ($this->News_Model->create_news($news_name, $description)) {
+                if ($this->News_Model->create_news($news_name, $description, $userid)) {
                     //For news field
                     $tech_id = $this->session->userdata('id');
                     $tech_details = $this->Teacher_Model->user_details($tech_id);

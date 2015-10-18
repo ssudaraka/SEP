@@ -79,14 +79,14 @@ class News_Model extends CI_Model {
     /*
      * This function is used to record news details
      */
-    public function create_news($news_name, $description){
+    public function create_news($news_name, $description,$userid){
         $created_time = date('Y-m-d H:i:s');
-        $this->db->query("insert into news_blog(name,description,create_at) values('$news_name','$description','$created_time')");
+        $this->db->query("insert into news_blog(name,description,create_at,userid) values('$news_name','$description','$created_time', '$userid')");
         return TRUE;
     }
     
     public function get_all_news_details(){
-        $data = $this->db->query("select * from news_blog order by id desc");
+        $data = $this->db->query("select * from news_blog order by create_at desc");
         return $data->result();
     }
     
