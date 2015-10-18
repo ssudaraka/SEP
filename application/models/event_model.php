@@ -10,10 +10,10 @@ class Event_model extends CI_Model {
     /**
      * Create a new event
      */
-    function insert_sport_event($event_name, $event_type, $description, $start_date, $start_time, $end_date, $end_time, $in_charge, $budget) {
+    function insert_sport_event($event_name, $event_type, $description, $start_date, $start_time, $end_date, $end_time, $in_charge, $budget , $loc , $guest) {
         try {
 
-            if ($this->db->query("INSERT INTO events(`title`,`event_type`,`description`,`start_date`,`start_time`,`end_date`,`end_time`,`status` , `in_charge_id` , `budget`) VALUES('$event_name','$event_type','$description','$start_date','$start_time','$end_date','$end_time','pending' , '$in_charge' , '$budget')")) {
+            if ($this->db->query("INSERT INTO events(`title`,`event_type`,`description`,`start_date`,`start_time`,`end_date`,`end_time`,`status` , `in_charge_id` , `budget` , `location` , `guest`) VALUES('$event_name','$event_type','$description','$start_date','$start_time','$end_date','$end_time','pending' , '$in_charge' , '$budget' , '$loc' , '$guest')")) {
                 return TRUE;
             } else {
                 return FALSE;
@@ -80,7 +80,7 @@ class Event_model extends CI_Model {
     public function get_pending_event_details() {
         $today = date('Y-m-d');
         try {
-            if ($data = $this->db->query("select id , title , start_date , end_date , status from `events` where start_date >= '$today' and (status = 'pending' or status = 'approved' or status = 'rejected') order by id desc  limit 10")) {
+            if ($data = $this->db->query("select * from `events`")) {
                 $row = $data->result();
                 return $row;
             } else {

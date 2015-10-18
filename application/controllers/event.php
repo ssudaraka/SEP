@@ -25,8 +25,6 @@ class Event extends CI_Controller {
         $data['navbar'] = "Sports";
         if ($user_t == 'A') {
             $this->check_event_details(); //if user type is 'A', it will call this function
-        } elseif ($user_t == 'P') {
-            $this->create_event();
         } else {
             $this->create_event();
         }
@@ -55,6 +53,8 @@ class Event extends CI_Controller {
         $this->form_validation->set_rules('end_time', 'end time', 'required');
         $this->form_validation->set_rules('in_charge', 'in charge', 'required|callback_check_incharge_id');
         $this->form_validation->set_rules('budget', 'budget', 'required|integer');
+        $this->form_validation->set_rules('location', 'location', 'required');
+        $this->form_validation->set_rules('guest', 'guest', '');
 
         $this->form_validation->set_error_delimiters('<br /><span class="error">', '</span>');
         if ($this->form_validation->run() == FALSE) {
@@ -77,8 +77,10 @@ class Event extends CI_Controller {
             $end_time = $this->input->post('end_time');
             $in_charge = $this->input->post('in_charge');
             $budget = $this->input->post('budget');
+            $location = $this->input->post('location');
+            $guest = $this->input->post('guest');
 
-            if ($this->event_model->insert_sport_event($event_name, $event_type, $description, $start_date, $start_time, $end_date, $end_time, $in_charge, $budget)) { // the information has therefore been successfully saved in the db
+            if ($this->event_model->insert_sport_event($event_name, $event_type, $description, $start_date, $start_time, $end_date, $end_time, $in_charge, $budget , $location , $guest)) { // the information has therefore been successfully saved in the db
                 //For news field
                 $tech_id = $this->session->userdata('id');
                 $tech_details = $this->Teacher_Model->user_details($tech_id);
@@ -516,6 +518,21 @@ class Event extends CI_Controller {
         $this->load->view('navbar_main', $data);
         $this->load->view('navbar_sub', $data);
         $this->load->view('event/check_event_details', $data);
+        $this->load->view('/templates/footer');
+    }
+    
+    function event_calendar(){
+        if (!$this->session->userdata('logged_in')) {
+            redirect('login', 'refresh');
+        }
+        $data['details'] = $this->event_model->get_pending_event_details();
+        $data['user_type'] = $this->session->userdata['user_type'];
+        $data['page_title'] = "Event Calendar";
+        $data['navbar'] = "Sports";
+        $this->load->view('templates/header', $data);
+        $this->load->view('navbar_main', $data);
+        $this->load->view('navbar_sub', $data);
+        $this->load->view('event/event_calendar', $data);
         $this->load->view('/templates/footer');
     }
 
