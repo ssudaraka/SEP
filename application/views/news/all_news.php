@@ -24,54 +24,14 @@
 
             <div class="panel panel-default">
                 <div class="panel-heading">
-                    <strong>Publish news</strong>
-                </div>
-                <div class="panel-body">
-                    <?php
-                    // Change the css classes to suit your needs    
-
-                    $attributes = array('class' => 'form-horizontal', 'id' => '');
-                    echo form_open('news/create_news', $attributes);
-                    ?>
-
-                    <div class="form-group">
-                        <label for="inputEmail3" class="col-sm-2 control-label">News name</label>
-                        <div class="col-sm-5">
-                            <input id="news" type="text" name="news"  value="" type="text" class="form-control" id="event_type" placeholder="Event Name">
-                            <?php echo form_error('news'); ?>
-                        </div>
-                    </div>
-
-                    <div class="form-group">
-                        <label for="inputEmail3" class="col-sm-2 control-label">News Description</label>
-                        <div class="col-sm-5">
-
-                            <textarea id="description" type="text" name="description" type="text" class="form-control" id="description" placeholder=""></textarea>
-                            <?php echo form_error('description'); ?>
-                        </div>
-                    </div>
-
-
-                    <div class="form-group">
-                        <div class="col-sm-offset-2 col-sm-10">
-                            <input type="submit" class="btn btn-primary" value="Publish">
-                            <button type="reset" class="btn btn-default">Reset</button>
-                        </div>
-                    </div>
-
-                </div>
-            </div>
-            <a id="newsdetails"></a>
-            <div class="panel panel-default">
-                <div class="panel-heading">
-                    <strong>View All Events</strong>
+                    <strong>View All News</strong>
                 </div>
                 <div class="panel-body">
                     <table class="table table-hover">
                         <thead>
                             <tr>
-                                <th>Event Type</th>
-                                <th>Event Description</th>
+                                <th>Title</th>
+                                <th>News</th>
                                 <th></th>
                                 <th></th>
                             </tr>
@@ -81,8 +41,10 @@
                                 <tr>
                                     <td><?php echo $row->name; ?></td>
                                     <td><?php echo $row->description; ?></td>
-                                    <td><a href="<?php echo base_url("index.php/news/view_news"); ?>" data-id='<?php echo $row->id ?>' class='btnedit' title='edit'><span class="glyphicon glyphicon-edit" aria-hidden="true"></span></a></td>
-                                    <td><a href="<?php echo base_url("index.php/news/delete_news")."/".$row->id; ?>" onclick="return confirm('Are you sure you want to delete this news?');"><span class="glyphicon glyphicon-trash" aria-hidden="true"></span></i></a></td>
+                                    <td>
+                                        <a href="<?php echo base_url("index.php/news/view_news"); ?>" data-id='<?php echo $row->id ?>' class='btnedit' title='edit'><span class="glyphicon glyphicon-edit" aria-hidden="true"></span></a>
+                                        <a href="<?php echo base_url("index.php/news/delete_news")."/".$row->id; ?>" onclick="return confirm('Are you sure you want to delete this news?');"><span class="glyphicon glyphicon-trash" aria-hidden="true"></span></i></a>
+                                    </td>
                                 </tr>
                             <?php } ?>
                         </tbody>

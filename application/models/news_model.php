@@ -13,20 +13,20 @@ class News_Model extends CI_Model {
  */
     public function insert_action_details($id, $action, $propic, $username) {
         $create = date('Y-m-d H:i:s');
-        $this->db->query("insert into news(user_id,content,created_at,pro_img,user_fullname) values('$id','$action','$create','$propic','$username')");
+        $this->db->query("insert into user_logs(user_id,content,created_at,pro_img,user_fullname) values('$id','$action','$create','$propic','$username')");
     }
 /*
  * In this function all the news details are retrieving in descending order
  */
     public function get_news_details() {
-        $data = $this->db->query("select * from news order by id desc");
+        $data = $this->db->query("select * from user_logs order by id desc");
         return $data->result();
     }
 /*
  * In this function all the activities are retrieved and set to the view using ajax call
  */
     public function get_teacher_activities($tech_id) {
-        $data = $this->db->query("select * from news where user_id = '$tech_id'");
+        $data = $this->db->query("select * from user_logs where user_id = '$tech_id'");
 
         foreach ($data->result() as $row) {
             echo "<tr>
@@ -45,7 +45,7 @@ class News_Model extends CI_Model {
     public function clear($type) {
         if ($type == 1) {
             $today = date('Y-m-d');
-            $this->db->query("delete from news where created_at like '$today%'");
+            $this->db->query("delete from user_logs where created_at like '$today%'");
         }
         else if($type == 2){
            // $today = date('Y-m-d');
@@ -54,17 +54,17 @@ class News_Model extends CI_Model {
             $month=date('m');
             $year=date('Y');
             $date = date('d')-7;
-            $this->db->query("delete from news where day(created_at) between '$date' and '$today' and month(created_at) = '$month' and year(created_at) = '$year'");
+            $this->db->query("delete from user_logs where day(created_at) between '$date' and '$today' and month(created_at) = '$month' and year(created_at) = '$year'");
         }
         else if($type == 3){
             $thismonth = date('Y-m');
-            $this->db->query("delete from news where created_at like '$thismonth%'");
+            $this->db->query("delete from user_logs where created_at like '$thismonth%'");
         }
         else if($type == 4){
-            $this->db->query("delete from news");
+            $this->db->query("delete from user_logs");
         }
         
-        $data = $this->db->query("select * from news");
+        $data = $this->db->query("select * from user_logs");
         foreach ($data->result() as $row) {
             echo "<tr>
                                 <td><img src='$row->pro_img' id='profile-img' class='img-thumbnail profile-img' style='height: 40px; width: 50px'></td>
@@ -81,28 +81,28 @@ class News_Model extends CI_Model {
      */
     public function create_news($news_name, $description){
         $created_time = date('Y-m-d H:i:s');
-        $this->db->query("insert into news_field(name,description,create_at) values('$news_name','$description','$created_time')");
+        $this->db->query("insert into news_blog(name,description,create_at) values('$news_name','$description','$created_time')");
         return TRUE;
     }
     
     public function get_all_news_details(){
-        $data = $this->db->query("select * from news_field order by id desc");
+        $data = $this->db->query("select * from news_blog order by id desc");
         return $data->result();
     }
     
     public function get_particular_news($id){
-        $data = $this->db->query("select * from news_field where id='$id'");
+        $data = $this->db->query("select * from news_blog where id='$id'");
         return $data->row();
     }
     
     public function update_news($news_id , $news_name, $description){
-        $this->db->query("update news_field set name = '$news_name' , description = '$description' where id = '$news_id'");
+        $this->db->query("update news_blog set name = '$news_name' , description = '$description' where id = '$news_id'");
         echo'<div class="alert alert-success alert-dismissible" role="alert"><button type="button" class="close" data-dismiss="alert" aria-label="Close"><span aria-hidden="true">&times;</span></button>Updated Successfully</div>';
         exit;
     }
     
     public function delete_news($id){
-        $this->db->query("delete from news_field where id='$id'");
+        $this->db->query("delete from news_blog where id='$id'");
         return TRUE;
     }
 

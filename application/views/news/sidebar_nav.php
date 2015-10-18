@@ -3,7 +3,7 @@
         <div class="panel-heading">
             <h4 class="panel-title">
                 <a data-toggle="collapse" data-parent="#accordion" href="#collapseOne"><span class="glyphicon glyphicon-folder-close">
-                    </span>Events</a>
+                    </span>News</a>
             </h4>
         </div>
         <div id="collapseOne" class="panel-collapse collapse in">
@@ -11,12 +11,12 @@
                 <table class="table">
                     <tr>
                         <td>
-                            <span class="glyphicon glyphicon-asterisk text-primary"></span><a href="<?php echo base_url('index.php/news/get_news'); ?>">Create News</a>
+                            <span class="glyphicon glyphicon-asterisk text-primary"></span><a href="<?php echo base_url('index.php/news/publish_news'); ?>">Publish News</a>
                         </td>
                     </tr>
                     <tr>
                         <td>
-                            <span class="glyphicon glyphicon-expand text-primary"></span><a href="<?php echo base_url('index.php/news/get_news/#newsdetails'); ?>">View News details</a>
+                            <span class="glyphicon glyphicon-expand text-primary"></span><a href="<?php echo base_url('index.php/news/get_news/'); ?>">View News details</a>
                         </td>
                     </tr>
                 </table>
