@@ -413,6 +413,45 @@ class Student_Model extends CI_Model {
             return null;
         }
     }
+    
+    /*
+     * for serverside datatable of student recodes
+     */
+    public function get_all_student_details($data){
+        $limit = intval(htmlspecialchars($data["limit"]));
+        $offset = intval(htmlspecialchars($data["offset"]));
+        $orderBy = htmlspecialchars(strtolower($data["orderby"]));
+        $orderByCol = htmlspecialchars(strtolower($data["orderCol"]));
+        $search = htmlspecialchars(strtolower($data["search"]));
+        
+      
+        $sql = "SELECT s.id, s.user_id, s.admission_no, s.name_with_initials, s.contact_home FROM students s where s.id LIKE '%" . $search . "%' or s.admission_no LIKE '%" . $search . "%' or s.name_with_initials LIKE '%" . $search . "%' or s.contact_home LIKE '%" . $search . "%'  Order By " . $orderByCol . " " . $orderBy . " LIMIT " . $limit . " OFFSET " . $offset . " ";
+        $query = $this->db->query($sql);
+        
+        $sql2="SELECT count(s.id) as count FROM students s where s.id LIKE '%" . $search . "%' or s.admission_no LIKE '%" . $search . "%' or s.name_with_initials LIKE '%" . $search . "%' or s.contact_home LIKE '%" . $search . "%'";
+        $count = $this->db->query($sql2);
+        
+        if($count->row()){
+            $getthis = false;
+
+            $countRows = $count->row()->count;
+            
+        }else{
+            $getthis = true;
+            $countRows = 0;
+        }
+        
+        
+        $arr = array(
+            "data" => $query->result(),
+            "count" => $countRows,
+            "responed" => $getthis
+        );
+
+
+        return $arr;
+        
+        }
 
 }
 

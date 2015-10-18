@@ -23,40 +23,40 @@ class Student extends CI_Controller {
          * Getting user type
          */
         $data['user_type'] = $this->session->userdata['user_type'];
-
+        var_dump($this->session->userdata['user_type']);
 
         $data['page_title'] = "Manage Student";
         $data['navbar'] = 'student';
 
 
-        /**
-         * Get all student recodes and display in a table
-         */
-        $this->load->library('pagination');
-        $config = array();
-        $config['base_url'] = base_url() . "index.php/student/student";
-        $total_row = $this->db->get('students')->num_rows();
-        $config["total_rows"] = $total_row;
-        $config["per_page"] = 10;
-        $config['uri_segment'] = 3;
-        $config['use_page_numbers'] = TRUE;
-        $config['num_links'] = $total_row;
-        $config['cur_tag_open'] = '&nbsp;<a class="current">';
-        $config['cur_tag_close'] = '</a>';
-        $config['next_link'] = 'Next';
-        $config['prev_link'] = 'Previous';
-
-        $this->pagination->initialize($config);
-
-        /*
-         *  if there is no uri segment null value will be sent
-         */
-        $config['offset'] = ($this->uri->segment(3) ? $this->uri->segment(3) : null);
-        $data["query"] = $this->Student_Model->get_all_students($config["per_page"], $config['offset']);
-        //$data["query"] = $this->Student_Model->get_all_students_2();
-        $data['result'] = $data['query']->result();
-        $str_links = $this->pagination->create_links();
-        $data["links"] = explode('&nbsp;', $str_links);
+//        /**
+//         * Get all student recodes and display in a table
+//         */
+//        $this->load->library('pagination');
+//        $config = array();
+//        $config['base_url'] = base_url() . "index.php/student/student";
+//        $total_row = $this->db->get('students')->num_rows();
+//        $config["total_rows"] = $total_row;
+//        $config["per_page"] = 10;
+//        $config['uri_segment'] = 3;
+//        $config['use_page_numbers'] = TRUE;
+//        $config['num_links'] = $total_row;
+//        $config['cur_tag_open'] = '&nbsp;<a class="current">';
+//        $config['cur_tag_close'] = '</a>';
+//        $config['next_link'] = 'Next';
+//        $config['prev_link'] = 'Previous';
+//
+//        $this->pagination->initialize($config);
+//
+//        /*
+//         *  if there is no uri segment null value will be sent
+//         */
+//        $config['offset'] = ($this->uri->segment(3) ? $this->uri->segment(3) : null);
+//        $data["query"] = $this->Student_Model->get_all_students($config["per_page"], $config['offset']);
+//        //$data["query"] = $this->Student_Model->get_all_students_2();
+//        $data['result'] = $data['query']->result();
+//        $str_links = $this->pagination->create_links();
+//        $data["links"] = explode('&nbsp;', $str_links);
 
 
 
@@ -65,21 +65,15 @@ class Student extends CI_Controller {
          */
 
 
-        if ($data['user_type'] == 'A') {
+       
             $data['page_title'] = "Manage Student";
             $this->load->view('/templates/header', $data);
             $this->load->view('navbar_main', $data);
             $this->load->view('navbar_sub', $data);
             $this->load->view('/Student/search_student', $data);
             $this->load->view('/templates/footer');
-        } else if ($data['user_type'] == 'T') {
-            $data['page_title'] = "Manage Student";
-            $this->load->view('/templates/header', $data);
-            $this->load->view('navbar_main', $data);
-            $this->load->view('navbar_sub', $data);
-            $this->load->view('/Student/search_student_t', $data);
-            $this->load->view('/templates/footer');
-        } else if ($data['user_type'] == 'S') {
+        
+         if ($data['user_type'] == 'S') {
             $data['page_title'] = "Manage Student";
             $data['navbar'] = 'student';
 
@@ -162,9 +156,27 @@ class Student extends CI_Controller {
 
 
         $this->form_validation->set_error_delimiters('<br /><span class="error">', '</span>');
-
+        $student_data = array(
+                // 'studentid' => $student_id,
+                'admissionno' => $this->input->post('admissionnumber'),
+                'admissiondate' => $this->input->post('admissiondate'),
+                'firstname' => $this->input->post('firstname'),
+                'lastname' => $this->input->post('lastname'),
+                'nameWithInitials' => $this->input->post('initials'),
+                'birthday' => $this->input->post('dob'),
+                'nic' => $this->input->post('nic'),
+                'language' => $this->input->post('language'),
+                'religion' => $this->input->post('religion'),
+                'houseid' => $this->input->post('houseid'),
+                'address' => $this->input->post('address'),
+                'contactHome' => $this->input->post('contact_home'),
+                'email' => $this->input->post('email')
+            );
         if ($this->form_validation->run() == FALSE) { // validation hasn't been passed
             $data['page_title'] = "Admission";
+            
+            
+            $data['stud_data'] = $student_data;
             $this->load->view('templates/header', $data);
             $this->load->view('navbar_main', $data);
             $this->load->view('navbar_sub', $data);
@@ -229,6 +241,7 @@ class Student extends CI_Controller {
         if ($this->form_validation->run() == FALSE) { // validation hasn't been passed
             $data['page_title'] = "Admission";
             $data['row'] = $this->Student_Model->get_last_row();
+            
             $this->load->view('templates/header', $data);
             $this->load->view('navbar_main', $data);
             $this->load->view('navbar_sub', $data);
@@ -845,6 +858,64 @@ class Student extends CI_Controller {
 
         $this->load->view('/templates/footer');
     }
+    
+        function load_student_datatble(){
+            
+            
+        $col = array("id","id2", "admission_no", "name_with_initials", "contact_home");
+         
+        $filter = $this->input->get();
+       // $user_id=$this->session->userdata('user_id');
+
+        $inputs = array(
+            
+            "offset" => $filter["start"],
+            "limit" => $filter["length"],
+            "orderby" => $filter["order"][0]["dir"],
+            "orderCol" => $col[$filter["order"][0]["column"]],
+            "search" => $filter["search"]["value"]
+        );
+
+        $data  = $this->Student_Model->get_all_student_details($inputs);
+        
+//        var_dump($data);
+//        die();
+
+        $newData = array();
+        $status = '';
+        $x = $filter["start"];
+        for ($i = 0; $i < sizeof($data["data"]); $i++) {
+
+         
+            
+            $id = $data["data"][$i]->id;
+            $id2 = $data["data"][$i]->user_id;
+            $admission_no = $data["data"][$i]->admission_no;
+            $name_with_initials = $data["data"][$i]->name_with_initials;
+            $contact_home = $data["data"][$i]->contact_home;
+           
+
+
+
+            $newData[] = array(
+                "id"=>$id,
+                "id2"=>$id2,
+                "admission_no" => $admission_no,
+                "name_with_initials" => $name_with_initials,
+                "contact_home" => $contact_home
+                 );
+        }
+
+
+        $is["data"] = $newData;
+        $is["recordsTotal"] = $data["count"];
+        $is["recordsFiltered"] = $data["count"];
+
+        echo json_encode($is);
+        
+    }
+    
+    
 
     /*
      * <<<<<<<<<<<<<<<<<<<<<<    validation functions    >>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>
@@ -978,5 +1049,7 @@ class Student extends CI_Controller {
             return FALSE;
         }
     }
+    
+
 
 }
