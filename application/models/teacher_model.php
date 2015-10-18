@@ -88,10 +88,10 @@ class Teacher_Model extends CI_Model {
         }
     }
 
-    public function insert_new_teacher_userdata($username, $password, $create , $first_name , $last_name , $photo) {
+    public function insert_new_teacher_userdata($username, $password, $create , $first_name , $last_name , $photo , $email) {
         try {
             $encryptpwd = md5($password);
-            if ($this->db->query("INSERT INTO users (`username`, `password` , `created_at`, `user_type` , `first_name` , `last_name` , `profile_img`) VALUES ('$username', '$encryptpwd' , '$create', 'T' , '$first_name' , '$last_name' , '$photo')")) {
+            if ($this->db->query("INSERT INTO users (`username`, `password` , `created_at`, `user_type` , `first_name` , `last_name` , `profile_img` , `email`) VALUES ('$username', '$encryptpwd' , '$create', 'T' , '$first_name' , '$last_name' , '$photo' , '$email')")) {
                 $id = $this->db->insert_id();
                 return $id;
             } else {

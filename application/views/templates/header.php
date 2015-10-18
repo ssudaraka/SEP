@@ -9,6 +9,16 @@
         <!-- jQuery (necessary for Bootstrap's JavaScript plugins) -->
         <script src="http://code.jquery.com/jquery-1.11.1.min.js"></script>
 
+
+        <link href='http://fullcalendar.io/js/fullcalendar-2.4.0/fullcalendar.css' rel='stylesheet' />
+        <link href='http://fullcalendar.io/js/fullcalendar-2.4.0/fullcalendar.print.css' rel='stylesheet' media='print' />
+        <link href='http://fullcalendar.io/js/fullcalendar-scheduler-1.0.1/scheduler.min.css' rel='stylesheet' />
+        <script src='//cdnjs.cloudflare.com/ajax/libs/moment.js/2.9.0/moment.min.js'></script>
+        <script src='//ajax.googleapis.com/ajax/libs/jquery/2.1.3/jquery.min.js'></script>
+        <script src='http://fullcalendar.io/js/fullcalendar-2.4.0/fullcalendar.js'></script>
+        <script src='http://fullcalendar.io/js/fullcalendar-scheduler-1.0.1/scheduler.js'></script>
+
+
         <!-- DataTables Plugin -->
         <script src="<?php echo base_url("assets/js/jquery.dataTables.min.js"); ?>"></script>
         <link rel="stylesheet" type="text/css" href="http://cdn.datatables.net/plug-ins/1.10.7/integration/bootstrap/3/dataTables.bootstrap.css">
@@ -34,7 +44,7 @@
         <!-- Tooltip Init -->
         <script type="text/javascript">
             $(function () {
-              $('[data-toggle="tooltip"]').tooltip()
+                $('[data-toggle="tooltip"]').tooltip()
             })
         </script>
 

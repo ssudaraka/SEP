@@ -2,9 +2,13 @@
 <div class="container">
     <div class="row">
         <div class="col-md-3">
-            <?php if ($user_type == 'A') { ?>
-                <?php $this->view('teacher/sidebar_nav');
-            } ?>
+            <?php if ($user_type == 'A') {
+                        $this->view('teacher/sidebar_nav');
+                    }
+                    else if($user_type == 'T'){
+                        $this->view('teacher/sidebar_nav_teacher');
+                    }
+            ?>
         </div>
         <div class="col-md-9">
 <?php if ($progress == 1) { ?>
@@ -17,7 +21,7 @@
 <?php } ?>
             <div class="panel panel-default">
 
-                <div class="well">
+                <div class="col-md-12">
                     <ul class="nav nav-tabs">
                         <li class="active"><a href="#home" data-toggle="tab">Personal Details</a></li>
                         <li><a href="#profile" data-toggle="tab">Academic Details</a></li>
