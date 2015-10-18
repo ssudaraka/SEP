@@ -90,7 +90,7 @@ class Student extends CI_Controller {
          * checking validations
          */
         $this->load->library('form_validation');
-        $this->form_validation->set_rules('admissionnumber', 'Admission Number', 'required|is_unique[students.admission_no]|exact_length[4]');
+        $this->form_validation->set_rules('admissionnumber', 'Admission Number', 'required|is_unique[students.admission_no]|min_length[4]');
         $this->form_validation->set_rules('admissiondate', 'Admission Date', 'required|callback_check_admission_date');
         $this->form_validation->set_rules('firstname', 'Firstname', 'required');
         $this->form_validation->set_rules('lastname', 'Lastname', 'required');
@@ -101,32 +101,18 @@ class Student extends CI_Controller {
         $this->form_validation->set_rules('religion', 'Religion', 'callback_check_selection');
         $this->form_validation->set_rules('houseid', 'Houser', 'required');
         $this->form_validation->set_rules('address', 'Address', 'required');
-        $this->form_validation->set_rules('contactHome', 'Contact Home', 'exact_length[10]|integer');
+        $this->form_validation->set_rules('contact_home', 'Contact Home', 'exact_length[10]|integer');
         $this->form_validation->set_rules('email', 'Email', 'valid_email');
 
 
         $this->form_validation->set_error_delimiters('<br /><span class="error">', '</span>');
-        $student_data = array(
-            // 'studentid' => $student_id,
-            'admissionno' => $this->input->post('admissionnumber'),
-            'admissiondate' => $this->input->post('admissiondate'),
-            'firstname' => $this->input->post('firstname'),
-            'lastname' => $this->input->post('lastname'),
-            'nameWithInitials' => $this->input->post('initials'),
-            'birthday' => $this->input->post('dob'),
-            'nic' => $this->input->post('nic'),
-            'language' => $this->input->post('language'),
-            'religion' => $this->input->post('religion'),
-            'houseid' => $this->input->post('houseid'),
-            'address' => $this->input->post('address'),
-            'contactHome' => $this->input->post('contact_home'),
-            'email' => $this->input->post('email')
-        );
+        
+       
         if ($this->form_validation->run() == FALSE) { // validation hasn't been passed
             $data['page_title'] = "Admission";
 
 
-            $data['stud_data'] = $student_data;
+           // $data['stud_data'] = $student_data;
             $this->load->view('templates/header', $data);
             $this->load->view('navbar_main', $data);
             $this->load->view('navbar_sub', $data);
@@ -150,7 +136,9 @@ class Student extends CI_Controller {
                 'contactHome' => $this->input->post('contact_home'),
                 'email' => $this->input->post('email')
             );
-
+            
+             $this->session->set_userdata('student_d',$student_data);
+        
             $data['page_title'] = "Admission";
             $data['navbar'] = "student";
             $data['stud_data'] = $student_data;
@@ -191,7 +179,7 @@ class Student extends CI_Controller {
         if ($this->form_validation->run() == FALSE) { // validation hasn't been passed
             $data['page_title'] = "Admission";
             $data['row'] = $this->Student_Model->get_last_row();
-
+            $data['stud_data']=$this->session->userdata('student_d');
             $this->load->view('templates/header', $data);
             $this->load->view('navbar_main', $data);
             $this->load->view('navbar_sub', $data);
@@ -209,23 +197,23 @@ class Student extends CI_Controller {
             $last_row = $this->Student_Model->get_last_row(); //getting last student user_id
             $student_id = $last_row->id;
             $studentd = array();
-            $studentd = $this->input->post('studentdata');
+            $studentd = $this->session->userdata('student_d');
 
             $student_data = array(
                 // 'studentid' => $student_id,
-                'admissionno' => $studentd[0],
-                'admissiondate' => $studentd[1],
-                'firstname' => $studentd[2],
-                'lastname' => $studentd[3],
-                'nameWithInitials' => $studentd[4],
-                'birthday' => $studentd[5],
-                'nic' => $studentd[6],
-                'language' => $studentd[7],
-                'religion' => $studentd[8],
-                'houseid' => $studentd[9],
-                'address' => $studentd[10],
-                'contactHome' => $studentd[11],
-                'email' => $studentd[12]
+                'admissionno' => $studentd['admissionno'],
+                'admissiondate' => $studentd['admissiondate'],
+                'firstname' => $studentd['firstname'],
+                'lastname' => $studentd['lastname'],
+                'nameWithInitials' => $studentd['nameWithInitials'],
+                'birthday' => $studentd['birthday'],
+                'nic' => $studentd['nic'],
+                'language' => $studentd['language'],
+                'religion' => $studentd['religion'],
+                'houseid' => $studentd['houseid'],
+                'address' => $studentd['address'],
+                'contactHome' => $studentd['contactHome'],
+                'email' => $studentd['email']
             );
 
             if ($id = $this->Student_Model->insert_new_student($student_data)) {
@@ -236,10 +224,12 @@ class Student extends CI_Controller {
                 $data['row'] = $this->Student_Model->get_last_inserted_student($id);
                 $ID = $data['row']->id;
                 $username = $data['row']->admission_no;
+                
                 $password = "PW_" . $username;
+                
                 $create = date('Y-m-d H:i:s');
-                $fname = $studentd[2];
-                $lname = $studentd[3];
+                $fname = $studentd['firstname'];
+                $lname = $studentd['lastname'];
                 if ($id = $this->Student_Model->insert_new_student_userdata($username, $password, $create, $fname, $lname)) {
 
                     $this->Student_Model->set_user_id($ID, $id);
@@ -259,17 +249,26 @@ class Student extends CI_Controller {
                     );
 
                     if ($id = $this->Student_Model->insert_new_Guardian($guardian_data)) { // the information has therefore been successfully saved in the db
-                        $last_row = $this->Student_Model->get_last_row();
-                        $student_id = $last_row->user_id;
-                        $this->view_profile($student_id);
+//                        $last_row = $this->Student_Model->get_last_row();
+//                        $student_id = $last_row->user_id;
+//                        $this->view_profile($student_id);
+                        $this->session->unset_userdata('student_d');
+                        $this->session->set_flashdata('succ_message','Admission Successfull');
+                        redirect('student/create_student');
                     } else {
-                        echo 'An error occurred saving your information. Please try again later';
+                        $err= 'An error occurred saving your information. Please try again later';
+                        $this->session->set_flashdata('err_message',$err);
+                        redirect('student/create_student');
                     }
                 } else {
-                    echo 'An error occurred creating your user account. Please try again later';
+                   $err= 'An error occurred creating your user account. Please try again later';
+                   $this->session->set_flashdata('err_message',$err);
+                        redirect('student/create_student');
                 }
             } else {
-                echo 'An error occurred saving your information. Please try again later';
+                $err= 'An error occurred saving your information. Please try again later';
+                $this->session->set_flashdata('err_message',$err);
+                        redirect('student/create_student');
             }
         }
     }

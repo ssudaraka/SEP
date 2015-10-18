@@ -40,12 +40,9 @@
                                 <div><?php echo form_error('studentname'); ?></div>
                      </div>
                      <div class="col-md-3 col-md-offset-4 form-group">
-                                <?php
+                            
                                 
-                              foreach($stud_data as $value){
-                                
-                       echo  '<input type="hidden" name="studentdata[]" value="' .$value.' " /> ';        
-                              } ?>    
+                          
                     </div>
                      
                    

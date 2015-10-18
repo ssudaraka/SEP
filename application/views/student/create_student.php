@@ -7,6 +7,18 @@
         </div>
 
         <div class="col-md-9">
+            <?php if ($this->session->flashdata('succ_message')) { ?>
+                <div class="alert alert-success alert-dismissible" role="alert">
+                    <button type="button" class="close" data-dismiss="alert" aria-label="Close"><span aria-hidden="true">&times;</span></button>
+                    <?php echo $this->session->flashdata('succ_message'); ?>
+                </div>
+            <?php } ?>
+            <?php if ($this->session->flashdata('err_message')) { ?>
+                <div class="alert alert-danger alert-dismissible" role="alert">
+                    <button type="button" class="close" data-dismiss="alert" aria-label="Close"><span aria-hidden="true">&times;</span></button>
+                    <?php echo $this->session->flashdata('err_message'); ?>
+                </div>
+            <?php } ?>
             
             <div class="row">
                 <ul class="nav nav-tabs ">
