@@ -19,15 +19,18 @@
                     </div>
                 <?php } ?>
             </div>
-            <input type="text" id="type" value="<?php echo $this->session->userdata['user_type'];?>"/>
-            
+
+
             <div class="row">
                 <script type="text/javascript">
                     $(document).ready(function () {
-                        var type= '<?php echo $this->session->userdata['user_type'];?>';
-                        alert(type);
-                     
-                        
+                        var type = '<?php echo $user_type; ?>';
+                        var abuttons = '';
+                        if (type == 'A') {
+                            abuttons = ' <a href="" class="editor_remove" id="view"><span class="glyphicon glyphicon-user" aria-hidden="true"></span></a>  &nbsp; <a href="" class="editor_remove" id="edit"><span class="glyphicon glyphicon-edit" aria-hidden="true"></span></a> &nbsp; <a href="" class="editor_remove" id="delete"><span class="glyphicon glyphicon-trash" aria-hidden="true"></span></a>';
+                        } else {
+                            abuttons = ' <a href="" class="editor_remove" id="view"><span class="glyphicon glyphicon-user" aria-hidden="true"></span></a>';
+                        }
                         var table = $('#table_id').DataTable({
                             "ajax": "<?php echo base_url(); ?>index.php/student/load_student_datatble",
                             "columns": [
@@ -39,7 +42,7 @@
                                 {
                                     data: null,
                                     className: "center",
-                                    defaultContent: ' <a href="" class="editor_remove" id="view"><span class="glyphicon glyphicon-user" aria-hidden="true"></span></a>  &nbsp; <a href="" class="editor_remove" id="edit"><span class="glyphicon glyphicon-edit" aria-hidden="true"></span></a> &nbsp; <a href="" class="editor_remove" id="delete"><span class="glyphicon glyphicon-trash" aria-hidden="true"></span></a>'
+                                    defaultContent: abuttons
                                 },
                             ],
                             "columnDefs": [
@@ -92,14 +95,14 @@
 
 
                             <tr>
-                                <td><?php //echo $row->id;         ?></td>
-                                <td><?php // echo $row->admission_no;        ?></td> 
-                                <td><?php //echo $row->name_with_initials;         ?></td>
-                                <td><?php //echo $row->contact_home;         ?></td>
+                                <td><?php //echo $row->id;          ?></td>
+                                <td><?php // echo $row->admission_no;         ?></td> 
+                                <td><?php //echo $row->name_with_initials;          ?></td>
+                                <td><?php //echo $row->contact_home;          ?></td>
                                 
-                                <td><a href="<?php // echo base_url("index.php/profile") . "?key=" . $row->user_id;         ?>" ><span class="glyphicon glyphicon-user" aria-hidden="true"></span></a></td>
-                                <td><a href="<?php // echo base_url("index.php/student/load_student") . "/" . $row->user_id;         ?>"><span class="glyphicon glyphicon-edit" aria-hidden="true"></span></a></td>
-                                <td><a href="<?php // echo base_url("index.php/student/archive_student") . "/" . $row->user_id;         ?>" onclick="return confirm('Are you sure you want to permenantly delete this student?!!');"><span class="glyphicon glyphicon-trash" aria-hidden="true"></span></i></a></td>
+                                <td><a href="<?php // echo base_url("index.php/profile") . "?key=" . $row->user_id;          ?>" ><span class="glyphicon glyphicon-user" aria-hidden="true"></span></a></td>
+                                <td><a href="<?php // echo base_url("index.php/student/load_student") . "/" . $row->user_id;          ?>"><span class="glyphicon glyphicon-edit" aria-hidden="true"></span></a></td>
+                                <td><a href="<?php // echo base_url("index.php/student/archive_student") . "/" . $row->user_id;          ?>" onclick="return confirm('Are you sure you want to permenantly delete this student?!!');"><span class="glyphicon glyphicon-trash" aria-hidden="true"></span></i></a></td>
 
                             </tr>
                     <?php //}     ?>
