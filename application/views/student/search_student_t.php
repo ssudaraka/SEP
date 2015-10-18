@@ -47,7 +47,7 @@
                                 <td><?php echo $row->name_with_initials; ?></td>
                                 <td><?php echo $row->contact_home; ?></td>
                                 
-                                <td><a href="<?php echo base_url("index.php/student/view_student_profile") . "/" . $row->user_id; ?>" ><span class="glyphicon glyphicon-user" aria-hidden="true"></span></a></td>
+                                <td><a href="<?php echo base_url("index.php/profile") . "?key=" . $row->user_id; ?>" ><span class="glyphicon glyphicon-user" aria-hidden="true"></span></a></td>
                                
 
                             </tr>

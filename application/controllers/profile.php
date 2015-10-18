@@ -13,6 +13,7 @@ class Profile extends CI_Controller {
         parent::__construct();
         $this->load->model('user');
         $this->load->model('student_model');
+        $this->load->model('Teacher_Model');
     }
 
     /*
@@ -45,7 +46,21 @@ class Profile extends CI_Controller {
                 $this->load->view('/templates/footer');
             }
             if ($user_type == 'T') {
+                $data['page_title'] = "Profile";
+                $data['navbar'] = 'teacher';
+                $data['edit'] = true;
+                $data['user_type'] = $this->session->userdata['user_type'];
+
+                $teacher_id = $this->Teacher_Model->get_teacher_id($user_id);
+                $data['details'] = $this->Teacher_Model->get_staff_details($teacher_id);
+                $data['propic'] = $this->Teacher_Model->get_profile_img($teacher_id);
+                $data['user_d'] = $this->user->get_user($user_id);
                 
+                $this->load->view('templates/header', $data);
+                $this->load->view('navbar_main', $data);
+                $this->load->view('navbar_sub', $data);
+                $this->load->view('profile/teacher_profile', $data);
+                $this->load->view('/templates/footer');
             }
             if ($user_type == 'A') {
                 $data['page_title'] = "Profile";
@@ -86,7 +101,22 @@ class Profile extends CI_Controller {
                     $this->load->view('/templates/footer');
                 }
                 if ($user_type == 'T') {
+                    $data['page_title'] = "Profile";
+                    $data['navbar'] = 'teacher';
+                    $data['edit'] = false;
+                    $data['user_type'] = $this->session->userdata['user_type'];
+                    $data['user_d'] = $this->user->get_user($user_id);
                     
+                    $teacher_id = $this->Teacher_Model->get_teacher_id($user_id);
+                    $data['details'] = $this->Teacher_Model->get_staff_details($teacher_id);
+                    $data['propic'] = $this->Teacher_Model->get_profile_img($teacher_id);
+                    $data['user_d'] = $this->user->get_user($user_id);
+
+                    $this->load->view('templates/header', $data);
+                    $this->load->view('navbar_main', $data);
+                    $this->load->view('navbar_sub', $data);
+                    $this->load->view('profile/teacher_profile', $data);
+                    $this->load->view('/templates/footer');
                 }
                 if ($user_type == 'A') {
                     $data['page_title'] = "Profile";

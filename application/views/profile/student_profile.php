@@ -40,7 +40,7 @@
 <div class="container cntn" >
     <div class="row">
         <div class="col-md-3"   style="background-color: rgba(210, 210, 210, 0.09);  min-height: 553px" >
-            <div class="col-md-offset-1 col-md-10" ><h3 class="text-center"><?php echo $user_d->first_name . ' ' . $user_d->first_name; ?></h3></div>
+            <div class="col-md-offset-1 col-md-10" ><h3 class="text-center"><?php echo $user_d->first_name . ' ' . $user_d->last_name; ?></h3></div>
             <div class="col-md-offset-1 col-md-10" style="padding-bottom: 25px; border-bottom: 1px solid #ddd; "><img src="<?php  if($user_d->profile_img){echo$user_d->profile_img;}else{echo'http://www.bathspa.ac.uk/media/WebProfilePictures/default_profile.jpg';}?>" alt="..." class="img-thumbnail"></div>
             <div class="col-md-offset-1 col-md-10 text-center" style='padding-top: 10px;'><h3><span style="color:#FF4800;"><?php echo $user_d->username; ?></span></h3></div>
             <div class="col-md-offset-1 col-md-10 text-center" style='padding-top: 0px;'><h4><span style="color:rgb(77, 80, 89);"><?php if($user_d->user_type=='A'){echo 'ADMIN';}if($user_d->user_type=='T'){echo 'TEACHER';}if($user_d->user_type=='S'){echo 'STUDENT';}?></span></h4></div>
