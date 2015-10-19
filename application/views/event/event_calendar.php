@@ -64,7 +64,7 @@ foreach ($details as $row) {
     } else {
         $color = 'blue';
     }
-    echo "{id: '$row->id', start: '$row->start_date', end: '$row->end_date', title: '$row->title', color: '$color' , url: '" . base_url('index.php/teacher') . "'},";
+    echo "{id: '$row->id', start: '$row->start_date', end: '$row->end_date', title: '$row->title', color: '$color' , url: '" . base_url('index.php/event/view_event_details') .'/'. $row->id."'},";
 }
 ?>
             ]

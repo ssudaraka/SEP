@@ -11,22 +11,22 @@
                 <table class="table">
                     <tr>
                         <td>
-                            <span class="glyphicon glyphicon-asterisk text-primary"></span><a href="<?php echo base_url('index.php/event/create_event_type'); ?>">Add Event Type</a>
+                            <span class="glyphicon glyphicon-info-sign text-primary"></span><a href="<?php echo base_url('index.php/event/create_event_type'); ?>">Add Event Type</a>
                         </td>
                     </tr>
                     <tr>
                         <td>
-                            <span class="glyphicon glyphicon-inbox text-primary"></span><a href="<?php echo base_url('index.php/event/check_event_details'); ?>">Check events</a>
+                            <span class="glyphicon glyphicon-check text-warning"></span><a href="<?php echo base_url('index.php/event/check_event_details'); ?>">Check events</a>
                         </td>
                     </tr>
                     <tr>
                         <td>
-                            <span class="glyphicon glyphicon-bookmark"></span><a href="<?php echo base_url('index.php/event/view_all_events'); ?>">View All events</a>
+                            <span class="glyphicon glyphicon-search text-danger"></span><a href="<?php echo base_url('index.php/event/view_all_events'); ?>">View All events</a>
                         </td>
                     </tr>
                     <tr>
                         <td>
-                            <span class="glyphicon glyphicon-book text-warning"></span><a href="<?php echo base_url('index.php/event/event_calendar'); ?>">Event Calendar</a>
+                            <span class="glyphicon glyphicon-calendar text-success"></span><a href="<?php echo base_url('index.php/event/event_calendar'); ?>">Event Calendar</a>
                         </td>
                     </tr>
                 </table>

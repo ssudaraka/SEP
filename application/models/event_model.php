@@ -43,11 +43,11 @@ class Event_model extends CI_Model {
     /**
      * Update the event
      */
-    function update_event($event_details, $location, $guest, $id) {
+    function update_event($event_id, $event_name, $event_type, $description, $start_date, $start_time, $end_date, $end_time, $in_charge, $budget , $location , $guest) {
 
         try {
 
-            if ($this->db->query("UPDATE events SET `details` = '$event_details' , `location` = '$location' , `guest` = '$guest'  WHERE `id` = '$id'")) {
+            if ($this->db->query("UPDATE events SET title='$event_name' , description='$description' , start_time='$start_time' , end_time='$end_time' , in_charge_id='$in_charge' , start_date='$start_date' , end_date='$end_date' , budget='$budget' , location='$location' , guest='$guest' , event_type='$event_type' where id='$event_id'")) {
                 return TRUE;
             } else {
                 return FALSE;
@@ -88,21 +88,6 @@ class Event_model extends CI_Model {
             }
         } catch (Exception $ex) {
             return null;
-        }
-    }
-
-    /**
-     * set success for status after publishing the event
-     */
-    public function set_success_for_approved($id) {
-        try {
-            if ($this->db->query("update events set status = 'success' where id = '$id'")) {
-                return TRUE;
-            } else {
-                return FALSE;
-            }
-        } catch (Exception $exc) {
-            return FALSE;
         }
     }
 
@@ -249,7 +234,7 @@ class Event_model extends CI_Model {
     public function get_all_events() {
         //Get all events in order to check 
         try {
-            if ($data = $this->db->query("select * from `events` where status = 'success'")) {
+            if ($data = $this->db->query("select * from `events` where status = 'approved'")) {
                 $row = $data->result();
                 return $row;
             } else {

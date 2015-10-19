@@ -11,22 +11,22 @@
                 <table class="table">
                     <tr>
                         <td>
-                            <span class="glyphicon glyphicon-expand text-primary"></span><a href="<?php echo base_url('index.php/event'); ?>">Create an event</a>
+                            <span class="glyphicon glyphicon-map-marker text-primary"></span><a href="<?php echo base_url('index.php/event'); ?>">Create event</a>
                         </td>
                     </tr>
                     <tr>
                         <td>
-                            <span class="glyphicon glyphicon-book text-warning"></span><a href="<?php echo base_url('index.php/event/#eventrequest'); ?>">View event request</a>
+                            <span class="glyphicon glyphicon-check text-warning"></span><a href="<?php echo base_url('index.php/event/#eventrequest'); ?>">View event request</a>
                         </td>
                     </tr>
                     <tr>
                         <td>
-                            <span class="glyphicon glyphicon-book text-warning"></span><a href="<?php echo base_url('index.php/event/event_calendar'); ?>">Event Calendar</a>
+                            <span class="glyphicon glyphicon-calendar text-success"></span><a href="<?php echo base_url('index.php/event/event_calendar'); ?>">Event Calendar</a>
                         </td>
                     </tr>
                     <tr>
                         <td>
-                            <span class="glyphicon glyphicon-bookmark"></span><a href="<?php echo base_url('index.php/event/view_all_events'); ?>">View All events</a>
+                            <span class="glyphicon glyphicon-search text-danger"></span><a href="<?php echo base_url('index.php/event/view_all_events'); ?>">View All events</a>
                         </td>
                     </tr>
                 </table>

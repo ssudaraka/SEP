@@ -59,7 +59,7 @@
 
                             foreach ($result as $row) {
                                 //echo "<option value='" . $row->event_type . "'>" . $row->event_type . "</option>";
-                                echo "<option value='$row->event_type'>$row->event_type</option>";
+                                echo "<option value='$row->id'>$row->event_type</option>";
                             }
                             echo "</select>";
                             ?>
@@ -240,57 +240,3 @@
     </div>
 
 </div>
-<div class="container">
-    <div class="row">
-        <div class="col-md-3">
-        </div>
-        <div class="col-md-9"> 
-            <div id='calendar'></div>
-        </div>
-        <div style='clear:both'></div>
-
-    </div>
-</div>
-
-<script>
-    $(function () { // document ready
-
-        $('#calendar').fullCalendar({
-            schedulerLicenseKey: 'CC-Attribution-NonCommercial-NoDerivatives',
-            now: '<?php echo date('Y-m-d'); ?>',
-            editable: true,
-            aspectRatio: 1.5,
-            scrollTime: '00:00',
-            header: {
-                left: 'today prev,next',
-                center: 'title',
-                right: 'month'
-            },
-            defaultView: 'month',
-            views: {
-                timelineThreeDays: {
-                    type: 'timeline',
-                    duration: {days: 3}
-                }
-            },
-            events: [
-<?php
-foreach ($details as $row) {
-    $color;
-    if ($row->status == 'rejected') {
-        $color = 'red';
-    } else if ($row->status == 'approved') {
-        $color = 'green';
-    } else {
-        $color = 'blue';
-    }
-    echo "{id: '$row->id', start: '$row->start_date', end: '$row->end_date', title: '$row->title', color: '$color' , url: '" . base_url('index.php/teacher') . "'},";
-}
-?>
-            ]
-        });
-
-    });
-
-
-</script>

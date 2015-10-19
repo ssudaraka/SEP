@@ -103,34 +103,51 @@ class Event extends CI_Controller {
     /**
      * This method is used to update the data which is approved by the principle.
      */
-    function publish_approved_event($id) {
+    function update_event() {
         if (!$this->session->userdata('logged_in')) {
             redirect('login', 'refresh');
         }
         $data['user_type'] = $this->session->userdata['user_type'];
         $data['navbar'] = "event";
         date_default_timezone_set('Asia/Kolkata');
-        $this->load->library('form_validation');
-        $this->form_validation->set_rules('event_details', 'event details', 'required');
+        
+        $this->form_validation->set_rules('event_name', 'event name', 'required'); //Validate fields
+        $this->form_validation->set_rules('event_type', 'event type', 'required');
+        $this->form_validation->set_rules('description', 'description', 'required');
+        $this->form_validation->set_rules('start_date', 'start date', 'required');
+        $this->form_validation->set_rules('start_time', 'start time', 'required');
+        $this->form_validation->set_rules('end_date', 'end date', 'required|callback_check_event_end_date');
+        $this->form_validation->set_rules('end_time', 'end time', 'required');
+        $this->form_validation->set_rules('budget', 'budget', 'required|integer');
         $this->form_validation->set_rules('location', 'location', 'required');
         $this->form_validation->set_rules('guest', 'guest', '');
+        
         $this->form_validation->set_error_delimiters('<br /><span class="error">', '</span>');
+        $event_id = $this->input->post('eid');
         if ($this->form_validation->run() == FALSE) {
-            $data['details'] = $this->event_model->get_approved_event_details($id); //Get approved event details
-            $data['page_title'] = "Publish Event";
+            $data['details'] = $this->event_model->get_approved_event_details($event_id); //Get approved event details
+            $data['page_title'] = "Update Event";
             $this->load->view('templates/header', $data);
             $this->load->view('navbar_main', $data);
             $this->load->view('navbar_sub', $data);
             $this->load->view('event/create_approved_sport_event', $data);
             $this->load->view('/templates/footer');
         } else {
-            $event_details = $this->input->post('event_details');
+            
+            $event_name = $this->input->post('event_name');
+            $event_type = $this->input->post('event_type');
+            $description = $this->input->post('description');
+            $start_date = $this->input->post('start_date');
+            $start_time = $this->input->post('start_time');
+            $end_date = $this->input->post('end_date');
+            $end_time = $this->input->post('end_time');
+            $in_charge = $this->input->post('in_charge');
+            $budget = $this->input->post('budget');
             $location = $this->input->post('location');
             $guest = $this->input->post('guest');
 
-            if ($this->event_model->update_event($event_details, $location, $guest, $id)) {
-                $this->event_model->set_success_for_approved($id);
-                //$data['details'] = $this->event_model->get_pending_event_details();
+            if ($this->event_model->update_event($event_id, $event_name, $event_type, $description, $start_date, $start_time, $end_date, $end_time, $in_charge, $budget , $location , $guest)) {
+                
                 //For news field
                 $tech_id = $this->session->userdata('id');
                 $tech_details = $this->Teacher_Model->user_details($tech_id);
@@ -140,15 +157,33 @@ class Event extends CI_Controller {
                 $data['succ_message'] = "Successfully Updated!";
                 $data['page_title'] = "Create Sports Event";
                 $data['navbar'] = "Sports";
+                $data['result'] = $this->event_model->get_event_type_details();
+                $data['details'] = $this->event_model->get_approved_event_details($event_id);
                 $this->load->view('templates/header', $data);
                 $this->load->view('navbar_main', $data);
                 $this->load->view('navbar_sub', $data);
-                $this->load->view('event/up_comming_events', $data);
+                $this->load->view('event/create_approved_sport_event', $data);
                 $this->load->view('/templates/footer');
             } else {
                 echo 'An error occurred saving your information. Please try again later';
             }
         }
+    }
+    
+    function view_event_details($event_id){
+        if (!$this->session->userdata('logged_in')) {
+            redirect('login', 'refresh');
+        }
+        date_default_timezone_set('Asia/Kolkata');
+        $data['user_type'] = $this->session->userdata['user_type'];
+        $data['details'] = $this->event_model->get_approved_event_details($event_id); //Get approved event details from the database
+        $data['page_title'] = "Publish Event";
+        $data['navbar'] = "Sports";
+        $this->load->view('templates/header', $data);
+        $this->load->view('navbar_main', $data);
+        $this->load->view('navbar_sub', $data);
+        $this->load->view('event/view_event_details', $data);
+        $this->load->view('/templates/footer');
     }
 
     /**
@@ -160,6 +195,7 @@ class Event extends CI_Controller {
         }
         date_default_timezone_set('Asia/Kolkata');
         $data['user_type'] = $this->session->userdata['user_type'];
+        $data['result'] = $this->event_model->get_event_type_details();
         $data['details'] = $this->event_model->get_approved_event_details($event_id); //Get approved event details from the database
         $data['page_title'] = "Publish Event";
         $data['navbar'] = "Sports";

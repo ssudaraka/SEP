@@ -75,13 +75,11 @@ if ($type == 1) {
                     <br>
 
                     <table class="table table-hover">
-                        <thead style="background-color: gray">
+                        <thead>
                             <tr>
                                 <th>Event Name</th>
                                 <th>Start Date</th>
                                 <th>End Date</th>
-                                <th></th>
-                                <th></th>
                                 <th></th>
                             </tr>
                         </thead>
@@ -93,12 +91,12 @@ if ($type == 1) {
                                     <td><?php echo $row->title; ?></td>
                                     <td><?php echo $row->start_date; ?></td>
                                     <td><?php echo $row->end_date; ?></td>
-                                    <td><a href="<?php echo base_url("index.php/event/view_upcoming_event_details") . "/" . $row->id; ?>" ><span class="glyphicon glyphicon-user" aria-hidden="true"></span></a></td>
+                                    <td><a href="<?php echo base_url("index.php/event/view_upcoming_event_details") . "/" . $row->id; ?>" class="btn btn-primary btn-xs" aria-hidden="true"><i class="fa fa-eye"></i></a></td>
                                 <?php
                                 if ($user_type == 'A') {
                                     ?>
-                                    <td><a href="<?php echo base_url("index.php/event/edit_approved_event") . "/" . $row->id; ?>"><span class="glyphicon glyphicon-edit" aria-hidden="true"></span></a></td>
-                                    <td><a href="<?php echo base_url("index.php/event/cancel_event") . "/" . $row->id; ?>" onclick="return confirm('Are you sure you want to cancel this event?');"><span class="glyphicon glyphicon-trash" aria-hidden="true"></span></i></a></td>
+                                    <td><a href="<?php echo base_url("index.php/event/edit_approved_event") . "/" . $row->id; ?>" class="btn btn-primary btn-xs" aria-hidden="true"><i class="fa fa-edit"></i></a></td>
+                                    <td><a href="<?php echo base_url("index.php/event/cancel_event") . "/" . $row->id; ?>" onclick="return confirm('Are you sure you want to cancel this event?');" class="btn btn-danger btn-xs" aria-hidden="true"><i class="fa fa-trash"></i></i></a></td>
 
                                 <?php } ?>
                                 
