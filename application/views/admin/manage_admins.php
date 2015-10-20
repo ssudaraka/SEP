@@ -43,6 +43,7 @@
                                     <td><?php echo $row->email; ?></td>
                                     <td><?php echo $row->lastvisit_at; ?></td>
                                     <td>
+                                        <a href="<?php echo base_url("index.php/profile") . "?key=" . $row->id; ?>" data-toggle="tooltip" title="edit"><i class="fa fa-eye" style="font-size: 22px;" ></i></a>&nbsp;
                                         <a href="<?php echo base_url("index.php/admin/edit/{$row->id}"); ?>" data-toggle="tooltip" title="edit"><i class="fa fa-pencil-square-o" style="font-size: 22px;" ></i></a>&nbsp;
                                         <a href="#" class="delete-user" data-user-id="<?php echo $row->id; ?>" data-toggle="tooltip" title="edit"><i class="fa fa-trash" style="font-size: 22px;"></i></a>&nbsp;
                                     </td>

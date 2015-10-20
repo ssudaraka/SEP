@@ -16,75 +16,19 @@ class Student extends CI_Controller {
         if (!$this->session->userdata('id')) {
             redirect('login', 'refresh');
         }
-
-        $data['navbar'] = "student";
-
-        /*
-         * Getting user type
-         */
         $data['user_type'] = $this->session->userdata['user_type'];
+        if ($data['user_type'] == 'S') {
+            redirect(profile);
+        } else {
 
-
-        $data['page_title'] = "Manage Student";
-        $data['navbar'] = 'student';
-
-
-        /**
-         * Get all student recodes and display in a table
-         */
-        $this->load->library('pagination');
-        $config = array();
-        $config['base_url'] = base_url() . "index.php/student/student";
-        $total_row = $this->db->get('students')->num_rows();
-        $config["total_rows"] = $total_row;
-        $config["per_page"] = 10;
-        $config['uri_segment'] = 3;
-        $config['use_page_numbers'] = TRUE;
-        $config['num_links'] = $total_row;
-        $config['cur_tag_open'] = '&nbsp;<a class="current">';
-        $config['cur_tag_close'] = '</a>';
-        $config['next_link'] = 'Next';
-        $config['prev_link'] = 'Previous';
-
-        $this->pagination->initialize($config);
-
-        /*
-         *  if there is no uri segment null value will be sent
-         */
-        $config['offset'] = ($this->uri->segment(3) ? $this->uri->segment(3) : null);
-        $data["query"] = $this->Student_Model->get_all_students($config["per_page"], $config['offset']);
-        //$data["query"] = $this->Student_Model->get_all_students_2();
-        $data['result'] = $data['query']->result();
-        $str_links = $this->pagination->create_links();
-        $data["links"] = explode('&nbsp;', $str_links);
-
-
-
-        /*
-         * Load the student details in the grid   + with pagination
-         */
-
-
-        if ($data['user_type'] == 'A') {
+            $data['navbar'] = "student";
+            $data['navbar'] = 'student';
             $data['page_title'] = "Manage Student";
             $this->load->view('/templates/header', $data);
             $this->load->view('navbar_main', $data);
             $this->load->view('navbar_sub', $data);
             $this->load->view('/student/search_student', $data);
             $this->load->view('/templates/footer');
-        } else if ($data['user_type'] == 'T') {
-            $data['page_title'] = "Manage Student";
-            $this->load->view('/templates/header', $data);
-            $this->load->view('navbar_main', $data);
-            $this->load->view('navbar_sub', $data);
-            $this->load->view('/Student/search_student_t', $data);
-            $this->load->view('/templates/footer');
-        } else if ($data['user_type'] == 'S') {
-            $data['page_title'] = "Manage Student";
-            $data['navbar'] = 'student';
-
-            $user_id = $this->session->userdata('id');
-            $this->view_profile($user_id);
         }
     }
 
@@ -146,7 +90,7 @@ class Student extends CI_Controller {
          * checking validations
          */
         $this->load->library('form_validation');
-        $this->form_validation->set_rules('admissionnumber', 'Admission Number', 'required|is_unique[students.admission_no]|exact_length[4]');
+        $this->form_validation->set_rules('admissionnumber', 'Admission Number', 'required|is_unique[students.admission_no]|min_length[4]');
         $this->form_validation->set_rules('admissiondate', 'Admission Date', 'required|callback_check_admission_date');
         $this->form_validation->set_rules('firstname', 'Firstname', 'required');
         $this->form_validation->set_rules('lastname', 'Lastname', 'required');
@@ -157,14 +101,18 @@ class Student extends CI_Controller {
         $this->form_validation->set_rules('religion', 'Religion', 'callback_check_selection');
         $this->form_validation->set_rules('houseid', 'Houser', 'required');
         $this->form_validation->set_rules('address', 'Address', 'required');
-        $this->form_validation->set_rules('contactHome', 'Contact Home', 'exact_length[10]|integer');
+        $this->form_validation->set_rules('contact_home', 'Contact Home', 'exact_length[10]|integer');
         $this->form_validation->set_rules('email', 'Email', 'valid_email');
 
 
         $this->form_validation->set_error_delimiters('<br /><span class="error">', '</span>');
-
+        
+       
         if ($this->form_validation->run() == FALSE) { // validation hasn't been passed
             $data['page_title'] = "Admission";
+
+
+           // $data['stud_data'] = $student_data;
             $this->load->view('templates/header', $data);
             $this->load->view('navbar_main', $data);
             $this->load->view('navbar_sub', $data);
@@ -188,7 +136,9 @@ class Student extends CI_Controller {
                 'contactHome' => $this->input->post('contact_home'),
                 'email' => $this->input->post('email')
             );
-
+            
+             $this->session->set_userdata('student_d',$student_data);
+        
             $data['page_title'] = "Admission";
             $data['navbar'] = "student";
             $data['stud_data'] = $student_data;
@@ -219,16 +169,17 @@ class Student extends CI_Controller {
         $this->form_validation->set_rules('fullname', 'fullname', 'required');
         $this->form_validation->set_rules('initial', 'initial', 'required');
         $this->form_validation->set_rules('relation', 'relation', 'required');
-        $this->form_validation->set_rules('dob', 'dob', 'required|callback_check_guardian_Birth_day');
+        $this->form_validation->set_rules('dobg', 'dob', 'required|callback_check_guardian_Birth_day');
         $this->form_validation->set_rules('occupation', 'occupation', 'required');
         $this->form_validation->set_rules('address', 'address', 'required');
-        $this->form_validation->set_rules('contact_home', 'contact_home', 'required|exact_length[10]|integer');
+        $this->form_validation->set_rules('contact_homeg', 'contact_home', 'required|exact_length[10]|integer');
         $this->form_validation->set_rules('contact_mobile', 'contact_mobile', 'exact_length[10]|integer');
         $this->form_validation->set_error_delimiters('<br /><span class="error">', '</span>');
 
         if ($this->form_validation->run() == FALSE) { // validation hasn't been passed
             $data['page_title'] = "Admission";
             $data['row'] = $this->Student_Model->get_last_row();
+            $data['stud_data']=$this->session->userdata('student_d');
             $this->load->view('templates/header', $data);
             $this->load->view('navbar_main', $data);
             $this->load->view('navbar_sub', $data);
@@ -246,23 +197,23 @@ class Student extends CI_Controller {
             $last_row = $this->Student_Model->get_last_row(); //getting last student user_id
             $student_id = $last_row->id;
             $studentd = array();
-            $studentd = $this->input->post('studentdata');
+            $studentd = $this->session->userdata('student_d');
 
             $student_data = array(
                 // 'studentid' => $student_id,
-                'admissionno' => $studentd[0],
-                'admissiondate' => $studentd[1],
-                'firstname' => $studentd[2],
-                'lastname' => $studentd[3],
-                'nameWithInitials' => $studentd[4],
-                'birthday' => $studentd[5],
-                'nic' => $studentd[6],
-                'language' => $studentd[7],
-                'religion' => $studentd[8],
-                'houseid' => $studentd[9],
-                'address' => $studentd[10],
-                'contactHome' => $studentd[11],
-                'email' => $studentd[12]
+                'admissionno' => $studentd['admissionno'],
+                'admissiondate' => $studentd['admissiondate'],
+                'firstname' => $studentd['firstname'],
+                'lastname' => $studentd['lastname'],
+                'nameWithInitials' => $studentd['nameWithInitials'],
+                'birthday' => $studentd['birthday'],
+                'nic' => $studentd['nic'],
+                'language' => $studentd['language'],
+                'religion' => $studentd['religion'],
+                'houseid' => $studentd['houseid'],
+                'address' => $studentd['address'],
+                'contactHome' => $studentd['contactHome'],
+                'email' => $studentd['email']
             );
 
             if ($id = $this->Student_Model->insert_new_student($student_data)) {
@@ -273,10 +224,12 @@ class Student extends CI_Controller {
                 $data['row'] = $this->Student_Model->get_last_inserted_student($id);
                 $ID = $data['row']->id;
                 $username = $data['row']->admission_no;
+                
                 $password = "PW_" . $username;
+                
                 $create = date('Y-m-d H:i:s');
-                $fname = $studentd[2];
-                $lname = $studentd[3];
+                $fname = $studentd['firstname'];
+                $lname = $studentd['lastname'];
                 if ($id = $this->Student_Model->insert_new_student_userdata($username, $password, $create, $fname, $lname)) {
 
                     $this->Student_Model->set_user_id($ID, $id);
@@ -286,27 +239,36 @@ class Student extends CI_Controller {
                         'fullname' => $this->input->post('fullname'),
                         'relation' => $this->input->post('relation'),
                         'namewithinitials' => $this->input->post('initial'),
-                        'birthday' => $this->input->post('dob'),
+                        'birthday' => $this->input->post('dobg'),
                         'gender' => $this->input->post('gender'),
                         'occupation' => $this->input->post('occupation'),
                         'pastpupil' => $pastpupil,
                         'address' => $this->input->post('address'),
-                        'contact_home' => $this->input->post('contact_home'),
+                        'contact_home' => $this->input->post('contact_homeg'),
                         'contact_mobile' => $this->input->post('contact_mobile')
                     );
 
                     if ($id = $this->Student_Model->insert_new_Guardian($guardian_data)) { // the information has therefore been successfully saved in the db
-                        $last_row = $this->Student_Model->get_last_row();
-                        $student_id = $last_row->user_id;
-                        $this->view_profile($student_id);
+//                        $last_row = $this->Student_Model->get_last_row();
+//                        $student_id = $last_row->user_id;
+//                        $this->view_profile($student_id);
+                        $this->session->unset_userdata('student_d');
+                        $this->session->set_flashdata('succ_message','Admission Successfull');
+                        redirect('student/create_student');
                     } else {
-                        echo 'An error occurred saving your information. Please try again later';
+                        $err= 'An error occurred saving your information. Please try again later';
+                        $this->session->set_flashdata('err_message',$err);
+                        redirect('student/create_student');
                     }
                 } else {
-                    echo 'An error occurred creating your user account. Please try again later';
+                   $err= 'An error occurred creating your user account. Please try again later';
+                   $this->session->set_flashdata('err_message',$err);
+                        redirect('student/create_student');
                 }
             } else {
-                echo 'An error occurred saving your information. Please try again later';
+                $err= 'An error occurred saving your information. Please try again later';
+                $this->session->set_flashdata('err_message',$err);
+                        redirect('student/create_student');
             }
         }
     }
@@ -844,6 +806,60 @@ class Student extends CI_Controller {
 
 
         $this->load->view('/templates/footer');
+    }
+
+    function load_student_datatble() {
+
+
+        $col = array("id", "id2", "admission_no", "name_with_initials", "contact_home");
+
+        $filter = $this->input->get();
+        // $user_id=$this->session->userdata('user_id');
+
+        $inputs = array(
+            "offset" => $filter["start"],
+            "limit" => $filter["length"],
+            "orderby" => $filter["order"][0]["dir"],
+            "orderCol" => $col[$filter["order"][0]["column"]],
+            "search" => $filter["search"]["value"]
+        );
+
+        $data = $this->Student_Model->get_all_student_details($inputs);
+
+//        var_dump($data);
+//        die();
+
+        $newData = array();
+        $status = '';
+        $x = $filter["start"];
+        for ($i = 0; $i < sizeof($data["data"]); $i++) {
+
+
+
+            $id = $data["data"][$i]->id;
+            $id2 = $data["data"][$i]->user_id;
+            $admission_no = $data["data"][$i]->admission_no;
+            $name_with_initials = $data["data"][$i]->name_with_initials;
+            $contact_home = $data["data"][$i]->contact_home;
+
+
+
+
+            $newData[] = array(
+                "id" => $id,
+                "id2" => $id2,
+                "admission_no" => $admission_no,
+                "name_with_initials" => $name_with_initials,
+                "contact_home" => $contact_home
+            );
+        }
+
+
+        $is["data"] = $newData;
+        $is["recordsTotal"] = $data["count"];
+        $is["recordsFiltered"] = $data["count"];
+
+        echo json_encode($is);
     }
 
     /*
