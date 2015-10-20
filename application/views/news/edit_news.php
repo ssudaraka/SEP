@@ -31,7 +31,7 @@
                     // Change the css classes to suit your needs    
 
                     $attributes = array('class' => 'form-horizontal', 'id' => '');
-                    echo form_open('news/publish_news', $attributes);
+                    echo form_open('news/edit_news/'.$newsid, $attributes);
                     ?>
                     <script type="text/javascript" src="<?php echo base_url("assets/js/tinymce/tinymce.min.js"); ?>"></script>
                     <script type="text/javascript">
@@ -56,14 +56,14 @@
 
                     <div class="form-group">
                         <div class="col-sm-12">
-                            <input id="news" type="text" name="news"  value="" type="text" class="form-control" id="event_type" placeholder="News Title">
+                            <input id="news" type="text" name="news"  value="<?php echo $details->name ?>" type="text" class="form-control" id="event_type" placeholder="News Title">
                             <?php echo form_error('news'); ?>
                         </div>
                     </div>
 
                     <div class="form-group">
                         <div class="col-sm-12">
-                            <textarea type="text" name="description" type="text" class="form-control" id="description" placeholder=""></textarea>
+                            <textarea type="text" name="description" type="text" class="form-control" id="description" placeholder=""><?php echo $details->description ?></textarea>
                             <?php echo form_error('description'); ?>
                         </div>
                     </div>
@@ -79,7 +79,6 @@
                 </div>
             </div>
         </div>
-    </div>
 </div>
 
 

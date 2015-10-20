@@ -53,7 +53,7 @@
                                     <td><?php echo strip_tags(substr($row->description,0,100))."..."; ?></td>
                                     <td>
                                         <a href="<?php echo base_url("index.php/news/view_news/".$row->id ); ?>" data-id='<?php echo $row->id ?>' class='btnedit' title='View'><span class="glyphicon glyphicon-file" aria-hidden="true"></span></a>
-                                        <a href="<?php echo base_url("index.php/news/view_news"); ?>" data-id='<?php echo $row->id ?>' class='btnedit' title='Edit'><span class="glyphicon glyphicon-edit" aria-hidden="true"></span></a>
+                                        <a href="<?php echo base_url("index.php/news/edit_news/".$row->id); ?>" data-id='<?php echo $row->id ?>' class='btnedit' title='Edit'><span class="glyphicon glyphicon-edit" aria-hidden="true"></span></a>
                                         <a id="btnDelete" data-news-id="<?php echo $row->id; ?>" ><span class="glyphicon glyphicon-trash" aria-hidden="true"></span></a>
                                     </td>
                                 </tr>

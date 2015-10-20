@@ -95,10 +95,13 @@ class News_Model extends CI_Model {
         return $data->row();
     }
     
-    public function update_news($news_id , $news_name, $description){
-        $this->db->query("update news_blog set name = '$news_name' , description = '$description' where id = '$news_id'");
-        echo'<div class="alert alert-success alert-dismissible" role="alert"><button type="button" class="close" data-dismiss="alert" aria-label="Close"><span aria-hidden="true">&times;</span></button>Updated Successfully</div>';
-        exit;
+    public function update_news($id , $data){
+        $this->db->where('id', $id);
+        if ($this->db->update('news_blog', $data)) {
+            return TRUE;
+        } else {
+            return FALSE;
+        }
     }
     
     public function delete_news($id){

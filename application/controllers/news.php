@@ -73,88 +73,56 @@ class News extends CI_Controller {
         $this->News_Model->clear($clear_data_type);
     }
 
-    /*
-     * In this function only admin can create a news
-     */
-
-    // function create_news() {
-    //     if (!$this->session->userdata('logged_in')) {
-    //         redirect('login', 'refresh');
-    //     } else if ($this->session->userdata['user_type'] == 'A') {
-    //         //Getting user type
-    //         $data['user_type'] = $this->session->userdata['user_type'];
-    //         date_default_timezone_set('Asia/Kolkata');             //get the current timezone
-    //         $this->load->library('form_validation');
-    //         $this->form_validation->set_rules('news', 'News Name', 'required');
-    //         $this->form_validation->set_rules('description', 'description', 'required');
-    //         $this->form_validation->set_error_delimiters('<br /><span class="error">', '</span>');
-
-    //         if ($this->form_validation->run() == FALSE) {
-    //             $data['details'] = $this->News_Model->get_all_news_details();
-    //             $data['page_title'] = "Publish News";
-    //             $data['navbar'] = 'news';
-    //             $this->load->view('templates/header', $data);
-    //             $this->load->view('navbar_main', $data);
-    //             $this->load->view('navbar_sub', $data);
-    //             $this->load->view('news/publish_news_form', $data);
-    //             $this->load->view('/templates/footer');
-    //         } else {
-
-    //             $data['succ_message'] = "Successfully created News";
-    //             $news_name = $this->input->post('news');
-    //             $description = $this->input->post('description');
-
-    //             if ($this->News_Model->create_news($news_name, $description)) {
-    //                 //For news field
-    //                 $tech_id = $this->session->userdata('id');
-    //                 $tech_details = $this->Teacher_Model->user_details($tech_id);
-    //                 $this->News_Model->insert_action_details($tech_id, "Publish a news", $tech_details->profile_img, $tech_details->first_name);
-    //                 //////
-    //                 $data['details'] = $this->News_Model->get_all_news_details();
-    //                 $data['page_title'] = "Publish News";
-    //                 $data['navbar'] = "news";
-    //                 $this->load->view('templates/header', $data);
-    //                 $this->load->view('navbar_main', $data);
-    //                 $this->load->view('navbar_sub', $data);
-    //                 $this->load->view('news/publish_news_form', $data);
-    //                 $this->load->view('/templates/footer');
-    //             } else {
-    //                 echo 'An error occurred saving your information. Please try again later';
-    //             }
-    //         }
-    //     }
-    // }
-
-    /*
-     * In this function, Admin can update news that has been created previously
-     */
-
-    public function update_news() {
+    public function edit_news($id) {
         if (!$this->session->userdata('logged_in')) {
             redirect('login', 'refresh');
         } else if ($this->session->userdata['user_type'] == 'A') {
             //Getting user type
             $data['user_type'] = $this->session->userdata['user_type'];
+            date_default_timezone_set('Asia/Kolkata');             //get the current timezone
             $this->load->library('form_validation');
-            $this->form_validation->set_rules('name', 'News Name', 'required');
-            $this->form_validation->set_rules('desc', 'description', 'required');
+            $this->form_validation->set_rules('news', 'News Title', 'required');
+            $this->form_validation->set_rules('description', 'News Body', 'required');
             $this->form_validation->set_error_delimiters('<br /><span class="error">', '</span>');
+            $userid = $this->session->userdata['id'];
+            $data['page_title'] = "Publish News";
+            $data['navbar'] = "admin";
+            $data['details'] = $this->News_Model->get_particular_news($id);
+            $data['newsid'] = $id;
 
             if ($this->form_validation->run() == FALSE) {
-                echo'<div class="alert alert-danger alert-dismissible" role="alert"><button type="button" class="close" data-dismiss="alert" aria-label="Close"><span aria-hidden="true">&times;</span></button>' . validation_errors() . '</div>';
-                exit;
+                $this->load->view('templates/header', $data);
+                $this->load->view('navbar_main', $data);
+                $this->load->view('navbar_sub', $data);
+                $this->load->view('news/edit_news', $data);
+                $this->load->view('templates/footer');
             } else {
-                $news_id = $this->input->post('id');
-                $news_name = $this->input->post('name');
-                $description = $this->input->post('desc');
 
-                //For news field
-                $tech_id = $this->session->userdata('id');
-                $tech_details = $this->Teacher_Model->user_details($tech_id);
-                $this->News_Model->insert_action_details($tech_id, "Update news", $tech_details->profile_img, $tech_details->first_name);
-                //////
-
-                $this->News_Model->update_news($news_id, $news_name, $description);
+                $updatedon = date("Y-m-d");
+                $news_name = $this->input->post('news');
+                $description = $this->input->post('description');
+                $news_data = array('name' => $news_name, 'description' => $description, 'updated_at' => $updatedon);
+                if ($this->News_Model->update_news($id, $news_data)) {
+                    //For news field
+                    $tech_id = $this->session->userdata('id');
+                    $tech_details = $this->Teacher_Model->user_details($tech_id);
+                    $data['details'] = $this->News_Model->get_particular_news($id);
+                    $this->News_Model->insert_action_details($tech_id, "Published a news", $tech_details->profile_img, $tech_details->first_name);
+                    //////
+                    $data['succ_message'] = "Successfully Published News";
+                    $this->load->view('templates/header', $data);
+                    $this->load->view('navbar_main', $data);
+                    $this->load->view('navbar_sub', $data);
+                    $this->load->view('news/edit_news', $data);
+                    $this->load->view('/templates/footer');
+                } else {
+                    $data['err_message'] = 'An error occurred saving your information. Please try again later';
+                    $this->load->view('templates/header', $data);
+                    $this->load->view('navbar_main', $data);
+                    $this->load->view('navbar_sub', $data);
+                    $this->load->view('news/edit_news', $data);
+                    $this->load->view('/templates/footer');
+                }
             }
         }
     }
