@@ -120,7 +120,7 @@ class Event_model extends CI_Model {
     public function get_upcoming_events($today) {
         try {
 
-            if ($data = $this->db->query("select * from `events` where start_date >= '$today' and status = 'success'")) {
+            if ($data = $this->db->query("select * from `events` where start_date >= '$today' and status = 'approved'")) {
                 $row = $data->result();
                 return $row;
             } else {
@@ -159,7 +159,7 @@ class Event_model extends CI_Model {
 
     public function get_canceled_events() {
         try {
-            if ($data = $this->db->query("select * from `events` where `status` = 'cancelled' limit 10")) {
+            if ($data = $this->db->query("select * from `events` where `status` = 'rejected' limit 10")) {
                 $row = $data->result();
                 return $row;
             } else {
@@ -206,7 +206,7 @@ class Event_model extends CI_Model {
     public function get_monthly_events($month) {
         //Get all monthly events in order to check 
         try {
-            if ($data = $this->db->query("select * from `events` where DATE_FORMAT(start_date, '%m-%Y') = '$month' and status = 'success'")) {
+            if ($data = $this->db->query("select * from `events` where DATE_FORMAT(start_date, '%m-%Y') = '$month' and status = 'approved'")) {
                 $row = $data->result();
                 return $row;
             } else {
@@ -220,7 +220,7 @@ class Event_model extends CI_Model {
     public function get_completed_events($today) {
         //Get all monthly events in order to check 
         try {
-            if ($data = $this->db->query("select * from `events` where end_date < '$today' and status = 'success'")) {
+            if ($data = $this->db->query("select * from `events` where end_date < '$today' and status = 'approved'")) {
                 $row = $data->result();
                 return $row;
             } else {
@@ -307,7 +307,7 @@ class Event_model extends CI_Model {
     //get count of upcoming events
     public function get_count_upcoming_events($today) {
         try {
-            if ($data = $this->db->query("select count(*) as count from `events` where start_date >= '$today' and status = 'success'")) {
+            if ($data = $this->db->query("select count(*) as count from `events` where start_date >= '$today' and status = 'approved'")) {
                 $row = $data->row();
                 return $row->count;
             } else {

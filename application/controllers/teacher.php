@@ -435,7 +435,7 @@ class Teacher extends CI_Controller {
             $image = base_url() . "uploads/" . $image_data['file_name'];
             $teacher_log_details = $this->Teacher_Model->get_staff_details($id);
 
-            if ($u_id = $this->Teacher_Model->insert_new_teacher_userdata($username, $password, $create, $teacher_log_details->full_name, $teacher_log_details->full_name, $teacher_log_details->photo_file_name , $teacher_log_details->email)) { // the information has therefore been successfully saved in the db
+            if ($u_id = $this->Teacher_Model->insert_new_teacher_userdata($username, $password, $create, $teacher_log_details->full_name, $teacher_log_details->full_name, $image , $teacher_log_details->email)) { // the information has therefore been successfully saved in the db
                 $this->Teacher_Model->set_user_id($id, $u_id);
                 $this->Teacher_Model->upload_pic($id, $image);
                 $data['propic'] = $this->Teacher_Model->get_profile_img($id);
@@ -621,19 +621,25 @@ class Teacher extends CI_Controller {
                 $html = $this->load->view('teacher/report_pdf', $data, true);
                 pdf_create($html, $filename);
             } else if ($l == 2) {
-                //For news field
-                $tech_id = $this->session->userdata('id');
-                $tech_details = $this->Teacher_Model->user_details($tech_id);
-                $this->News_Model->insert_action_details($tech_id, "Generate personal teacher reports", $tech_details->photo_file_name, $tech_details->full_name);
-                //////
                 $data['school_name'] = "D. S. Senanayake College";
                 $data['propic'] = $this->Teacher_Model->get_profile_img($report);
                 $data['result'] = $this->Teacher_Model->get_staff_details($report);
                 $filename = "Teacher_report";
                 $html = $this->load->view('teacher/report_teacher_pdf', $data, true);
                 pdf_create($html, $filename);
+                //For news field
+                $tech_id = $this->session->userdata('id');
+                $tech_details = $this->Teacher_Model->user_details($tech_id);
+                $this->News_Model->insert_action_details($tech_id, "Generate teacher report", $tech_details->profile_img, $tech_details->first_name);
+                //////
             }
         }
+    }
+    
+    function generate_report() {
+        $type = $this->input->post('tpe');
+        $report = $this->input->post('rpt');
+        $this->Teacher_Model->generate_report($type , $report);
     }
 
     function check_selection($field) {

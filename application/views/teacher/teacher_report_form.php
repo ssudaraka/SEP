@@ -73,14 +73,47 @@
                                 <input type="submit" class="btn btn-danger" value="Genarate Report">
                             </div>
                         </div>
-                        <br><br><br><br><br><br><br><br><br><br>
                     </div>
-
+                    <br>
+                    <hr>
+                        <div class="row">
+                            <div class="col-md-12 col-md-offset-* text-center">
+                                <div class="well well-lg" id="teacher_rep">
+                                    <i class="fa fa-exclamation-triangle fa-5x"></i>
+                                    <div class="page-header">
+                                      <h1>No Data Found</h1>
+                                    </div>
+                               </div>
+                            </div>
+                        </div>
                 </div>
             </div>
         </div>
     </div>
 </div>
+
+<script type="text/javascript">
+
+    $('#report').on('change', function () {
+        formdata = new FormData();
+        var type = document.getElementById('reporttype').value;
+        var report = document.getElementById('report').value;
+        if (formdata) {
+            formdata.append("tpe", type);
+            formdata.append("rpt", report);
+        }
+        $.ajax({
+            url: "<?php echo base_url(); ?>index.php/teacher/generate_report/",
+            type: 'POST',
+            data: formdata,
+            processData: false,
+            contentType: false,
+        }).done(function (data) {
+            $("#teacher_rep").html(data);
+        });
+
+    });
+</script>
 
 <script type="text/javascript">
     function report_type() {

@@ -22,7 +22,7 @@ class Event extends CI_Controller {
         $user_t = $this->session->userdata['user_type']; //get the user type from session
         $data['details'] = $this->event_model->get_pending_event_details(); //get pending events from database
         $data['result'] = $this->event_model->get_event_type_details();
-        $data['navbar'] = "Sports";
+        $data['navbar'] = "event";
         if ($user_t == 'A') {
             $this->check_event_details(); //if user type is 'A', it will call this function
         } else {
@@ -88,7 +88,7 @@ class Event extends CI_Controller {
                 //////
                 $data['details'] = $this->event_model->get_pending_event_details();
                 $data['page_title'] = "Create Sports Event";
-                $data['navbar'] = "Sports";
+                $data['navbar'] = "event";
                 $this->load->view('templates/header', $data);
                 $this->load->view('navbar_main', $data);
                 $this->load->view('navbar_sub', $data);
@@ -156,7 +156,7 @@ class Event extends CI_Controller {
                 $data['details'] = $this->event_model->get_all_events();
                 $data['succ_message'] = "Successfully Updated!";
                 $data['page_title'] = "Create Sports Event";
-                $data['navbar'] = "Sports";
+                $data['navbar'] = "event";
                 $data['result'] = $this->event_model->get_event_type_details();
                 $data['details'] = $this->event_model->get_approved_event_details($event_id);
                 $this->load->view('templates/header', $data);
@@ -178,7 +178,7 @@ class Event extends CI_Controller {
         $data['user_type'] = $this->session->userdata['user_type'];
         $data['details'] = $this->event_model->get_approved_event_details($event_id); //Get approved event details from the database
         $data['page_title'] = "Publish Event";
-        $data['navbar'] = "Sports";
+        $data['navbar'] = "event";
         $this->load->view('templates/header', $data);
         $this->load->view('navbar_main', $data);
         $this->load->view('navbar_sub', $data);
@@ -198,7 +198,7 @@ class Event extends CI_Controller {
         $data['result'] = $this->event_model->get_event_type_details();
         $data['details'] = $this->event_model->get_approved_event_details($event_id); //Get approved event details from the database
         $data['page_title'] = "Publish Event";
-        $data['navbar'] = "Sports";
+        $data['navbar'] = "event";
         $this->load->view('templates/header', $data);
         $this->load->view('navbar_main', $data);
         $this->load->view('navbar_sub', $data);
@@ -243,7 +243,7 @@ class Event extends CI_Controller {
                 $data['details'] = $this->event_model->get_event_type_details();
                 $data['succ_message'] = "Successfully created the event type";
                 $data['page_title'] = "Create Event Type";
-                $data['navbar'] = "Sports";
+                $data['navbar'] = "event";
                 $this->load->view('templates/header', $data);
                 $this->load->view('navbar_main', $data);
                 $this->load->view('navbar_sub', $data);
@@ -265,7 +265,7 @@ class Event extends CI_Controller {
         $data['user_type'] = $this->session->userdata['user_type'];
         $data['details'] = $this->event_model->get_event_type_to_update($id);
         $data['page_title'] = "Event Type";
-        $data['navbar'] = "Sports";
+        $data['navbar'] = "event";
         $this->load->view('templates/header', $data);
         $this->load->view('navbar_main', $data);
         $this->load->view('navbar_sub', $data);
@@ -310,7 +310,7 @@ class Event extends CI_Controller {
                 $data['details'] = $this->event_model->get_event_type_details();
                 $data['succ_message'] = "Successfully created the event type";
                 $data['page_title'] = "Create Event Type";
-                $data['navbar'] = "Sports";
+                $data['navbar'] = "event";
                 $this->load->view('templates/header', $data);
                 $this->load->view('navbar_main', $data);
                 $this->load->view('navbar_sub', $data);
@@ -339,7 +339,7 @@ class Event extends CI_Controller {
         $this->event_model->delete_event_type($id);
         $data['details'] = $this->event_model->get_event_type_details();
         $data['page_title'] = "Create Event Type";
-        $data['navbar'] = "Sports";
+        $data['navbar'] = "event";
         $this->load->view('templates/header', $data);
         $this->load->view('navbar_main', $data);
         $this->load->view('navbar_sub', $data);
@@ -358,7 +358,7 @@ class Event extends CI_Controller {
         $data['type'] = 1;
         $data['details'] = $this->event_model->get_all_events();
         $data['page_title'] = "All events";
-        $data['navbar'] = "Sports";
+        $data['navbar'] = "event";
         $this->load->view('templates/header', $data);
         $this->load->view('navbar_main', $data);
         $this->load->view('navbar_sub', $data);
@@ -378,7 +378,7 @@ class Event extends CI_Controller {
         $data['type'] = 2;
         $data['details'] = $this->event_model->get_upcoming_events($today);
         $data['page_title'] = "Up coming events";
-        $data['navbar'] = "Sports";
+        $data['navbar'] = "event";
         $this->load->view('templates/header', $data);
         $this->load->view('navbar_main', $data);
         $this->load->view('navbar_sub', $data);
@@ -398,7 +398,7 @@ class Event extends CI_Controller {
         $data['type'] = 3;
         $data['details'] = $this->event_model->get_monthly_events($month);
         $data['page_title'] = "Monthly events";
-        $data['navbar'] = "Sports";
+        $data['navbar'] = "event";
         $this->load->view('templates/header', $data);
         $this->load->view('navbar_main', $data);
         $this->load->view('navbar_sub', $data);
@@ -418,7 +418,7 @@ class Event extends CI_Controller {
         $data['type'] = 4;
         $data['details'] = $this->event_model->get_completed_events($today);
         $data['page_title'] = "Complted events";
-        $data['navbar'] = "Sports";
+        $data['navbar'] = "event";
         $this->load->view('templates/header', $data);
         $this->load->view('navbar_main', $data);
         $this->load->view('navbar_sub', $data);
@@ -436,7 +436,7 @@ class Event extends CI_Controller {
         $data['user_type'] = $this->session->userdata['user_type'];
         $data['details'] = $this->event_model->get_upcoming_event_single_details($id);
         $data['page_title'] = "Up comming Details";
-        $data['navbar'] = "Sports";
+        $data['navbar'] = "event";
         $this->load->view('templates/header', $data);
         $this->load->view('navbar_main', $data);
         $this->load->view('navbar_sub', $data);
@@ -460,7 +460,7 @@ class Event extends CI_Controller {
         $this->event_model->cancel_event($id);
         $data['details'] = $this->event_model->get_all_events();
         $data['page_title'] = "Up comming events";
-        $data['navbar'] = "Sports";
+        $data['navbar'] = "event";
         $this->load->view('templates/header', $data);
         $this->load->view('navbar_main', $data);
         $this->load->view('navbar_sub', $data);
@@ -479,7 +479,7 @@ class Event extends CI_Controller {
         $data['details'] = $this->event_model->get_pending_events_to_approve();
         $data['cancel'] = $this->event_model->get_canceled_events();
         $data['page_title'] = "Check Events";
-        $data['navbar'] = "Sports";
+        $data['navbar'] = "event";
         $this->load->view('templates/header', $data);
         $this->load->view('navbar_main', $data);
         $this->load->view('navbar_sub', $data);
@@ -497,7 +497,7 @@ class Event extends CI_Controller {
         $data['user_type'] = $this->session->userdata['user_type'];
         $data['details'] = $this->event_model->load_pending_events($id);
         $data['page_title'] = "Pending event";
-        $data['navbar'] = "Sports";
+        $data['navbar'] = "event";
         $this->load->view('templates/header', $data);
         $this->load->view('navbar_main', $data);
         $this->load->view('navbar_sub', $data);
@@ -523,7 +523,7 @@ class Event extends CI_Controller {
         $data['details'] = $this->event_model->get_pending_events_to_approve();
         $data['cancel'] = $this->event_model->get_canceled_events();
         $data['page_title'] = "Pending event";
-        $data['navbar'] = "Sports";
+        $data['navbar'] = "event";
         $this->load->view('templates/header', $data);
         $this->load->view('navbar_main', $data);
         $this->load->view('navbar_sub', $data);
@@ -549,7 +549,7 @@ class Event extends CI_Controller {
         $data['details'] = $this->event_model->get_pending_events_to_approve();
         $data['cancel'] = $this->event_model->get_canceled_events();
         $data['page_title'] = "Pending event";
-        $data['navbar'] = "Sports";
+        $data['navbar'] = "event";
         $this->load->view('templates/header', $data);
         $this->load->view('navbar_main', $data);
         $this->load->view('navbar_sub', $data);
@@ -564,7 +564,7 @@ class Event extends CI_Controller {
         $data['details'] = $this->event_model->get_pending_event_details();
         $data['user_type'] = $this->session->userdata['user_type'];
         $data['page_title'] = "Event Calendar";
-        $data['navbar'] = "Sports";
+        $data['navbar'] = "event";
         $this->load->view('templates/header', $data);
         $this->load->view('navbar_main', $data);
         $this->load->view('navbar_sub', $data);

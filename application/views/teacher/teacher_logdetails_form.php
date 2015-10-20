@@ -70,7 +70,7 @@
                                         <td><div class="form-group">
                                                 <div class="col-sm-offset-3 col-sm-10">
                                                     <button type="submit" class="btn btn-primary">Submit</button>
-                                                    <a href="<?php echo base_url('index.php/teacher/check_profile' . "/" . $user_id); ?>" class="btn btn-success">Skip Now</a>
+<!--                                                    <a href="<?php echo base_url('index.php/teacher/check_profile' . "/" . $user_id); ?>" class="btn btn-success">Skip Now</a>-->
                                                     <button type="reset" class="btn btn-default">Reset</button>
                                                 </div>
                                             </div>

@@ -34,94 +34,64 @@
                     <strong>Pending Event Details</strong>
                 </div>
                 <div class="panel-body">
-<?php
-// Change the css classes to suit your needs    
-
-$attributes = array('class' => 'form-horizontal', 'id' => '');
-echo form_open('event/create_event', $attributes);
-?>
-
-                    <div class="form-group">
-                        <label for="inputEmail3" class="col-sm-2 control-label">Event Name</label>
-                        <div class="col-sm-5">
-                            <?php echo $details->title; ?>
-                        </div>
-                    </div>
-
-                    <div class="form-group">
-                        <label for="inputEmail3" class="col-sm-2 control-label">Event Type</label>
-                        <div class="col-sm-5">
-                            <?php echo $details->event_type; ?>
-                        </div>
-                    </div>
-
-                    <div class="form-group">
-                        <label for="inputEmail3" class="col-sm-2 control-label">Description</label>
-                        <div class="col-sm-5">
-                            <?php echo $details->description; ?>
-                        </div>
-                    </div>
-
-                    <div class="form-group">
-                        <label for="inputEmail3" class="col-sm-2 control-label">In Charge</label>
-                        <div class="col-sm-5">
-                            <?php echo $details->in_charge_id; ?>
-                        </div>
-                    </div>
-
-                    <div class="form-group">
-                        <label for="inputEmail3" class="col-sm-2 control-label">Budget</label>
-                        <div class="col-sm-5">
-                            <?php echo $details->budget ?>
-                        </div>
-                    </div>
-
-                    <div class="form-group">
-                        <label for="inputEmail3" class="col-sm-2 control-label">Start Date</label>
-                        <div class="col-sm-5">
-                            <?php echo $details->start_date; ?>
-                        </div>
-                    </div>
-
-                    <div class="form-group">
-                        <label for="inputEmail3" class="col-sm-2 control-label">Start Time</label>
-                        <div class="col-sm-5">
-                            <?php echo $details->start_time; ?>
-                        </div>
-                    </div>
-
-                    <div class="form-group">
-                        <label for="inputEmail3" class="col-sm-2 control-label">End Date</label>
-                        <div class="col-sm-5">
-                            <?php echo $details->end_date; ?>
-                        </div>
-                    </div>
-
-                    <div class="form-group">
-                        <label for="inputEmail3" class="col-sm-2 control-label">End Time</label>
-                        <div class="col-sm-5">
-                            <?php echo $details->end_time; ?>
-                        </div>
-                    </div>
-
-                    <div class="form-group">
-                        <label for="inputEmail3" class="col-sm-2 control-label">Location</label>
-                        <div class="col-sm-5">
-                            <?php echo $details->location; ?>
-                        </div>
-                    </div>
-
-                    <div class="form-group">
-                        <label for="inputEmail3" class="col-sm-2 control-label">Guest</label>
-                        <div class="col-sm-5">
-                            <?php if($details->guest == '') { echo '-No Record-'; }else {echo $details->guest;} ?>
-                        </div>
-                    </div>
+                    <?php
+                    $attributes = array('class' => 'form-horizontal', 'id' => '');
+                    echo form_open('event/create_event', $attributes);
+                    ?>
+                    <br>
+                    <table class="table table-user-information">
+                        <tbody>
+                            <tr>
+                                <td width="25%"><label>Event Name</label></td>
+                                <td width="75%"><?php echo $details->title; ?></td>
+                            </tr>
+                            <tr>
+                                <td><label>Event Type</label></td>
+                                <td><?php echo $details->event_type; ?></td>
+                            </tr>
+                            <tr>
+                                <td><label>Description</label></td>
+                                <td><?php echo $details->description; ?></td>
+                            </tr>
+                            <tr>
+                                <td><label>In Charge ID</label></td>
+                                <td><?php echo $details->in_charge_id; ?></td>
+                            </tr>
+                            <tr>
+                                <td><label>Budget(Rs.)</label></td>
+                                <td><?php echo $details->budget; ?></td>
+                            </tr>
+                            <tr>
+                                <td><label>Start Date</label></td>
+                                <td><?php echo $details->start_date; ?></td>
+                            </tr>
+                            <tr>
+                                <td><label>Start Time</label></td>
+                                <td><?php echo $details->start_time; ?></td>
+                            </tr>
+                            <tr>
+                                <td><label>End Date</label></td>
+                                <td><?php echo $details->end_date; ?></td>
+                            </tr>
+                            <tr>
+                                <td><label>End Time</label></td>
+                                <td><?php echo $details->end_time; ?></td>
+                            </tr>
+                            <tr>
+                                <td><label>Location</label></td>
+                                <td><?php echo $details->location; ?></td>
+                            </tr>
+                            <tr>
+                                <td><label>Special Guest</label></td>
+                                <td><?php if($details->guest == '') { echo '-No Record-'; }else {echo $details->guest;} ?></td>
+                            </tr>
+                        </tbody>
+                    </table>
                     
                     <div class="form-group">
-                        <div class="col-sm-offset-2 col-sm-10">
-                            <a href="<?php echo base_url('index.php/event/approve_event/' . $details->id); ?>" class="btn btn-success">Approve</a>
-                            <a href="<?php echo base_url('index.php/event/reject_event/' . $details->id); ?>" class="btn btn-danger">Reject</a>
+                        <div class="col-sm-offset-0 col-sm-10">
+                            <a href="<?php echo base_url('index.php/event/approve_event/' . $details->id); ?>" class="btn btn-success" style="width: 150px">Approve</a>
+                            <a href="<?php echo base_url('index.php/event/reject_event/' . $details->id); ?>" class="btn btn-danger" style="width: 150px">Reject</a>
                         </div>
                     </div>
 
