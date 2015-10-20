@@ -26,6 +26,7 @@ class leave extends CI_Controller {
         $this->load->model('Year_Model');
         $this->load->model('Teacher_Model');
         $this->load->model('News_Model');
+        $this->load->model('Email_Model');
     }
 
     public function index() {
@@ -219,6 +220,9 @@ class leave extends CI_Controller {
             } elseif ($enddate < $startdate) {
                 $data['error_message'] = "End Date cannot be a previous date";
             }
+            elseif ($no_of_days_mc == 0) {
+                $data['error_message'] = "No of days are 0. May be you applied a leave on School Holidays. Check with Year Plan";
+            }
             //Commented because No need of validations
             // //bit buggy here
             // elseif($leavetype =='1' && $data['casual_leaves'] == $data['applied_casual_leaves']){
@@ -236,6 +240,10 @@ class leave extends CI_Controller {
                 if ($this->Leave_Model->apply_for_leave($userid, $teacherid, $leavetype, $applieddate, $startdate, $enddate, $reason, $no_of_days_mc) == TRUE) {
                     $data['succ_message'] = "Leave Applied Successfully for " . $no_of_days_mc . " days";
 
+                    // Send Email
+                    $messagesubject = "Apply for Leave";
+                    $messagestring = "You have requested leaves from <strong>". $startdate ."</strong> to <strong>". $enddate ."</strong> (". $no_of_days_mc ." days). You will receive the Leave Approval/Rejection Email once the Principal's action";
+                    $this->Email_Model->send_basic_email($userid, $messagestring, $messagesubject);
 
                     //loading values again
                     //Getting Values from Leaves DB
@@ -310,36 +318,22 @@ class leave extends CI_Controller {
         $data['user_type'] = $this->session->userdata['user_type'];
 
         if ($data['leave_approve_status'] == TRUE) {
+            // Send Email
+            $leave_details = $this->Leave_Model->get_leave_details($id);
+            foreach ($leave_details as $row) {
+                $userid = $row->user_id;
+                $applydate = $row->applied_date;
+                $startdate = $row->start_date;
+                $enddate = $row->end_date;
+                $no_of_days_mc = $row->no_of_days;
+            }
+            $messagesubject = "Leave Approval";
+            $messagestring = "Your requested leaves on <strong>". $applydate ."</strong> from <strong>". $startdate ."</strong> to <strong>". $enddate ."</strong> (". $no_of_days_mc ." days) has been Approved by the Principal.";
+            $this->Email_Model->send_basic_email($userid, $messagestring, $messagesubject);
 
-            $data['succ_message'] = "Successfully Approved the leave";
-
-
-            //Get Leave Details
-            $data['leave_details'] = $this->Leave_Model->get_leave_details($id);
-            //For news field
-            $tech_id = $this->session->userdata('id');
-            $tech_details = $this->Teacher_Model->user_details($tech_id);
-            $this->News_Model->insert_action_details($tech_id, "Approve the leave", $tech_details->profile_img, $tech_details->first_name);
-            //////
-            //Passing it to the View
-            $this->load->view('templates/header', $data);
-            $this->load->view('navbar_main', $data);
-            $this->load->view('navbar_sub', $data);
-            $this->load->view('/leave/view_leave', $data);
-            $this->load->view('/templates/footer');
+            redirect('leave/get_leave_details/'. $id . '?action=approve&status=true', 'refresh');
         } else {
-            $data['error_message'] = "Failed to Approved the leave";
-
-
-            //Get Leave Details
-            $data['leave_details'] = $this->Leave_Model->get_leave_details($id);
-
-            //Passing it to the View
-            $this->load->view('templates/header', $data);
-            $this->load->view('navbar_main', $data);
-            $this->load->view('navbar_sub', $data);
-            $this->load->view('/leave/view_leave', $data);
-            $this->load->view('/templates/footer');
+            redirect('leave/get_leave_details/'. $id . '?action=approve&status=false', 'refresh');
         }
     }
 
@@ -356,36 +350,9 @@ class leave extends CI_Controller {
         $data['user_type'] = $this->session->userdata['user_type'];
 
         if ($data['leave_approve_status'] == TRUE) {
-
-            $data['succ_message'] = "Successfully Approved the Short Leave";
-
-
-            //Get Leave Details
-            $data['leave_details'] = $this->Leave_Model->get_short_leave_details($id);
-
-            //Passing it to the View
-            $this->load->view('templates/header', $data);
-            $this->load->view('navbar_main', $data);
-            $this->load->view('navbar_sub', $data);
-            $this->load->view('/leave/view_short_leave', $data);
-            $this->load->view('/templates/footer');
+            redirect('leave/get_short_leave_details/'. $id . '?action=approve&status=true', 'refresh');
         } else {
-            $data['error_message'] = "Failed to Approved the Short Leave";
-
-
-            //Get Leave Details
-            $data['leave_details'] = $this->Leave_Model->get_short_leave_details($id);
-            //For news field
-            $tech_id = $this->session->userdata('id');
-            $tech_details = $this->Teacher_Model->user_details($tech_id);
-            $this->News_Model->insert_action_details($tech_id, "Approve the short leave", $tech_details->profile_img, $tech_details->first_name);
-            //////
-            //Passing it to the View
-            $this->load->view('templates/header', $data);
-            $this->load->view('navbar_main', $data);
-            $this->load->view('navbar_sub', $data);
-            $this->load->view('/leave/view_short_leave', $data);
-            $this->load->view('/templates/footer');
+            redirect('leave/get_short_leave_details/'. $id . '?action=approve&status=false', 'refresh');
         }
     }
 
@@ -402,36 +369,22 @@ class leave extends CI_Controller {
         $data['leave_approve_status'] = $this->Leave_Model->reject_leave($id);
 
         if ($data['leave_approve_status'] == TRUE) {
+            // Send Email
+            $leave_details = $this->Leave_Model->get_leave_details($id);
+            foreach ($leave_details as $row) {
+                $userid = $row->user_id;
+                $applydate = $row->applied_date;
+                $startdate = $row->start_date;
+                $enddate = $row->end_date;
+                $no_of_days_mc = $row->no_of_days;
+            }
+            $messagesubject = "Leave Rejection";
+            $messagestring = "Your requested leaves on <strong>". $applydate ."</strong> from <strong>". $startdate ."</strong> to <strong>". $enddate ."</strong> (". $no_of_days_mc ." days) has been Rejected by the Principal.";
+            $this->Email_Model->send_basic_email($userid, $messagestring, $messagesubject);
 
-            $data['succ_message'] = "Successfully Rejected the leave";
-
-
-            //Get Leave Details
-            $data['leave_details'] = $this->Leave_Model->get_leave_details($id);
-
-            //Passing it to the View
-            $this->load->view('templates/header', $data);
-            $this->load->view('navbar_main', $data);
-            $this->load->view('navbar_sub', $data);
-            $this->load->view('/leave/view_leave', $data);
-            $this->load->view('/templates/footer');
+            redirect('leave/get_leave_details/'. $id . '?action=reject&status=true', 'refresh');
         } else {
-            $data['error_message'] = "Failed to Reject the leave";
-
-
-            //Get Leave Details
-            $data['leave_details'] = $this->Leave_Model->get_leave_details($id);
-            //For news field
-            $tech_id = $this->session->userdata('id');
-            $tech_details = $this->Teacher_Model->user_details($tech_id);
-            $this->News_Model->insert_action_details($tech_id, "Reject the leave", $tech_details->profile_img, $tech_details->first_name);
-            //////
-            //Passing it to the View
-            $this->load->view('templates/header', $data);
-            $this->load->view('navbar_main', $data);
-            $this->load->view('navbar_sub', $data);
-            $this->load->view('/leave/view_leave', $data);
-            $this->load->view('/templates/footer');
+            redirect('leave/get_leave_details/'. $id . '?action=reject&status=false', 'refresh');
         }
     }
 
@@ -448,36 +401,9 @@ class leave extends CI_Controller {
         $data['leave_approve_status'] = $this->Leave_Model->reject_short_leave($id);
 
         if ($data['leave_approve_status'] == TRUE) {
-
-            $data['succ_message'] = "Successfully Rejected the Short Leave";
-
-
-            //Get Leave Details
-            $data['leave_details'] = $this->Leave_Model->get_short_leave_details($id);
-            //For news field
-            $tech_id = $this->session->userdata('id');
-            $tech_details = $this->Teacher_Model->user_details($tech_id);
-            $this->News_Model->insert_action_details($tech_id, "Reject the short leave", $tech_details->profile_img, $tech_details->first_name);
-            //////
-            //Passing it to the View
-            $this->load->view('templates/header', $data);
-            $this->load->view('navbar_main', $data);
-            $this->load->view('navbar_sub', $data);
-            $this->load->view('/leave/view_short_leave', $data);
-            $this->load->view('/templates/footer');
+            redirect('leave/get_short_leave_details/'. $id . '?action=reject&status=true', 'refresh');
         } else {
-            $data['error_message'] = "Failed to Reject the Short Leave";
-
-
-            //Get Leave Details
-            $data['leave_details'] = $this->Leave_Model->get_short_leave_details($id);
-
-            //Passing it to the View
-            $this->load->view('templates/header', $data);
-            $this->load->view('navbar_main', $data);
-            $this->load->view('navbar_sub', $data);
-            $this->load->view('/leave/view_short_leave', $data);
-            $this->load->view('/templates/footer');
+            redirect('leave/get_short_leave_details/'. $id . '?action=reject&status=false', 'refresh');
         }
     }
 
@@ -733,12 +659,15 @@ class leave extends CI_Controller {
                     $sdate = $noofdates->format("%a");
                     $no_of_days_mc = $sdate;
                 }
-
-                if ($this->Leave_Model->apply_for_leave($userid, $teacherid, $leavetype, $applieddate, $startdate, $enddate, $reason, $no_of_days_mc) == TRUE) {
+                if ($no_of_days_mc == 0) {
+                    $data['error_message'] = "No of days are 0. May be you applied a leave on School Holidays. Check with Year Plan";
+                } else{
+                    if ($this->Leave_Model->apply_for_leave($userid, $teacherid, $leavetype, $applieddate, $startdate, $enddate, $reason, $no_of_days_mc) == TRUE) {
                     $data['succ_message'] = "Leave Applied Successfully for " . $no_of_days_mc . " days";
-                } else {
-                    $data['error_message'] = "Failed to save data to the Database";
-                }
+                    } else {
+                        $data['error_message'] = "Failed to save data to the Database";
+                    }
+                }         
             }
 
             //Passing it to the View
