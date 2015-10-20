@@ -29,7 +29,7 @@
                 echo form_open('teacher/edit_teacher'."/".$row->id, $attributes);
                 ?>
 
-                <div class="well">
+                <div class="col-md-12">
                     <ul class="nav nav-tabs">
                         <li class="active"><a href="#home" data-toggle="tab">Personal Details</a></li>
                         <li><a href="#profile" data-toggle="tab">Academic Details</a></li>

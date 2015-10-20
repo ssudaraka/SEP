@@ -63,7 +63,7 @@
 
                     <div class="form-group">
                         <div class="col-sm-offset-2 col-sm-10">
-                            <input type="submit" class="btn btn-success" value="Add">
+                            <input type="submit" class="btn btn-primary" value="Add">
                             <button type="reset" class="btn btn-default">Reset</button>
                         </div>
                     </div>
@@ -92,8 +92,8 @@
                             <tr>
                                 <td><?php echo $row->event_type; ?></td>
                                 <td><?php echo $row->description; ?></td>
-                                <td><a href="<?php echo base_url("index.php/event/view_event_type_details") . "/" . $row->id; ?>"><span class="glyphicon glyphicon-edit" aria-hidden="true"></span></a></td>
-                                <td><a href="<?php echo base_url("index.php/event/delete_event_type") . "/" . $row->id; ?>" onclick="return confirm('Are you sure you want to delete this event type?');"><span class="glyphicon glyphicon-trash" aria-hidden="true"></span></i></a></td>
+                                <td><a href="<?php echo base_url("index.php/event/view_event_type_details") . "/" . $row->id; ?>" class="btn btn-primary btn-xs" aria-hidden="true"><i class="fa fa-eye"></i></a></td>
+                                <td><a href="<?php echo base_url("index.php/event/delete_event_type") . "/" . $row->id; ?>" onclick="return confirm('Are you sure you want to delete this event type?');" class="btn btn-primary btn-xs" aria-hidden="true"><i class="fa fa-edit"></i></a></td>
                             </tr>
                         <?php } ?>
                     </tbody>

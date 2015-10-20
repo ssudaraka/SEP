@@ -4,40 +4,27 @@
 
         <div class="col-md-3">
             <?php
-            if($user_type == 'A'){
+            if ($user_type == 'A') {
                 $this->view('event/admin_sidebar_nav');
-            }
-            elseif($user_type == 'P'){
+            } elseif ($user_type == 'P') {
                 $this->view('event/sidebar_nav');
-            }
-            else{
+            } else {
                 $this->view('event/sidebar_nav_teacher');
             }
-
             ?>
         </div>
 
         <div class="col-md-9">
-            <?php if (validation_errors()) { ?>
-                <div class="alert alert-danger alert-dismissible" role="alert">
-                    <button type="button" class="close" data-dismiss="alert" aria-label="Close"><span aria-hidden="true">&times;</span></button>
-                    <?php echo validation_errors(); ?>
-                </div>
-            <?php } ?>  
-
             <div class="panel panel-default">
                 <div class="panel-heading">
-                    <strong><?php echo $details->title; ?></strong>
+                    <strong>VIEW EVENT</strong>
                 </div>
                 <div class="panel-body">
                     <?php
-                    // Change the css classes to suit your needs    
-
                     $attributes = array('class' => 'form-horizontal', 'id' => '');
-                    echo form_open('event/create_event', $attributes);
+                    echo form_open('event/edit_approved_event' . "/" . $details->id, $attributes);
                     ?>
 
-                    <br>
                     <table class="table table-user-information">
                         <tbody>
                             <tr>
@@ -82,13 +69,20 @@
                             </tr>
                             <tr>
                                 <td><label>Special Guest</label></td>
-                                <td><?php if($details->guest == '') { echo '-No Record-'; }else {echo $details->guest;} ?></td>
+                                <td><?php echo $details->guest; ?></td>
                             </tr>
                         </tbody>
                     </table>
-
+                    <?php if($details->status == 'approved') {?>
+                    <div class="form-group">
+                        <div class="col-sm-offset-0 col-sm-10">
+                            <input type="submit" class="btn btn-primary" value="Edit" style="width: 200px">
+                        </div>
+                    </div>
+                    <?php } ?>
                 </div>
             </div>
+
         </div>
 
     </div>

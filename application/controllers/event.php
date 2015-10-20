@@ -22,11 +22,9 @@ class Event extends CI_Controller {
         $user_t = $this->session->userdata['user_type']; //get the user type from session
         $data['details'] = $this->event_model->get_pending_event_details(); //get pending events from database
         $data['result'] = $this->event_model->get_event_type_details();
-        $data['navbar'] = "Sports";
+        $data['navbar'] = "event";
         if ($user_t == 'A') {
             $this->check_event_details(); //if user type is 'A', it will call this function
-        } elseif ($user_t == 'P') {
-            $this->create_event();
         } else {
             $this->create_event();
         }
@@ -55,6 +53,8 @@ class Event extends CI_Controller {
         $this->form_validation->set_rules('end_time', 'end time', 'required');
         $this->form_validation->set_rules('in_charge', 'in charge', 'required|callback_check_incharge_id');
         $this->form_validation->set_rules('budget', 'budget', 'required|integer');
+        $this->form_validation->set_rules('location', 'location', 'required');
+        $this->form_validation->set_rules('guest', 'guest', '');
 
         $this->form_validation->set_error_delimiters('<br /><span class="error">', '</span>');
         if ($this->form_validation->run() == FALSE) {
@@ -77,8 +77,10 @@ class Event extends CI_Controller {
             $end_time = $this->input->post('end_time');
             $in_charge = $this->input->post('in_charge');
             $budget = $this->input->post('budget');
+            $location = $this->input->post('location');
+            $guest = $this->input->post('guest');
 
-            if ($this->event_model->insert_sport_event($event_name, $event_type, $description, $start_date, $start_time, $end_date, $end_time, $in_charge, $budget)) { // the information has therefore been successfully saved in the db
+            if ($this->event_model->insert_sport_event($event_name, $event_type, $description, $start_date, $start_time, $end_date, $end_time, $in_charge, $budget , $location , $guest)) { // the information has therefore been successfully saved in the db
                 //For news field
                 $tech_id = $this->session->userdata('id');
                 $tech_details = $this->Teacher_Model->user_details($tech_id);
@@ -86,7 +88,7 @@ class Event extends CI_Controller {
                 //////
                 $data['details'] = $this->event_model->get_pending_event_details();
                 $data['page_title'] = "Create Sports Event";
-                $data['navbar'] = "Sports";
+                $data['navbar'] = "event";
                 $this->load->view('templates/header', $data);
                 $this->load->view('navbar_main', $data);
                 $this->load->view('navbar_sub', $data);
@@ -101,34 +103,51 @@ class Event extends CI_Controller {
     /**
      * This method is used to update the data which is approved by the principle.
      */
-    function publish_approved_event($id) {
+    function update_event() {
         if (!$this->session->userdata('logged_in')) {
             redirect('login', 'refresh');
         }
         $data['user_type'] = $this->session->userdata['user_type'];
         $data['navbar'] = "event";
         date_default_timezone_set('Asia/Kolkata');
-        $this->load->library('form_validation');
-        $this->form_validation->set_rules('event_details', 'event details', 'required');
+        
+        $this->form_validation->set_rules('event_name', 'event name', 'required'); //Validate fields
+        $this->form_validation->set_rules('event_type', 'event type', 'required');
+        $this->form_validation->set_rules('description', 'description', 'required');
+        $this->form_validation->set_rules('start_date', 'start date', 'required');
+        $this->form_validation->set_rules('start_time', 'start time', 'required');
+        $this->form_validation->set_rules('end_date', 'end date', 'required|callback_check_event_end_date');
+        $this->form_validation->set_rules('end_time', 'end time', 'required');
+        $this->form_validation->set_rules('budget', 'budget', 'required|integer');
         $this->form_validation->set_rules('location', 'location', 'required');
         $this->form_validation->set_rules('guest', 'guest', '');
+        
         $this->form_validation->set_error_delimiters('<br /><span class="error">', '</span>');
+        $event_id = $this->input->post('eid');
         if ($this->form_validation->run() == FALSE) {
-            $data['details'] = $this->event_model->get_approved_event_details($id); //Get approved event details
-            $data['page_title'] = "Publish Event";
+            $data['details'] = $this->event_model->get_approved_event_details($event_id); //Get approved event details
+            $data['page_title'] = "Update Event";
             $this->load->view('templates/header', $data);
             $this->load->view('navbar_main', $data);
             $this->load->view('navbar_sub', $data);
             $this->load->view('event/create_approved_sport_event', $data);
             $this->load->view('/templates/footer');
         } else {
-            $event_details = $this->input->post('event_details');
+            
+            $event_name = $this->input->post('event_name');
+            $event_type = $this->input->post('event_type');
+            $description = $this->input->post('description');
+            $start_date = $this->input->post('start_date');
+            $start_time = $this->input->post('start_time');
+            $end_date = $this->input->post('end_date');
+            $end_time = $this->input->post('end_time');
+            $in_charge = $this->input->post('in_charge');
+            $budget = $this->input->post('budget');
             $location = $this->input->post('location');
             $guest = $this->input->post('guest');
 
-            if ($this->event_model->update_event($event_details, $location, $guest, $id)) {
-                $this->event_model->set_success_for_approved($id);
-                //$data['details'] = $this->event_model->get_pending_event_details();
+            if ($this->event_model->update_event($event_id, $event_name, $event_type, $description, $start_date, $start_time, $end_date, $end_time, $in_charge, $budget , $location , $guest)) {
+                
                 //For news field
                 $tech_id = $this->session->userdata('id');
                 $tech_details = $this->Teacher_Model->user_details($tech_id);
@@ -137,16 +156,34 @@ class Event extends CI_Controller {
                 $data['details'] = $this->event_model->get_all_events();
                 $data['succ_message'] = "Successfully Updated!";
                 $data['page_title'] = "Create Sports Event";
-                $data['navbar'] = "Sports";
+                $data['navbar'] = "event";
+                $data['result'] = $this->event_model->get_event_type_details();
+                $data['details'] = $this->event_model->get_approved_event_details($event_id);
                 $this->load->view('templates/header', $data);
                 $this->load->view('navbar_main', $data);
                 $this->load->view('navbar_sub', $data);
-                $this->load->view('event/up_comming_events', $data);
+                $this->load->view('event/create_approved_sport_event', $data);
                 $this->load->view('/templates/footer');
             } else {
                 echo 'An error occurred saving your information. Please try again later';
             }
         }
+    }
+    
+    function view_event_details($event_id){
+        if (!$this->session->userdata('logged_in')) {
+            redirect('login', 'refresh');
+        }
+        date_default_timezone_set('Asia/Kolkata');
+        $data['user_type'] = $this->session->userdata['user_type'];
+        $data['details'] = $this->event_model->get_approved_event_details($event_id); //Get approved event details from the database
+        $data['page_title'] = "Publish Event";
+        $data['navbar'] = "event";
+        $this->load->view('templates/header', $data);
+        $this->load->view('navbar_main', $data);
+        $this->load->view('navbar_sub', $data);
+        $this->load->view('event/view_event_details', $data);
+        $this->load->view('/templates/footer');
     }
 
     /**
@@ -158,9 +195,10 @@ class Event extends CI_Controller {
         }
         date_default_timezone_set('Asia/Kolkata');
         $data['user_type'] = $this->session->userdata['user_type'];
+        $data['result'] = $this->event_model->get_event_type_details();
         $data['details'] = $this->event_model->get_approved_event_details($event_id); //Get approved event details from the database
         $data['page_title'] = "Publish Event";
-        $data['navbar'] = "Sports";
+        $data['navbar'] = "event";
         $this->load->view('templates/header', $data);
         $this->load->view('navbar_main', $data);
         $this->load->view('navbar_sub', $data);
@@ -205,7 +243,7 @@ class Event extends CI_Controller {
                 $data['details'] = $this->event_model->get_event_type_details();
                 $data['succ_message'] = "Successfully created the event type";
                 $data['page_title'] = "Create Event Type";
-                $data['navbar'] = "Sports";
+                $data['navbar'] = "event";
                 $this->load->view('templates/header', $data);
                 $this->load->view('navbar_main', $data);
                 $this->load->view('navbar_sub', $data);
@@ -227,7 +265,7 @@ class Event extends CI_Controller {
         $data['user_type'] = $this->session->userdata['user_type'];
         $data['details'] = $this->event_model->get_event_type_to_update($id);
         $data['page_title'] = "Event Type";
-        $data['navbar'] = "Sports";
+        $data['navbar'] = "event";
         $this->load->view('templates/header', $data);
         $this->load->view('navbar_main', $data);
         $this->load->view('navbar_sub', $data);
@@ -272,7 +310,7 @@ class Event extends CI_Controller {
                 $data['details'] = $this->event_model->get_event_type_details();
                 $data['succ_message'] = "Successfully created the event type";
                 $data['page_title'] = "Create Event Type";
-                $data['navbar'] = "Sports";
+                $data['navbar'] = "event";
                 $this->load->view('templates/header', $data);
                 $this->load->view('navbar_main', $data);
                 $this->load->view('navbar_sub', $data);
@@ -301,7 +339,7 @@ class Event extends CI_Controller {
         $this->event_model->delete_event_type($id);
         $data['details'] = $this->event_model->get_event_type_details();
         $data['page_title'] = "Create Event Type";
-        $data['navbar'] = "Sports";
+        $data['navbar'] = "event";
         $this->load->view('templates/header', $data);
         $this->load->view('navbar_main', $data);
         $this->load->view('navbar_sub', $data);
@@ -320,7 +358,7 @@ class Event extends CI_Controller {
         $data['type'] = 1;
         $data['details'] = $this->event_model->get_all_events();
         $data['page_title'] = "All events";
-        $data['navbar'] = "Sports";
+        $data['navbar'] = "event";
         $this->load->view('templates/header', $data);
         $this->load->view('navbar_main', $data);
         $this->load->view('navbar_sub', $data);
@@ -340,7 +378,7 @@ class Event extends CI_Controller {
         $data['type'] = 2;
         $data['details'] = $this->event_model->get_upcoming_events($today);
         $data['page_title'] = "Up coming events";
-        $data['navbar'] = "Sports";
+        $data['navbar'] = "event";
         $this->load->view('templates/header', $data);
         $this->load->view('navbar_main', $data);
         $this->load->view('navbar_sub', $data);
@@ -360,7 +398,7 @@ class Event extends CI_Controller {
         $data['type'] = 3;
         $data['details'] = $this->event_model->get_monthly_events($month);
         $data['page_title'] = "Monthly events";
-        $data['navbar'] = "Sports";
+        $data['navbar'] = "event";
         $this->load->view('templates/header', $data);
         $this->load->view('navbar_main', $data);
         $this->load->view('navbar_sub', $data);
@@ -380,7 +418,7 @@ class Event extends CI_Controller {
         $data['type'] = 4;
         $data['details'] = $this->event_model->get_completed_events($today);
         $data['page_title'] = "Complted events";
-        $data['navbar'] = "Sports";
+        $data['navbar'] = "event";
         $this->load->view('templates/header', $data);
         $this->load->view('navbar_main', $data);
         $this->load->view('navbar_sub', $data);
@@ -398,7 +436,7 @@ class Event extends CI_Controller {
         $data['user_type'] = $this->session->userdata['user_type'];
         $data['details'] = $this->event_model->get_upcoming_event_single_details($id);
         $data['page_title'] = "Up comming Details";
-        $data['navbar'] = "Sports";
+        $data['navbar'] = "event";
         $this->load->view('templates/header', $data);
         $this->load->view('navbar_main', $data);
         $this->load->view('navbar_sub', $data);
@@ -422,7 +460,7 @@ class Event extends CI_Controller {
         $this->event_model->cancel_event($id);
         $data['details'] = $this->event_model->get_all_events();
         $data['page_title'] = "Up comming events";
-        $data['navbar'] = "Sports";
+        $data['navbar'] = "event";
         $this->load->view('templates/header', $data);
         $this->load->view('navbar_main', $data);
         $this->load->view('navbar_sub', $data);
@@ -441,7 +479,7 @@ class Event extends CI_Controller {
         $data['details'] = $this->event_model->get_pending_events_to_approve();
         $data['cancel'] = $this->event_model->get_canceled_events();
         $data['page_title'] = "Check Events";
-        $data['navbar'] = "Sports";
+        $data['navbar'] = "event";
         $this->load->view('templates/header', $data);
         $this->load->view('navbar_main', $data);
         $this->load->view('navbar_sub', $data);
@@ -459,7 +497,7 @@ class Event extends CI_Controller {
         $data['user_type'] = $this->session->userdata['user_type'];
         $data['details'] = $this->event_model->load_pending_events($id);
         $data['page_title'] = "Pending event";
-        $data['navbar'] = "Sports";
+        $data['navbar'] = "event";
         $this->load->view('templates/header', $data);
         $this->load->view('navbar_main', $data);
         $this->load->view('navbar_sub', $data);
@@ -485,7 +523,7 @@ class Event extends CI_Controller {
         $data['details'] = $this->event_model->get_pending_events_to_approve();
         $data['cancel'] = $this->event_model->get_canceled_events();
         $data['page_title'] = "Pending event";
-        $data['navbar'] = "Sports";
+        $data['navbar'] = "event";
         $this->load->view('templates/header', $data);
         $this->load->view('navbar_main', $data);
         $this->load->view('navbar_sub', $data);
@@ -511,11 +549,26 @@ class Event extends CI_Controller {
         $data['details'] = $this->event_model->get_pending_events_to_approve();
         $data['cancel'] = $this->event_model->get_canceled_events();
         $data['page_title'] = "Pending event";
-        $data['navbar'] = "Sports";
+        $data['navbar'] = "event";
         $this->load->view('templates/header', $data);
         $this->load->view('navbar_main', $data);
         $this->load->view('navbar_sub', $data);
         $this->load->view('event/check_event_details', $data);
+        $this->load->view('/templates/footer');
+    }
+    
+    function event_calendar(){
+        if (!$this->session->userdata('logged_in')) {
+            redirect('login', 'refresh');
+        }
+        $data['details'] = $this->event_model->get_pending_event_details();
+        $data['user_type'] = $this->session->userdata['user_type'];
+        $data['page_title'] = "Event Calendar";
+        $data['navbar'] = "event";
+        $this->load->view('templates/header', $data);
+        $this->load->view('navbar_main', $data);
+        $this->load->view('navbar_sub', $data);
+        $this->load->view('event/event_calendar', $data);
         $this->load->view('/templates/footer');
     }
 

@@ -18,28 +18,15 @@
         </div>
 
         <div class="col-md-9">
-            <?php if (isset($succ_message)) { ?>
-            <div class="alert alert-success alert-dismissible" role="alert">
-                <button type="button" class="close" data-dismiss="alert" aria-label="Close"><span aria-hidden="true">&times;</span></button>
-                <?php echo $succ_message; ?>
-            </div>
-            <?php } ?>
-            <?php if (isset($err_message)) { ?>
-            <div class="alert alert-danger alert-dismissible" role="alert">
-                <button type="button" class="close" data-dismiss="alert" aria-label="Close"><span aria-hidden="true">&times;</span></button>
-                <?php echo $err_message; ?>
-            </div>
-            <?php } ?>   
-
             <div class="panel panel-default">
                 <div class="panel-heading">
-                    <strong>Pending Events</strong>
+                    <strong>PENDING EVENTS</strong>
                 </div>
                 <div class="panel-body">
                     <table class="table table-hover">
-                    <thead style="background-color: gray">
+                    <thead>
                         <tr>
-                            <th>Event Name</th>
+                            <th width="60%">Event Name</th>
                             <th>Start Date</th>
                             <th>End Date</th>
                             <th>Actions</th>
@@ -47,32 +34,28 @@
                     </thead>
                     <tbody>
                         <?php foreach ($details as $row) { ?>
-
-
                             <tr>
                                 <td><?php echo $row->title; ?></td>
                                 <td><?php echo $row->start_date; ?></td>
                                 <td><?php echo $row->end_date; ?></td>
-                                <td><a href="<?php echo base_url("index.php/event/load_selected_pending_event") . "/" . $row->id; ?>" ><span class="glyphicon glyphicon-eye-open" aria-hidden="true">Check</span></a></td>
+                                <td><a href="<?php echo base_url("index.php/event/load_selected_pending_event") . "/" . $row->id; ?>" class="btn btn-primary btn-xs" aria-hidden="true"><i class="fa fa-eye"></i></a></td>
                                 
                             </tr>
                         <?php } ?>
                     </tbody>
                 </table>
-
-
                 </div>
             </div>
             
             <div class="panel panel-default">
                 <div class="panel-heading">
-                    <strong>Cancelled Events </strong>
+                    <strong>CANCELED EVENTS </strong>
                 </div>
                 <div class="panel-body">
                     <table class="table table-hover">
-                    <thead style="background-color: gray">
+                    <thead>
                         <tr>
-                            <th>Event Name</th>
+                            <th width="60%">Event Name</th>
                             <th>Start Date</th>
                             <th>End Date</th>
                             <th>Actions</th>
@@ -80,14 +63,11 @@
                     </thead>
                     <tbody>
                         <?php foreach ($cancel as $row) { ?>
-
-
                             <tr>
                                 <td><?php echo $row->title; ?></td>
                                 <td><?php echo $row->start_date; ?></td>
                                 <td><?php echo $row->end_date; ?></td>
-                                <td><a href="<?php echo base_url("index.php/event/view_upcoming_event_details") . "/" . $row->id; ?>" ><span class="glyphicon glyphicon-user" aria-hidden="true"></span></a></td>
-                                
+                                <td><a href="<?php echo base_url("index.php/event/view_upcoming_event_details") . "/" . $row->id; ?>" class="btn btn-primary btn-xs" aria-hidden="true"><i class="fa fa-eye"></i></a></td>                                
                             </tr>
                         <?php } ?>
                     </tbody>

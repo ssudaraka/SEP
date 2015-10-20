@@ -88,10 +88,10 @@ class Teacher_Model extends CI_Model {
         }
     }
 
-    public function insert_new_teacher_userdata($username, $password, $create , $first_name , $last_name , $photo) {
+    public function insert_new_teacher_userdata($username, $password, $create , $first_name , $last_name , $photo , $email) {
         try {
             $encryptpwd = md5($password);
-            if ($this->db->query("INSERT INTO users (`username`, `password` , `created_at`, `user_type` , `first_name` , `last_name` , `profile_img`) VALUES ('$username', '$encryptpwd' , '$create', 'T' , '$first_name' , '$last_name' , '$photo')")) {
+            if ($this->db->query("INSERT INTO users (`username`, `password` , `created_at`, `user_type` , `first_name` , `last_name` , `profile_img` , `email`) VALUES ('$username', '$encryptpwd' , '$create', 'T' , '$first_name' , '$last_name' , '$photo' , '$email')")) {
                 $id = $this->db->insert_id();
                 return $id;
             } else {
@@ -261,6 +261,348 @@ class Teacher_Model extends CI_Model {
         $sql = "SELECT * FROM users WHERE id='$id'";
         $query = $this->db->query($sql);
         return $query->row();
+    }
+    
+    public function generate_report($type , $report){
+        if($type == 1){
+            $data = $this->db->query("select * from teachers where section = '$report' ");
+            echo "<img src='".base_url('assets/img/dslogo.jpg')."' width='128px' height='128px' style='margin-left: 4em'>";
+            echo "<h3 style='margin-bottom: 0; margin-left: 3em'>D.S Senanayake College</h3>";
+            echo "<h5 style='margin-top: 0; margin-left: 5em'>Report - ";
+            if ($report == 1) {
+                echo '1/5';
+            } else if ($report == 2) {
+                echo '6/7';
+            } else if ($report == 3) {
+                echo '8/9';
+            } else if ($report == 4) {
+                echo '10/11';
+            } else if ($report == 5) {
+                echo 'A/L Science';
+            } else if ($report == 6) {
+                echo 'A/L Commerce';
+            } else if ($report == 7) {
+                echo 'A/L Arts';
+            } else {
+                echo '';
+            } 
+            echo "Section Teacher List</h5>";
+            echo "<div class='row' style='margin-left: 5em'>
+                    <table class='table table-hove'>
+                    <thead>
+                    <tr>
+                        <th align='left' width='150px'>Signature No</th>
+                        <th align='left' width='150px'>Name</th>
+                        <th align='left' width='150px'>NIC</th>
+                        <th align='left' width='150px'>Registered Date</th>
+                    </tr>
+                    </thead>
+                    <tbody>";
+            foreach ($data->result() as $row){
+                echo "<tr>
+                        <td>$row->signature_no;</td>
+                        <td>$row->name_with_initials</td>
+                        <td>$row->nic_no</td>
+                        <td>$row->first_appointment_date</td>
+                    </tr>";
+            }
+            echo "  </tbody>
+                    </table>
+                    </div>";
+        }
+        else{
+            $data = $this->db->query("select * from `teachers` where `id` = $report");
+            $result = $data->row();
+            $propic = $this->get_profile_img($report);
+            echo "<img src='".base_url('assets/img/dslogo.jpg')."' width='128px' height='128px' style='margin-left: 4em'>";
+            echo "<img src='$propic' id='profile-img' class='img-thumbnail profile-img' style='height: 100px ; width: 100px ; margin-left: 12em ;'>";
+            echo "<h3 style='margin-bottom: 0; margin-left: 3em'>D.S Senanayake College</h3>";
+            echo "<h5 style='margin-top: 0; margin-left: 5em'>Teacher Report - $result->name_with_initials</h5>";
+            echo "<div class='row' style='margin-left: 5em'>
+                    <h3><u>Basic Details</u></h3>
+                    <table class='table table-hover'>
+                    <thead>
+                    <tr>
+                        <th align='left' width='50%'></th>
+                        <th align='left' width='50%'></th>
+                    </tr>
+                </thead>
+                <tbody>";
+            echo "<tr>
+                    <td>NIC</td>
+                    <td>$result->nic_no</td>
+                </tr>
+                <tr>
+                    <td>Full Name</td>
+                    <td>$result->full_name</td>
+                </tr>
+                <tr>
+                    <td>Name with Initials</td>
+                    <td>$result->name_with_initials</td>
+                </tr>
+                <tr>
+                    <td>Birthday</td>
+                    <td>$result->dob</td>
+                </tr>
+                <tr>
+                    <td>Gender</td>
+                    <td>";
+                    if ( $result->gender == 'm') {
+                        echo 'Male';
+                    } else if ( $result->gender == 'f') {
+                        echo 'Female';
+                    }
+                    echo "</td>";
+            echo "</tr>
+                <tr>
+                <td>Nationality</td>
+                <td>";
+                    if ($result->nationality_id == 1) {
+                        echo "Sinhala";
+                    } else if ($result->nationality_id == 2) {
+                        echo "Sri Lankan Tamil";
+                    } else if ($result->nationality_id == 3) {
+                        echo "Indian Tamil";
+                    } else if ($result->nationality_id == 4) {
+                        echo "Muslim";
+                    } else {
+                        echo "Other";
+                    }
+               echo "</td>
+                    </tr>
+                    <tr>
+                        <td>Religion</td>
+                        <td>";
+                    if ($result->religion_id == 1) {
+                        echo "Buddhism";
+                    } else if ($result->religion_id == 2) {
+                        echo "Hindunism";
+                    } else if ($result->religion_id == 3) {
+                        echo "Islam";
+                    } else if ($result->religion_id == 4) {
+                        echo "Catholicism";
+                    } else if ($result->religion_id == 5) {
+                        echo "Christianity";
+                    } else {
+                        echo "Other";
+                    }
+            echo "</td>
+                    </tr>
+                    <tr>
+                    <td>Civil Status</td>
+                    <td>";
+                    if ($result->civil_status == 's') {
+                        echo "Single";
+                    } else if ($result->civil_status == 'm') {
+                        echo "Married";
+                    } else if ($result->civil_status == 'w') {
+                        echo "Widow";
+                    } else {
+                        echo "Other";
+                    }
+                    echo "</td>
+            </tr>
+            <tr>
+                <td>Address</td>
+                <td>$result->permanent_addr
+                </td>
+            </tr>
+            <tr>
+                <td>Contact Mobile No</td>
+                <td>$result->contact_home</td>
+            </tr>
+            <tr>
+                <td>Widow & Orphan No</td>
+                <td>$result->wnop_no</td>
+            </tr>
+        </tbody>
+    </table>
+    <h3><u>Academic Details</u></h3>
+    <table class='table table-hover'>
+        <thead>
+            <tr>
+                <th align='left' width='50%'></th>
+                <th align='left' width='50%'></th>
+            </tr>
+        </thead>
+        <tbody>
+            <tr>
+                <td>Register No</td>
+                <td>$result->teacher_register_no</td>
+            </tr>
+            <tr>
+                <td>Signature No</td>
+                <td>$result->signature_no</td>
+            </tr>
+            <tr>
+                <td>Serial No</td>
+                <td>$result->serial_no</td>
+            </tr>
+            <tr>
+                <td>Date Joined School</td>
+                <td>$result->joined_date</td>
+            </tr>
+            <tr>
+                <td>Medium</td>
+                <td>";
+                    if ($result->medium == 's') {
+                        echo "Sinhala";
+                    } else if ($result->medium == 'e') {
+                        echo "English";
+                    } else if ($result->medium == 't') {
+                        echo "Tamil";
+                    } else {
+                        echo "";
+                    }
+                    
+                echo "</td>
+            </tr>
+            <tr>
+                <td>Designation</td>
+                <td>";
+                    if ($result->designation_id == 1) {
+                        echo "Principal";
+                    } else if ($result->designation_id == 2) {
+                        echo "Acting Principal";
+                    } else if ($result->designation_id == 3) {
+                        echo "Deputy Principal";
+                    } else if ($result->designation_id == 4) {
+                        echo "Acting Deputy Principal";
+                    } else if ($result->designation_id == 5) {
+                        echo "Assistant Principal";
+                    } else if ($result->designation_id == 6) {
+                        echo "Acting Assistant Principal";
+                    } else if ($result->designation_id == 7) {
+                        echo "Teacher";
+                    } else {
+                        echo "";
+                    }
+                echo "</td>
+            </tr>
+            <tr>
+                <td>Section</td>
+                <td>";
+                    if ($result->section == 1) {
+                        echo "1/5";
+                    } else if ($result->section == 2) {
+                        echo "6/7";
+                    } else if ($result->section == 3) {
+                        echo "8/9";
+                    } else if ($result->section == 4) {
+                        echo "10/11";
+                    } else if ($result->section == 5) {
+                        echo "A/L Science";
+                    } else if ($result->section == 6) {
+                        echo "A/L Commerce";
+                    } else if ($result->section == 7) {
+                        echo "A/L Arts";
+                    } else {
+                        echo "";
+                    }
+                echo "</td>
+            </tr>
+            <tr>
+                <td>Main Subject</td>
+                <td>";
+                    if ($result->main_subject_id == 1) {
+                        echo "Maths";
+                    } else if ($result->main_subject_id == 2) {
+                        echo "Science";
+                    } else if ($result->main_subject_id == 3) {
+                        echo "Chemistry";
+                    } else if ($result->main_subject_id == 4) {
+                        echo "Physics";
+                    } else if ($result->main_subject_id == 5) {
+                        echo "Business Studies";
+                    } else if ($result->main_subject_id == 6) {
+                        echo "English";
+                    } else if ($result->main_subject_id == 7) {
+                        echo "History";
+                    } else if ($result->main_subject_id == 8) {
+                        echo "Information Technology";
+                    } else if ($result->main_subject_id == 9) {
+                        echo "Sinhala";
+                    } else if ($result->main_subject_id == 10) {
+                        echo "Mechanics";
+                    } else if ($result->main_subject_id == 11) {
+                        echo "Tamil";
+                    } else if ($result->main_subject_id == 12) {
+                        echo "Other";
+                    } else {
+                        echo "";
+                    }
+                echo "</td>
+            </tr>
+            <tr>
+                <td>Service Garde</td>
+                <td>";
+                    if ($result->grade == 1) {
+                        echo "Sri Lanka Education Administrative ServiceI";
+                    } else if ($result->grade == 2) {
+                        echo "Sri Lanka Education Administrative ServiceII";
+                    } else if ($result->grade == 3) {
+                        echo "Sri Lanka Education Administrative ServiceIII";
+                    } else if ($result->grade == 4) {
+                        echo "Sri Lanka Principal ServiceI";
+                    } else if ($result->grade == 5) {
+                        echo "Sri Lanka Principal Service2I";
+                    } else if ($result->grade == 6) {
+                        echo "Sri Lanka Principal Service2II";
+                    } else if ($result->grade == 7) {
+                        echo "Sri Lanka Principal Service3";
+                    } else if ($result->grade == 8) {
+                        echo "Sri Lanka Teacher ServiceI";
+                    } else if ($result->grade == 9) {
+                        echo "Sri Lanka Teacher Service2I";
+                    } else if ($result->grade == 10) {
+                        echo "Sri Lanka Teacher Service2II";
+                    } else if ($result->grade == 11) {
+                        echo "Sri Lanka Teacher Service3I";
+                    } else if ($result->grade == 12) {
+                        echo "Sri Lanka Teacher Service3II";
+                    } else if ($result->grade == 13) {
+                        echo "Sri Lanka Teacher Service Pending";
+                    } else {
+                        echo "";
+                    }
+                echo "</td>
+            </tr>
+            <tr>
+                <td>Nature of Appointment</td>
+                <td>";
+                    if ($result->nature_of_appointment == 1) {
+                        echo "Degree";
+                    } else if ($result->nature_of_appointment == 2) {
+                        echo "Diploma";
+                    } else if ($result->nature_of_appointment == 3) {
+                        echo "Trained";
+                    } else if ($result->nature_of_appointment == 4) {
+                        echo "Other";
+                    } else {
+                        echo "";
+                    }
+                echo "</td>
+            </tr>
+            <tr>
+                <td>Educational Qualifications</td>
+                <td>$result->educational_qualific</td>
+            </tr>
+            <tr>
+                <td>Professional Qualifications</td>
+                <td>$result->professional_qualific</td>
+            </tr>
+            <tr>
+                <td>First Appointment Date</td>
+                <td>$result->first_appointment_date</td>
+            </tr>
+            <tr>
+                <td>Due Pension Date</td>
+                <td>$result->pension_date</td>
+            </tr>
+            </table>
+        </div>";
+        }
+        
     }
 
 }
