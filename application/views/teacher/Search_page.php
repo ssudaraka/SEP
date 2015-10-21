@@ -84,7 +84,7 @@
                                     }
                                     ?></td>
                                 <td><?php echo $row->contact_mobile; ?></td>
-                                <td><a href="<?php echo base_url("index.php/teacher/view_profile") . "/" . $row->id; ?>" class="btn btn-primary btn-xs" aria-hidden="true"><i class="fa fa-eye"></i></a></td>
+                                <td><a href="<?php echo base_url("index.php/profile") . "?key=" . $row->user_id; ?>" class="btn btn-primary btn-xs" aria-hidden="true"><i class="fa fa-eye"></i></a></td>
                                 <td><a href="<?php echo base_url("index.php/teacher/load_teacher") . "/" . $row->id; ?>" class="btn btn-primary btn-xs" aria-hidden="true"><i class="fa fa-edit"></i></a></td>
                                 <td><a href="<?php echo base_url("index.php/teacher/delete_teacher") . "/" . $row->id; ?>" onclick="return confirm('Are you sure you want to permenantly delete this user?   you cannot recover this teacher profile after you delete');" class="btn btn-danger btn-xs" aria-hidden="true"><i class="fa fa-trash"></i></a></td>
 
