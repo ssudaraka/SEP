@@ -327,5 +327,25 @@ class Event_model extends CI_Model {
             return NULL;
         }
     }
+    
+    public function get_pro_image($nic){
+        $data = $this->db->query("select * from teachers where nic_no = '$nic'");
+        if($data->num_rows() > 0){
+            return $data->row();
+        }
+        else{
+            return "error";
+        }
+    }
+    
+    public function get_user_all_events($nic) {
+        $data = $this->db->query("select * from events where in_charge_id = '$nic'");
+        if($data->num_rows() > 0){
+            return $data->result();
+        }
+        else{
+            return "no";
+        }
+    }
 
 }

@@ -7,6 +7,7 @@ class Event extends CI_Controller {
         $this->load->model('event_model');
         $this->load->model('Teacher_Model');
         $this->load->model('News_Model');
+        $this->load->model('User');
         $this->load->helper('date');
     }
 
@@ -570,6 +571,13 @@ class Event extends CI_Controller {
         $this->load->view('navbar_sub', $data);
         $this->load->view('event/event_calendar', $data);
         $this->load->view('/templates/footer');
+    }
+    
+    function teacher_event_details(){
+        $nic = $this->uri->segment(3);
+        $data['details'] = $this->event_model->get_pro_image($nic);
+        $data['events'] = $this->event_model->get_user_all_events($nic) ;
+        $this->load->view('event/teacher_event_details',$data);
     }
 
     /**

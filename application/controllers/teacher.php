@@ -738,5 +738,17 @@ class Teacher extends CI_Controller {
             return FALSE;
         }
     }
+    
+    function full_staff_report() {
+        if (!$this->session->userdata('id')) {
+            redirect('login', 'refresh');
+        }
+        $data['page_title'] = "View Teacher Profile";
+        $data['navbar'] = 'teacher';
+        $data['user_type'] = $this->session->userdata['user_type'];
+        $data['result'] = $this->Teacher_Model->SearchAllTeachers();
+        //$this->load->view('templates/header', $data);
+        $this->load->view('teacher/full_staff_report', $data);
+    }
 
 }

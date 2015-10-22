@@ -205,9 +205,9 @@
                                                             $med = $user_id->medium;
                                                             if ($med == 's') {
                                                                 echo "Sinhala";
-                                                            } else if ($med == 't') {
-                                                                echo "English";
                                                             } else if ($med == 'e') {
+                                                                echo "English";
+                                                            } else if ($med == 't') {
                                                                 echo "Tamil";
                                                             } else {
                                                                 echo "";

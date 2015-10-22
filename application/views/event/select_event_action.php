@@ -16,7 +16,7 @@
 
         <div class="col-md-9">
 
-<?php if (isset($succ_message)) { ?>
+                <?php if (isset($succ_message)) { ?>
                 <div class="alert alert-success alert-dismissible" role="alert">
                     <button type="button" class="close" data-dismiss="alert" aria-label="Close"><span aria-hidden="true">&times;</span></button>
                 <?php echo $succ_message; ?>
@@ -55,7 +55,7 @@
                             </tr>
                             <tr>
                                 <td><label>In Charge ID</label></td>
-                                <td><?php echo $details->in_charge_id; ?></td>
+                                <td><?php echo $details->in_charge_id; ?><a id="fillgrid" href="<?php echo base_url("index.php/event/teacher_event_details"); ?>" data-id="<?php echo $details->in_charge_id; ?>" style="margin-left: 5em">View Teacher Details</a></td>
                             </tr>
                             <tr>
                                 <td><label>Budget(Rs.)</label></td>
@@ -97,12 +97,28 @@
 
                 </div>
             </div>
-
-
         </div>
-
     </div>
-
 </div>
+
+<script>
+    $(document).ready(function () {
+        var btnedit = '';
+        btnedit = $("#fillgrid");
+        btnedit.on('click', function (e) {
+            e.preventDefault();
+            var editid = $(this).data('id');
+            $.colorbox({
+                href: "<?php echo base_url() ?>index.php/event/teacher_event_details/" + editid,
+                top: 50,
+                width: 700,
+                onClosed: function () {
+                    fillgrid();
+                }
+            });
+        });
+
+    });
+</script>
 
 
