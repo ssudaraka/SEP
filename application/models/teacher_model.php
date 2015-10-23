@@ -604,7 +604,10 @@ class Teacher_Model extends CI_Model {
         }
         
     }
+    
+    public function get_teacher_list(){
+        $sql = "SELECT `id`, `full_name` FROM teachers ORDER BY `id`";
+        return $this->db->query($sql)->result();
+    }
 
 }
-
-?>
