@@ -31,7 +31,7 @@ class Subject extends CI_Controller {
         $this->load->library('form_validation');
         $this->form_validation->set_rules('subjectname', 'subjectname', "trim|required|xss_clean|min_length[5]|alpha_dash");
         $this->form_validation->set_rules('subjectcode', 'subjectcode', "trim|required|xss_clean");
-
+        $data['user_type']=$this->session->userdata('user_type');
 
 
         if ($this->form_validation->run() == FALSE) {
@@ -78,7 +78,7 @@ class Subject extends CI_Controller {
     function manage_subjects() {
         $data['page_title'] = "Manage Subjects";
         $data['navbar'] = 'subject';
-
+        $data['user_type']=$this->session->userdata('user_type');
 
 
 
@@ -114,7 +114,7 @@ class Subject extends CI_Controller {
     }
 
     function search() {
-
+        $data['user_type']=$this->session->userdata('user_type');
         $this->load->library('pagination');
         $config = array();
         $config['base_url'] = base_url() . "index.php/subject/manage_subjects";
@@ -152,6 +152,7 @@ class Subject extends CI_Controller {
         }
 
         if ($this->Subject_model->delete($id)) {
+            $data['user_type']=$this->session->userdata('user_type');
             $data['delete_msg'] = "Subject ID " . $id . " has been removed from the database. This cannot be reverted";
             $data['page_title'] = "Manage Subjects";
             $data['navbar'] = 'subject';

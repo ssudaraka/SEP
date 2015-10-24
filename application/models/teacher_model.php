@@ -217,11 +217,13 @@ class Teacher_Model extends CI_Model {
     }
 
     public function archive_teacher($id) {
+        
 
         try {
             if ($data_t = $this->db->query("SELECT * FROM teachers  WHERE user_id = '$id'")) {
                 $teachr_data = $data_t->row();
 
+                
 
                 $NIC = $teachr_data->nic_no;
                 $name = $teachr_data->full_name;
@@ -241,7 +243,7 @@ class Teacher_Model extends CI_Model {
     			VALUES ('$id','$NIC', '$name' , '$initial' , '$birth', '$gender' , '$Nationality' , '$religion' , '$civilstatus' , '$address' , '$contactMob' , '$contactHome' , '$email' , '$widow')")) {
 
 
-                    $sql1 = "DELETE FROM teachers  WHERE id = '$id'";
+                    $sql1 = "DELETE FROM teachers  WHERE user_id = '$id'";
                     if ($query = $this->db->query($sql1)) {
                         return TRUE;
                     } else {

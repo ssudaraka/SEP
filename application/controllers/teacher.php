@@ -239,7 +239,7 @@ class Teacher extends CI_Controller {
             $this->load->view('/templates/header', $data);
             $this->load->view('navbar_main', $data);
             $this->load->view('navbar_sub', $data);
-            $this->load->view('/teacher/Search_page', $data);
+            $this->load->view('/teacher/archived_search_teacher', $data);
             $this->load->view('/templates/footer');
         } else {
 
@@ -251,7 +251,7 @@ class Teacher extends CI_Controller {
             $this->load->view('/templates/header', $data);
             $this->load->view('navbar_main', $data);
             $this->load->view('navbar_sub', $data);
-            $this->load->view('/teacher/Search_page', $data);
+            $this->load->view('/teacher/archived_search_teacher', $data);
             $this->load->view('/templates/footer');
         }
     }
@@ -272,7 +272,7 @@ class Teacher extends CI_Controller {
         if ($this->Teacher_Model->archive_teacher($id)) {
 
             //reload table
-            $data['result'] =$this->Student_Model->SearchAllTeachers();
+            $data['result'] =$this->Teacher_Model->SearchAllTeachers();
             //For news field
             $tech_id = $this->session->userdata('id');
             $tech_details = $this->Teacher_Model->user_details($tech_id);
