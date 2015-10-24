@@ -38,11 +38,16 @@
                                     <?php foreach ($result as $row) { ?>
                                         <tr>
                                             <td><?php echo $row->id; ?></td>
-                                            <td><?php echo $row->grade_id; ?></td>
+                                            <td><?php echo get_grade_name($row->grade_id); ?></td>
                                             <td><?php echo $row->name; ?></td>
-                                            <td><?php echo $row->teacher_id; ?></td>
+                                            <td><?php echo get_class_teacher_name($row->teacher_id); ?></td>
                                             <td><?php echo $row->academic_year; ?></td>
-                                            <td></td>
+                                            <td>
+                                                <a href="" data-toggle="tooltip" title="Assign Students"><i class="fa fa-graduation-cap" style="font-size: 18px;" ></i></a>&nbsp;
+                                                <a href="" data-toggle="tooltip" title="View Class"><i class="fa fa-eye" style="font-size: 18px;" ></i></a>&nbsp;
+                                                <a href="" data-toggle="tooltip" title="Edit Class"><i class="fa fa-pencil-square-o" style="font-size: 18px;" ></i></a>&nbsp;
+                                                <a href="#" data-toggle="tooltip" title="Delete Class"><i class="fa fa-trash" style="font-size: 18px;"></i></a>&nbsp;
+                                            </td>
                                         </tr>
                                     <?php } ?>
                                 </tbody>
