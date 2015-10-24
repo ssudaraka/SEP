@@ -127,9 +127,9 @@
                                     <span class="shortcut-label">Messages</span>
                                 </a>
                             
-                                <a href="<?php echo base_url("index.php/event"); ?>" class="shortcut">
-                                    <i class="shortcut-icon fa fa-2x fa-bullhorn"></i>
-                                    <span class="shortcut-label">Event</span>
+                                <a href="<?php echo base_url("index.php/year"); ?>" class="shortcut">
+                                    <i class="shortcut-icon fa fa-2x fa-calendar"></i>
+                                    <span class="shortcut-label">Year Plan</span>
                                 </a>
                             </div>
                         </div>

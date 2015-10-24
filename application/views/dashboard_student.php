@@ -103,7 +103,39 @@
         </div>
         <!-- Right Column -->
         <div class="col-md-6">
-
+            <!-- SHORTCUTS -->
+            <div class="row">
+                <div class="col-md-12">
+                    <div class="panel panel-default">
+                        <div class="panel-heading">
+                            <strong><i class="fa fa-bookmark" style="margin-right:10px"></i> SHORTCUTS</strong>
+                        </div>
+                        <div class="panel-body">
+                            <div class="shortcuts"> 
+                                <a href="<?php echo base_url("index.php/profile"); ?>" class="shortcut">
+                                    <i class="shortcut-icon fa fa-2x fa-user"></i>
+                                    <span class="shortcut-label">Profile</span>
+                                </a>
+                    
+                                <a href="<?php echo base_url("index.php/profile/account_settings"); ?>" class="shortcut">
+                                    <i class="shortcut-icon fa fa-2x fa-wrench"></i>
+                                    <span class="shortcut-label">Settings</span>
+                                </a>
+                            
+                                <a href="<?php echo base_url("index.php/inbox"); ?>" class="shortcut">
+                                    <i class="shortcut-icon fa fa-2x fa-envelope"></i>
+                                    <span class="shortcut-label">Messages</span>
+                                </a>
+                            
+                                <a href="<?php echo base_url("index.php/year"); ?>" class="shortcut">
+                                    <i class="shortcut-icon fa fa-2x fa-calendar"></i>
+                                    <span class="shortcut-label">Year Plan</span>
+                                </a>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
             <!-- calender -->
             <div class="row">
                 <div class="col-md-12"> 
