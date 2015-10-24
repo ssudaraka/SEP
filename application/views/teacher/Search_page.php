@@ -70,7 +70,13 @@
                                 <td><?php echo $row->id; ?></td>
                                 <td><?php echo $row->nic_no; ?></td>
                                 <td><?php echo $row->full_name; ?></td>
-                                <td><?php echo $row->gender; ?></td>
+                                <td><?php  $gender=$row->gender; 
+                                 if ($gender == 'm') {
+                                        echo 'Male';
+                                    } else if ($med == 'f') {
+                                        echo 'Female';
+                                    }
+                                ?></td>
                                 <td><?php echo $row->grade; ?></td>
                                 <td><?php
                                     $med = $row->medium;

@@ -861,6 +861,28 @@ class Student extends CI_Controller {
 
         echo json_encode($is);
     }
+    
+    function load_student_report($value){
+          if (!$this->session->userdata('id')) {
+            redirect('login', 'refresh');
+        }
+        $data['navbar'] = "admin";
+        $data['value'] = $value;
+        $data['user_type'] = $this->session->userdata['user_type'];
+         $this->load->view('templates/header', $data);
+        $this->load->view('navbar_main', $data);
+        $this->load->view('navbar_sub', $data);
+        $this->load->view('student/student_report_form');
+        $this->load->view('/templates/footer');
+
+        
+    }
+    function generate_report() {
+        $type = $this->input->post('tpe');
+        $report = $this->input->post('rpt');
+        $this->Student_Model->generate_report($type , $report);
+    }
+
 
     /*
      * <<<<<<<<<<<<<<<<<<<<<<    validation functions    >>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>
@@ -994,5 +1016,6 @@ class Student extends CI_Controller {
             return FALSE;
         }
     }
-
+    
+   
 }

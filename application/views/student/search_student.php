@@ -57,7 +57,7 @@
                             ],
                             "bPaginate": true,
                             "sPaginationType": "full_numbers",
-                            "iDisplayLength": 15,
+                            "iDisplayLength": 10,
                             "bProcessing": true,
                             "bServerSide": true,
                             "order": [[0, "desc"]]
