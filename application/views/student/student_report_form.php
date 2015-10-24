@@ -1,7 +1,7 @@
 <div class="container">
     <div class="row">
         <div class="col-md-3">
-            <?php $this->view('teacher/sidebar_nav'); ?>
+            <?php $this->view('student/sidebar_nav'); ?>
         </div>
         <div class="col-md-9">
             <div class="panel panel-default">
@@ -11,7 +11,7 @@
                     // Change the css classes to suit your needs    
                     $l=0;
                     $attributes = array('class' => 'form-horizontal', 'id' => '');
-                    echo form_open('teacher/report_pdf'."/".$value, $attributes);
+                    echo form_open('student/report_pdf', $attributes);
                     ?>
                     <div class="row" style="margin-left: 1em; margin-bottom: 2em;">
                         <div class="media">
@@ -29,32 +29,15 @@
                     </div>
                     <div class="col-md-10">
                         <div class="row">
-                            <div class="col-md-4">
-                                <div class="form-group">
-                                    <select id="reporttype" name="reporttype" class="form-control" onchange="report_type()">
-                                        <option value="0" <?php if($value==0){ echo 'selected="selected"';} ?>>Select Report Type</option>
-                                        <option value="1" <?php if($value==1){ echo 'selected="selected"';} ?>>Section Report</option>
-                                        <option value="2" <?php if($value==2){ echo 'selected="selected"';} ?>>Grade Report</option>
-                                    </select>
-                                    <?php echo form_error('reporttype'); ?>
-                                </div>
-                            </div>
-                            <div class="col-md-4">
-                                <div class="form-group">
-                                    <?php if ($value == 0) { ?>
+                           
+                            <div class="col-md-6">
+                                <div class="form-inline">
+                                    <label for="report">Select Grade</label>
+                                   
                                         
-                                    <?php } else if ($value == 1) { $l = 1; ?>
-                                        <select id="report" name="report" class="form-control">
-                                            <option value="1">1/5</option>
-                                            <option value="2">6/7</option>
-                                            <option value="3">8/9</option>
-                                            <option value="4">10/11</option>
-                                            <option value="5">A/L Science</option>
-                                            <option value="6">A/L Commerce</option>
-                                            <option value="7">A/L Arts</option>
-                                        </select>
-                                    <?php } else if ($value == 2) { $l = 2; ?>
-                                        <select id="report" name="report" class="form-control">
+                                    
+                                        <select id="report" name="report" class="form-control" style="width: 50%;">
+                                            <option value="n">select grade</option>
                                             <option value="1">1</option>
                                             <option value="2">2</option>
                                             <option value="3">3</option>
@@ -69,9 +52,7 @@
                                             <option value="12">12</option>
                                             <option value="13">13</option>
                                         </select>
-                                    <?php } else {
-                                        $l = 3;
-                                    } ?>
+                                   
 
                                         <?php echo form_error('report'); ?>
                                 </div>
@@ -101,12 +82,14 @@
 
 <script type="text/javascript">
 
-    $('#report').on('change', function () {
+    $('#report').on('click', function () {
+        
         formdata = new FormData();
-        var type = document.getElementById('reporttype').value;
+        //var type = document.getElementById('reporttype').value;
         var report = document.getElementById('report').value;
+//        alert('report');
         if (formdata) {
-            formdata.append("tpe", type);
+            //formdata.append("tpe", type);
             formdata.append("rpt", report);
         }
         $.ajax({
@@ -122,18 +105,18 @@
     });
 </script>
 
-<script type="text/javascript">
-    function report_type() {
-        var item = document.getElementById('reporttype').value;
-        if (item == 0) {
-            window.location = "<?php echo base_url('index.php/student/load_student_report') . "/" . "0"; ?>";
-        }
-        else if (item == 1) {
-            window.location = "<?php echo base_url('index.php/student/load_student_report') . "/" . "1"; ?>";
-        }
-        else if (item == 2) {
-            window.location = "<?php echo base_url('index.php/student/load_student_report') . "/" . "2"; ?>";
-        }
-    }
+<!--<script type="text/javascript">
+//    function report_type() {
+//        var item = document.getElementById('reporttype').value;
+//        if (item == 0) {
+//            window.location = "<?php //echo base_url('index.php/student/load_student_report') . "/" . "0"; ?>";
+//        }
+//        else if (item == 1) {
+//            window.location = "<?php //echo base_url('index.php/student/load_student_report') . "/" . "1"; ?>";
+//        }
+//        else if (item == 2) {
+//            window.location = "<?php //echo base_url('index.php/student/load_student_report') . "/" . "2"; ?>";
+//        }
+//    }
 
-</script>
+</script>-->
