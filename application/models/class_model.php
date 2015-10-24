@@ -79,8 +79,8 @@ class Class_Model extends CI_Model {
     public function student_already_in_class($class_id, $student_id) {
         $sql = "SELECT * FROM student_class WHERE student_id = '{$student_id}' AND class_id='{$class_id}' LIMIT 1";
         $query = $this->db->query($sql);
-        
-        if($query->num_rows() === 1){
+
+        if ($query->num_rows() === 1) {
             return TRUE;
         } else {
             return FALSE;
@@ -88,7 +88,7 @@ class Class_Model extends CI_Model {
     }
 
     public function remove_student_from_class($class_id, $student_id) {
-        $this->db->delete('student_class', array('student_id' => $student_id, 'class_id' => $class_id)); 
+        $this->db->delete('student_class', array('student_id' => $student_id, 'class_id' => $class_id));
         return TRUE;
     }
 
@@ -105,26 +105,44 @@ class Class_Model extends CI_Model {
 
         return $class->academic_year;
     }
-    
-    public function teacher_assigned_to_class($teacher_id, $academic_year){
+
+    public function teacher_assigned_to_class($teacher_id, $academic_year) {
         $sql = "SELECT * FROM classes WHERE teacher_id = '{$teacher_id}' AND academic_year = '{$academic_year}'";
-        if($this->db->query($sql)->num_rows()>0){
+        if ($this->db->query($sql)->num_rows() > 0) {
             return TRUE;
         } else {
             return FALSE;
         }
     }
-    
-    public function class_name_already_have($class_name){
+
+    public function class_name_already_have($class_name, $academic_year) {
         $class_name = trim($class_name);
-        $sql = "SELECT * FROM classes ";
+        $sql = "SELECT * FROM classes WHERE name ='{$class_name}' AND academic_year = '{$academic_year}'";
+
+        if ($this->db->query($sql)->num_rows() > 0) {
+            return TRUE;
+        } else {
+            return FALSE;
+        }
     }
-    
-public function get_class_list($academic_year = NULL){
+
+    public function get_class_list() {
         $sql = "SELECT * FROM classes order by grade_id,name asc";
         $query = $this->db->query($sql);
-        
+
         return $query->result();
+    }
+    
+    public function update_class($class_id, $class_data){
+        $this->db->update('classes', $class_data, array('id' => $class_id));
+    }
+    
+    public function remove_class_teacher($class_id){
+        $data = array(
+          'teacher_id' => NULL,
+        );
+        
+        $this->db->update('classes', $data, array('id' => $class_id));
     }
 
 }

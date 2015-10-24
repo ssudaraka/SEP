@@ -12,6 +12,7 @@ class Classes extends CI_Controller {
 
         $this->load->model('class_model');
         $this->load->helper('class');
+        $this->load->model('teacher_model');
     }
 
     function index() {
@@ -40,18 +41,18 @@ class Classes extends CI_Controller {
         $data['navbar'] = "admin";
         $data['grades'] = $this->class_model->get_grades();
 
-        $this->load->model('teacher_model');
+
         $data['teachers'] = $this->teacher_model->get_teacher_list();
 
         // if this is a redirect from successful form submission, get the success message.
         $data['succ_message'] = $this->session->flashdata('succ_message');
 
         $this->form_validation->set_rules('grade', 'Grade', 'required|callback_grade_selected');
-        $this->form_validation->set_rules('class_name', 'Class Name', 'required');
-        if($this->input->post('class_teacher')){
+        $this->form_validation->set_rules('class_name', 'Class Name', 'required|callback_validate_class_name');
+        if ($this->input->post('class_teacher')) {
             $this->form_validation->set_rules('class_teacher', 'Class Teacher', 'callback_validate_teacher_class');
         }
-        
+
         if ($this->form_validation->run() == FALSE) {
             $this->load->view('templates/header', $data);
             $this->load->view('navbar_main', $data);
@@ -62,7 +63,6 @@ class Classes extends CI_Controller {
             $class = array(
                 'grade_id' => $this->input->post('grade'),
                 'name' => $this->input->post('class_name'),
-                
                 'academic_year' => date('Y'),
             );
 
@@ -97,8 +97,8 @@ class Classes extends CI_Controller {
         $this->load->view('classes/view_class', $data);
         $this->load->view('/templates/footer', $data);
     }
-    
-    function assign_to_class($class_id){
+
+    function assign_to_class($class_id) {
         $data['class'] = $this->class_model->get_class($class_id);
         $data['class_students'] = $this->class_model->get_class_students($class_id);
         $data['page_title'] = "Assign Students to {$data['class']->name} : Class Management";
@@ -106,48 +106,89 @@ class Classes extends CI_Controller {
         $data['students_in'] = $this->class_model->get_class_students($class_id);
         $data['user_type'] = $this->session->userdata['user_type'];
         $data['navbar'] = "admin";
-        
+
 //        var_dump($data['class']);
 //        var_dump($data['class_students']);
 //        
 //        var_dump($data['students_eligible']);
-        
+
         $this->load->view('templates/header', $data);
         $this->load->view('navbar_main', $data);
         $this->load->view('navbar_sub', $data);
         $this->load->view('classes/assign_students_to_class', $data);
         $this->load->view('/templates/footer', $data);
     }
-    
-    function process_student_class_assignment($class_id){
+
+    function process_student_class_assignment($class_id) {
         $students_eligible = $this->input->post('students-eligible');
         $students_in = $this->input->post('students-in');
         $this->class_model->assign_students_to_class($class_id, $students_eligible, $students_in);
         redirect("classes/view_class/{$class_id}");
     }
-    
+
     /*
      * If this class teacher already assigned to class, return FALSE
      * else return TRUE
      */
-    function validate_teacher_class(){
+
+    function validate_teacher_class() {
         $teacher_id = $this->input->post('class_teacher');
-        if($this->class_model->teacher_assigned_to_class($teacher_id, date('Y'))){
+        if ($this->class_model->teacher_assigned_to_class($teacher_id, date('Y'))) {
             $this->form_validation->set_message('validate_teacher_class', 'Selected Teacher Already Assigned to a Class');
             return FALSE;
         } else {
             return TRUE;
         }
     }
-    
+
     /*
      * Returns false if we already have a class name for given class name in academic year.
      */
-    function validate_class_name(){
-        
+
+    function validate_class_name() {
+        $class_name = $this->input->post('class_name');
+        if ($this->class_model->class_name_already_have($class_name, date('Y'))) {
+            $this->form_validation->set_message('validate_class_name', "Class name already have");
+            return FALSE;
+        } else {
+            return TRUE;
+        }
     }
 
-    function edit_class(){
-        
+    function edit_class($class_id) {
+
+        $data['page_title'] = "Class Management";
+        $data['user_type'] = $this->session->userdata['user_type'];
+        $data['navbar'] = "admin";
+        $data['teachers'] = $this->teacher_model->get_teacher_list();
+        $data['class'] = $this->class_model->get_class($class_id);
+
+
+        $this->form_validation->set_rules('class_teacher', 'Class Teacher', 'callback_validate_teacher_class');
+        if($this->form_validation->run() == FALSE) {
+            $this->load->view('templates/header', $data);
+            $this->load->view('navbar_main', $data);
+            $this->load->view('navbar_sub', $data);
+            $this->load->view('classes/edit_class', $data);
+            $this->load->view('/templates/footer', $data);
+        } else {
+            $update_data = array(
+                'teacher_id' => $this->input->post('class_teacher'),
+            );
+            $data['succ_message'] = "Class Successfully Edited";
+            $this->class_model->update_class($class_id, $update_data);
+            $data['class'] = $this->class_model->get_class($class_id);
+            $this->load->view('templates/header', $data);
+            $this->load->view('navbar_main', $data);
+            $this->load->view('navbar_sub', $data);
+            $this->load->view('classes/edit_class', $data);
+            $this->load->view('/templates/footer', $data);
+        }
     }
+    
+    function remove_class_teacher($class_id){
+        $this->class_model->remove_class_teacher($class_id);
+        redirect("classes/edit_class/{$class_id}");
+    }
+
 }
