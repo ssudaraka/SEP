@@ -63,35 +63,29 @@ class Year extends CI_Controller {
             $this->load->view('/templates/footer');
         } elseif ($data['user_type'] == 'T') {
 
-            //Get info from the Academic Year
-            $yearid;
-            $academic_year = $this->Year_Model->get_academic_year_details();
-            foreach ($academic_year as $row) {
-                $yearid = $row->id;
-            }
+            // //Get info from the Academic Year
+            // $yearid;
+            // $academic_year = $this->Year_Model->get_academic_year_details();
+            // foreach ($academic_year as $row) {
+            //     $yearid = $row->id;
+            // }
 
-            //Get Year Details 
-            $data['year'] = $this->Year_Model->get_academic_year_by_id($yearid);
+            // //Get Year Details 
+            // $data['year'] = $this->Year_Model->get_academic_year_by_id($yearid);
 
 
-            //Passing it to the View
-            $this->load->view('templates/header', $data);
-            $this->load->view('navbar_main', $data);
-            $this->load->view('navbar_sub', $data);
+            // //Passing it to the View
+            // $this->load->view('templates/header', $data);
+            // $this->load->view('navbar_main', $data);
+            // $this->load->view('navbar_sub', $data);
 
-            //View Year Planer  Teacher
-            $this->load->view('year/view_year_teacher');
+            // //View Year Planer  Teacher
+            // $this->load->view('year/view_year_teacher');
 
-            $this->load->view('/templates/footer');
+            // $this->load->view('/templates/footer');
+            redirect('year/current_adademic_year', 'refresh');
         } else {
-            //Passing it to the View
-            $this->load->view('templates/header', $data);
-            $this->load->view('navbar_main', $data);
-            $this->load->view('navbar_sub', $data);
-
-            //View Year Planer 
-
-            $this->load->view('/templates/footer');
+            redirect('year/current_adademic_year', 'refresh');
         }
     }
 
