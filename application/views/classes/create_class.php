@@ -66,7 +66,8 @@
                                             <option value="<?php echo $teacher->id; ?>"><?php echo $teacher->full_name; ?></option>
                                         <?php } ?>
                                     </select>
-                                    <span class="help-block"><span class="label label-info">TIP:</span> <em>You can add class teacher later.</em></span>
+                                    <span class="help-block"><span class="label label-info">TIP:</span> you can add class teacher later.</span>
+                                    <?php echo form_error('class_teacher', $error_prefix, $error_suffix); ?>
                                 </div>
                             </div>
                             <div class="form-group">

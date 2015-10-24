@@ -23,3 +23,20 @@ function get_class_teacher_name($teacher_id){
         return $teacher->name_with_initials;
     }
 }
+
+function get_religion($religion_id){
+    switch ($religion_id){
+        case 1:
+            return "Buddhism";
+        case 2:
+            return "Hinduism";
+        case 3:
+            return "Islam";
+        case 4:
+            return "Catholicism";
+        case 5:
+            return "Christianity";
+        default :
+            return "Undefined";
+    }
+}
