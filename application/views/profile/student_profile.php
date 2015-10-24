@@ -42,7 +42,7 @@
         <div class="col-md-3"   style="background-color: rgba(210, 210, 210, 0.09);  min-height: 553px" >
             <div class="col-md-offset-1 col-md-10" ><h3 class="text-center"><?php echo $user_d->first_name . ' ' . $user_d->last_name; ?></h3></div>
             <div class="col-md-offset-1 col-md-10" style="padding-bottom: 25px; border-bottom: 1px solid #ddd; "><img src="<?php  if($user_d->profile_img){echo$user_d->profile_img;}else{echo'http://www.bathspa.ac.uk/media/WebProfilePictures/default_profile.jpg';}?>" alt="..." class="img-thumbnail"></div>
-            <div class="col-md-offset-1 col-md-10 text-center" style='padding-top: 10px;'><h3><span style="color:#FF4800;"><?php echo $user_d->username; ?></span></h3></div>
+            <div class="col-md-offset-1 col-md-10 text-center" style='padding-top: 10px;'><h3><span style="color:#FF4800;" id="admission_no"><?php echo $user_d->username; ?></span></h3></div>
             <div class="col-md-offset-1 col-md-10 text-center" style='padding-top: 0px;'><h4><span style="color:rgb(77, 80, 89);"><?php if($user_d->user_type=='A'){echo 'ADMIN';}if($user_d->user_type=='T'){echo 'TEACHER';}if($user_d->user_type=='S'){echo 'STUDENT';}?></span></h4></div>
             <?php if($edit){?>
             <div class="col-md-offset-1 col-md-10 center" ><a href="<?php echo base_url('index.php/profile/profile_settings'); ?>"><button class='btn btn-success col-md-12'>Edit Profile</button></a></div>
@@ -57,6 +57,7 @@
                         <li role="presentation" <?php if (($prof_navbar = 'profile_s') || ($prof_navbar = 'profile_t') || ($prof_navbar = 'profile_a')) { echo 'class="active"';} ?>><a href="#">Personal Details</a></li>
                         <li role="presentation"><a href="#">Guardian Details</a></li>
                         <?php if(isset($year)) {?> <li role="presentation"><a href="<?php ?>">Academic Year</a></li> <?php } ?>
+                        <?php if(isset($complain)) {?> <li role="presentation"><a href="<?php ?>">Add Note</a></li> <?php } ?>
                         <!--<li role="presentation"><a href="#">Classes</a></li>-->
 
                     </ul>
@@ -72,7 +73,7 @@
                             </tr>
                             <tr>
                                 <td class="subheadng">Admission No</td>
-                                <td class="normal"><?=$personal->admission_no;?></td>
+                                <td class="normal" ><?=$personal->admission_no;?></td>
                                 <td class="subheadng">Admission Date</td>
                                 <td class="normal"><?=$personal->admission_date;?></td>
                             </tr>
@@ -375,6 +376,56 @@
             </div>
 
  <?php } ?>
+                 <?php if(isset($complain)) {?> 
+                <div class="bhoechie-tab-content hide " >
+                    
+                    <form class="form-horizontal">
+                        <fieldset>
+
+                                <!-- Form Name -->
+                               
+                                <br><br>
+                                <!-- Select Basic -->
+                                <div class="form-group">
+                                    <label class="col-md-4 control-label" for="type">Type of the note</label>
+                                    <div class="col-md-4">
+                                        <select id="type" name="type" class="form-control">
+                                            <option value="1">Note</option>
+                                            <option value="2">Complain</option>
+                                        </select>
+                                    </div>
+                                </div>
+
+                                <!-- Text input-->
+                                <div class="form-group">
+                                    <label class="col-md-4 control-label" for="subject">subject</label>  
+                                    <div class="col-md-4">
+                                        <input id="subject" name="subject" placeholder="" class="form-control input-md" required="" type="text">
+
+                                    </div>
+                                </div>
+
+                                <!-- Textarea -->
+                                <div class="form-group">
+                                    <label class="col-md-4 control-label" for="note">Note</label>
+                                    <div class="col-md-4">                     
+                                        <textarea class="form-control" id="note" name="note"></textarea>
+                                    </div>
+                                </div>
+
+                                <!-- Button -->
+                                <div class="form-group">
+                                    <label class="col-md-4 control-label" for="singlebutton">Single Button</label>
+                                    <div class="col-md-4">
+                                        <button id="singlebutton" name="singlebutton" class="btn btn-primary">Button</button>
+                                    </div>
+                                </div>
+
+                            </fieldset>
+                    </form>
+
+                </div>
+                 <?php } ?>
             </div>
         </div>
     </div>
@@ -388,6 +439,34 @@
         var index = $(this).index();
         $("div.bhoechie-tab-content").addClass("hide");
         $("div.bhoechie-tab-content").eq(index).removeClass("hide");
+    });
+     $("#singlebutton").click(function(e) {
+        e.preventDefault();
+       
+       var subject = document.getElementById('subject').value;
+       var admission = document.getElementById('admission_no').innerText;
+       var note = document.getElementById('note').value;
+       var type = document.getElementById('type').value;
+        
+        formdata = new FormData();
+       
+        if (formdata) {
+            formdata.append("addm", admission);
+            formdata.append("subject", subject);
+            formdata.append("note", note);
+            formdata.append("type", type);
+        }
+       
+                
+           $.ajax({
+            url: "<?php echo base_url(); ?>index.php/profile/add_note/",
+            type: 'POST',
+            data: formdata,
+            processData: false,
+            contentType: false,
+        }).done(function (data) {
+            $("#teacher_rep").html(data);
+        });
     });
 }); 
 </script>

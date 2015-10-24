@@ -3,15 +3,11 @@
     <editor-bookmarks xmlns="http://www.netbeans.org/ns/editor-bookmarks/2" lastBookmarkId="0"/>
     <open-files xmlns="http://www.netbeans.org/ns/projectui-open-files/2">
         <group>
-            <file>file:/C:/xampp/htdocs/sep/application/views/student/student_report_form.php</file>
-            <file>file:/C:/xampp/htdocs/sep/application/views/student/sidebar_nav.php</file>
-            <file>file:/C:/xampp/htdocs/sep/application/views/student/report_pdf.php</file>
-            <file>file:/C:/xampp/htdocs/sep/application/models/teacher_model.php</file>
-            <file>file:/C:/xampp/htdocs/sep/application/models/student_model.php</file>
-            <file>file:/C:/xampp/htdocs/sep/application/views/teacher/sidebar_nav.php</file>
+            <file>file:/C:/xampp/htdocs/sep/application/views/admin/index.php</file>
+            <file>file:/C:/xampp/htdocs/sep/application/views/profile/admin_profile.php</file>
+            <file>file:/C:/xampp/htdocs/sep/application/views/profile/teacher_profile.php</file>
             <file>file:/C:/xampp/htdocs/sep/application/controllers/profile.php</file>
-            <file>file:/C:/xampp/htdocs/sep/application/controllers/teacher.php</file>
-            <file>file:/C:/xampp/htdocs/sep/application/controllers/student.php</file>
+            <file>file:/C:/xampp/htdocs/sep/application/views/profile/student_profile.php</file>
             <file>file:/C:/xampp/htdocs/sep/application/views/teacher/teacher_report_form.php</file>
         </group>
     </open-files>

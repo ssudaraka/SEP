@@ -59,6 +59,7 @@ class Profile extends CI_Controller {
                 $data['user_d'] = $this->user->get_user($user_id);
                 $data['year'] = $this->Year_Model->get_academic_year_details();
                 
+                
                 $this->load->view('templates/header', $data);
                 $this->load->view('navbar_main', $data);
                 $this->load->view('navbar_sub', $data);
@@ -96,6 +97,10 @@ class Profile extends CI_Controller {
                     $data['personal'] = $this->student_model->get_student_only($user_id);
                     $data['guardian'] = $this->student_model->get_guardian_only($user_id);
                     $data['user_d'] = $this->user->get_user($user_id);
+                    
+                    if($this->session->userdata('user_type')=='T'){
+                        $data['complain']=true;
+                    }
 
 
                     $this->load->view('templates/header', $data);
@@ -369,6 +374,26 @@ class Profile extends CI_Controller {
         $this->load->view('year/view_year', $data);
 
         $this->load->view('/templates/footer');
+    }
+    
+    function add_note(){
+        $note_data = array(
+      'type'=> $this->input->post('type'),
+      'admission'=> $this->input->post('addm'),
+      'subject'=> $this->input->post('subject'),
+      'note'=>$this->input->post('note')
+                );
+        
+        if($this->user->add_note($note_data)){
+            $succ_message = 'Note Successfully Added';
+            
+            json_encode($succ_message);
+        }else{
+             $err_message = 'Error occured';
+            
+            json_encode($err_message);
+            
+        }
     }
 
 }
