@@ -232,7 +232,7 @@ class Teacher extends CI_Controller {
             //For news field
             $tech_id = $this->session->userdata('id');
             $tech_details = $this->Teacher_Model->user_details($tech_id);
-            $this->News_Model->insert_action_details($tech_id, "Delete Teacher Record", $tech_details->profile_img, $tech_details->first_name);
+            $this->News_Model->insert_action_details($tech_id, "Archived Teacher Record", $tech_details->profile_img, $tech_details->first_name);
             //////
             $data['succ_message'] = "Teacher details deleted successfully";
             $data['page_title'] = "Search Teacher";
@@ -247,6 +247,51 @@ class Teacher extends CI_Controller {
 
 
             $data['succ_message'] = "Teacher details deleted successfully";
+            $data['page_title'] = "Search Teacher";
+            $this->load->view('/templates/header', $data);
+            $this->load->view('navbar_main', $data);
+            $this->load->view('navbar_sub', $data);
+            $this->load->view('/teacher/Search_page', $data);
+            $this->load->view('/templates/footer');
+        }
+    }
+    
+       /*
+     * function for archive student+guardian recode
+     */
+
+    public function archive_teacher($id) {
+
+        if (!$this->session->userdata('id')) {
+            redirect('login', 'refresh');
+        }
+        $data['navbar'] = "teacher";
+        $data['user_type'] = $this->session->userdata['user_type'];
+
+
+        if ($this->Teacher_Model->archive_teacher($id)) {
+
+            //reload table
+            $data['result'] =$this->Student_Model->SearchAllTeachers();
+            //For news field
+            $tech_id = $this->session->userdata('id');
+            $tech_details = $this->Teacher_Model->user_details($tech_id);
+            $this->News_Model->insert_action_details($tech_id, "Delete Teacher Record", $tech_details->profile_img, $tech_details->first_name);
+            //////
+             
+             $data['succ_message'] = "Teacher details deleted successfully";
+            $data['page_title'] = "Search Teacher";
+            $this->load->view('/templates/header', $data);
+            $this->load->view('navbar_main', $data);
+            $this->load->view('navbar_sub', $data);
+            $this->load->view('/teacher/Search_page', $data);
+            $this->load->view('/templates/footer');
+        } else {
+
+            $data['result'] = $this->Teacher_Model->SearchAllTeachers();
+
+
+            $data['err_message'] = "Error occured !";
             $data['page_title'] = "Search Teacher";
             $this->load->view('/templates/header', $data);
             $this->load->view('navbar_main', $data);
@@ -635,6 +680,35 @@ class Teacher extends CI_Controller {
             }
         }
     }
+    
+      /*
+     * get archive teacher details
+     */
+
+    public function load_all_archived_teachers() {
+
+        if (!$this->session->userdata('id')) {
+            redirect('login', 'refresh');
+        }
+        $data['navbar'] = "admin";
+        $data['user_type'] = $this->session->userdata['user_type'];
+
+        if ($data['user_type'] == 'A') {
+
+            $data['query'] = $this->Teacher_Model->get_all_archive_teachers();
+            $data['result'] = $data['query'];
+            $data['page_title'] = "Search Archived Teachers";
+            $this->load->view('/templates/header', $data);
+            $this->load->view('navbar_main', $data);
+            $this->load->view('navbar_sub', $data);
+            $this->load->view('/teacher/archived_search_teacher', $data);
+            $this->load->view('/templates/footer');
+        } else {
+            redirect('login', 'refresh');
+        }
+    }
+
+    
     
     function generate_report() {
         $type = $this->input->post('tpe');

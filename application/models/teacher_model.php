@@ -256,6 +256,20 @@ class Teacher_Model extends CI_Model {
             return FALSE;
         }
     }
+    
+      /*
+     * get all archived student recodes
+     */
+     function get_all_archive_teachers() {
+         $query = $this->db->query("SELECT * FROM  archived_teachers");
+     
+        if ($query->num_rows() > 0) {
+            return $query->result();
+        } else {
+            return FALSE;
+        }
+    }
+
 
     public function user_details($id) {
         $sql = "SELECT * FROM users WHERE id='$id'";
