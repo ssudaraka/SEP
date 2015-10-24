@@ -10,12 +10,16 @@ class User extends CI_Model {
         $this->db->select('*');
         $this->db->from('users');
         $this->db->where('username', $username);
+        $this->db->where('active', '1');
         $this->db->where('password', MD5($password));
         $this->db->limit(1);
 
         $query = $this->db->get();
 
         if ($query->num_rows() == 1) {
+            $date = date('Y-m-d h:i:s a');
+            $update_query = "UPDATE users SET lastvisit_at='{$date}' WHERE username='{$username}'";
+            $this->db->query($update_query);
             return $query->result();
         } else {
             return FALSE;
