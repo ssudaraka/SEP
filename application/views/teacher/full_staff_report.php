@@ -1,6 +1,6 @@
 
 <!DOCTYPE html>
-<html>
+<html id="dvContainer">
     <head>
         <title>Staff Report</title>
 
@@ -202,7 +202,25 @@
     </head>
     <body>
         <br>
-        <h2>2013 ජුනි 01 දිනට පාසලේ අධ්‍යයන කාර්ය මණ්ඩලවල තොරතුරු</h2>
+        <h2>
+        <?php
+        $today = date('Y-m-d');
+        $day = explode("-", $today);
+        echo $day[0];
+          if($day[1] == '01'){ echo  ' ජනවාරි ';}
+        else if($day[1] == '02'){ echo  ' පෙබරවාරි '; }
+        else if($day[1] == '03'){ echo  ' මාර්තු ' ;}
+        else if($day[1] == '04'){ echo  ' අප්රේල්' ; }
+        else if($day[1] == '05'){ echo  ' මැයි ' ;}
+        else if($day[1] == '06'){ echo  ' ජූනි ' ;}
+        else if($day[1] == '07'){ echo  ' ජුලි ' ;}
+        else if($day[1] == '08'){ echo  ' අගෝස්තු ' ;}
+        else if($day[1] == '09'){ echo ' සැප්තැම්බර් '; }
+        else if($day[1] == '10'){ echo  ' ඔක්තෝබර් ' ;}
+        else if($day[1] == '11'){ echo ' නොවැම්බර් '; }
+        else if($day[1] == '12'){ echo  ' දෙසැම්බර් ' ;}
+        echo $day[2];
+        ?> දිනට පාසලේ අධ්‍යයන කාර්ය මණ්ඩලවල තොරතුරු</h2>
         <input id="btnPrint" style="margin-left: 50em" class="btn btn-danger" type="button" value="Print Report" />
         <h3>සැම විදුහල්පති තනතුරු ධාරියකු හා ගුරුවරයකු සඳහා ම සියලුම තීරු සම්පුර්ණ කිරීම අනිවාර්යය වේ. මුල් පිටුවේ උපදෙස් හොදින් කියවන්න.</h3>
         <div id="dvContainer">
@@ -312,8 +330,11 @@
                     <td><?php echo $row->nationality_id; ?></td>
                     <td><?php echo $row->religion_id; ?></td>
                     <td><?php if($row->civil_status == 's'){ echo '1';} else if($row->civil_status == 'm'){ echo '2'; } else if($row->civil_status == 'w'){     echo '3'; } else if($row->civil_status == 'o'){     echo '4'; }; ?></td>
-                    <td>09</td>
-                    <td>10</td>
+                    <td><?php 
+                                          $regDate = explode("-", $row->first_appointment_date)  ;
+                                          echo substr($regDate[0], 2);?>
+                    </td>
+                    <td><?php echo $regDate[1] ?></td>
                     <td>11</td>
                     <td>12</td>
                     <td><?php echo $row->nature_of_appointment ?></td>
@@ -324,12 +345,12 @@
                     <td>1</td>
                     <td>19</td>
                     <td><?php echo $row->main_subject_id ?></td>
-                    <td>21</td>
+                    <td>1</td>
                     <td><?php echo $row->grade ?></td>
-                    <td>23</td>
-                    <td>24</td>
-                    <td>25</td>
-                    <td>26</td>
+                    <td><?php echo $applied_casual_leaves; ?></td>
+                    <td><?php echo $applied_duty_leaves; ?></td>
+                    <td><?php echo $applied_maternity_leaves; ?></td>
+                    <td>24500.00</td>
                     <td colspan="10"><?php echo $row->nic_no ?></td>
                 </tr>
 
@@ -342,10 +363,10 @@
     $("#btnPrint").on('click', function (e){
         var divContents = $("#dvContainer").html();
         var printWindow = window.open('', '', 'height=760,width=1300');
-        printWindow.document.write('<html><head><title></title>');
-        printWindow.document.write('</head><body ><h2 style="text-align: center">2013 ජුනි 01 දිනට පාසලේ අධ්‍යයන කාර්ය මණ්ඩලවල තොරතුරු</h2><h3 style="text-align: center">සැම විදුහල්පති තනතුරු ධාරියකු හා ගුරුවරයකු සඳහා ම සියලුම තීරු සම්පුර්ණ කිරීම අනිවාර්යය වේ. මුල් පිටුවේ උපදෙස් හොදින් කියවන්න.</h3>');
+       // printWindow.document.write('<html><head><title></title>');
+       // printWindow.document.write('</head><body ><h2 style="text-align: center">2013 ජුනි 01 දිනට පාසලේ අධ්‍යයන කාර්ය මණ්ඩලවල තොරතුරු</h2><h3 style="text-align: center">සැම විදුහල්පති තනතුරු ධාරියකු හා ගුරුවරයකු සඳහා ම සියලුම තීරු සම්පුර්ණ කිරීම අනිවාර්යය වේ. මුල් පිටුවේ උපදෙස් හොදින් කියවන්න.</h3>');
         printWindow.document.write(divContents);
-        printWindow.document.write('</body></html>');
+       // printWindow.document.write('</body></html>');
         printWindow.document.close();
         printWindow.print();
     });

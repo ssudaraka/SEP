@@ -126,6 +126,7 @@ class Event extends CI_Controller {
         $this->form_validation->set_error_delimiters('<br /><span class="error">', '</span>');
         $event_id = $this->input->post('eid');
         if ($this->form_validation->run() == FALSE) {
+            $data['result'] = $this->event_model->get_event_type_details();
             $data['details'] = $this->event_model->get_approved_event_details($event_id); //Get approved event details
             $data['page_title'] = "Update Event";
             $this->load->view('templates/header', $data);

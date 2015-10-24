@@ -299,7 +299,7 @@ class Teacher_Model extends CI_Model {
                     </thead>
                     <tbody>";
             foreach ($data->result() as $row){
-                echo "<tr>
+                echo "<tr align='left' width='50%'>
                         <td>$row->signature_no;</td>
                         <td>$row->name_with_initials</td>
                         <td>$row->nic_no</td>
@@ -328,23 +328,23 @@ class Teacher_Model extends CI_Model {
                     </tr>
                 </thead>
                 <tbody>";
-            echo "<tr>
+            echo "<tr align='left' width='50%'>
                     <td>NIC</td>
                     <td>$result->nic_no</td>
                 </tr>
-                <tr>
+                <tr align='left' width='50%'>
                     <td>Full Name</td>
                     <td>$result->full_name</td>
                 </tr>
-                <tr>
+                <tr align='left' width='50%'>
                     <td>Name with Initials</td>
                     <td>$result->name_with_initials</td>
                 </tr>
-                <tr>
+                <tr align='left' width='50%'>
                     <td>Birthday</td>
                     <td>$result->dob</td>
                 </tr>
-                <tr>
+                <tr align='left' width='50%'>
                     <td>Gender</td>
                     <td>";
                     if ( $result->gender == 'm') {
@@ -354,7 +354,7 @@ class Teacher_Model extends CI_Model {
                     }
                     echo "</td>";
             echo "</tr>
-                <tr>
+                <tr align='left' width='50%'>
                 <td>Nationality</td>
                 <td>";
                     if ($result->nationality_id == 1) {
@@ -370,7 +370,7 @@ class Teacher_Model extends CI_Model {
                     }
                echo "</td>
                     </tr>
-                    <tr>
+                    <tr align='left' width='50%'>
                         <td>Religion</td>
                         <td>";
                     if ($result->religion_id == 1) {
@@ -388,7 +388,7 @@ class Teacher_Model extends CI_Model {
                     }
             echo "</td>
                     </tr>
-                    <tr>
+                    <tr align='left' width='50%'>
                     <td>Civil Status</td>
                     <td>";
                     if ($result->civil_status == 's') {
@@ -402,16 +402,16 @@ class Teacher_Model extends CI_Model {
                     }
                     echo "</td>
             </tr>
-            <tr>
+            <tr align='left' width='50%'>
                 <td>Address</td>
                 <td>$result->permanent_addr
                 </td>
             </tr>
-            <tr>
+            <tr align='left' width='50%'>
                 <td>Contact Mobile No</td>
                 <td>$result->contact_home</td>
             </tr>
-            <tr>
+            <tr align='left' width='50%'>
                 <td>Widow & Orphan No</td>
                 <td>$result->wnop_no</td>
             </tr>
@@ -420,29 +420,29 @@ class Teacher_Model extends CI_Model {
     <h3><u>Academic Details</u></h3>
     <table class='table table-hover'>
         <thead>
-            <tr>
+            <tr >
                 <th align='left' width='50%'></th>
                 <th align='left' width='50%'></th>
             </tr>
         </thead>
         <tbody>
-            <tr>
+            <tr align='left' width='50%'>
                 <td>Register No</td>
                 <td>$result->teacher_register_no</td>
             </tr>
-            <tr>
+            <tr align='left' width='50%'>
                 <td>Signature No</td>
                 <td>$result->signature_no</td>
             </tr>
-            <tr>
+            <tr align='left' width='50%'>
                 <td>Serial No</td>
                 <td>$result->serial_no</td>
             </tr>
-            <tr>
+            <tr align='left' width='50%'>
                 <td>Date Joined School</td>
                 <td>$result->joined_date</td>
             </tr>
-            <tr>
+            <tr align='left' width='50%'>
                 <td>Medium</td>
                 <td>";
                     if ($result->medium == 's') {
@@ -457,7 +457,7 @@ class Teacher_Model extends CI_Model {
                     
                 echo "</td>
             </tr>
-            <tr>
+            <tr align='left' width='50%'>
                 <td>Designation</td>
                 <td>";
                     if ($result->designation_id == 1) {
@@ -479,7 +479,7 @@ class Teacher_Model extends CI_Model {
                     }
                 echo "</td>
             </tr>
-            <tr>
+            <tr align='left' width='50%'>
                 <td>Section</td>
                 <td>";
                     if ($result->section == 1) {
@@ -501,7 +501,7 @@ class Teacher_Model extends CI_Model {
                     }
                 echo "</td>
             </tr>
-            <tr>
+            <tr align='left' width='50%'>
                 <td>Main Subject</td>
                 <td>";
                     if ($result->main_subject_id == 1) {
@@ -533,7 +533,7 @@ class Teacher_Model extends CI_Model {
                     }
                 echo "</td>
             </tr>
-            <tr>
+            <tr align='left' width='50%'>
                 <td>Service Garde</td>
                 <td>";
                     if ($result->grade == 1) {
@@ -567,7 +567,7 @@ class Teacher_Model extends CI_Model {
                     }
                 echo "</td>
             </tr>
-            <tr>
+            <tr align='left' width='50%'>
                 <td>Nature of Appointment</td>
                 <td>";
                     if ($result->nature_of_appointment == 1) {
@@ -583,19 +583,19 @@ class Teacher_Model extends CI_Model {
                     }
                 echo "</td>
             </tr>
-            <tr>
+            <tr align='left' width='50%'>
                 <td>Educational Qualifications</td>
                 <td>$result->educational_qualific</td>
             </tr>
-            <tr>
+            <tr align='left' width='50%'>
                 <td>Professional Qualifications</td>
                 <td>$result->professional_qualific</td>
             </tr>
-            <tr>
+            <tr align='left' width='50%'>
                 <td>First Appointment Date</td>
                 <td>$result->first_appointment_date</td>
             </tr>
-            <tr>
+            <tr align='left' width='50%'>
                 <td>Due Pension Date</td>
                 <td>$result->pension_date</td>
             </tr>
