@@ -11,7 +11,7 @@
                 </div>
             <?php } ?>
             <div class="panel panel-default">
-                <div class="panel-heading">Create Admin Account</div>
+                <div class="panel-heading">Edit Account</div>
                 <div class="panel-body">
                     <div class="col-md-3">
                         <img src="<?php echo $user->profile_img; ?>" id="profile-img" class="img-thumbnail profile-img">
@@ -28,19 +28,14 @@
                             <?php echo form_error('username', $error_prefix, $error_suffix); ?>
                         </div>
                         <div class="form-group">
-                            <label for="email">Email Address</label>
-                            <input type="email" name="email" id="username" class="form-control" value="<?php echo $user->email; ?>">
+                            <label for="email">Password</label>
+                            <input type="password" name="password" id="password" class="form-control" value="">
                             <?php echo form_error('email', $error_prefix, $error_suffix); ?>
                         </div>
                         <div class="form-group">
-                            <label for="first_name">First Name</label>
-                            <input type="text" name="first_name" id="first_name" class="form-control" value="<?php echo $user->first_name; ?>">
-                            <?php echo form_error('first_name', $error_prefix, $error_suffix); ?>
-                        </div>
-                        <div class="form-group">
-                            <label for="last_name">Last Name</label>
-                            <input type="text" name="last_name" id="last_name" class="form-control" value="<?php echo $user->last_name; ?>">
-                            <?php echo form_error('last_name', $error_prefix, $error_suffix); ?>
+                            <label for="email">Email Address</label>
+                            <input type="email" name="email" id="username" class="form-control" value="<?php echo $user->email; ?>">
+                            <?php echo form_error('email', $error_prefix, $error_suffix); ?>
                         </div>
                         <button type="submit" class="btn btn-success">Edit</button>
                         <a href="#" id="delete-user" data-user-id="<?php echo $user->id; ?>" class="btn btn-danger">Delete</a>

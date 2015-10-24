@@ -87,7 +87,7 @@ class User extends CI_Model {
     }
 
     public function delete($user_id) {
-        $sql = "DELETE FROM users WHERE id='{$user_id}'";
+        $sql = "UPDATE users SET active = '0' WHERE id='{$user_id}'";
         $query = $this->db->query($sql);
 
         if ($query) {
@@ -142,6 +142,13 @@ class User extends CI_Model {
             return FALSE;
         }
         
+    }
+
+    // Get All the Users
+    public function get_all_users_list() {
+        $sql = "SELECT * FROM users ORDER BY created_at desc";
+        $query = $this->db->query($sql);
+        return $query->result();
     }
 }
     
