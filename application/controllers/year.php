@@ -99,6 +99,41 @@ class Year extends CI_Controller {
      * This Function will help you to add new Academic Years to the System
      */
 
+    public function current_adademic_year() {
+        $data['navbar'] = "admin";
+
+        $data['page_title'] = "Year Planer";
+        $data['first_name'] = $this->session->userdata('first_name');
+        $userid = $this->session->userdata['id'];
+
+        //Getting user type
+        $data['user_type'] = $this->session->userdata['user_type'];
+        $data['details'] = $this->Year_Model->get_academic_year_details();
+
+        $details = $this->Year_Model->get_academic_year_details();
+
+        foreach ($details as $row) {
+            $string = $row->structure;
+            $partial = explode(', ', $string);
+            $final = array();
+            array_walk($partial, function($val,$key) use(&$final){
+                list($key, $value) = explode('=', $val);
+                $final[$key] = $value;
+            });
+        }
+        $data['final'] = $final;
+
+        //Passing it to the View
+        $this->load->view('templates/header', $data);
+        $this->load->view('navbar_main', $data);
+        $this->load->view('navbar_sub', $data);
+
+        //View Year Planer
+        $this->load->view('year/current_adademic_year');
+
+        $this->load->view('/templates/footer');
+    }
+
     public function add_academic_year() {
         $data['navbar'] = "admin";
 
