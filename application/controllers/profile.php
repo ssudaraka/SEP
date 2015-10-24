@@ -14,6 +14,7 @@ class Profile extends CI_Controller {
         $this->load->model('user');
         $this->load->model('student_model');
         $this->load->model('Teacher_Model');
+        $this->load->model('Year_Model');
     }
 
     /*
@@ -37,6 +38,7 @@ class Profile extends CI_Controller {
                 $data['personal'] = $this->student_model->get_student_only($user_id);
                 $data['guardian'] = $this->student_model->get_guardian_only($user_id);
                 $data['user_d'] = $this->user->get_user($user_id);
+                $data['year'] = $this->Year_Model->get_academic_year_details();
 
 
                 $this->load->view('templates/header', $data);
@@ -55,6 +57,7 @@ class Profile extends CI_Controller {
                 $data['details'] = $this->Teacher_Model->get_staff_details($teacher_id);
                 $data['propic'] = $this->Teacher_Model->get_profile_img($teacher_id);
                 $data['user_d'] = $this->user->get_user($user_id);
+                $data['year'] = $this->Year_Model->get_academic_year_details();
                 
                 $this->load->view('templates/header', $data);
                 $this->load->view('navbar_main', $data);
@@ -70,6 +73,7 @@ class Profile extends CI_Controller {
                 //$data['prof_navbar'] = 'profile_s';
 
                 $data['user_d'] = $this->user->get_user($user_id);
+                $data['year'] = $this->Year_Model->get_academic_year_details();
 
 
                 $this->load->view('templates/header', $data);
@@ -341,6 +345,30 @@ class Profile extends CI_Controller {
         $this->load->view('navbar_sub', $data);
         $this->load->view('profile/profile_settings', $data);
         $this->load->view('templates/footer');
+    }
+    
+     public function view_year($id) {
+        $data['navbar'] = "admin";
+
+        $data['page_title'] = "profile";
+        $data['first_name'] = $this->session->userdata('first_name');
+        $userid = $this->session->userdata['id'];
+
+        //Getting user type
+        $data['user_type'] = $this->session->userdata['user_type'];
+
+        //Get Year Details 
+        $data['year'] = $this->Year_Model->get_academic_year_by_id($id);
+
+        //Passing it to the View
+        $this->load->view('templates/header', $data);
+        $this->load->view('navbar_main', $data);
+        $this->load->view('navbar_sub', $data);
+
+        //View Year Planer
+        $this->load->view('year/view_year', $data);
+
+        $this->load->view('/templates/footer');
     }
 
 }

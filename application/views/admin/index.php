@@ -47,6 +47,13 @@
                     <span class="sub">View Activity Logs...</span>
                 </a>
             </div>
+             <div class="admin-btn">
+                <i class="fa fa-book"></i>
+                <a href="<?php echo base_url('/index.php/subject'); ?>">
+                    <span class="main">Subjects</span>
+                    <span class="sub">View Activity Logs...</span>
+                </a>
+            </div>
 
         </div>
     </div>
