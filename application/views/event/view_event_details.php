@@ -73,7 +73,7 @@
                             </tr>
                         </tbody>
                     </table>
-                    <?php if(($details->status == 'approved') && ($details->end_date >= date('Y-m-d')) ) {?>
+                    <?php if((($details->status == 'approved') && ($details->end_date >= date('Y-m-d')) && ($valid_nic == $details->in_charge_id))  || ( ($this->session->userdata['user_type']) == 'A' )) {?>
                     <div class="form-group">
                         <div class="col-sm-offset-0 col-sm-10">
                             <input type="submit" class="btn btn-primary" value="Edit" style="width: 200px">

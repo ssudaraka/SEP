@@ -263,7 +263,18 @@ class Teacher_Model extends CI_Model {
         return $query->row();
     }
     
-    public function generate_report($type , $report){
+    public function teacher_nic_from_user_id($uid){
+        $data = $this->db->query("select * from teachers where user_id = '$uid'");
+        if($data->num_rows() > 0){
+            return  $data->row()->nic_no;
+        }
+        else{
+            return "0";
+        }
+        
+    }
+
+        public function generate_report($type , $report){
         if($type == 1){
             $data = $this->db->query("select * from teachers where section = '$report' ");
             echo "<img src='".base_url('assets/img/dslogo.jpg')."' width='128px' height='128px' style='margin-left: 4em'>";

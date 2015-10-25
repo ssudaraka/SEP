@@ -178,6 +178,7 @@ class Event extends CI_Controller {
         }
         date_default_timezone_set('Asia/Kolkata');
         $data['user_type'] = $this->session->userdata['user_type'];
+        $data['valid_nic'] = $this->Teacher_Model->teacher_nic_from_user_id($this->session->userdata['id']);
         $data['details'] = $this->event_model->get_approved_event_details($event_id); //Get approved event details from the database
         $data['page_title'] = "Publish Event";
         $data['navbar'] = "event";
