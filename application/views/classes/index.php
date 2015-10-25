@@ -7,11 +7,6 @@
             <div class="panel panel-default">
                 <div class="panel-heading">Classes List</div>
                 <div class="panel-body">
-                    <div class="row">
-                        <div class="col-md-12">
-                            <a class="btn btn-success">Create Class</a>
-                        </div>
-                    </div>
                     <?php if(count($students_without_class)> 0) { ?>
                     <div class="row" style="margin-top: 10px;">
                         <div class="col-md-12">
