@@ -5,6 +5,7 @@ class Email_Model extends CI_Model {
 			$this->load->database();
 	}
 
+    // This function sends a basic email to a when you pass user id, message, and subject
     public function send_basic_email($userid, $messagestring, $messagesubject){
         $config = Array(
                 'mailtype' => 'html',

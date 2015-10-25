@@ -27,6 +27,12 @@ class Year extends CI_Controller {
         $this->load->model('News_Model');
     }
 
+    /*
+    * Main Index Method for Year Controller
+    * Display related Options for different Users
+    * Admin can add/ edit academic years
+    * Students and teachers can view the current academic year
+    */
     public function index() {
         if (!$this->session->userdata('logged_in')) {
             redirect('login', 'refresh');
@@ -83,8 +89,12 @@ class Year extends CI_Controller {
             // $this->load->view('year/view_year_teacher');
 
             // $this->load->view('/templates/footer');
+
+
+            // Redirect Teachers to Calendar View
             redirect('year/current_adademic_year', 'refresh');
         } else {
+            // Redirect All Other Users to Calendar View
             redirect('year/current_adademic_year', 'refresh');
         }
     }
@@ -128,6 +138,7 @@ class Year extends CI_Controller {
         $this->load->view('/templates/footer');
     }
 
+    //Function to add new Academic years to the system
     public function add_academic_year() {
         $data['navbar'] = "admin";
 

@@ -73,6 +73,9 @@ class News extends CI_Controller {
         $this->News_Model->clear($clear_data_type);
     }
 
+    /*
+    * This function is used to get information about a single news items and display it
+    */
     public function edit_news($id) {
         if (!$this->session->userdata('logged_in')) {
             redirect('login', 'refresh');
@@ -84,12 +87,13 @@ class News extends CI_Controller {
             $this->form_validation->set_rules('news', 'News Title', 'required');
             $this->form_validation->set_rules('description', 'News Body', 'required');
             $this->form_validation->set_error_delimiters('<br /><span class="error">', '</span>');
+            // Set View data
             $userid = $this->session->userdata['id'];
             $data['page_title'] = "Publish News";
             $data['navbar'] = "admin";
             $data['details'] = $this->News_Model->get_particular_news($id);
             $data['newsid'] = $id;
-
+            // Check for form validation
             if ($this->form_validation->run() == FALSE) {
                 $this->load->view('templates/header', $data);
                 $this->load->view('navbar_main', $data);
@@ -97,7 +101,7 @@ class News extends CI_Controller {
                 $this->load->view('news/edit_news', $data);
                 $this->load->view('templates/footer');
             } else {
-
+                // Actions on form validation success
                 $updatedon = date("Y-m-d");
                 $news_name = $this->input->post('news');
                 $description = $this->input->post('description');
@@ -107,8 +111,9 @@ class News extends CI_Controller {
                     $tech_id = $this->session->userdata('id');
                     $tech_details = $this->Teacher_Model->user_details($tech_id);
                     $data['details'] = $this->News_Model->get_particular_news($id);
+                    //Record on database log
                     $this->News_Model->insert_action_details($tech_id, "Published a news", $tech_details->profile_img, $tech_details->first_name);
-                    //////
+                    //action successfull
                     $data['succ_message'] = "Successfully Published News";
                     $this->load->view('templates/header', $data);
                     $this->load->view('navbar_main', $data);
@@ -116,6 +121,7 @@ class News extends CI_Controller {
                     $this->load->view('news/edit_news', $data);
                     $this->load->view('/templates/footer');
                 } else {
+                    // Error message on database error
                     $data['err_message'] = 'An error occurred saving your information. Please try again later';
                     $this->load->view('templates/header', $data);
                     $this->load->view('navbar_main', $data);
@@ -137,6 +143,7 @@ class News extends CI_Controller {
         }
         //Getting user type
         $data['user_type'] = $this->session->userdata['user_type'];
+        // Call model to get a single news item
         $data['details'] = $this->News_Model->get_particular_news($id);
         $data['page_title'] = "View News";
         $data['navbar'] = 'admin';
@@ -158,13 +165,13 @@ class News extends CI_Controller {
         //Getting user type
         $data['user_type'] = $this->session->userdata['user_type'];
         $this->News_Model->delete_news($id);
+        // Redirect on success
         redirect('news/get_news?delete=true', 'refresh');
     }
 
     /*
-    * Section below is coded by udara Karunarathna
+    * This function is to create news items
     */
-    // This function is to create news items
     function publish_news() {
         if (!$this->session->userdata('logged_in')) {
             redirect('login', 'refresh');
@@ -177,7 +184,7 @@ class News extends CI_Controller {
             $this->form_validation->set_rules('description', 'News Body', 'required');
             $this->form_validation->set_error_delimiters('<br /><span class="error">', '</span>');
             $userid = $this->session->userdata['id'];
-
+            // Check for form validation
             if ($this->form_validation->run() == FALSE) {
                 $data['page_title'] = "Publish News";
                 $data['navbar'] = 'admin';
@@ -191,13 +198,14 @@ class News extends CI_Controller {
                 $data['succ_message'] = "Successfully Published News";
                 $news_name = $this->input->post('news');
                 $description = $this->input->post('description');
-
+                //Insert new news item to the database
                 if ($this->News_Model->create_news($news_name, $description, $userid)) {
                     //For news field
                     $tech_id = $this->session->userdata('id');
                     $tech_details = $this->Teacher_Model->user_details($tech_id);
+                    // Save on database log
                     $this->News_Model->insert_action_details($tech_id, "Publish a news", $tech_details->profile_img, $tech_details->first_name);
-                    //////
+                    //Show Success message
                     $data['page_title'] = "Publish News";
                     $data['navbar'] = "admin";
                     $this->load->view('templates/header', $data);
@@ -206,6 +214,7 @@ class News extends CI_Controller {
                     $this->load->view('news/news_publish', $data);
                     $this->load->view('/templates/footer');
                 } else {
+                    // Display error on database errors
                     $data['err_message'] = 'An error occurred saving your information. Please try again later';
                     $data['page_title'] = "Publish News";
                     $data['navbar'] = "admin";

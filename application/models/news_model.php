@@ -85,16 +85,19 @@ class News_Model extends CI_Model {
         return TRUE;
     }
     
+    //This function is used get all the news published on the portal sorted by created date on descending order
     public function get_all_news_details(){
         $data = $this->db->query("select * from news_blog order by create_at desc");
         return $data->result();
     }
     
+    //This function is used to get all the information on a single news item
     public function get_particular_news($id){
         $data = $this->db->query("select * from news_blog where id='$id'");
         return $data->row();
     }
     
+    //This function is used to update a single news item
     public function update_news($id , $data){
         $this->db->where('id', $id);
         if ($this->db->update('news_blog', $data)) {
@@ -104,6 +107,7 @@ class News_Model extends CI_Model {
         }
     }
     
+    // This function is used to delete news items from the portal
     public function delete_news($id){
         $this->db->query("delete from news_blog where id='$id'");
         return TRUE;
