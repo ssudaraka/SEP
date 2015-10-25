@@ -9,6 +9,7 @@ class Class_Model extends CI_Model {
     public function get_classes($grade = NULL, $academic_year = NULL) {
         $sql = "SELECT * FROM `classes` WHERE `academic_year`='{$academic_year}' ";
         $sql .= (!$grade ? "" : "AND grade_id='{$grade}' ");
+        $sql .= "ORDER BY grade_id";
 
         return $this->db->query($sql)->result();
     }
@@ -39,7 +40,7 @@ class Class_Model extends CI_Model {
     public function get_students_without_class($grade_id = NULL) {
         $sql = "SELECT * FROM `students` WHERE ";
         $sql .= "current_class IS NULL ";
-        if(!is_null($grade_id)){
+        if (!is_null($grade_id)) {
             $sql .= "AND current_grade='{$grade_id}' ";
         }
         return $this->db->query($sql)->result();
@@ -136,27 +137,41 @@ class Class_Model extends CI_Model {
 
         return $query->result();
     }
-    
-    public function update_class($class_id, $class_data){
+
+    public function update_class($class_id, $class_data) {
         $this->db->update('classes', $class_data, array('id' => $class_id));
     }
-    
-    public function remove_class_teacher($class_id){
+
+    public function remove_class_teacher($class_id) {
         $data = array(
-          'teacher_id' => NULL,
+            'teacher_id' => NULL,
         );
-        
+
         $this->db->update('classes', $data, array('id' => $class_id));
     }
-    
-    public function get_number_of_students($class_id){
+
+    public function get_number_of_students($class_id) {
         $sql = "SELECT `id` FROM `student_class` WHERE `class_id` = '{$class_id}'";
         return $this->db->query($sql)->num_rows();
     }
-    
+
 //    public function get_students_without_class(){
 //        $sql = "SELECT * FROM ` students` WHERE current_class IS NULL";
 //        return $this->db->query($sql)->result();
 //    }
+
+    public function get_academic_years() {
+        $sql = "SELECT DISTINCT `academic_year` FROM classes";
+        return $this->db->query($sql)->result();
+    }
+
+//    public function grade_strength($acadmic_year){
+//        $sql = "SELECT grade_id ";
+//    }
+
+    public function get_students_for_academic_year($academic_year) {
+        $sql = "SELECT s.*, c.* FROM students s, student_class c ";
+        $sql .= "WHERE c.student_id = s.id AND c.academic_year ='{$academic_year}'";
+    }
 
 }

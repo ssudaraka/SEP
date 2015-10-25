@@ -19,7 +19,7 @@ class Classes extends CI_Controller {
         $data['page_title'] = "Class Management";
         $data['user_type'] = $this->session->userdata['user_type'];
         $data['navbar'] = "admin";
-        
+
         $grade = $this->input->get('grade');
         $academic_year = $this->input->get('ay');
 
@@ -166,7 +166,7 @@ class Classes extends CI_Controller {
 
 
         $this->form_validation->set_rules('class_teacher', 'Class Teacher', 'callback_validate_teacher_class');
-        if($this->form_validation->run() == FALSE) {
+        if ($this->form_validation->run() == FALSE) {
             $this->load->view('templates/header', $data);
             $this->load->view('navbar_main', $data);
             $this->load->view('navbar_sub', $data);
@@ -186,17 +186,17 @@ class Classes extends CI_Controller {
             $this->load->view('/templates/footer', $data);
         }
     }
-    
-    function remove_class_teacher($class_id){
+
+    function remove_class_teacher($class_id) {
         $this->class_model->remove_class_teacher($class_id);
         redirect("classes/edit_class/{$class_id}");
     }
-    
-    function students_without_class(){
+
+    function students_without_class() {
         $data['page_title'] = "Class Management";
         $data['user_type'] = $this->session->userdata['user_type'];
         $data['navbar'] = "admin";
-        
+
         $grade = (!$this->input->get('grade') ? NULL : $this->input->get('grade'));
         $academic_year = $this->input->get('ay');
 
@@ -204,7 +204,7 @@ class Classes extends CI_Controller {
             $academic_year = date('Y');
         }
 
-        $data['students_without_class'] = $this->class_model->get_students_without_class($grade );
+        $data['students_without_class'] = $this->class_model->get_students_without_class($grade);
         //var_dump($data['students_without_class']);
         $this->load->view('templates/header', $data);
         $this->load->view('navbar_main', $data);
@@ -212,19 +212,81 @@ class Classes extends CI_Controller {
         $this->load->view('classes/students_without_class', $data);
         $this->load->view('/templates/footer');
     }
-    
-    function reports(){
-        
+
+    function reports() {
+
         $data['page_title'] = "Class Management";
         $data['user_type'] = $this->session->userdata['user_type'];
         $data['navbar'] = "admin";
-        
-        
-        $this->load->view('templates/header', $data);
-        $this->load->view('navbar_main', $data);
-        $this->load->view('navbar_sub', $data);
-        $this->load->view('classes/reports', $data);
-        $this->load->view('/templates/footer');
+        $data['academic_year_list'] = $this->class_model->get_academic_years();
+        $data['grade_list'] = $this->class_model->get_grades();
+        $this->form_validation->set_rules('report_type', 'Report Type', 'callback_report_option_selected');
+        if ($this->form_validation->run() == FALSE) {
+            $this->load->view('templates/header', $data);
+            $this->load->view('navbar_main', $data);
+            $this->load->view('navbar_sub', $data);
+            $this->load->view('classes/reports', $data);
+            $this->load->view('/templates/footer');
+        } else {
+
+            $data['page_title'] = "Class Management";
+
+            $report_option = (int) $this->input->post('report_type');
+            $data['academic_year'] = $this->input->post('academic_year');
+            if ((int) $this->input->post('grade') === 0) {
+                $data['grade'] = NULL;
+            } else {
+                $data['grade'] = $this->input->post('grade');
+            }
+
+//        var_dump($data['academic_year']);
+//        var_dump($data['grade']);
+            switch ($report_option) {
+                case '1':
+                    $data['classes'] = $this->class_model->get_classes($data['grade'], $data['academic_year']);
+                    $this->load->view('templates/header', $data);
+                    $this->load->view('classes/report_student_class', $data);
+                    $this->load->view('/templates/footer');
+                    break;
+                default:
+                    show_404();
+            }
+        }
+    }
+
+    function report_generate() {
+        $data['page_title'] = "Class Management";
+
+        $report_option = (int) $this->input->post('report_type');
+        $data['academic_year'] = $this->input->post('academic_year');
+        if ((int) $this->input->post('grade') === 0) {
+            $data['grade'] = NULL;
+        } else {
+            $data['grade'] = $this->input->post('grade');
+        }
+
+//        var_dump($data['academic_year']);
+//        var_dump($data['grade']);
+        switch ($report_option) {
+            case '1':
+                $data['classes'] = $this->class_model->get_classes($data['grade'], $data['academic_year']);
+                $this->load->view('templates/header', $data);
+                $this->load->view('classes/report_student_class', $data);
+                $this->load->view('/templates/footer');
+                break;
+            default:
+                show_404();
+        }
+    }
+    
+    function report_option_selected(){
+        $report_option = (int)$this->input->post('report_type');
+        if($report_option === 0){
+            $this->form_validation->set_message('report_option_selected', 'Please select a report type');
+            return FALSE;
+        } else {
+            return TRUE;
+        }
     }
 
 }
