@@ -58,8 +58,8 @@ class Profile extends CI_Controller {
                 $data['propic'] = $this->Teacher_Model->get_profile_img($teacher_id);
                 $data['user_d'] = $this->user->get_user($user_id);
                 $data['year'] = $this->Year_Model->get_academic_year_details();
-                
-                
+
+
                 $this->load->view('templates/header', $data);
                 $this->load->view('navbar_main', $data);
                 $this->load->view('navbar_sub', $data);
@@ -97,9 +97,9 @@ class Profile extends CI_Controller {
                     $data['personal'] = $this->student_model->get_student_only($user_id);
                     $data['guardian'] = $this->student_model->get_guardian_only($user_id);
                     $data['user_d'] = $this->user->get_user($user_id);
-                    
-                    if($this->session->userdata('user_type')=='T'){
-                        $data['complain']=true;
+
+                    if ($this->session->userdata('user_type') == 'T') {
+                        $data['complain'] = true;
                     }
 
 
@@ -115,7 +115,7 @@ class Profile extends CI_Controller {
                     $data['edit'] = false;
                     $data['user_type'] = $this->session->userdata['user_type'];
                     $data['user_d'] = $this->user->get_user($user_id);
-                    
+
                     $teacher_id = $this->Teacher_Model->get_teacher_id($user_id);
                     $data['details'] = $this->Teacher_Model->get_staff_details($teacher_id);
                     $data['propic'] = $this->Teacher_Model->get_profile_img($teacher_id);
@@ -351,8 +351,8 @@ class Profile extends CI_Controller {
         $this->load->view('profile/profile_settings', $data);
         $this->load->view('templates/footer');
     }
-    
-     public function view_year($id) {
+
+    public function view_year($id) {
         $data['navbar'] = "admin";
 
         $data['page_title'] = "profile";
@@ -375,24 +375,42 @@ class Profile extends CI_Controller {
 
         $this->load->view('/templates/footer');
     }
-    
-    function add_note(){
-        $note_data = array(
-      'type'=> $this->input->post('type'),
-      'admission'=> $this->input->post('addm'),
-      'subject'=> $this->input->post('subject'),
-      'note'=>$this->input->post('note')
+
+    function add_note() {
+        $this->load->library('form_validation');
+        $this->form_validation->set_rules('subject', 'Subject', "required|xss_clean");
+        $this->form_validation->set_rules('note', 'Note', "required|xss_clean");
+
+        if ($this->form_validation->run() == FALSE) {
+             $message = array('msg' => validation_errors(), 'status' => false);
+                    echo json_encode($message);
+        } else {
+
+            if ($user_id = $this->student_model->get_id_by_index($this->input->post('addm'))) {
+
+                $note_data = array(
+                    'type' => $this->input->post('type'),
+                    'user_id' => $user_id,
+                    'subject' => $this->input->post('subject'),
+                    'note' => $this->input->post('note')
                 );
-        
-        if($this->user->add_note($note_data)){
-            $succ_message = 'Note Successfully Added';
-            
-            json_encode($succ_message);
-        }else{
-             $err_message = 'Error occured';
-            
-            json_encode($err_message);
-            
+
+
+                if ($this->user->add_note($note_data)) {
+                    //$succ_message = 'Note Successfully Added';
+                    $message = array('msg' => 'Note Successfully Added', 'status' => true);
+                    echo json_encode($message);
+                } else {
+                    $message = array('msg' => 'Error occured', 'status' => true);
+
+                    echo json_encode($message);
+                }
+            } else {
+
+                $message = array('msg' => 'Error occured', 'status' => true);
+
+                echo json_encode($message);
+            }
         }
     }
 

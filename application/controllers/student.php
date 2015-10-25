@@ -987,6 +987,44 @@ class Student extends CI_Controller {
             pdf_create($html, $filename);
         }
     }
+    
+    function all_notes(){
+        
+            $data['page_title'] = "Notes/Complains";
+            $data['navbar'] = 'admin';
+            $data['user_type'] = $this->session->userdata('user_type');
+            $data['result']=$this->Student_Model->get_all_notes();
+            
+            
+            
+            
+           
+            //$data['users'] = $this->Teacher_Model->SearchAllTeachers();
+            $this->load->view('templates/header', $data);
+            $this->load->view('navbar_main', $data);
+            $this->load->view('navbar_sub', $data);
+            $this->load->view('admin/manage_notes', $data);
+            $this->load->view('/templates/footer');
+    }
+    
+    function note_action($id){
+        
+            $data['page_title'] = "Notes/Complains";
+            $data['navbar'] = 'admin';
+            $data['user_type'] = $this->session->userdata('user_type');
+            $data['result']=$this->Student_Model->get_note($id);
+            
+            
+            
+            
+           
+            //$data['users'] = $this->Teacher_Model->SearchAllTeachers();
+            $this->load->view('templates/header', $data);
+            $this->load->view('navbar_main', $data);
+            $this->load->view('navbar_sub', $data);
+            $this->load->view('admin/manage_notes', $data);
+            $this->load->view('/templates/footer');
+    }
 
     /*
      * <<<<<<<<<<<<<<<<<<<<<<    validation functions    >>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>

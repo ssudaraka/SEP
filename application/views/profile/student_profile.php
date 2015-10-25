@@ -378,13 +378,16 @@
  <?php } ?>
                  <?php if(isset($complain)) {?> 
                 <div class="bhoechie-tab-content hide " >
+                     
+                    <br>
+                    <div id="succ"></div>
                     
                     <form class="form-horizontal">
                         <fieldset>
 
                                 <!-- Form Name -->
                                
-                                <br><br>
+                                <br>
                                 <!-- Select Basic -->
                                 <div class="form-group">
                                     <label class="col-md-4 control-label" for="type">Type of the note</label>
@@ -400,7 +403,7 @@
                                 <div class="form-group">
                                     <label class="col-md-4 control-label" for="subject">subject</label>  
                                     <div class="col-md-4">
-                                        <input id="subject" name="subject" placeholder="" class="form-control input-md" required="" type="text">
+                                        <input id="subject" name="subject" placeholder="" class="form-control input-md" required type="text">
 
                                     </div>
                                 </div>
@@ -465,7 +468,17 @@
             processData: false,
             contentType: false,
         }).done(function (data) {
-            $("#teacher_rep").html(data);
+            var result = $.parseJSON(data);
+           console.log(result['status']);
+            if(result['status']==true){
+                 $('#succ').append('<div class="alert alert-success alert-dismissible" role="alert">' + result['msg'] + '</div>');
+                 $('.alert').delay(2000).slideUp(300);
+                
+            }else{
+                 $('#succ').append('<div class="alert alert-danger alert-dismissible" role="alert">' + result['msg'] + '</div>');
+                 $('.alert').delay(2000).slideUp(300);  
+            }
+            
         });
     });
 }); 

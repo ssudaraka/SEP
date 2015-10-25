@@ -51,7 +51,14 @@
                 <i class="fa fa-book"></i>
                 <a href="<?php echo base_url('/index.php/subject'); ?>">
                     <span class="main">Subjects</span>
-                    <span class="sub">View Activity Logs...</span>
+                    <span class="sub">Manage Subjects...</span>
+                </a>
+            </div>
+            <div class="admin-btn">
+                <i class="fa fa fa-file-text-o"></i>
+                <a href="<?php echo base_url('/index.php/student/all_notes'); ?>">
+                    <span class="main">Student Notes</span>
+                    <span class="sub">View Notes/Complains...</span>
                 </a>
             </div>
 

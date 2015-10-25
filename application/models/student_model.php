@@ -463,6 +463,28 @@ class Student_Model extends CI_Model {
 
      
     }
+    function get_id_by_index($index){
+         try {
+            if ($data = $this->db->query("SELECT user_id FROM students  WHERE admission_no = '$index'")) {
+                $row = $data->row()->user_id;
+                return $row;
+            } else {
+                return null;
+            }
+        } catch (Exception $ex) {
+            return null;
+        }
+    }
+    
+    function get_all_notes(){
+         $data = $this->db->query("select s.admission_no ,s.contact_home ,c.name, n.* from students s, classes c ,notes n where c.id=s.class and s.user_id=n.student_id");
+
+        if ($data->num_rows() > 0) {
+            return $data->result();
+        }else{
+            return FALSE;
+        }
+    }
 
 }
 
