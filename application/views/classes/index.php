@@ -12,6 +12,18 @@
                             <a class="btn btn-success">Create Class</a>
                         </div>
                     </div>
+                    <?php if(count($students_without_class)> 0) { ?>
+                    <div class="row" style="margin-top: 10px;">
+                        <div class="col-md-12">
+                            <div class="alert alert-danger alert-dismissible" role="alert">
+                                <button type="button" class="close" data-dismiss="alert" aria-label="Close"><span aria-hidden="true">&times;</span></button>
+                                <strong>Reminder!</strong>
+                                There are <a href="<?php echo base_url('index.php/classes/students_without_class'); ?>"><?php echo count($students_without_class); ?> student(s)</a> without classes.
+                            </div>
+                        </div>
+                    </div>
+                    <?php } ?>
+                    <?php if(count($result) > 0) { ?>
                     <div class="row"style="margin-top: 10px;">
                         <div class="col-md-12">
                             <script type="text/javascript">
@@ -30,6 +42,7 @@
                                         <th>Grade</th>
                                         <th>Class</th>
                                         <th>Class Teacher</th>
+                                        <th>Student Count</th>
                                         <th>Academic Year</th>
                                         <th>&nbsp;</th>
                                     </tr>
@@ -41,6 +54,7 @@
                                             <td><?php echo get_grade_name($row->grade_id); ?></td>
                                             <td><?php echo $row->name; ?></td>
                                             <td><?php echo get_class_teacher_name($row->teacher_id); ?></td>
+                                            <td><?php echo get_number_of_students($row->id); ?></td>
                                             <td><?php echo $row->academic_year; ?></td>
                                             <td>
                                                 <a href="<?php echo base_url("index.php/classes/assign_to_class/{$row->id}"); ?>" data-toggle="tooltip" title="Assign Students"><i class="fa fa-graduation-cap" style="font-size: 18px;" ></i></a>&nbsp;
@@ -54,6 +68,16 @@
                             </table>
                         </div>
                     </div>
+                    <?php } else { ?>
+                    <div class="row"style="margin-top: 10px;">
+                        <div class="col-md-12 text-center">
+                            <p><span style="font-size: 50px" class="glyphicon glyphicon-blackboard"></span></p>
+                            <p>We haven't found any classes matching your requirement.
+                                <a href="<?php echo base_url("index.php/classes/create");?>">Why not create a new class?</a>
+                            </p>
+                        </div>
+                    </div>
+                    <?php } ?>
                 </div>
             </div>
         </div>

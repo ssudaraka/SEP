@@ -36,8 +36,12 @@ class Class_Model extends CI_Model {
         return $this->db->query($sql)->result();
     }
 
-    public function get_students_without_class($grade_id) {
-        $sql = "SELECT * FROM `students` WHERE 	current_grade={$grade_id} AND current_class IS NULL";
+    public function get_students_without_class($grade_id = NULL) {
+        $sql = "SELECT * FROM `students` WHERE ";
+        $sql .= "current_class IS NULL ";
+        if(!is_null($grade_id)){
+            $sql .= "AND current_grade='{$grade_id}' ";
+        }
         return $this->db->query($sql)->result();
     }
 
@@ -144,5 +148,15 @@ class Class_Model extends CI_Model {
         
         $this->db->update('classes', $data, array('id' => $class_id));
     }
+    
+    public function get_number_of_students($class_id){
+        $sql = "SELECT `id` FROM `student_class` WHERE `class_id` = '{$class_id}'";
+        return $this->db->query($sql)->num_rows();
+    }
+    
+//    public function get_students_without_class(){
+//        $sql = "SELECT * FROM ` students` WHERE current_class IS NULL";
+//        return $this->db->query($sql)->result();
+//    }
 
 }

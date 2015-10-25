@@ -40,3 +40,9 @@ function get_religion($religion_id){
             return "Undefined";
     }
 }
+
+function get_number_of_students($class_id){
+    $ci =& get_instance();
+    $ci->load->model('class_model');
+    return $ci->class_model->get_number_of_students($class_id);
+}

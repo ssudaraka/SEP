@@ -21,12 +21,12 @@
                     </tr>
                     <tr>
                         <td>
-                            <span class="glyphicon glyphicon-education text-warning"></span><a href="<?php echo base_url('index.php/classes/create'); ?>">Assign Students</a>
+                            <span class="glyphicon glyphicon-education text-warning"></span><a href="<?php echo base_url('index.php/classes/students_without_class'); ?>">Assign Students</a>
                         </td>
                     </tr>
                     <tr>
                         <td>
-                            <span class="glyphicon glyphicon-folder-open text-warning"></span><a href="<?php echo base_url('index.php/classes/create'); ?>">Reports</a>
+                            <span class="glyphicon glyphicon-folder-open text-warning"></span><a href="<?php echo base_url('index.php/classes/reports'); ?>">Reports</a>
                         </td>
                     </tr>
                 </table>

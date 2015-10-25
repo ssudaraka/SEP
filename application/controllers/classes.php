@@ -19,6 +19,7 @@ class Classes extends CI_Controller {
         $data['page_title'] = "Class Management";
         $data['user_type'] = $this->session->userdata['user_type'];
         $data['navbar'] = "admin";
+        
         $grade = $this->input->get('grade');
         $academic_year = $this->input->get('ay');
 
@@ -27,11 +28,11 @@ class Classes extends CI_Controller {
         }
 
         $data['result'] = $this->class_model->get_classes($grade, $academic_year);
-
+        $data['students_without_class'] = $this->class_model->get_students_without_class();
         $this->load->view('templates/header', $data);
         $this->load->view('navbar_main', $data);
         $this->load->view('navbar_sub', $data);
-        $this->load->view('classes/index');
+        $this->load->view('classes/index', $data);
         $this->load->view('/templates/footer');
     }
 
@@ -189,6 +190,41 @@ class Classes extends CI_Controller {
     function remove_class_teacher($class_id){
         $this->class_model->remove_class_teacher($class_id);
         redirect("classes/edit_class/{$class_id}");
+    }
+    
+    function students_without_class(){
+        $data['page_title'] = "Class Management";
+        $data['user_type'] = $this->session->userdata['user_type'];
+        $data['navbar'] = "admin";
+        
+        $grade = (!$this->input->get('grade') ? NULL : $this->input->get('grade'));
+        $academic_year = $this->input->get('ay');
+
+        if (!$academic_year) {
+            $academic_year = date('Y');
+        }
+
+        $data['students_without_class'] = $this->class_model->get_students_without_class($grade );
+        //var_dump($data['students_without_class']);
+        $this->load->view('templates/header', $data);
+        $this->load->view('navbar_main', $data);
+        $this->load->view('navbar_sub', $data);
+        $this->load->view('classes/students_without_class', $data);
+        $this->load->view('/templates/footer');
+    }
+    
+    function reports(){
+        
+        $data['page_title'] = "Class Management";
+        $data['user_type'] = $this->session->userdata['user_type'];
+        $data['navbar'] = "admin";
+        
+        
+        $this->load->view('templates/header', $data);
+        $this->load->view('navbar_main', $data);
+        $this->load->view('navbar_sub', $data);
+        $this->load->view('classes/reports', $data);
+        $this->load->view('/templates/footer');
     }
 
 }
