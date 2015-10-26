@@ -1,6 +1,4 @@
-# SEP
-3rd year Software Engineering Project
+# Ecole
+School Management System
 
-This is the first time I am using GitHub for version management. So you may find some inconsistencies. Feel free to tell me your suggestions and comments so I can improve myself. Contact me via ssudaraka@gmail.com
-
-Thank you.
+Official Git repository of Ecole School Management System developed by SLIIT SE Undergraduates. Project is currently in development stage and you are welcome to give any suggestions or ideas.
