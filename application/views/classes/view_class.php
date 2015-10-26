@@ -17,7 +17,7 @@
                             <p>
                                 <span class="label label-info">Class Teacher:&Tab;</span>&nbsp;
                                 <?php if (is_null($class->teacher_id)) { ?>
-                                    <a href="<?php echo base_url("index.php/classes/edit_class"); ?>">Assign Teacher <i class="fa fa-plus-circle"></i></a>
+                                    <a href="<?php echo base_url("index.php/classes/edit_class/{$class->id}"); ?>">Assign Teacher <i class="fa fa-plus-circle"></i></a>
                                 <?php } else { ?>
                                     <?php echo get_class_teacher_name($class->teacher_id); ?>
                                 <?php } ?>

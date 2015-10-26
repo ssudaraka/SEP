@@ -15,6 +15,9 @@ class Classes extends CI_Controller {
         $this->load->model('teacher_model');
     }
 
+    /*
+     * Main function that loads classes
+     */
     function index() {
         $data['page_title'] = "Class Management";
         $data['user_type'] = $this->session->userdata['user_type'];
@@ -35,6 +38,10 @@ class Classes extends CI_Controller {
         $this->load->view('classes/index', $data);
         $this->load->view('/templates/footer');
     }
+    
+    /*
+     * Interface that loads create class
+     */
 
     function create() {
         $data['page_title'] = "Class Management";
