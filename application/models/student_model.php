@@ -485,6 +485,27 @@ class Student_Model extends CI_Model {
             return FALSE;
         }
     }
+    
+     function get_note($id){
+         $data = $this->db->query("select * from notes where id = '$id'");
+
+        if ($data) {
+            return $data->row();
+        }else{
+            return FALSE;
+        }
+    }
+    
+     public function take_action($id, $action) {
+        $query = "UPDATE notes SET action='{$action}',status='1' WHERE id='{$id}'";
+        $result = $this->db->query($query);
+
+        if (!$result) {
+            return FALSE;
+        } else {
+            return TRUE;
+        }
+    }
 
 }
 

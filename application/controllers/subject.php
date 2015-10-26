@@ -118,6 +118,9 @@ class Subject extends CI_Controller {
 //        $this->load->view('templates/footer');
 //    }
     
+    /*
+     * Load subject to the data table 
+     */
     function manage_subjects(){
         $data['page_title'] = "Manage Subjects";
         $data['navbar'] = 'subject';
@@ -133,7 +136,9 @@ class Subject extends CI_Controller {
         
         
     }
-
+    /*
+     * Search subjects
+     */
     function search() {
         $data['user_type']=$this->session->userdata('user_type');
         $this->load->library('pagination');
@@ -165,7 +170,9 @@ class Subject extends CI_Controller {
         $this->load->view('subject/manage_subjects', $data);
         $this->load->view('templates/footer');
     }
-
+    /*
+     * Delete a subject
+     */
     function delete($id) {
 
         if ($this->session->userdata('user_type') !== "A") {
@@ -212,7 +219,9 @@ class Subject extends CI_Controller {
             $this->load->view('templates/footer');
         }
     }
-    
+    /*
+     * Edit subject
+     */
     function edit($sub_id){
      
         $data['user_type']=$this->session->userdata('user_type');
@@ -232,6 +241,9 @@ class Subject extends CI_Controller {
             $this->load->view('subject/edit_subject', $data);
             $this->load->view('templates/footer');
     }
+    /*
+     * Both methods are used for edit subject using ajax
+     */
     function edit_subject(){
           $data['user_type']=$this->session->userdata('user_type');
          

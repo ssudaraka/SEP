@@ -33,6 +33,7 @@
                                 <td><strong>Type</strong></td>
                                 <td><strong>subject</strong></td>
                                 <td><strong>note</strong></td>
+                                <td><strong>Action Status</strong></td>
                                 <td>Take Action&nbsp;</td>
                             </tr>
                         </thead>
@@ -44,12 +45,13 @@
                                     <td><?php echo $row->admission_no; ?></td>
                                     <td><?php echo $row->name; ?></td>
                                     <td><?php echo $row->contact_home; ?></td>
-                                    <td><?php $type = $row->type; if($type=1){echo '<span style="color:blue">Note</span>';}else{echo '<span style="color:red">Complain</span>'; } ?></td>
+                                    <td><?php $type = $row->type; if($type==1){echo '<span style="color:blue">Note</span>';}else{echo '<span style="color:red">Complain</span>'; } ?></td>
                                     <td><?php echo $row->subject; ?></td>
                                     <td><?php echo $row->note; ?></td>
-                                    <td>
-                                        <a href="<?php echo base_url("index.php/student/note_action") . "/" . $row->id; ?>" data-toggle="tooltip" title="edit"><i class="fa fa-exclamation-circle" style="font-size: 22px;" ></i></a>&nbsp;
-
+                                    <td><?php $status = $row->status; if($status==0){echo '<span style="color:red">pending</span>';}else{echo '<span style="color:green">action taken</span>'; }?></td>
+                                    <td> <?php if($status == 0){ ?>
+                                        <a href="<?php echo base_url("index.php/student/note_action") . "/" . $row->id; ?>" data-toggle="tooltip" title="take action"><i class="fa fa-exclamation-circle" style="font-size: 22px;" ></i></a>&nbsp;
+                                    <?php } else { echo '<istyle="font-size: 12px;" >done</i>';}?>
                                     </td>
                                 </tr>
                             <?php } }?>
