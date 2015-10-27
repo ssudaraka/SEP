@@ -27,6 +27,13 @@
                 </a>
             </div>
             <div class="admin-btn">
+                <i class="fa fa-users"></i>
+                <a href="<?php echo base_url('index.php/admin/manage_users'); ?>">
+                    <span class="main">Users</span>
+                    <span class="sub">Update, Delete...</span>
+                </a>
+            </div>
+            <div class="admin-btn">
                 <i class="fa fa-university"></i>
                 <a href="<?php echo base_url('index.php/classes'); ?>">
                     <span class="main">Classes</span>

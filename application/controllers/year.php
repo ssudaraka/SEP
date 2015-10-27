@@ -27,6 +27,12 @@ class Year extends CI_Controller {
         $this->load->model('News_Model');
     }
 
+    /*
+    * Main Index Method for Year Controller
+    * Display related Options for different Users
+    * Admin can add/ edit academic years
+    * Students and teachers can view the current academic year
+    */
     public function index() {
         if (!$this->session->userdata('logged_in')) {
             redirect('login', 'refresh');
@@ -63,35 +69,33 @@ class Year extends CI_Controller {
             $this->load->view('/templates/footer');
         } elseif ($data['user_type'] == 'T') {
 
-            //Get info from the Academic Year
-            $yearid;
-            $academic_year = $this->Year_Model->get_academic_year_details();
-            foreach ($academic_year as $row) {
-                $yearid = $row->id;
-            }
+            // //Get info from the Academic Year
+            // $yearid;
+            // $academic_year = $this->Year_Model->get_academic_year_details();
+            // foreach ($academic_year as $row) {
+            //     $yearid = $row->id;
+            // }
 
-            //Get Year Details 
-            $data['year'] = $this->Year_Model->get_academic_year_by_id($yearid);
+            // //Get Year Details 
+            // $data['year'] = $this->Year_Model->get_academic_year_by_id($yearid);
 
 
-            //Passing it to the View
-            $this->load->view('templates/header', $data);
-            $this->load->view('navbar_main', $data);
-            $this->load->view('navbar_sub', $data);
+            // //Passing it to the View
+            // $this->load->view('templates/header', $data);
+            // $this->load->view('navbar_main', $data);
+            // $this->load->view('navbar_sub', $data);
 
-            //View Year Planer  Teacher
-            $this->load->view('year/view_year_teacher');
+            // //View Year Planer  Teacher
+            // $this->load->view('year/view_year_teacher');
 
-            $this->load->view('/templates/footer');
+            // $this->load->view('/templates/footer');
+
+
+            // Redirect Teachers to Calendar View
+            redirect('year/current_adademic_year', 'refresh');
         } else {
-            //Passing it to the View
-            $this->load->view('templates/header', $data);
-            $this->load->view('navbar_main', $data);
-            $this->load->view('navbar_sub', $data);
-
-            //View Year Planer 
-
-            $this->load->view('/templates/footer');
+            // Redirect All Other Users to Calendar View
+            redirect('year/current_adademic_year', 'refresh');
         }
     }
 
@@ -99,6 +103,42 @@ class Year extends CI_Controller {
      * This Function will help you to add new Academic Years to the System
      */
 
+    public function current_adademic_year() {
+        $data['navbar'] = "admin";
+
+        $data['page_title'] = "Year Planer";
+        $data['first_name'] = $this->session->userdata('first_name');
+        $userid = $this->session->userdata['id'];
+
+        //Getting user type
+        $data['user_type'] = $this->session->userdata['user_type'];
+        $data['details'] = $this->Year_Model->get_academic_year_details();
+
+        $details = $this->Year_Model->get_academic_year_details();
+
+        foreach ($details as $row) {
+            $string = $row->structure;
+            $partial = explode(', ', $string);
+            $final = array();
+            array_walk($partial, function($val,$key) use(&$final){
+                list($key, $value) = explode('=', $val);
+                $final[$key] = $value;
+            });
+        }
+        $data['final'] = $final;
+
+        //Passing it to the View
+        $this->load->view('templates/header', $data);
+        $this->load->view('navbar_main', $data);
+        $this->load->view('navbar_sub', $data);
+
+        //View Year Planer
+        $this->load->view('year/current_adademic_year');
+
+        $this->load->view('/templates/footer');
+    }
+
+    //Function to add new Academic years to the system
     public function add_academic_year() {
         $data['navbar'] = "admin";
 

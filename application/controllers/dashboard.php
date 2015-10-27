@@ -32,14 +32,17 @@ class Dashboard extends CI_Controller {
 
         $data['page_title'] = 'Dashboard';
         $data['first_name'] = $this->session->userdata('first_name');
+        $data['details'] = $this->event_model->get_pending_event_details();
         $this->load->view('templates/header', $data);
         $this->load->view('navbar_main', $data);
         $this->load->view('navbar_sub', $data);
         if($this->session->userdata['user_type'] == 'A'){
             $this->load->view('dashboard_admin');
         }
-        else{
-            $this->load->view('dashboard');
+        elseif($this->session->userdata['user_type'] == 'T'){
+            $this->load->view('dashboard_teacher');
+        }else{
+            $this->load->view('dashboard_student');
         }
         $this->load->view('templates/footer');
     }

@@ -103,89 +103,49 @@
         </div>
         <!-- Right Column -->
         <div class="col-md-6">
-            <!-- Icons Dock -->
+            <!-- SHORTCUTS -->
             <div class="row">
                 <div class="col-md-12">
                     <div class="panel panel-default">
                         <div class="panel-heading">
-                            <strong><i class="fa fa-ellipsis-h" style="margin-right:10px"></i> NEED YOUR ATTENTION</strong>
+                            <strong><i class="fa fa-bookmark" style="margin-right:10px"></i> SHORTCUTS</strong>
                         </div>
                         <div class="panel-body">
-                            <div class="row" style="padding:20px">
-
-                                <div id="big_stats" class="cf">
-                                    <div class="stat"> <i class="fa fa-bed"></i> <span class="value">8</span>
-                                        <br/>Leaves
-                                    </div>
-                                    <!-- .stat -->
-
-                                    <div class="stat"> <i class="glyphicon glyphicon-bullhorn"></i> 
-                                        <span class="value">
-                                            <?php
-                                            $cnt = 0;
-                                            foreach ($count as $row) {
-                                                $cnt = $cnt + 1;
-                                            }
-                                            echo $cnt;
-                                            ?>
-                                        </span>
-                                        <br/>Events
-                                    </div>
-                                    <!-- .stat -->
-
-                                    <div class="stat"> <i class="fa fa-newspaper-o"></i> <span class="value">22</span>
-                                        <br/>News
-                                    </div>
-                                    <!-- .stat -->
-
-                                    <div class="stat"> <i class="fa fa-envelope"></i> <span class="value">25</span>
-                                        <br/>Messages
-                                    </div>
-                                    <!-- .stat --> 
-                                </div>
-
+                            <div class="shortcuts"> 
+                                <a href="<?php echo base_url("index.php/profile"); ?>" class="shortcut">
+                                    <i class="shortcut-icon fa fa-2x fa-user"></i>
+                                    <span class="shortcut-label">Profile</span>
+                                </a>
+                    
+                                <a href="<?php echo base_url("index.php/profile/account_settings"); ?>" class="shortcut">
+                                    <i class="shortcut-icon fa fa-2x fa-wrench"></i>
+                                    <span class="shortcut-label">Settings</span>
+                                </a>
+                            
+                                <a href="<?php echo base_url("index.php/inbox"); ?>" class="shortcut">
+                                    <i class="shortcut-icon fa fa-2x fa-envelope"></i>
+                                    <span class="shortcut-label">Messages</span>
+                                </a>
+                            
+                                <a href="<?php echo base_url("index.php/year"); ?>" class="shortcut">
+                                    <i class="shortcut-icon fa fa-2x fa-calendar"></i>
+                                    <span class="shortcut-label">Year Plan</span>
+                                </a>
                             </div>
                         </div>
                     </div>
                 </div>
             </div>
-            <!-- Activity Feed -->
+            <!-- calender -->
             <div class="row">
-                <div class="col-md-12">
+                <div class="col-md-12"> 
                     <div class="panel panel-default">
                         <div class="panel-heading">
-                            <strong><i class="fa fa-exchange" style="margin-right:10px"></i> ACTIVITY FEED</strong>
+                            <strong><i class="fa fa-calendar" style="margin-right:10px"></i> ONGOING MONTH</strong>
                         </div>
                         <div class="panel-body">
-                            <!-- Activity Feed element -->
-                            <?php
-                            $add = 0;
-                            foreach ($activity as $row) {
-                                $add = $add + 1;
-                                if ($add < 4) {
-                                    ?>
-                                    <div class="row">
-                                        <div class="col-sm-2">
-                                            <div class="thumbnail">
-                                                <img class="img-responsive user-photo" src="<?php echo $row->pro_img; ?>">
-                                            </div>
-                                        </div><!-- /col-sm-1 -->
-
-                                        <div class="col-sm-10">
-                                            <div class="panel panel-default">
-                                                <div class="panel-heading">
-                                                    <strong><?php echo $row->user_fullname; ?></strong> <span class="text-muted">
-                                                        <div class="pull-right"> <?php echo $row->created_at; ?></span></div>
-                                            </div>
-                                            <div class="panel-body">
-                                                <?php echo $row->content; ?>
-                                            </div><!-- /panel-body -->
-                                        </div><!-- /panel panel-default -->
-                                    </div><!-- /col-sm-5 -->
-                                </div>
-                            <?php }
-                        }
-                        ?>
+                            <div id='calendar'></div>
+                        </div>
                     </div>
                 </div>
             </div>
@@ -193,3 +153,46 @@
     </div>
     
 </div>
+
+<script>
+    $(function () { // document ready
+
+        $('#calendar').fullCalendar({
+            schedulerLicenseKey: 'CC-Attribution-NonCommercial-NoDerivatives',
+            now: '<?php echo date('Y-m-d'); ?>',
+            editable: true,
+            aspectRatio: 1.5,
+            scrollTime: '00:00',
+            header: {
+                left: 'today prev,next',
+                center: 'title',
+                right: 'month'
+            },
+            defaultView: 'month',
+            views: {
+                timelineThreeDays: {
+                    type: 'timeline',
+                    duration: {days: 3}
+                }
+            },
+            events: [
+<?php
+foreach ($details as $row) {
+    $color;
+    if ($row->status == 'rejected') {
+        $color = 'red';
+    } else if ($row->status == 'approved') {
+        $color = 'green';
+    } else {
+        $color = 'blue';
+    }
+    echo "{id: '$row->id', start: '$row->start_date', end: '$row->end_date', title: '$row->title', color: '$color' , url: '" . base_url('index.php/event/view_event_details') .'/'. $row->id."'},";
+}
+?>
+            ]
+        });
+
+    });
+
+
+</script>

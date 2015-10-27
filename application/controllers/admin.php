@@ -162,7 +162,7 @@ class Admin extends CI_Controller {
 
         $this->user->delete($user_id);
 
-        redirect('admin/manage_admins');
+        redirect('admin/manage_users');
     }
 
     function edit($user_id = null) {
@@ -176,9 +176,8 @@ class Admin extends CI_Controller {
         }
 
         $data['user'] = $this->user->get_user($user_id);
-        $this->form_validation->set_rules('email', 'email', "trim|required|xss_clean|valid_email");
-        $this->form_validation->set_rules('first_name', 'first name', "trim|required|xss_clean|alpha");
-        $this->form_validation->set_rules('last_name', 'last name', "trim|required|xss_clean|alpha");
+        $this->form_validation->set_rules('email', 'Email', "trim|required|xss_clean|valid_email");
+        $this->form_validation->set_rules('password', 'Password', "required|xss_clean");
 
         if ($this->form_validation->run() == FALSE) {
             $this->load->view('templates/header', $data);
@@ -190,8 +189,7 @@ class Admin extends CI_Controller {
 
             $edited_user = array(
                 'email' => $this->input->post('email'),
-                'first_name' => $this->input->post('first_name'),
-                'last_name' => $this->input->post('last_name'),
+                'password' => md5($this->input->post('password'))
             );
             $this->user->edit_user($user_id, $edited_user);
             $data['user'] = $this->user->get_user($user_id);
@@ -202,6 +200,22 @@ class Admin extends CI_Controller {
             $this->load->view('admin/edit_admin', $data);
             $this->load->view('templates/footer');
         }
+    }
+
+    function manage_users() {
+        //getting the user type
+        $data['user_type'] = $this->session->userdata['user_type'];
+
+        $data['page_title'] = "Manage Users";
+        $data['navbar'] = 'admin';
+
+        $data['result'] = $this->user->get_all_users_list();
+
+        $this->load->view('templates/header', $data);
+        $this->load->view('navbar_main', $data);
+        $this->load->view('navbar_sub', $data);
+        $this->load->view('admin/manage_users', $data);
+        $this->load->view('templates/footer');
     }
 
 }
