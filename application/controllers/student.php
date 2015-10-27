@@ -5,6 +5,8 @@ class Student extends CI_Controller {
     function __construct() {
         parent::__construct();
         $this->load->model('Student_Model');
+        $this->load->model('Teacher_Model');
+        $this->load->model('News_Model');
         $this->load->helper('date');
         $this->load->model('user');
     }
@@ -83,6 +85,7 @@ class Student extends CI_Controller {
             redirect('login', 'refresh');
         }
 
+        $this->load->model('class_model');
         $data['page_title'] = "Admission";
         $data['navbar'] = "student";
         $data['user_type'] = $this->session->userdata['user_type']; //getting the user type
@@ -106,13 +109,13 @@ class Student extends CI_Controller {
 
 
         $this->form_validation->set_error_delimiters('<br /><span class="error">', '</span>');
-        
-       
+
+
         if ($this->form_validation->run() == FALSE) { // validation hasn't been passed
             $data['page_title'] = "Admission";
 
 
-           // $data['stud_data'] = $student_data;
+            // $data['stud_data'] = $student_data;
             $this->load->view('templates/header', $data);
             $this->load->view('navbar_main', $data);
             $this->load->view('navbar_sub', $data);
@@ -134,11 +137,12 @@ class Student extends CI_Controller {
                 'houseid' => $this->input->post('houseid'),
                 'address' => $this->input->post('address'),
                 'contactHome' => $this->input->post('contact_home'),
-                'email' => $this->input->post('email')
+                'email' => $this->input->post('email'),
+                'admission_grade' => $this->input->post('admission_grade'),
             );
-            
-             $this->session->set_userdata('student_d',$student_data);
-        
+
+            $this->session->set_userdata('student_d', $student_data);
+
             $data['page_title'] = "Admission";
             $data['navbar'] = "student";
             $data['stud_data'] = $student_data;
@@ -179,7 +183,7 @@ class Student extends CI_Controller {
         if ($this->form_validation->run() == FALSE) { // validation hasn't been passed
             $data['page_title'] = "Admission";
             $data['row'] = $this->Student_Model->get_last_row();
-            $data['stud_data']=$this->session->userdata('student_d');
+            $data['stud_data'] = $this->session->userdata('student_d');
             $this->load->view('templates/header', $data);
             $this->load->view('navbar_main', $data);
             $this->load->view('navbar_sub', $data);
@@ -213,7 +217,8 @@ class Student extends CI_Controller {
                 'houseid' => $studentd['houseid'],
                 'address' => $studentd['address'],
                 'contactHome' => $studentd['contactHome'],
-                'email' => $studentd['email']
+                'email' => $studentd['email'],
+                'admission_grade' => $studentd['admission_grade'],
             );
 
             if ($id = $this->Student_Model->insert_new_student($student_data)) {
@@ -224,9 +229,9 @@ class Student extends CI_Controller {
                 $data['row'] = $this->Student_Model->get_last_inserted_student($id);
                 $ID = $data['row']->id;
                 $username = $data['row']->admission_no;
-                
+
                 $password = "PW_" . $username;
-                
+
                 $create = date('Y-m-d H:i:s');
                 $fname = $studentd['firstname'];
                 $lname = $studentd['lastname'];
@@ -253,22 +258,22 @@ class Student extends CI_Controller {
 //                        $student_id = $last_row->user_id;
 //                        $this->view_profile($student_id);
                         $this->session->unset_userdata('student_d');
-                        $this->session->set_flashdata('succ_message','Admission Successfull');
+                        $this->session->set_flashdata('succ_message', 'Admission Successfull');
                         redirect('student/create_student');
                     } else {
-                        $err= 'An error occurred saving your information. Please try again later';
-                        $this->session->set_flashdata('err_message',$err);
+                        $err = 'An error occurred saving your information. Please try again later';
+                        $this->session->set_flashdata('err_message', $err);
                         redirect('student/create_student');
                     }
                 } else {
-                   $err= 'An error occurred creating your user account. Please try again later';
-                   $this->session->set_flashdata('err_message',$err);
-                        redirect('student/create_student');
+                    $err = 'An error occurred creating your user account. Please try again later';
+                    $this->session->set_flashdata('err_message', $err);
+                    redirect('student/create_student');
                 }
             } else {
-                $err= 'An error occurred saving your information. Please try again later';
-                $this->session->set_flashdata('err_message',$err);
-                        redirect('student/create_student');
+                $err = 'An error occurred saving your information. Please try again later';
+                $this->session->set_flashdata('err_message', $err);
+                redirect('student/create_student');
             }
         }
     }
@@ -807,7 +812,9 @@ class Student extends CI_Controller {
 
         $this->load->view('/templates/footer');
     }
-
+    /*
+     * Load student data table
+     */
     function load_student_datatble() {
 
 
@@ -860,6 +867,228 @@ class Student extends CI_Controller {
         $is["recordsFiltered"] = $data["count"];
 
         echo json_encode($is);
+    }
+    /*
+     * load student report
+     */
+    function load_student_report() {
+        if (!$this->session->userdata('id')) {
+            redirect('login', 'refresh');
+        }
+        $data['navbar'] = "admin";
+        $data['page_title'] = "Student Report";
+
+
+        $data['user_type'] = $this->session->userdata['user_type'];
+        $this->load->view('templates/header', $data);
+        $this->load->view('navbar_main', $data);
+        $this->load->view('navbar_sub', $data);
+        $this->load->view('student/student_report_form');
+        $this->load->view('/templates/footer');
+    }
+    /*
+     * Generate student report
+     */
+    function generate_report() {
+        //$type = $this->input->post('tpe');
+        $report = $this->input->post('rpt');
+        $result = $this->Student_Model->generate_report($report);
+
+
+        echo "<img src='" . base_url('assets/img/dslogo.jpg') . "' width='128px' height='128px' style='margin-left: 4em'>";
+        echo "<h3 style='margin-bottom: 0; margin-left: 3em'>D.S Senanayake College</h3>";
+        echo "<h4 style='margin-top: 0; margin-left: 5em'>REPORT - ";
+        if ($report == 1) {
+            echo 'GRADE 1';
+        } else if ($report == 2) {
+            echo 'GRADE 2';
+        } else if ($report == 3) {
+            echo 'GRADE 3';
+        } else if ($report == 4) {
+            echo 'GRADE 4';
+        } else if ($report == 5) {
+            echo 'GRADE 5';
+        } else if ($report == 6) {
+            echo 'GRADE 6';
+        } else if ($report == 7) {
+            echo 'GRADE 7';
+        } else if ($report == 8) {
+            echo 'GRADE 8';
+        } else if ($report == 9) {
+            echo 'GRADE 9';
+        } else if ($report == 10) {
+            echo 'GRADE 10';
+        } else if ($report == 11) {
+            echo 'GRADE 11';
+        } else if ($report == 12) {
+            echo 'GRADE 12';
+        } else if ($report == 13) {
+            echo 'GRADE 13';
+        } else {
+            echo '';
+        }
+        echo " STUDENT LIST </h5>";
+        echo "<div class='row' style='margin-left: 5em'>
+                    <table class='table table-hove'>
+                    <thead>
+                    <tr>
+                        <th align='left' width='150px'>Signature No</th>
+                        <th align='left' width='150px'>Name</th>
+                        <th align='left' width='150px'>NIC</th>
+                        <th align='left' width='150px'>Registered Date</th>
+                    </tr>
+                    </thead>
+                    <tbody>";
+        if ($result) {
+            foreach ($result as $row) {
+                echo "<tr>
+                        <td>$row->admission_no</td>
+                        <td>$row->name_with_initials</td>
+                        <td>$row->permanent_addr</td>
+                        <td>$row->contact_home</td>
+                    </tr>";
+            }
+        }
+        echo "  </tbody>
+                    </table>
+                    </div>";
+    }
+
+    /*
+     * This function is used to download the html page. use dompdf library for that
+     */
+
+    function report_pdf() {
+        if (!$this->session->userdata('id')) {
+            redirect('login', 'refresh');
+        }
+        $this->load->helper(array('dompdf', 'file'));
+        $this->load->library('form_validation');
+        //$this->form_validation->set_rules('reporttype', 'reporttype', 'callback_check_selection');
+        $this->form_validation->set_rules('report', 'report', 'callback_check_selection');
+        $this->form_validation->set_error_delimiters('<br /><span class="error">', '</span>');
+        date_default_timezone_set('Asia/Kolkata'); //get the timezone
+        $data['user_type'] = $this->session->userdata('user_type');
+        if ($this->form_validation->run() == FALSE) {
+            $data['page_title'] = "Student Report";
+            $data['navbar'] = 'Student';
+            $data['value'] = 0;
+
+            //$data['users'] = $this->Teacher_Model->SearchAllTeachers();
+            $this->load->view('templates/header', $data);
+            $this->load->view('navbar_main', $data);
+            $this->load->view('navbar_sub', $data);
+            $this->load->view('student/student_report_form', $data);
+            $this->load->view('/templates/footer');
+        } else {
+            $report = $this->input->post('report');
+
+            //For news field
+            $tech_id = $this->session->userdata('id');
+            $tech_details = $this->Teacher_Model->user_details($tech_id);
+            $this->News_Model->insert_action_details($tech_id, "Generate Student report", $tech_details->profile_img, $tech_details->first_name);
+            //////
+            $data['report'] = $report;
+            $data['school_name'] = "D. S. Senanayake College";
+            $data['result'] = $this->Student_Model->generate_report($report);
+            $filename = "Student_report";
+            $html = $this->load->view('student/report_pdf', $data, true);
+            pdf_create($html, $filename);
+        }
+    }
+    /*
+     * Load notes for the data table
+     */
+    function all_notes() {
+
+        $data['page_title'] = "Notes/Complains";
+        $data['navbar'] = 'admin';
+        $data['user_type'] = $this->session->userdata('user_type');
+        $data['result'] = $this->Student_Model->get_all_notes();
+
+
+
+
+
+        //$data['users'] = $this->Teacher_Model->SearchAllTeachers();
+        $this->load->view('templates/header', $data);
+        $this->load->view('navbar_main', $data);
+        $this->load->view('navbar_sub', $data);
+        $this->load->view('admin/manage_notes', $data);
+        $this->load->view('/templates/footer');
+    }
+    /*
+     * Get and view note action
+     */
+    function note_action($id) {
+
+        $data['page_title'] = "Notes/Complains";
+        $data['navbar'] = 'admin';
+        $data['user_type'] = $this->session->userdata('user_type');
+        $data['result'] = $this->Student_Model->get_note($id);
+        $data['id'] = $id;
+
+        if (!$this->session->userdata('id')) {
+            redirect('login', 'refresh');
+        }
+
+        //$data['users'] = $this->Teacher_Model->SearchAllTeachers();
+        $this->load->view('templates/header', $data);
+        $this->load->view('navbar_main', $data);
+        $this->load->view('navbar_sub', $data);
+        $this->load->view('admin/note_details', $data);
+        $this->load->view('/templates/footer');
+    }
+
+    /*
+     * Update the note
+     */
+    function take_action() {
+        if (!$this->session->userdata('id')) {
+            redirect('login', 'refresh');
+        }
+        $data['page_title'] = "Notes/Complains";
+        $data['navbar'] = 'admin';
+        $data['user_type'] = $this->session->userdata('user_type');
+
+        $this->load->library('form_validation');
+        $this->form_validation->set_rules('action', 'Action', "required|xss_clean");
+        $action = $this->input->post('action');
+        $id = $this->input->post('id');
+
+        if ($this->form_validation->run() == FALSE) {
+            $data['result'] = $this->Student_Model->get_note($id);
+            $this->load->view('templates/header', $data);
+            $this->load->view('navbar_main', $data);
+            $this->load->view('navbar_sub', $data);
+            $this->load->view('admin/note_details', $data);
+            $this->load->view('/templates/footer');
+        } else {
+
+
+
+
+
+            if ($this->Student_Model->take_action($id, $action)) {
+
+                $data['succ_message'] = 'Succesfully Status Changed';
+                $data['result'] = $this->Student_Model->get_note($id);
+                //$data['users'] = $this->Teacher_Model->SearchAllTeachers();
+                $this->load->view('templates/header', $data);
+                $this->load->view('navbar_main', $data);
+                $this->load->view('navbar_sub', $data);
+                $this->load->view('admin/note_details', $data);
+                $this->load->view('/templates/footer');
+            } else {
+                $data['err_message'] = 'Error Occured';
+                $data['result'] = $this->Student_Model->get_note($id);
+                $this->load->view('templates/header', $data);
+                $this->load->view('navbar_main', $data);
+                $this->load->view('navbar_sub', $data);
+                $this->load->view('admin/note_details', $data);
+                $this->load->view('/templates/footer');
+            }
+        }
     }
 
     /*

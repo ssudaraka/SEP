@@ -29,7 +29,9 @@
                         var type = '<?php echo $user_type; ?>';
                         var abuttons = '';
                         if (type == 'A') {
-                            abuttons = ' <a href="" class="editor_remove" id="view" data-toggle="tooltip"><span class="glyphicon glyphicon-user" aria-hidden="true"></span></a>  &nbsp; <a href="" class="editor_remove" id="edit"><span class="glyphicon glyphicon-edit" aria-hidden="true"></span></a> &nbsp; <a href="" class="editor_remove" id="delete"><span class="glyphicon glyphicon-trash" aria-hidden="true"></span></a>';
+                            abuttons = ' <a href="" class="btn btn-primary btn-xs" id="view" data-toggle="tooltip"><i class="fa fa-eye"></i></a>  &nbsp; \n\
+                                         <a href="" class="btn btn-primary btn-xs" id="edit"><i class="fa fa-edit"></i></a> &nbsp; \n\
+                                         <a href="" class="btn btn-danger btn-xs" id="delete"><i class="fa fa-trash"></i></a>';
                         } else {
                             abuttons = ' <a href="" class="editor_remove" id="view" data-toggle="tooltip"><span class="glyphicon glyphicon-user" aria-hidden="true"></span></a>';
                         }
@@ -55,7 +57,7 @@
                             ],
                             "bPaginate": true,
                             "sPaginationType": "full_numbers",
-                            "iDisplayLength": 15,
+                            "iDisplayLength": 10,
                             "bProcessing": true,
                             "bServerSide": true,
                             "order": [[0, "desc"]]

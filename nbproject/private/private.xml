@@ -12,6 +12,16 @@
             <file>file:/C:/xampp/htdocs/sep/application/views/event/select_event_action.php</file>
             <file>file:/C:/xampp/htdocs/sep/application/views/teacher/teacher_report_form.php</file>
             <file>file:/C:/xampp/htdocs/sep/application/views/event/teacher_event_details.php</file>
+            <file>file:/C:/xampp/htdocs/sep/application/views/admin/index.php</file>
+            <file>file:/C:/xampp/htdocs/sep/application/views/profile/admin_profile.php</file>
+            <file>file:/C:/xampp/htdocs/sep/application/views/profile/teacher_profile.php</file>
+            <file>file:/C:/xampp/htdocs/sep/application/controllers/profile.php</file>
+            <file>file:/C:/xampp/htdocs/sep/application/views/profile/student_profile.php</file>
+            <file>file:/C:/xampp/htdocs/sep/application/views/teacher/teacher_report_form.php</file>
+            <file>file:/C:/wamp/www/sep/application/controllers/classes.php</file>
+            <file>file:/C:/wamp/www/sep/application/views/classes/index.php</file>
+            <file>file:/C:/wamp/www/sep/application/views/classes/view_class.php</file>
+            <file>file:/C:/wamp/www/sep/application/views/classes/assign_students_to_class.php</file>
         </group>
     </open-files>
 </project-private>

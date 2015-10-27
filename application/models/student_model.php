@@ -32,9 +32,10 @@ class Student_Model extends CI_Model {
             $house_id = $student_data['houseid'];
             $email = $student_data['email'];
             $created_at = date('Y-m-d H:i:s');
+            $admission_grade = $student_data['admission_grade'];
 
-            if ($this->db->query("INSERT INTO students (`admission_no` , `admission_date` , `full_name` , `name_with_initials` , `dob` , `gender`, `nic_no` , `language` , `religion` , `permanent_addr` , `contact_home` , `email` , `house_id` , `created_at`) 
-    			VALUES ('$admissionno', '$admissiondate' , '$fullname' , '$initials' , '$dob' , '$gender' , '$nic' , '$language' , '$religion_id' , '$address' , '$contact' , '$email' , '$house_id' , '$created_at')")) {
+            if ($this->db->query("INSERT INTO students (`admission_no` , `admission_date` , `full_name` , `name_with_initials` , `dob` , `gender`, `nic_no` , `language` , `religion` , `permanent_addr` , `contact_home` , `email` , `house_id` , `created_at`, `current_grade`) 
+    			VALUES ('$admissionno', '$admissiondate' , '$fullname' , '$initials' , '$dob' , '$gender' , '$nic' , '$language' , '$religion_id' , '$address' , '$contact' , '$email' , '$house_id' , '$created_at', '$admission_grade')")) {
                 $id = $this->db->insert_id();
                 return $id;
             } else {
@@ -73,32 +74,32 @@ class Student_Model extends CI_Model {
         }
     }
 
-    
     /*
      * getting the last recode details of students table
      */
-    public function get_last_row(){
-        if($rows = $this->db->query("SELECT * FROM students ORDER BY id DESC LIMIT 1")){
-            $row=$rows->row();
+
+    public function get_last_row() {
+        if ($rows = $this->db->query("SELECT * FROM students ORDER BY id DESC LIMIT 1")) {
+            $row = $rows->row();
             return $row;
-        }  else {
-             return null;
+        } else {
+            return null;
         }
-        
     }
-      /*
+
+    /*
      * getting the recode details of Newly added Student
      */
-    public function  get_last_inserted_student($id){
-         if($query= $this->db->query("SELECT * FROM students WHERE id = '$id'")){
-            $row=$query->row();
+
+    public function get_last_inserted_student($id) {
+        if ($query = $this->db->query("SELECT * FROM students WHERE id = '$id'")) {
+            $row = $query->row();
             return $row;
-        }  else {
-             return null;
+        } else {
+            return null;
         }
-        
     }
-    
+
     /*
      * getting the recode details of  Student with his guardian details by given id
      */
@@ -174,13 +175,14 @@ class Student_Model extends CI_Model {
         $query = $this->db->query($sql);
         return $query;
     }
-    
+
     /*
      * get all archived student recodes
      */
-     function get_all_archive_students() {
-         $query = $this->db->query("SELECT * FROM  archived_students order by full_name asc");
-     
+
+    function get_all_archive_students() {
+        $query = $this->db->query("SELECT * FROM  archived_students order by full_name asc");
+
         if ($query->num_rows() > 0) {
             return $query->result();
         } else {
@@ -236,7 +238,7 @@ class Student_Model extends CI_Model {
      * Insert new student's log details
      */
 
-    public function insert_new_student_userdata($username, $password, $create , $fname , $lname) {
+    public function insert_new_student_userdata($username, $password, $create, $fname, $lname) {
         try {
             $encryptpwd = md5($password);
             if ($this->db->query("INSERT INTO users (`username`, `password` , `first_name` , `last_name` , `created_at`, `user_type`) VALUES ('$username', '$encryptpwd' , '$fname' , '$lname' , '$create', 'S')")) {
@@ -386,9 +388,8 @@ class Student_Model extends CI_Model {
                                 return FALSE;
                             }
                         }
-                    
+                    }
                 }
-            }
             } else {
                 return null;
             }
@@ -396,7 +397,7 @@ class Student_Model extends CI_Model {
             return null;
         }
     }
-    
+
     /*
      * getting the recode details of archived student by given id
      */
@@ -413,35 +414,35 @@ class Student_Model extends CI_Model {
             return null;
         }
     }
-    
+
     /*
      * for serverside datatable of student recodes
      */
-    public function get_all_student_details($data){
+
+    public function get_all_student_details($data) {
         $limit = intval(htmlspecialchars($data["limit"]));
         $offset = intval(htmlspecialchars($data["offset"]));
         $orderBy = htmlspecialchars(strtolower($data["orderby"]));
         $orderByCol = htmlspecialchars(strtolower($data["orderCol"]));
         $search = htmlspecialchars(strtolower($data["search"]));
-        
-      
+
+
         $sql = "SELECT s.id, s.user_id, s.admission_no, s.name_with_initials, s.contact_home FROM students s where s.id LIKE '%" . $search . "%' or s.admission_no LIKE '%" . $search . "%' or s.name_with_initials LIKE '%" . $search . "%' or s.contact_home LIKE '%" . $search . "%'  Order By " . $orderByCol . " " . $orderBy . " LIMIT " . $limit . " OFFSET " . $offset . " ";
         $query = $this->db->query($sql);
-        
-        $sql2="SELECT count(s.id) as count FROM students s where s.id LIKE '%" . $search . "%' or s.admission_no LIKE '%" . $search . "%' or s.name_with_initials LIKE '%" . $search . "%' or s.contact_home LIKE '%" . $search . "%'";
+
+        $sql2 = "SELECT count(s.id) as count FROM students s where s.id LIKE '%" . $search . "%' or s.admission_no LIKE '%" . $search . "%' or s.name_with_initials LIKE '%" . $search . "%' or s.contact_home LIKE '%" . $search . "%'";
         $count = $this->db->query($sql2);
-        
-        if($count->row()){
+
+        if ($count->row()) {
             $getthis = false;
 
             $countRows = $count->row()->count;
-            
-        }else{
+        } else {
             $getthis = true;
             $countRows = 0;
         }
-        
-        
+
+
         $arr = array(
             "data" => $query->result(),
             "count" => $countRows,
@@ -450,8 +451,62 @@ class Student_Model extends CI_Model {
 
 
         return $arr;
-        
+    }
+
+    public function generate_report($report) {
+        $data = $this->db->query("select s.* from students s inner join classes c on c.id=s.class where c.grade_id = '$report' ");
+
+        if ($data->num_rows() > 0) {
+            return $data->result();
+        }else{
+            return FALSE;
         }
+
+     
+    }
+    function get_id_by_index($index){
+         try {
+            if ($data = $this->db->query("SELECT user_id FROM students  WHERE admission_no = '$index'")) {
+                $row = $data->row()->user_id;
+                return $row;
+            } else {
+                return null;
+            }
+        } catch (Exception $ex) {
+            return null;
+        }
+    }
+    
+    function get_all_notes(){
+         $data = $this->db->query("select s.admission_no ,s.contact_home ,c.name, n.* from students s, classes c ,notes n where c.id=s.class and s.user_id=n.student_id");
+
+        if ($data->num_rows() > 0) {
+            return $data->result();
+        }else{
+            return FALSE;
+        }
+    }
+    
+     function get_note($id){
+         $data = $this->db->query("select * from notes where id = '$id'");
+
+        if ($data) {
+            return $data->row();
+        }else{
+            return FALSE;
+        }
+    }
+    
+     public function take_action($id, $action) {
+        $query = "UPDATE notes SET action='{$action}',status='1' WHERE id='{$id}'";
+        $result = $this->db->query($query);
+
+        if (!$result) {
+            return FALSE;
+        } else {
+            return TRUE;
+        }
+    }
 
 }
 

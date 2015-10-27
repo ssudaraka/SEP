@@ -19,6 +19,11 @@
                             <span class="glyphicon glyphicon-cog text-warning"></span><a href="<?php echo base_url('index.php/student/create_student'); ?>">Create Student</a>
                         </td>
                     </tr>
+                    <tr>
+                        <td>
+                            <span class="glyphicon glyphicon-check text-primary"></span><a href="<?php echo base_url('index.php/student/load_student_report'); ?>">Student Report</a>
+                        </td>
+                    </tr>
                 </table>
             </div>
         </div>

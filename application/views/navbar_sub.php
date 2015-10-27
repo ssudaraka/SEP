@@ -81,7 +81,7 @@
         <!-- <li <?php if($navbar == 'timetable') { echo "class='active'";} ?>><a href="<?php echo base_url('index.php/timetable'); ?>"><i class="glyphicon glyphicon-time"></i><span>Timetable</span> </a> </li> -->
         <li <?php if($navbar == 'student') { echo "class='active'";} ?>><a href="<?php echo base_url('index.php/student'); ?>"><i class="glyphicon glyphicon-education"></i><span>Students</span> </a> </li>
         <!-- <li><a href="#"><i class="glyphicon glyphicon-knight"></i><span>Sports</span> </a> </li> -->
-        <li <?php if($navbar == 'event') { echo "class='active'";} ?>><a href="<?php echo base_url('index.php/event'); ?>"><i class="glyphicon glyphicon-bullhorn"></i><span>Events</span> </a> </li>
+        <!-- <li <?php if($navbar == 'event') { echo "class='active'";} ?>><a href="<?php echo base_url('index.php/event'); ?>"><i class="glyphicon glyphicon-bullhorn"></i><span>Events</span> </a> </li> -->
         <!-- <li <?php if($navbar == 'admin'){ echo "class='active'";} ?> ><a href="<?php echo base_url('index.php/admin'); ?>"><i class="glyphicon glyphicon-cog"></i><span>Admin</span> </a> </li> -->
        <!--  <li class="dropdown"><a href="javascript:;" class="dropdown-toggle" data-toggle="dropdown"> <i class="glyphicon glyphicon-download-alt"></i><span>Other</span> <b class="caret"></b></a>
           <ul class="dropdown-menu">
