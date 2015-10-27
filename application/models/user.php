@@ -160,6 +160,7 @@ class User extends CI_Model {
         } catch (Exception $ex) {
             return FALSE;
         }
+    }
 
     // Get All the Users
     public function get_all_users_list() {
