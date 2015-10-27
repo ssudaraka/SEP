@@ -169,7 +169,7 @@ class News extends CI_Controller {
         redirect('news/get_news?delete=true', 'refresh');
     }
 
-    /*
+    /**
     * This function is to create news items
     */
     function publish_news() {
@@ -185,7 +185,7 @@ class News extends CI_Controller {
             $this->form_validation->set_error_delimiters('<br /><span class="error">', '</span>');
             $userid = $this->session->userdata['id'];
             // Check for form validation
-            if ($this->form_validation->run() == FALSE) {
+            if ($this->form_validation->run()) {
                 $data['page_title'] = "Publish News";
                 $data['navbar'] = 'admin';
                 $this->load->view('templates/header', $data);
