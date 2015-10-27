@@ -38,7 +38,7 @@
         $('#calendar').fullCalendar({
             schedulerLicenseKey: 'CC-Attribution-NonCommercial-NoDerivatives',
             now: '<?php echo date('Y-m-d'); ?>',
-            editable: true,
+            editable: false,
             aspectRatio: 1.5,
             scrollTime: '00:00',
             header: {

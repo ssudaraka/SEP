@@ -6,6 +6,7 @@ class Teacher extends CI_Controller {
         parent::__construct();
         $this->load->model('Teacher_Model');
         $this->load->model('News_Model');
+        $this->load->model('Leave_Model');
         $this->load->helper('date');
         $this->load->model('user');
     }
@@ -811,6 +812,24 @@ class Teacher extends CI_Controller {
             $this->form_validation->set_message('check_pension_day', 'Please Enter Valid Date!');
             return FALSE;
         }
+    }
+    
+    function full_staff_report() {
+        if (!$this->session->userdata('id')) {
+            redirect('login', 'refresh');
+        }
+        $data['page_title'] = "View Teacher Profile";
+        $data['navbar'] = 'teacher';
+        $data['user_type'] = $this->session->userdata['user_type'];
+        $userid = $this->session->userdata['id'];
+        $data['applied_casual_leaves'] = $this->Leave_Model->get_no_leaves('1', $userid);
+        $data['applied_medical_leaves'] = $this->Leave_Model->get_no_leaves('2', $userid);
+        $data['applied_duty_leaves'] = $this->Leave_Model->get_no_leaves('3', $userid);
+        $data['applied_other_leaves'] = $this->Leave_Model->get_no_leaves('4', $userid);
+        $data['applied_maternity_leaves'] = $this->Leave_Model->get_no_leaves('5', $userid);
+        $data['result'] = $this->Teacher_Model->SearchAllTeachers();
+        //$this->load->view('templates/header', $data);
+        $this->load->view('teacher/full_staff_report', $data);
     }
 
 }

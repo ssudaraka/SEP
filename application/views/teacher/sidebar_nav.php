@@ -29,6 +29,11 @@
                             <span class="glyphicon glyphicon-check text-primary"></span><a href="<?php echo base_url('index.php/teacher/teacher_report')."/"."0"; ?>">Teacher Report</a>
                         </td>
                     </tr>
+                     <tr>
+                        <td>
+                            <span class="glyphicon glyphicon-briefcase text-primary"></span><a href="<?php echo base_url('index.php/teacher/full_staff_report'); ?>" target="_blank">Staff Full Report</a>
+                        </td>
+                    </tr>
                 </table>
             </div>
         </div>

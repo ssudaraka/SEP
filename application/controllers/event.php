@@ -7,6 +7,7 @@ class Event extends CI_Controller {
         $this->load->model('event_model');
         $this->load->model('Teacher_Model');
         $this->load->model('News_Model');
+        $this->load->model('User');
         $this->load->helper('date');
     }
 
@@ -125,6 +126,7 @@ class Event extends CI_Controller {
         $this->form_validation->set_error_delimiters('<br /><span class="error">', '</span>');
         $event_id = $this->input->post('eid');
         if ($this->form_validation->run() == FALSE) {
+            $data['result'] = $this->event_model->get_event_type_details();
             $data['details'] = $this->event_model->get_approved_event_details($event_id); //Get approved event details
             $data['page_title'] = "Update Event";
             $this->load->view('templates/header', $data);
@@ -176,6 +178,7 @@ class Event extends CI_Controller {
         }
         date_default_timezone_set('Asia/Kolkata');
         $data['user_type'] = $this->session->userdata['user_type'];
+        $data['valid_nic'] = $this->Teacher_Model->teacher_nic_from_user_id($this->session->userdata['id']);
         $data['details'] = $this->event_model->get_approved_event_details($event_id); //Get approved event details from the database
         $data['page_title'] = "Publish Event";
         $data['navbar'] = "event";
@@ -570,6 +573,13 @@ class Event extends CI_Controller {
         $this->load->view('navbar_sub', $data);
         $this->load->view('event/event_calendar', $data);
         $this->load->view('/templates/footer');
+    }
+    
+    function teacher_event_details(){
+        $nic = $this->uri->segment(3);
+        $data['details'] = $this->event_model->get_pro_image($nic);
+        $data['events'] = $this->event_model->get_user_all_events($nic) ;
+        $this->load->view('event/teacher_event_details',$data);
     }
 
     /**

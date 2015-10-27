@@ -82,9 +82,9 @@
                                     $med = $row->medium;
                                     if ($med == 's') {
                                         echo 'sin';
-                                    } else if ($med == 't') {
-                                        echo 'eng';
                                     } else if ($med == 'e') {
+                                        echo 'eng';
+                                    } else if ($med == 't') {
                                         echo 'tam';
                                     }
                                     ?></td>

@@ -72,8 +72,8 @@
                                 <select id="medium" name="medium" class="form-control">
                                     <option value="n" <?php if (set_value('medium') == 'n') { echo "selected"; } ?>>Select Medium</option>
                                     <option value="s" <?php if (set_value('medium') == 's') { echo "selected"; } ?>>Sinhala</option>
-                                    <option value="t" <?php if (set_value('medium') == 't') { echo "selected"; } ?>>English</option>
-                                    <option value="e" <?php if (set_value('medium') == 'e') { echo "selected"; } ?>>Tamil</option>
+                                    <option value="e" <?php if (set_value('medium') == 'e') { echo "selected"; } ?>>English</option>
+                                    <option value="t" <?php if (set_value('medium') == 't') { echo "selected"; } ?>>Tamil</option>
                                 </select>
                                 <?php echo form_error('medium'); ?>
                             </div>
