@@ -4,137 +4,84 @@
             <?php $this->view('classes/sidebar_nav'); ?>
         </div>
         <div class="col-md-9">
-        	<!-- Message -->
-        		<?php if (isset($_GET['delete']) && $_GET['delete'] == 'success' ) { ?>
+            <?php if ($succ_message) { ?>
                 <div class="alert alert-success alert-dismissible" role="alert">
                     <button type="button" class="close" data-dismiss="alert" aria-label="Close"><span aria-hidden="true">&times;</span></button>
-                    <strong>Success </strong>
-                    Class Deleted Successfully!
-                </div>
-            	<?php } ?>
-            	<?php if (isset($_GET['delete']) && $_GET['delete'] == 'fail' ) { ?>
-                <div class="alert alert-danger alert-dismissible" role="alert">
-                    <button type="button" class="close" data-dismiss="alert" aria-label="Close"><span aria-hidden="true">&times;</span></button>
-                    <strong>Error </strong>
-                    Something went wrong while deleting!
-                </div>
-            	<?php } ?>
-
-			  	<?php if (isset($succ_message)) { ?>
-                <div class="alert alert-success alert-dismissible" role="alert">
-                    <button type="button" class="close" data-dismiss="alert" aria-label="Close"><span aria-hidden="true">&times;</span></button>
-                    <strong>Success </strong>
                     <?php echo $succ_message; ?>
                 </div>
-            	<?php } ?>
-            	<?php if (validation_errors()) { ?>
-                <div class="alert alert-danger alert-dismissible" role="alert">
-                    <button type="button" class="close" data-dismiss="alert" aria-label="Close"><span aria-hidden="true">&times;</span></button>
-                    <?php echo validation_errors(); ?>
+            <?php } ?>
+            <div class="panel panel-default">
+                <div class="panel-heading">Create Class</div>
+                <div class="panel-body">
+                    <div class="row" style="margin-left: 1em; margin-bottom: 2em;">
+                        <!-- Create Class Info -->
+                        <div class="col-md-12">
+                            <div class="media">
+                                <div class="media-left">
+                                    <a href="#">
+                                        <img class="media-object" src="<?php echo base_url("assets/img/info_ico.png"); ?>" width="64px" height="64px">
+                                    </a>
+                                </div>
+                                <div class="media-body">
+                                    <h4 class="media-heading">Create a Class for Academic Year: <?php echo date('Y'); ?> </h4>
+                                    Select the grade and enter the class name. If you want to auto generate list of classes, use école <a href="#">bulk class generator tool.</a>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="row">
+                        <!-- Create Class Form -->
+                        <?php
+                        $error_prefix = "<p class=\"help-block error\">";
+                        $error_suffix = "</p>";
+                        $attributes = array('class' => 'form-horizontal');
+                        ?>
+                        <div class="col-md-8">
+                            <?php echo form_open('classes/create', $attributes); ?>
+                            <div class="form-group">
+                                <label for="grade" class="col-sm-3 control-label">Grade</label>
+                                <div class="col-sm-9">
+                                    <select class="form-control" name='grade' id="grade">
+                                        <option value="select_grade">Select Grade</option>
+                                        <?php foreach ($grades as $grade) { ?>
+                                        <option value="<?php echo $grade->id; ?>" <?php echo set_select('grade', $grade->id); ?>><?php echo $grade->name; ?></option>
+                                        <?php } ?>
+                                    </select>
+                                    <?php echo form_error('grade', $error_prefix, $error_suffix); ?>
+                                </div>
+                            </div>
+                            <div class="form-group">
+                                <label for="class_name" class="col-sm-3 control-label">Class Name</label>
+                                <div class="col-sm-9">
+                                    <input type="text" class="form-control" id="class_name" name="class_name" placeholder="Enter class name">
+                                    <?php echo form_error('class_name', $error_prefix, $error_suffix); ?>
+                                </div>
+                            </div>
+                            <div class="form-group">
+                                <label for="class_teacher" class="col-sm-3 control-label">Class Teacher</label>
+                                <div class="col-sm-9">
+                                    <select class="form-control" name='class_teacher' id="class_teacher">
+                                        <option value="select_teacher">Select Class Teacher</option>
+                                        <?php foreach ($teachers as $teacher) { ?>
+                                            <option value="<?php echo $teacher->id; ?>"><?php echo $teacher->full_name; ?></option>
+                                        <?php } ?>
+                                    </select>
+                                    <span class="help-block"><span class="label label-info">TIP:</span> you can add class teacher later.</span>
+                                    <?php echo form_error('class_teacher', $error_prefix, $error_suffix); ?>
+                                </div>
+                            </div>
+                            <div class="form-group">
+                                <div class="col-sm-offset-3 col-sm-9">
+                                    <button type="submit" class="btn btn-success">Create</button>
+                                </div>
+                            </div>
+                            <?php echo form_close(); ?>
+                        </div>
+                    </div>
+
+
                 </div>
-            	<?php } ?>
-
-        	<!-- New Class -->
-            <div class="panel panel-default">
-			  <div class="panel-heading">
-			    <strong>CREATE CLASS</strong>
-			  </div>
-			  <div class="panel-body">
-			  
-			  <div class="row">
-			   	<div class="col-md-8">
-			   		<?php 
-			   			$attributes = array('class' => 'form-horizontal', 'id' => '');
-			   			echo form_open('classes/create_class', $attributes); ?>
-					  <div class="form-group">
-					    <label for="inputEmail3" class="col-sm-2 control-label">Grade</label>
-					    <div class="col-sm-10">
-					      <select name="cmbgrade" class="form-control">
-							  <option value="1">1</option>
-							  <option value="2">2</option>
-							  <option value="3">3</option>
-							  <option value="4">4</option>
-							  <option value="5">5</option>
-							  <option value="6">6</option>
-							  <option value="7">7</option>
-							  <option value="8">8</option>
-							  <option value="9">9</option>
-							  <option value="10">10</option>
-							  <option value="11">11</option>
-							  <option value="12">12</option>
-							  <option value="13">13</option>
-							</select>
-					    </div>
-					  </div>
-					  <div class="form-group">
-					    <label for="inputPassword3" class="col-sm-2 control-label">Name</label>
-					    <div class="col-sm-10">
-					      <input type="text" class="form-control" name="classname" placeholder="Name">
-					      <p class="help-block">Example <span class="label label-info">1A</span> <span class="label label-info">12B2</span> <span class="label label-info">13M1</span></p>
-					    </div>
-					  </div>
-					  <div class="form-group">
-					    <div class="col-sm-offset-2 col-sm-10">
-					      <button type="submit" class="btn btn-primary">Create</button>
-					    </div>
-					  </div>
-					<?php echo form_close(); ?>
-			   	</div>
-			   </div>
-			  </div>
-			</div>
-
-			<!-- Existing Classes -->
-            <div class="panel panel-default">
-			  <div class="panel-heading">
-			    <strong>EXISTING CLASSES</strong>
-			  </div>
-			  <div class="panel-body">
-			   	<div class="row">
-			   	<div class="col-md-12">
-	                <script>
-	                $(document).ready( function () {
-	                    $('#table_id').DataTable();
-	                } );
-	                </script>
-
-	                <table class="table table-hover" id="table_id">
-	                    <thead>
-	                        <tr>
-	                            <th>#</th>
-	                            <th>Grade</th>
-	                            <th>Name</th>
-	                            <th>Actions</th>
-	                        </tr>
-	                    </thead>
-	                    <tbody>
-	                        <?php 
-	                        $no = 1;
-	                        foreach ($classlist as $row) { ?>
-
-
-	                            <tr>
-	                                <td><?php echo $no; ?></td>
-	                                <td><?php echo $row->grade_id; ?></td> 
-	                                <td><?php echo $row->name; ?></td>
-	                                
-	                                
-	                                <td>
-		                           		<a href='<?php echo base_url('index.php/classes/view_class/'.$row->id); ?>' class='btn btn-primary btn-xs'><i class="fa fa-eye"></i></a>
-		                           		<a href='<?php echo base_url('index.php/classes/edit_class/'.$row->id); ?>' class='btn btn-primary btn-xs'><i class="fa fa-pencil-square-o"></i></a>
-		                           		<a href='<?php echo base_url('index.php/classes/delete_class/'.$row->id); ?>' onclick="return confirm('Are you sure you want to permenantly delete this Class?   you cannot recover this after you delete');" class='btn btn-danger btn-xs'><i class="fa fa-trash-o"></i></a>
-		                            </td>
-	                            </tr>
-	                        <?php 
-	                        $no++;
-	                        } ?>
-	                    </tbody>
-	                </table>
-	                </div>
-	            </div>
-			  </div>
-			</div>
-
+            </div>
         </div>
     </div>
 </div>

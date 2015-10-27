@@ -83,6 +83,7 @@ class Student extends CI_Controller {
             redirect('login', 'refresh');
         }
 
+        $this->load->model('class_model');
         $data['page_title'] = "Admission";
         $data['navbar'] = "student";
         $data['user_type'] = $this->session->userdata['user_type']; //getting the user type
@@ -134,7 +135,8 @@ class Student extends CI_Controller {
                 'houseid' => $this->input->post('houseid'),
                 'address' => $this->input->post('address'),
                 'contactHome' => $this->input->post('contact_home'),
-                'email' => $this->input->post('email')
+                'email' => $this->input->post('email'),
+                'admission_grade' => $this->input->post('admission_grade'),
             );
             
              $this->session->set_userdata('student_d',$student_data);
@@ -213,7 +215,8 @@ class Student extends CI_Controller {
                 'houseid' => $studentd['houseid'],
                 'address' => $studentd['address'],
                 'contactHome' => $studentd['contactHome'],
-                'email' => $studentd['email']
+                'email' => $studentd['email'],
+                'admission_grade' => $studentd['admission_grade'],
             );
 
             if ($id = $this->Student_Model->insert_new_student($student_data)) {
