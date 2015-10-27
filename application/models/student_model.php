@@ -32,9 +32,10 @@ class Student_Model extends CI_Model {
             $house_id = $student_data['houseid'];
             $email = $student_data['email'];
             $created_at = date('Y-m-d H:i:s');
+            $admission_grade = $student_data['admission_grade'];
 
-            if ($this->db->query("INSERT INTO students (`admission_no` , `admission_date` , `full_name` , `name_with_initials` , `dob` , `gender`, `nic_no` , `language` , `religion` , `permanent_addr` , `contact_home` , `email` , `house_id` , `created_at`) 
-    			VALUES ('$admissionno', '$admissiondate' , '$fullname' , '$initials' , '$dob' , '$gender' , '$nic' , '$language' , '$religion_id' , '$address' , '$contact' , '$email' , '$house_id' , '$created_at')")) {
+            if ($this->db->query("INSERT INTO students (`admission_no` , `admission_date` , `full_name` , `name_with_initials` , `dob` , `gender`, `nic_no` , `language` , `religion` , `permanent_addr` , `contact_home` , `email` , `house_id` , `created_at`, `current_grade`) 
+    			VALUES ('$admissionno', '$admissiondate' , '$fullname' , '$initials' , '$dob' , '$gender' , '$nic' , '$language' , '$religion_id' , '$address' , '$contact' , '$email' , '$house_id' , '$created_at', '$admission_grade')")) {
                 $id = $this->db->insert_id();
                 return $id;
             } else {

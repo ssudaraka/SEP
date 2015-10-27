@@ -1,253 +1,177 @@
 <?php
 
 class Class_Model extends CI_Model {
-    
-    function __construct() {
+
+    public function __construct() {
         parent::__construct();
     }
-    
-    function get_class_list(){
+
+    public function get_classes($grade = NULL, $academic_year = NULL) {
+        $sql = "SELECT * FROM `classes` WHERE `academic_year`='{$academic_year}' ";
+        $sql .= (!$grade ? "" : "AND grade_id='{$grade}' ");
+        $sql .= "ORDER BY grade_id";
+
+        return $this->db->query($sql)->result();
+    }
+
+//    public function get_all_classes(){
+//        $sql = 
+//    }
+
+    public function create_class($class) {
+        $this->db->insert('classes', $class);
+    }
+
+    public function get_class($class_id) {
+        return $this->db->get_where('classes', array('id' => $class_id), 1)->row();
+    }
+
+    public function get_grades() {
+        return $this->db->get('grades')->result();
+    }
+
+    public function get_class_students($class_id) {
+        $sql = "SELECT s.* FROM students s, student_class c WHERE s.id = c.student_id ";
+        $sql .= "AND c.class_id = '{$class_id}'";
+
+        return $this->db->query($sql)->result();
+    }
+
+    public function get_students_without_class($grade_id = NULL) {
+        $sql = "SELECT * FROM `students` WHERE ";
+        $sql .= "current_class IS NULL ";
+        if (!is_null($grade_id)) {
+            $sql .= "AND current_grade='{$grade_id}' ";
+        }
+        return $this->db->query($sql)->result();
+    }
+
+    public function assign_students_to_class($class_id, $students_removed, $students_in) {
+
+        /*
+         * Add to class if this student is not already in a class.
+         */
+        foreach ($students_in as $student) {
+            if (!$this->student_already_in_class($class_id, $student)) {
+                $this->insert_student_class($class_id, $student);
+                $this->update_student_class($class_id, $student);
+            }
+        }
+
+        /*
+         * Remove class from student if already in class
+         */
+
+        foreach ($students_removed as $student) {
+            if ($this->student_already_in_class($class_id, $student)) {
+                $this->remove_student_from_class($class_id, $student);
+                $this->update_student_class(NULL, $student);
+            }
+        }
+    }
+
+    public function insert_student_class($class_id, $student_id) {
+        $data = array(
+            'student_id' => $student_id,
+            'class_id' => $class_id,
+            'academic_year' => $this->get_academic_year_of_class($class_id)
+        );
+
+        $this->db->insert('student_class', $data);
+        return TRUE;
+    }
+
+    public function student_already_in_class($class_id, $student_id) {
+        $sql = "SELECT * FROM student_class WHERE student_id = '{$student_id}' AND class_id='{$class_id}' LIMIT 1";
+        $query = $this->db->query($sql);
+
+        if ($query->num_rows() === 1) {
+            return TRUE;
+        } else {
+            return FALSE;
+        }
+    }
+
+    public function remove_student_from_class($class_id, $student_id) {
+        $this->db->delete('student_class', array('student_id' => $student_id, 'class_id' => $class_id));
+        return TRUE;
+    }
+
+    public function update_student_class($class_id, $student_id) {
+        $data = array(
+            'current_class' => $class_id
+        );
+        $this->db->update('students', $data, array('id' => $student_id));
+    }
+
+    public function get_academic_year_of_class($class_id) {
+        $sql = "SELECT academic_year FROM classes WHERE id='{$class_id}'";
+        $class = $this->db->query($sql)->row();
+
+        return $class->academic_year;
+    }
+
+    public function teacher_assigned_to_class($teacher_id, $academic_year) {
+        $sql = "SELECT * FROM classes WHERE teacher_id = '{$teacher_id}' AND academic_year = '{$academic_year}'";
+        if ($this->db->query($sql)->num_rows() > 0) {
+            return TRUE;
+        } else {
+            return FALSE;
+        }
+    }
+
+    public function class_name_already_have($class_name, $academic_year) {
+        $class_name = trim($class_name);
+        $sql = "SELECT * FROM classes WHERE name ='{$class_name}' AND academic_year = '{$academic_year}'";
+
+        if ($this->db->query($sql)->num_rows() > 0) {
+            return TRUE;
+        } else {
+            return FALSE;
+        }
+    }
+
+    public function get_class_list() {
         $sql = "SELECT * FROM classes order by grade_id,name asc";
         $query = $this->db->query($sql);
-        
+
         return $query->result();
     }
-    
-    function get_class_name($class_id){
-        $sql = "SELECT * FROM classes WHERE id = '{$class_id}'";
-        $query = $this->db->query($sql);
-        $result = $query->row();
-        
-        return $result->name;
+
+    public function update_class($class_id, $class_data) {
+        $this->db->update('classes', $class_data, array('id' => $class_id));
     }
 
-    public function check_class_exists_name($grade, $name) {
-
-        $sql = "SELECT * FROM classes WHERE grade_id ='$grade' AND name ='$name'";
-        $query = $this->db->query($sql);
-        //Check if Username or Password Exists
-        if ($query->num_rows() == 0){
-            return FALSE;
-        } else{
-            return TRUE;
-        }
-        
-    }
-
-    //Add Class
-    public function addclass($data) {
-
-        if ($this->db->insert('classes', $data)) {
-            return TRUE;
-        } else {
-                return FALSE;
-        }
-        
-    }
-
-    //Get Class Basic Details
-    function viewclass($id){
-        try{
-            $query = $this->db->query("SELECT * FROM classes WHERE id='$id' LIMIT 1");
-            if ($query->num_rows() > 0)
-            {
-                $ret_array = array();
-               foreach ($query->result() as $row)
-               {
-                  $ret_array['name'] = $row->name; 
-                  $ret_array['id'] = $row->id; 
-                  $ret_array['grade_id'] = $row->grade_id; 
-                  $ret_array['teacher_id'] = $row->teacher_id; 
-               }
-
-               return $ret_array;
-            } else{
-                return FALSE;
-            }
-        } catch (Exception $ex) {
-            return FALSE;
-        }
-    }
-
-    //Update Class
-    function updateclass($data,$id){
-        $this->db->where('id', $id);
-        if ($this->db->update('classes', $data)) {
-            return TRUE;
-        } else {
-            return FALSE;
-        }
-    }
-
-    //Delete Class
-    public function deleteclass($id){
+    public function remove_class_teacher($class_id) {
         $data = array(
-               'id' => $id
-            );
+            'teacher_id' => NULL,
+        );
 
-        if ($this->db->delete('classes', $data)) {
-            return TRUE;
-        } else {
-            return FALSE;
-        }
+        $this->db->update('classes', $data, array('id' => $class_id));
     }
 
-    //get batch list
-    function get_batch_list(){
-        $sql = "SELECT b.id,b.name,b.grade,y.name as acadamic_year FROM batch b, year_plan y where b.academic_year = y.id order by b.academic_year,b.name desc";
-        $query = $this->db->query($sql);
-        
-        return $query->result();
+    public function get_number_of_students($class_id) {
+        $sql = "SELECT `id` FROM `student_class` WHERE `class_id` = '{$class_id}'";
+        return $this->db->query($sql)->num_rows();
     }
 
-    //Add Batch
-    public function addbatch($data) {
+//    public function get_students_without_class(){
+//        $sql = "SELECT * FROM ` students` WHERE current_class IS NULL";
+//        return $this->db->query($sql)->result();
+//    }
 
-        if ($this->db->insert('batch', $data)) {
-            return TRUE;
-        } else {
-                return FALSE;
-        }
-        
+    public function get_academic_years() {
+        $sql = "SELECT DISTINCT `academic_year` FROM classes";
+        return $this->db->query($sql)->result();
     }
 
-    //batch exists
-    public function check_batch_exists_name($ay, $name, $grade) {
+//    public function grade_strength($acadmic_year){
+//        $sql = "SELECT grade_id ";
+//    }
 
-        $sql = "SELECT * FROM batch WHERE academic_year ='$ay' AND name ='$name' AND grade ='$grade'  ";
-        $query = $this->db->query($sql);
-        //Check if Username or Password Exists
-        if ($query->num_rows() == 0){
-            return FALSE;
-        } else{
-            return TRUE;
-        }
-        
+    public function get_students_for_academic_year($academic_year) {
+        $sql = "SELECT s.*, c.* FROM students s, student_class c ";
+        $sql .= "WHERE c.student_id = s.id AND c.academic_year ='{$academic_year}'";
     }
 
-    //Update Baatch
-    function updatebatch($data,$id){
-        $this->db->where('id', $id);
-        if ($this->db->update('batch', $data)) {
-            return TRUE;
-        } else {
-            return FALSE;
-        }
-    }
-
-     //Get Class Basic Details
-    function viewbatch($id){
-        try{
-            $query = $this->db->query("SELECT b.id,b.name,b.grade,b.academic_year FROM batch b, year_plan y where b.academic_year = y.id and b.id='$id' LIMIT 1");
-            if ($query->num_rows() > 0)
-            {
-                $ret_array = array();
-               foreach ($query->result() as $row)
-               {
-                  $ret_array['name'] = $row->name; 
-                  $ret_array['id'] = $row->id; 
-                  $ret_array['acadamic_year'] = $row->academic_year;
-                  $ret_array['grade'] = $row->grade;  
-               }
-
-               return $ret_array;
-            } else{
-                return FALSE;
-            }
-        } catch (Exception $ex) {
-            return FALSE;
-        }
-    }
-
-    //Get Pending Students
-    function get_pending_students(){
-        $sql = "SELECT * FROM students WHERE class is null";
-        $query = $this->db->query($sql);
-
-        if ($query->num_rows() > 0) {
-            return $query->result();
-        } else {
-            return FALSE;
-        }
-
-    }
-
-     //Update Student bAtach
-    function update_student_batch($data,$id){
-        $this->db->where('id', $id);
-        if ($this->db->update('students', $data)) {
-            return TRUE;
-        } else {
-            return FALSE;
-        }
-    }
-
-    //View Student Class
-    public function view_class_students($id){
-        $this->db->select('*');
-        $this->db->from('students');
-        $this->db->where('class', $id);
-
-        $query = $this->db->get();
-
-        if ($query->num_rows() > 0) {
-            return $query->result();
-        } else {
-            return FALSE;
-        }
-    }
-
-    //View Student Class
-    public function get_unselected_teachers(){
-        $this->db->select('*');
-        $this->db->from('teachers');
-        $this->db->where('designation_id', '7');
-
-        $query = $this->db->get();
-
-        if ($query->num_rows() > 0) {
-            return $query->result();
-        } else {
-            return FALSE;
-        }
-    }
-
-
-    //Check Teacher is Selected or Not
-    public function check_class_teacher($id){
-        $sql = "SELECT * FROM classes WHERE teacher_id = '$id'";
-        $query = $this->db->query($sql);
-
-        if ($query->num_rows() == 0) {
-            return TRUE;
-        } else {
-            return FALSE;
-        }
-    }
-
-     //Update Student bAtach
-    function update_class_teacher($data,$id){
-        $this->db->where('id', $id);
-        if ($this->db->update('classes', $data)) {
-            return TRUE;
-        } else {
-            return FALSE;
-        }
-    }
-
-     public function get_teacher_name($id) {
-
-        $query = $this->db->query("SELECT * FROM teachers WHERE id ='$id'");
-        return $query->row()->full_name;
-    }
-
-    //Delete Student From Class
-    function unassign_student_from_class($data,$id){
-        $this->db->where('id', $id);
-        if ($this->db->update('students', $data)) {
-            return TRUE;
-        } else {
-            return FALSE;
-        }
-    }
 }
