@@ -94,6 +94,54 @@ class Subject_model extends CI_Model {
             return TRUE;
         }
     }
+    
+ /*
+ * get all the subject resuls from subjects table 
+ */
+    public function get_all_subjects() {
+        $sql = "SELECT s.*,t.full_name FROM subjects s inner join teachers t on s.subject_incharge_id=t.id";
+        //if ofset is not null
+        
+        $query = $this->db->query($sql);
+        return $query->result();
+    }
+    
+/*
+ * get all the subject resuls from subjects table 
+ */
+    public function get_subject_by_id($sub_id) {
+        $sql = "SELECT *FROM subjects where id=$sub_id";
+        //if ofset is not null
+        
+        $query = $this->db->query($sql);
+        return $query->row();
+    }    
+    
+    /*
+ * Add new subject into database
+ */
+    public function edit($subject_data) {
+
+
+        $subjectid = $subject_data['subjectid'];
+        $subjectinchargeid = $subject_data['subjectinchargeid'];
+        
+        //$sql = "INSERT INTO subjects (subject_name, subject_code, section_id, subject_incharge_id) VALUES ('{$subjectname}', '{$subjectcode}', '{$sectionid}', '{$subjectinchargeid}')";
+
+        $sql="UPDATE subjects SET subject_incharge_id=$subjectinchargeid where id= $subjectid";
+        
+
+       
+
+        $result = $this->db->query($sql);
+      
+
+        if (!$result) {
+            return FALSE;
+        } else {
+            return TRUE;
+        }
+    }
 
    
     

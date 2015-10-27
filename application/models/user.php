@@ -147,6 +147,19 @@ class User extends CI_Model {
         }
         
     }
+    
+    public function add_note($data){
+         try {
+            
+            if ($this->db->query("INSERT INTO notes (`student_id`, `type` , `subject` , `note`) VALUES ('{$data['user_id']}', '{$data['type']}' , '{$data['subject']}' , '{$data['note']}')")) {
+               
+                return TRUE;
+            } else {
+                return FALSE;
+            }
+        } catch (Exception $ex) {
+            return FALSE;
+        }
 
     // Get All the Users
     public function get_all_users_list() {

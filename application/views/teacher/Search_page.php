@@ -59,8 +59,7 @@
                             <th>Medium</th>
                             <th>Contact no</th>
                             <td>&nbsp;</td>
-                            <td>&nbsp;</td>
-                            <td>&nbsp;</td>
+                           
                         </tr>
                     </thead>
                     <tbody>
@@ -71,7 +70,13 @@
                                 <td><?php echo $row->id; ?></td>
                                 <td><?php echo $row->nic_no; ?></td>
                                 <td><?php echo $row->full_name; ?></td>
-                                <td><?php echo $row->gender; ?></td>
+                                <td><?php  $gender=$row->gender; 
+                                 if ($gender == 'm') {
+                                        echo 'Male';
+                                    } else if ($med == 'f') {
+                                        echo 'Female';
+                                    }
+                                ?></td>
                                 <td><?php echo $row->grade; ?></td>
                                 <td><?php
                                     $med = $row->medium;
@@ -84,9 +89,9 @@
                                     }
                                     ?></td>
                                 <td><?php echo $row->contact_mobile; ?></td>
-                                <td><a href="<?php echo base_url("index.php/teacher/view_profile") . "/" . $row->id; ?>" class="btn btn-primary btn-xs" aria-hidden="true"><i class="fa fa-eye"></i></a></td>
-                                <td><a href="<?php echo base_url("index.php/teacher/load_teacher") . "/" . $row->id; ?>" class="btn btn-primary btn-xs" aria-hidden="true"><i class="fa fa-edit"></i></a></td>
-                                <td><a href="<?php echo base_url("index.php/teacher/delete_teacher") . "/" . $row->id; ?>" onclick="return confirm('Are you sure you want to permenantly delete this user?   you cannot recover this teacher profile after you delete');" class="btn btn-danger btn-xs" aria-hidden="true"><i class="fa fa-trash"></i></a></td>
+                                <td><a href="<?php echo base_url("index.php/profile") . "?key=" . $row->user_id; ?>" class="btn btn-primary btn-xs" aria-hidden="true"><i class="fa fa-eye"></i></a>&nbsp;
+                                <a href="<?php echo base_url("index.php/teacher/load_teacher") . "/" . $row->id; ?>" class="btn btn-primary btn-xs" aria-hidden="true"><i class="fa fa-edit"></i></a>&nbsp;
+                                <a href="#" id="delete-user" data-user-id="<?php echo $row->user_id; ?>" class="btn btn-danger btn-xs" aria-hidden="true"><i class="fa fa-trash"></i></a></td>
 
                             </tr>
                         <?php } ?>
@@ -96,4 +101,26 @@
         </div>
     </div>
 </div>
+<script>
+  $('#delete-user').click(function() {
+    var userId = $(this).attr("data-user-id");
+    deleteUser(userId);
+  });
 
+  function deleteUser(userId) {
+    swal({
+      title: "Are you sure?", 
+      text: "Are you sure that you want to delete this user?", 
+      type: "warning",
+      showCancelButton: true,
+      closeOnConfirm: false,
+      confirmButtonText: "Yes, delete it!",
+      confirmButtonColor: "#ec6c62"
+    }, function() {
+        window.location.href = "<?php echo base_url("index.php/teacher/archive_teacher") ?>" + "/" + userId;
+    });
+    
+    
+  }
+  
+  </script>

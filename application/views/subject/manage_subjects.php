@@ -1,3 +1,8 @@
+<script type="text/javascript">
+                    $(document).ready(function () {
+                        $('#subject').DataTable();
+                    });
+</script>
 <div class="container">
     <div class="row">
         <div class="col-md-3">
@@ -16,16 +21,13 @@
             );
             ?>
             <?php echo form_open('subject/search', $attributes); ?>
-            <div class="form-group">
-                <label class="sr-only" for="keyword">Search Keyword</label>
-                <input type="text" class="form-control" id="keyword" name="keyword" placeholder="">
-            </div>
-            <button type="submit" class="btn btn-success"><i class="fa fa-filter"></i> Filter Results</button>
+            
+            
             <?php echo form_close(); ?>
             <div class="panel panel-default" style="margin-top: 10px;">
                 <div class="panel-heading">Subjects</div>
                 <div class="panel-body">
-                    <table class="table table-hover" style="margin-top: 10px;">
+                    <table class="table table-hover" id="subject" >
                         <thead>
                             <tr>
                                 <td><strong>#</strong></td>
@@ -51,21 +53,19 @@
                                               else if($row->section_id == 6 ){echo "A/L Commerce";}
                                               else if($row->section_id == 7 ){echo "A/L Arts";}
                                     ?></td>
-                                    <td><?php echo $row->subject_incharge_id; ?></td>
+                                    <td><?php echo $row->full_name; ?></td>
                                     
                                     <td>
                                        
                                         
-                                    <a href="<?php echo base_url('index.php/subject/delete') . '/' . $row->id; ?>" data-original-title="Remove this user" data-toggle="tooltip" type="button" class="btn btn-xs btn-info"><i class="glyphicon glyphicon-trash"></i></a>
+                                    <a href="<?php echo base_url('index.php/subject/edit') . '/' . $row->id; ?>" data-original-title="Remove this user" data-toggle="tooltip" type="button" class="btn btn-xs btn-info"><i class="glyphicon glyphicon-trash"></i></a>
                                     </td>
                                 </tr>
                             <?php } ?>
                         </tbody>                      
                     </table>
                     <nav>
-                        <?php foreach ($links as $link) { ?>
-                            <?php echo $link; ?>
-                        <?php } ?>
+                        
                     </nav>
 
                 </div>
