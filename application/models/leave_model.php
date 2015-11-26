@@ -19,7 +19,7 @@ class Leave_Model extends CI_Model {
     public function get_applied_leaves_list($uid){
         try{
             $query = $this->db->query("SELECT lt.name,al.applied_date,al.start_date,al.end_date,al.no_of_days,ls.status FROM apply_leaves al,leave_types lt,leave_status ls where (al.leave_type_id  = lt.id) AND al.leave_status = ls.id AND al.user_id='$uid' AND (YEAR(CURDATE())=YEAR(al.start_date)) ORDER BY al.applied_date desc LIMIT 10");
-//            $query = $this->db->query("SELECT lt.name,al.applied_date,al.start_date,al.end_date,al.no_of_days,al.leave_status FROM apply_leaves al,leave_types lt where (al.id = lt.id)");
+           // $query = $this->db->query("SELECT lt.name,al.applied_date,al.start_date,al.end_date,al.no_of_days,al.leave_status FROM apply_leaves al,leave_types lt where (al.id = lt.id)");
             return $query->result();
         } catch(Exception $ex) {
             return FALSE;
