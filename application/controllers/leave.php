@@ -240,6 +240,8 @@ class leave extends CI_Controller {
                 if ($this->Leave_Model->apply_for_leave($userid, $teacherid, $leavetype, $applieddate, $startdate, $enddate, $reason, $no_of_days_mc) == TRUE) {
                     $data['succ_message'] = "Leave Applied Successfully for " . $no_of_days_mc . " days";
 
+
+
                     // Send Email
                     $messagesubject = "Apply for Leave";
                     $messagestring = "You have requested leaves from <strong>". $startdate ."</strong> to <strong>". $enddate ."</strong> (". $no_of_days_mc ." days). You will receive the Leave Approval/Rejection Email once the Principal's action";
@@ -881,6 +883,11 @@ class leave extends CI_Controller {
         } else {
             return TRUE;
         }
+    }
+
+    function send_new_sms(){
+        $this->load->helper('sms_helper');
+        var_dump(send_sms());
     }
 
 }
