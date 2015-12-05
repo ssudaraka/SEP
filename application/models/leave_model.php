@@ -1,21 +1,41 @@
 <?php
+/**
+ * Ecole - Leave Model
+ * 
+ * Handles the Leave Model Functions
+ * 
+ * @author  Udara Karunarathna
+ * @copyright (c) 2015, Ecole. (http://projectecole.com)
+ * @link http://projectecole.com
+ */
 class Leave_Model extends CI_Model {
-	//loading database on class creationorderMainAddress
+
 	public function __construct() {
 			$this->load->database();
 	}
 
-    //Get Leave types table
+    /*
+     * Function to get All Leave Types
+     *
+     * @return mixed bool or Results
+     */
     public function get_leave_types(){
         try{
-            $query = $this->db->query("SELECT * FROM `leave_types`");
+            $this->db->select('*');
+            $query = $this->db->get('leave_types');
             return $query->result();
         } catch(Exception $ex) {
             return FALSE;
         }
     }
 
-    //Get a list of applied leaves according to the teacher id
+    /*
+     * Function to get applied leaves list
+     *
+     * @param  int user_id
+     *
+     * @return mixed bool or Results
+     */
     public function get_applied_leaves_list($uid){
         try{
             $query = $this->db->query("SELECT lt.name,al.applied_date,al.start_date,al.end_date,al.no_of_days,ls.status FROM apply_leaves al,leave_types lt,leave_status ls where (al.leave_type_id  = lt.id) AND al.leave_status = ls.id AND al.user_id='$uid' AND (YEAR(CURDATE())=YEAR(al.start_date)) ORDER BY al.applied_date desc LIMIT 10");
@@ -25,10 +45,19 @@ class Leave_Model extends CI_Model {
             return FALSE;
         }
     }
-	//Get max leave count according to the name
+
+	/*
+     * Function to get max leave count
+     *
+     * @param  string name
+     *
+     * @return mixed bool or Results
+     */
 	public function get_max_leave_count($name){
 		try {
-			$query = $this->db->query("SELECT max_leave_count FROM `leave_types` WHERE name='$name'");
+            $this->db->select('max_leave_count');
+            $this->db->where('name', $name);
+            $query = $this->db->get('leave_types');
             $row = $query->row();
             return $row->max_leave_count;
 			
@@ -37,7 +66,14 @@ class Leave_Model extends CI_Model {
 		}
 	}
 
-    //Get No of leaves applied by a person Make sure to use user id
+    /*
+     * Function to get max leave count
+     *
+     * @param  int leave_type
+     * @param  int user_id
+     *
+     * @return mixed bool or Results
+     */
     public function get_no_leaves($leave_type, $uid){
         if( $leave_type == '1' ){
             try {
@@ -67,10 +103,19 @@ class Leave_Model extends CI_Model {
         }
 
     }
-    //Get teacher id by userid
+
+    /*
+     * Function to get teacher id by user_id
+     *
+     * @param  int user_id
+     *
+     * @return mixed bool or Results
+     */
     function get_teacher_id($uid){
         try{
-            $query = $this->db->query("SELECT id FROM teachers WHERE user_id='$uid'");
+            $this->db->select('id');
+            $this->db->where('user_id', $uid);
+            $query = $this->db->get('teachers');
             $row = $query->row();
             return $row->id;
         } catch (Exception $ex) {
@@ -78,7 +123,20 @@ class Leave_Model extends CI_Model {
         }
     }
 
-	//Apply for leave
+	/*
+     * Function to apply for leave
+     *
+     * @param  int user_id
+     * @param  int teacher_id
+     * @param  int leave_type_id
+     * @param  date applied_date
+     * @param  date start_date
+     * @param  date end_date
+     * @param  string reason
+     * @param  int no_of_days
+     *
+     * @return mixed bool or Results
+     */
 	public function apply_for_leave($user_id, $teacher_id, $leave_type_id, $applied_date, $start_date, $end_date, $reason, $no_of_days){
 		try {
     		if($this->db->query("INSERT INTO apply_leaves (`id`, `user_id`, `teacher_id`, `leave_type_id`, `is_half_day`, `applied_date`, `start_date`, `end_date`, `reason`, `leave_status`, `remarks`, `no_of_days`)
@@ -92,7 +150,17 @@ class Leave_Model extends CI_Model {
     	}
 	}
 
-    //Apply for leave
+    /*
+     * Function to apply half day
+     *
+     * @param  int user_id
+     * @param  int teacher_id
+     * @param  date applied_date
+     * @param  date start_date
+     * @param  string reason
+     *
+     * @return mixed bool or Results
+     */
     public function apply_for_halfday($user_id, $teacher_id, $applied_date, $start_date, $reason){
         try {
             if($this->db->query("INSERT INTO apply_leaves (`id`, `user_id`, `teacher_id`, `leave_type_id`, `is_half_day`, `applied_date`, `start_date`, `end_date`, `reason`, `leave_status`, `remarks`, `no_of_days`)
@@ -106,7 +174,11 @@ class Leave_Model extends CI_Model {
         }
     }
 
-    //Get a list of pending leaves
+    /*
+    * Function to get the Pending Leaves Lists
+    *
+    * @return mixed bool or Results
+    */
     public function get_list_of_pending_leaves(){
         try {
             $query = $this->db->query("SELECT t.full_name, al.id, al.user_id,al.leave_type_id,al.applied_date,al.start_date,al.end_date,al.reason FROM apply_leaves al,teachers t WHERE al.user_id = t.user_id AND al.leave_status = '0' ORDER BY al.applied_date desc");
@@ -117,7 +189,13 @@ class Leave_Model extends CI_Model {
         }
     }
 
-    //Get a single leave details
+    /*
+    * Function to get the leave details
+    *
+    * @param  int id
+    *
+    * @return mixed bool or Results
+    */
     public function get_leave_details($id){
         try {
             $query = $this->db->query("SELECT t.full_name, al.id, al.user_id,lt.name,al.applied_date,al.start_date,al.end_date,al.reason,al.no_of_days,ls.status FROM apply_leaves al,teachers t, leave_types lt, leave_status ls WHERE al.leave_status=ls.id AND al.id = '$id' AND al.user_id = t.user_id AND lt.id = al.leave_type_id");
@@ -128,7 +206,13 @@ class Leave_Model extends CI_Model {
         }
     }
 
-    //Approve Leave by ID
+    /*
+    * Function to approve a leave
+    *
+    * @param  int id
+    *
+    * @return bool
+    */
     public function approve_leave($id){
         try {
             if($this->db->query("UPDATE apply_leaves SET leave_status='1',remarks='Leave Approved' WHERE id = '$id'")){
@@ -141,7 +225,13 @@ class Leave_Model extends CI_Model {
         }
     }
 
-    //Approve Short Leave by ID
+    /*
+    * Function to approve a short leave
+    *
+    * @param  int id
+    *
+    * @return bool
+    */
     public function approve_short_leave($id){
         try {
             if($this->db->query("UPDATE apply_short_leaves SET status='1',remarks='Short Leave Approved' WHERE id = '$id'")){
@@ -154,7 +244,13 @@ class Leave_Model extends CI_Model {
         }
     }
 
-    //Reject Leave by ID
+    /*
+    * Function to approve a leave
+    *
+    * @param  int id
+    *
+    * @return bool
+    */
     public function reject_leave($id){
         try {
             if($this->db->query("UPDATE apply_leaves SET leave_status='2',remarks='Leave Reject' WHERE id = '$id'")){
@@ -167,7 +263,13 @@ class Leave_Model extends CI_Model {
         }
     }
 
-    //Reject Short Leave by ID
+    /*
+    * Function to reject a short leave
+    *
+    * @param  int id
+    *
+    * @return bool
+    */
     public function reject_short_leave($id){
         try {
             if($this->db->query("UPDATE apply_short_leaves SET status='2',remarks='Short Leave Reject' WHERE id = '$id'")){
@@ -180,7 +282,11 @@ class Leave_Model extends CI_Model {
         }
     }
 
-    //Get a list of applied leaves according to the teacher id
+    /*
+    * Function to get All Leaves
+    *
+    * @return mixed bool or Results
+    */
     public function get_all_leaves(){
         try{
             $query = $this->db->query("SELECT al.id,t.full_name,lt.name,al.applied_date,al.start_date,al.end_date,al.reason,al.no_of_days,ls.status FROM apply_leaves al,leave_status ls,teachers t,leave_types lt WHERE al.leave_status = ls.id AND t.id = al.teacher_id AND lt.id = al.leave_type_id ORDER by al.applied_date desc");
@@ -190,7 +296,15 @@ class Leave_Model extends CI_Model {
         }
     }
 
-    //Get all leaves applied by a teacher within a time period
+    /*
+    * Function to reject a short leave
+    *
+    * @param  int uid
+    * @param  date startdate
+    * @param  date enddate
+    *
+    * @return bool
+    */
     public function get_leaves_for_report($uid, $startdate, $enddate){
         try{
             $query = $this->db->query("SELECT lt.name,al.applied_date,al.start_date,al.end_date,al.no_of_days,ls.status FROM apply_leaves al,leave_types lt,leave_status ls where (al.leave_type_id  = lt.id) AND al.leave_status = ls.id AND al.user_id='$uid' AND (al.applied_date BETWEEN '$startdate' and '$enddate') ORDER BY al.applied_date desc");
@@ -200,30 +314,51 @@ class Leave_Model extends CI_Model {
         }
     }
 
-    //Get All teachers list
+    /*
+    * Function to get All teachers list
+    *
+    * @return mixed bool or Results
+    */
     public function get_teachers(){
         try{
-            $query = $this->db->query("SELECT * FROM teachers");
-                return $query->result();
+            $this->db->select('*');
+            $query = $this->db->get('teachers');
+            return $query->result();
         } catch(Exception $ex) {
             return FALSE;
         }
     }
 
-    //Get All teachers by id
+    /*
+    * Function to get a teacher by id
+    *
+    * @param  int id
+    *
+    * @return mixed bool or Results
+    */
     public function get_teacher_by_id($id){
         try{
-            $query = $this->db->query("SELECT * FROM teachers where user_id='$id'");
-                return $query->result();
+            $this->db->select('*');
+            $this->db->where('user_id', $id);
+            $query = $this->db->get('teachers');
+            return $query->result();
         } catch(Exception $ex) {
             return FALSE;
         }
     }
 
-    //Get user id by teacher
+    /*
+    * Function to get user id by teacher id
+    *
+    * @param  int tid
+    *
+    * @return mixed bool or Results
+    */
     function get_user_id($tid){
         try{
-            $query = $this->db->query("SELECT user_id FROM teachers WHERE id='$tid'");
+            $this->db->select('user_id');
+            $this->db->where('id', $tid);
+            $query = $this->db->get('teachers');
             $row = $query->row();
             return $row->user_id;
         } catch (Exception $ex) {
@@ -231,17 +366,33 @@ class Leave_Model extends CI_Model {
         }
     }
 
-    //Get Short Leave types table
+    /*
+    * Function to get short leaves types
+    *
+    * @return mixed bool or Results
+    */
     public function get_short_leave_types(){
         try{
-            $query = $this->db->query("SELECT * FROM `short_leave_types`");
+            $this->db->select('*');
+            $query = $this->db->get('short_leave_types');
             return $query->result();
         } catch(Exception $ex) {
             return FALSE;
         }
     }
 
-    //Apply for short leave
+    /*
+    * Function to apply for short leaves
+    *
+    * @param  int user_id
+    * @param  int teacher_id
+    * @param  int leave_type_id
+    * @param  date applied_date
+    * @param  date date
+    * @param  string reason
+    *
+    * @return mixed bool or Results
+    */
     public function apply_for_short_leave($user_id, $teacher_id, $leave_type_id, $applied_date, $date, $reason){
         try {
             if($this->db->query("INSERT INTO apply_short_leaves (`id`, `user_id`, `teacher_id`, `leave_Type`, `applied_date`, `date`, `reason`, `status`, `remarks`)
@@ -255,7 +406,13 @@ class Leave_Model extends CI_Model {
         }
     }
 
-    //Get a list of applied short leaves according to the teacher id
+    /*
+    * Function to get applied short leaves list
+    *
+    * @param  int uid
+    *
+    * @return mixed bool or Results
+    */
     public function get_applied_short_leaves_list($uid){
         try{
             $query = $this->db->query("SELECT lt.name,al.applied_date,al.date,al.reason,ls.status FROM apply_short_leaves al,short_leave_types lt,leave_status ls where (al.leave_Type  = lt.id) AND al.status = ls.id AND al.user_id='$uid' AND ( al.leave_Type = '1' ) AND (MONTH(CURDATE())=MONTH(al.date))");
@@ -265,7 +422,13 @@ class Leave_Model extends CI_Model {
         }
     }
 
-    //Get a list of applied short leaves according to the teacher id
+     /*
+    * Function to get recent applied short leaves list
+    *
+    * @param  int uid
+    *
+    * @return mixed bool or Results
+    */
     public function get_recent_applied_short_leaves_list($uid){
         try{
             $query = $this->db->query("SELECT lt.name,al.applied_date,al.date,al.reason,ls.status FROM apply_short_leaves al,short_leave_types lt,leave_status ls where (al.leave_Type  = lt.id) AND al.status = ls.id AND al.user_id='$uid' ORDER BY al.applied_date desc LIMIT 10");
@@ -275,7 +438,13 @@ class Leave_Model extends CI_Model {
         }
     }
 
-    //Get a count of applied leaves according to the teacher id
+     /*
+    * Function to get applied short leaves count
+    *
+    * @param  int uid
+    *
+    * @return mixed bool or Results
+    */
     public function get_applied_short_leaves_count($uid){
         try{
             $query = $this->db->query("SELECT COUNT(*) as count FROM apply_short_leaves al,short_leave_types lt,leave_status ls where (al.leave_Type  = lt.id) AND ( al.status = 0 OR al.status = 1 ) AND al.status = ls.id AND al.user_id='$uid' AND ( al.leave_Type = '1' )  AND (MONTH(CURDATE())=MONTH(al.date))");
@@ -286,7 +455,11 @@ class Leave_Model extends CI_Model {
         }
     }
 
-    //Get a list of pending short leaves
+     /*
+    * Function to get pending short leaves
+    *
+    * @return mixed bool or Results
+    */
     public function get_list_of_pending_short_leaves(){
         try {
             $query = $this->db->query("SELECT t.full_name, al.id, al.user_id,al.applied_date,al.date,al.reason FROM apply_short_leaves al,teachers t WHERE al.user_id = t.user_id AND al.status = '0' ORDER BY al.applied_date desc");
@@ -297,7 +470,13 @@ class Leave_Model extends CI_Model {
         }
     }
 
-    //Get a single short leave details
+     /*
+    * Function to get short leaves details
+    *
+    * @param  int id
+    *
+    * @return mixed bool or Results
+    */
     public function get_short_leave_details($id){
         try {
             $query = $this->db->query("SELECT t.full_name, al.id, al.user_id,lt.name,al.applied_date,al.date,al.reason,ls.status FROM apply_short_leaves al,teachers t, leave_types lt, leave_status ls WHERE al.status=ls.id AND al.id = '$id' AND al.user_id = t.user_id AND lt.id = al.leave_Type");
@@ -307,7 +486,12 @@ class Leave_Model extends CI_Model {
             return FALSE;
         }
     }
-    //Get a Count of pending leaves for dashboard
+
+    /*
+    * Function to get count of pending leaves
+    *
+    * @return mixed bool or Results
+    */
     public function get_count_of_pending_leaves(){
         try {
             $query = $this->db->query("SELECT COUNT(*) as count FROM apply_leaves al WHERE al.leave_status = '0'");

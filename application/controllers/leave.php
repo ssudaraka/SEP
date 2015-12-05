@@ -1,25 +1,18 @@
 <?php
-
+/**
+ * Ecole - Leave Controller
+ * 
+ * Handles the Leave Methods
+ * 
+ * @author  Udara Karunarathna
+ * @copyright (c) 2015, Ecole. (http://projectecole.com)
+ * @link http://projectecole.com
+ */
 if (!defined('BASEPATH'))
     exit('No direct script access allowed');
 
 class leave extends CI_Controller {
 
-    /**
-     * Index Page for this controller.
-     *
-     * Maps to the following URL
-     * 		http://example.com/index.php/welcome
-     * 	- or -  
-     * 		http://example.com/index.php/welcome/index
-     * 	- or -
-     * Since this controller is set as the default controller in 
-     * config/routes.php, it's displayed at http://example.com/
-     *
-     * So any other public methods not prefixed with an underscore will
-     * map to /index.php/welcome/<method_name>
-     * @see http://codeigniter.com/user_guide/general/urls.html
-     */
     public function __construct() {
         parent::__construct();
         $this->load->model('Leave_Model');
@@ -29,6 +22,10 @@ class leave extends CI_Controller {
         $this->load->model('Email_Model');
     }
 
+    /** 
+     *  Index Method to View Leave Controller Pages
+     *  This Function will help you to View Leave Functions
+     */
     public function index() {
         if (!$this->session->userdata('logged_in')) {
             redirect('login', 'refresh');
@@ -97,7 +94,10 @@ class leave extends CI_Controller {
         }
     }
 
-    //Main function to apply leaves
+    /** 
+     *  Function to Apply Leave 
+     *  This Function will help you to apply leaves on teacher side
+     */
     public function apply_leave() {
         $data['navbar'] = "leave";
 
@@ -287,7 +287,13 @@ class leave extends CI_Controller {
         }
     }
 
-    //Get One Leave details
+    /*
+     * Function to Get Leave Details
+     *
+     * @param  int
+     *
+     * @return Results
+     */
     public function get_leave_details($id) {
         $data['navbar'] = "leave";
 
@@ -307,7 +313,13 @@ class leave extends CI_Controller {
         $this->load->view('/templates/footer');
     }
 
-    //Approve Leave
+    /*
+     * Function to Approve Leave
+     *
+     * @param  int
+     *
+     * @return Results
+     */
     public function approve_leave($id) {
         $data['navbar'] = "leave";
 
@@ -339,7 +351,13 @@ class leave extends CI_Controller {
         }
     }
 
-    //Approve Short Leave
+    /*
+     * Function to Approve Short Leave
+     *
+     * @param  int
+     *
+     * @return Results
+     */
     public function approve_short_leave($id) {
         $data['navbar'] = "leave";
 
@@ -358,7 +376,13 @@ class leave extends CI_Controller {
         }
     }
 
-    //Rejected Leave
+    /*
+     * Function to Reject Leave
+     *
+     * @param  int
+     *
+     * @return Results
+     */
     public function reject_leave($id) {
         $data['navbar'] = "leave";
 
@@ -390,7 +414,13 @@ class leave extends CI_Controller {
         }
     }
 
-    //Rejected Leave
+    /*
+     * Function to Reject Short Leave
+     *
+     * @param  int
+     *
+     * @return Results
+     */
     public function reject_short_leave($id) {
         $data['navbar'] = "leave";
 
@@ -409,7 +439,9 @@ class leave extends CI_Controller {
         }
     }
 
-    //View All Leaves
+    /*
+     * Function to load All Views Page
+     */
     public function get_all_leaves() {
         $data['navbar'] = "leave";
 
@@ -430,7 +462,9 @@ class leave extends CI_Controller {
         $this->load->view('/templates/footer');
     }
 
-    //View Leaves Report
+    /*
+     * Function to load Leaves Report
+     */
     public function leaves_report() {
         $data['navbar'] = "leave";
 
@@ -477,6 +511,9 @@ class leave extends CI_Controller {
         }
     }
 
+    /*
+     * Function to print Leave Reports
+     */
     public function leaves_report_print() {
         $this->load->helper(array('dompdf', 'file'));
 
@@ -494,7 +531,9 @@ class leave extends CI_Controller {
         pdf_create($html, $filename);
     }
 
-    //View Leaves Report
+    /*
+     * Function to view All Teachers Leave Report
+     */
     public function all_teacher_leave() {
         $data['navbar'] = "leave";
 
@@ -544,7 +583,11 @@ class leave extends CI_Controller {
         }
     }
 
-    //Apply any teacher leave function
+    /*
+     * Function to apply for teacher leaves from admin side
+     * Same as the Leave Function on apply_leave
+     * If you are changing this Function make sure it tallies with apply_leave as well
+     */
     public function apply_teacher_leave() {
         $data['navbar'] = "leave";
 
@@ -681,7 +724,9 @@ class leave extends CI_Controller {
         }
     }
 
-    //Short leave function
+    /*
+     * Function to load short leaves page
+     */
     public function short_leave() {
         $data['navbar'] = "leave";
 
@@ -707,7 +752,9 @@ class leave extends CI_Controller {
         $this->load->view('/templates/footer');
     }
 
-    //Apply Short leave function
+    /*
+     * Function to apply short leaves
+     */
     public function apply_short_leave() {
         $data['navbar'] = "leave";
 
@@ -799,7 +846,13 @@ class leave extends CI_Controller {
         }
     }
 
-    //Get One Short Leave details
+    /*
+     * Function to get short Leaves Details
+     *
+     * @param  int
+     *
+     * @return Results
+     */
     public function get_short_leave_details($id) {
         $data['navbar'] = "leave";
 
@@ -819,8 +872,13 @@ class leave extends CI_Controller {
         $this->load->view('/templates/footer');
     }
 
-    // Call back Validations
-    //check date for current year
+    /*
+     * Function to get short Leaves Details
+     *
+     * @param  date
+     *
+     * @return bool
+     */
     function check_date_for_current_year($date) {
         $current_year = date('Y');
         $date = date_create($date);
@@ -833,7 +891,13 @@ class leave extends CI_Controller {
         }
     }
 
-    //Checking combo box on short leaves
+    /*
+     * Function to check status check
+     *
+     * @param  int
+     *
+     * @return bool
+     */
     function check_combo_box($value) {
         if ($value == 0) {
             $this->form_validation->set_message('check_combo_box', 'Select a Leave Type');
@@ -843,7 +907,13 @@ class leave extends CI_Controller {
         }
     }
 
-    //Date Validation Call back Function
+    /*
+     * Function to validate a date
+     *
+     * @param  date
+     *
+     * @return bool
+     */
     function check_date_validations($date) {
         //Other essential data
         $applieddate = date("Y-m-d");

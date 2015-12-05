@@ -1,14 +1,89 @@
 <?php
-
+/**
+ * Ecole - Leave Model
+ * 
+ * Handles the News Model Functions
+ * 
+ * @author  Udara Karunarathna
+ * @author  Sajith Sudarshana
+ * @copyright (c) 2015, Ecole. (http://projectecole.com)
+ * @link http://projectecole.com
+ */
 class News_Model extends CI_Model {
 
-    //loading database on class creationorderMainAddress
     public function __construct() {
         parent::__construct();
         $this->load->database();
         $this->load->helper('date');
     }
-/*
+
+
+    /*
+     * Function to save a news article
+     *
+     * @param  string news_name
+     * @param  string description
+     * @param  int news_name
+     *
+     * @return bool
+     */
+    public function create_news($news_name, $description,$userid){
+        $created_time = date('Y-m-d H:i:s');
+        $this->db->query("insert into news_blog(name,description,create_at,userid) values('$news_name','$description','$created_time', '$userid')");
+        return TRUE;
+    }
+    
+    /*
+     * Function to get all news details
+     *
+     * @return Results
+     */
+    public function get_all_news_details(){
+        $data = $this->db->query("select * from news_blog order by create_at desc");
+        return $data->result();
+    }
+    
+    /*
+     * Function to get a particular news
+     *
+     * @param  int id
+     *
+     * @return results
+     */
+    public function get_particular_news($id){
+        $data = $this->db->query("select * from news_blog where id='$id'");
+        return $data->row();
+    }
+    
+    /*
+     * Function to update a news
+     *
+     * @param  int id
+     *
+     * @return bool
+     */
+    public function update_news($id , $data){
+        $this->db->where('id', $id);
+        if ($this->db->update('news_blog', $data)) {
+            return TRUE;
+        } else {
+            return FALSE;
+        }
+    }
+    
+    /*
+     * Function to delete news items from the portal
+     *
+     * @param  int id
+     *
+     * @return bool
+     */
+    public function delete_news($id){
+        $this->db->query("delete from news_blog where id='$id'");
+        return TRUE;
+    }
+
+    /*
  * Here all the activity details that have been perfomed by users are recorded in database
  */
     public function insert_action_details($id, $action, $propic, $username) {
@@ -75,42 +150,6 @@ class News_Model extends CI_Model {
                             </tr>";
         }
         exit;
-    }
-    /*
-     * This function is used to record news details
-     */
-    public function create_news($news_name, $description,$userid){
-        $created_time = date('Y-m-d H:i:s');
-        $this->db->query("insert into news_blog(name,description,create_at,userid) values('$news_name','$description','$created_time', '$userid')");
-        return TRUE;
-    }
-    
-    //This function is used get all the news published on the portal sorted by created date on descending order
-    public function get_all_news_details(){
-        $data = $this->db->query("select * from news_blog order by create_at desc");
-        return $data->result();
-    }
-    
-    //This function is used to get all the information on a single news item
-    public function get_particular_news($id){
-        $data = $this->db->query("select * from news_blog where id='$id'");
-        return $data->row();
-    }
-    
-    //This function is used to update a single news item
-    public function update_news($id , $data){
-        $this->db->where('id', $id);
-        if ($this->db->update('news_blog', $data)) {
-            return TRUE;
-        } else {
-            return FALSE;
-        }
-    }
-    
-    // This function is used to delete news items from the portal
-    public function delete_news($id){
-        $this->db->query("delete from news_blog where id='$id'");
-        return TRUE;
     }
 
 }
