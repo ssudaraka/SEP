@@ -57,6 +57,7 @@
 <?php
 foreach ($details as $row) {
     $color;
+    $edate;
     if ($row->status == 'rejected') {
         $color = 'red';
     } else if ($row->status == 'approved') {
@@ -64,7 +65,12 @@ foreach ($details as $row) {
     } else {
         $color = 'blue';
     }
-    echo "{id: '$row->id', start: '$row->start_date', end: '$row->end_date', title: '$row->title', color: '$color' , url: '" . base_url('index.php/event/view_event_details') .'/'. $row->id."'},";
+    $edate = explode("-", $row->end_date);
+    if($row->start_date != $row->end_date){
+        $edate[2] = $edate[2]+1;
+    }
+    $end_day = $edate[0].'-'.$edate[1]. '-'. $edate[2];
+    echo "{id: '$row->id', start: '$row->start_date', end: '$end_day', title: '$row->title', color: '$color' , url: '" . base_url('index.php/event/view_event_details') .'/'. $row->id."'},";
 }
 ?>
             ]
