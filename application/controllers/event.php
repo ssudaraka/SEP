@@ -53,7 +53,7 @@ class Event extends CI_Controller {
         $this->form_validation->set_rules('end_date', 'end date', 'required|callback_check_event_end_date');
         $this->form_validation->set_rules('end_time', 'end time', 'required');
         $this->form_validation->set_rules('in_charge', 'in charge', 'required|callback_check_incharge_id');
-        $this->form_validation->set_rules('budget', 'budget', 'required|integer');
+        $this->form_validation->set_rules('budget', 'budget', 'required|integer|greater_than[0]');
         $this->form_validation->set_rules('location', 'location', 'required');
         $this->form_validation->set_rules('guest', 'guest', '');
 
