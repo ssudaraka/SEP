@@ -1,20 +1,33 @@
 <?php
-
+/**
+ * Ecole - Timetable Controller
+ * 
+ * Controller to create and manage timetables
+ * 
+ * @author  Sudaraka K. S.
+ * @copyright (c) 2015, Ecole. (http://projectecole.com)
+ * @link http://projectecole.com
+ */
 class Timetable extends CI_Controller {
 
+    /**
+     * Class constructor
+     */
     function __construct() {
         parent::__construct();
         $this->load->model('class_model');
         $this->load->model('timetable_model');
-        $this->load->model('Teacher_Model');
-        $this->load->model('News_Model');
+        $this->load->model('teacher_model');
+        $this->load->model('news_model');
         $this->load->library('form_validation');
     }
 
+    /**
+     * Main interface for timetable management
+     */
     function index() {
         $data['page_title'] = "Timetable Management";
         $data['navbar'] = "timetable";
-        //Getting user type
         $data['user_type'] = $this->session->userdata['user_type'];
 
         $data['timetable_list'] = $this->timetable_model->get_timetable_list();
@@ -26,6 +39,9 @@ class Timetable extends CI_Controller {
         $this->load->view('/templates/footer');
     }
 
+    /**
+     * Interface to create timetable
+     */
     function create() {
         $data['page_title'] = "Create Timetable";
         $data['navbar'] = "timetable";
@@ -49,9 +65,9 @@ class Timetable extends CI_Controller {
             $data['class_name'] = $this->class_model->get_class_name($data['class_id']);
             //For news field
             $tech_id = $this->session->userdata('id');
-            $tech_details = $this->Teacher_Model->user_details($tech_id);
-            $this->News_Model->insert_action_details($tech_id, "Create new time table", $tech_details->profile_img, $tech_details->first_name);
-            //////
+            $tech_details = $this->teacher_model->user_details($tech_id);
+            $this->news_model->insert_action_details($tech_id, "Create new time table", $tech_details->profile_img, $tech_details->first_name);
+
             $this->load->view('templates/header', $data);
             $this->load->view('navbar_main', $data);
             $this->load->view('navbar_sub', $data);
@@ -60,6 +76,9 @@ class Timetable extends CI_Controller {
         }
     }
 
+    /*
+     * Interface to filter timetable list by year
+     */
     function search_by_year() {
 
         $data['page_title'] = "Timetable Management";
@@ -77,6 +96,9 @@ class Timetable extends CI_Controller {
         $this->load->view('/templates/footer');
     }
 
+     /**
+     * Interface to filter timetable list by class
+     */
     function search_by_class() {
         $data['page_title'] = "Timetable Management";
         $data['navbar'] = 'timetable';
@@ -95,11 +117,14 @@ class Timetable extends CI_Controller {
         $this->load->view('/templates/footer');
     }
 
+    /**
+     * Interface to view a particular timetable
+     * @param int $timetable_id ID of the timetable
+     */
     function open($timetable_id) {
         $data['page_title'] = "Timetable: $timetable_id";
         $data['navbar'] = "timetable";
         $data['timetable_id'] = $timetable_id;
-        //Getting user type
         $data['user_type'] = $this->session->userdata['user_type'];
 
         $timetable = $this->timetable_model->get_class_timetable($timetable_id);
@@ -114,11 +139,16 @@ class Timetable extends CI_Controller {
         $this->load->view('/templates/footer');
     }
 
+    /**
+     * Acts as a validation method to timetable creation to check the year is in
+     * valid range and check there's no timetable already for the given year given class
+     * @return bool
+     */
     function check_year() {
         $year = $this->input->post('year');
         $class_id = $this->input->post('class');
         if ($year < 1990 OR $year > 2099) {
-            $this->form_validation->set_message('check_year', "year must be greater that 1990 and less that 2099");
+            $this->form_validation->set_message('check_year', "year must be greater than 1990 and less that 2099");
             return FALSE;
         } else if ($this->timetable_model->timetable_already_have($class_id, $year)) {
             $class_name = $this->class_model->get_class_name($class_id);
@@ -127,7 +157,12 @@ class Timetable extends CI_Controller {
         }
         return TRUE;
     }
-
+    
+    /**
+     * Acts as a validation method to timetable creation.
+     * Will check if the class is selected.
+     * @return bool
+     */
     function class_selected() {
         $class = $this->input->post('class');
         if ($class == 0) {
@@ -138,6 +173,11 @@ class Timetable extends CI_Controller {
         }
     }
 
+    /**
+     * Acts as a validation method to timetable creation.
+     * Will check if the teacher is selected.
+     * @return bool
+     */
     function teacher_selected() {
         $teacher = $this->input->post('teacher');
         if ($teacher == 0) {
@@ -148,6 +188,11 @@ class Timetable extends CI_Controller {
         }
     }
 
+    /**
+     * Acts as a validation method to timetable creation.
+     * Will check if the subject is selected.
+     * @return bool
+     */
     function subject_selected() {
         $subject = $this->input->post('subject');
         if ($subject == 0) {
@@ -157,12 +202,15 @@ class Timetable extends CI_Controller {
             return TRUE;
         }
     }
-
+    
+    /**
+     * Interface to delete a particular timetable
+     * @param type $timetable_id
+     */
     function delete($timetable_id) {
 
         $data['page_title'] = "Test Timetable";
         $data['navbar'] = "timetable";
-        //Getting user type
         $data['user_type'] = $this->session->userdata['user_type'];
 
         if ($this->timetable_model->delete($timetable_id)) {
@@ -172,8 +220,8 @@ class Timetable extends CI_Controller {
             $this->timetable_model->delete_slots($timetable_id);
             //For news field
             $tech_id = $this->session->userdata('id');
-            $tech_details = $this->Teacher_Model->user_details($tech_id);
-            $this->News_Model->insert_action_details($tech_id, "Delete the time table", $tech_details->profile_img, $tech_details->first_name);
+            $tech_details = $this->teacher_model->user_details($tech_id);
+            $this->news_model->insert_action_details($tech_id, "Delete the time table", $tech_details->profile_img, $tech_details->first_name);
             //////
             $this->load->view('templates/header', $data);
             $this->load->view('navbar_main', $data);
@@ -183,6 +231,9 @@ class Timetable extends CI_Controller {
         }
     }
 
+    /**
+     * Test Method for Dev Purposes
+     */
     function test() {
 
         $data['page_title'] = "Test Timetable";
@@ -196,6 +247,12 @@ class Timetable extends CI_Controller {
         $this->load->view('/templates/footer');
     }
 
+    /**
+     * Method used to add timetable slot
+     * 
+     * @param int $timetable_id
+     * @param string $slot_id
+     */
     function add_slot($timetable_id, $slot_id) {
         $data['page_title'] = "Test Timetable";
         $data['navbar'] = "timetable";
@@ -205,8 +262,6 @@ class Timetable extends CI_Controller {
         $data['slot_id'] = $slot_id;
         $data['teacher_list'] = $this->timetable_model->get_teacher_list();
         $data['subject_list'] = $this->timetable_model->get_subject_list();
-
-
 
         $this->form_validation->set_rules("teacher", "Teacher", "required|integer|callback_teacher_selected|callback_teacher_already_have_slot");
         $this->form_validation->set_rules("subject", "Subject", "required|callback_subject_selected");
@@ -228,11 +283,23 @@ class Timetable extends CI_Controller {
         }
     }
 
+    /**
+     * Interface to delete a particular slot in a timetable
+     * @param int $timetable_id
+     * @param string $slot_id
+     */
     function delete_slot($timetable_id, $slot_id) {
         $this->timetable_model->delete_slot($timetable_id, $slot_id);
         $this->open($timetable_id);
     }
 
+    /**
+     * Acts as a validation method to timetable creation.
+     * Checks if the teacher already have a slot in another timetable at the
+     * same time.
+     * 
+     * @return boolean
+     */
     function teacher_already_have_slot() {
 
         $timetable_id = $this->input->post('timetable_id');

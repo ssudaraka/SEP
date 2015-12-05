@@ -2,15 +2,24 @@
 
 class Timetable_Model extends CI_Model {
 
+    private $table = "class_timetable";
+    
     function __construct() {
         parent::__construct();
     }
 
+    /**
+     * 
+     * @param int $class_id ID of the class
+     * @param string $year Academic Year
+     * @return int Timetable ID
+     */
     function create_class_timetable($class_id, $year) {
-
-        $sql = "INSERT INTO class_timetable (class_id, year) VALUES ('{$class_id}', '{$year}')";
-        $query = $this->db->query($sql);
-
+        $timetable = array(
+            'class_id' => $class_id,
+            'year' => $year
+        );
+        $this->db->insert($this->table, $timetable); 
         return $this->db->insert_id();
     }
 
@@ -21,12 +30,13 @@ class Timetable_Model extends CI_Model {
         return $query->row();
     }
 
+    /**
+     * Returns complete list of timetables from the database
+     * 
+     * @return mixed result set
+     */
     function get_timetable_list() {
-
-        $sql = "SELECT * FROM class_timetable";
-        $query = $this->db->query($sql);
-
-        return $query->result();
+        return $this->db->get($this->table)->result();
     }
 
     function search_by_year($keyword) {
