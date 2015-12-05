@@ -1,5 +1,13 @@
 <?php
-
+/**
+ * Ecole - Event Model
+ * 
+ * Responsibe for handling date related to school events in the system
+ * 
+ * @author Gunathilaka M.A.S.S
+ * @copyright (c) 2015, Ecole. (http://projectecole.com)
+ * @link  http://projectecole.com
+ */
 class Event_model extends CI_Model {
 
     public function __construct() {
@@ -8,62 +16,49 @@ class Event_model extends CI_Model {
     }
 
     /**
-     * Create a new event
+     * Interact with the database to create a new event.
+     * 
+     * @param array $insert_event contains event details such as event_name,description,budget,start_date,end_date...
+     * 
+     * @return boolean
      */
-    function insert_sport_event($event_name, $event_type, $description, $start_date, $start_time, $end_date, $end_time, $in_charge, $budget , $loc , $guest) {
-        try {
-
-            if ($this->db->query("INSERT INTO events(`title`,`event_type`,`description`,`start_date`,`start_time`,`end_date`,`end_time`,`status` , `in_charge_id` , `budget` , `location` , `guest`) VALUES('$event_name','$event_type','$description','$start_date','$start_time','$end_date','$end_time','pending' , '$in_charge' , '$budget' , '$loc' , '$guest')")) {
-                return TRUE;
-            } else {
-                return FALSE;
-            }
-        } catch (Exception $ex) {
-            return FALSE;
-        }
+    function insert_sport_event($insert_event) {
+        $this->db->insert('events' , $insert_event);
+        return TRUE;
     }
 
     /**
      * Create new event type
+     * 
+     * @param array $inert_event_type contains event type details such as event type name , description
+     * @return boolean
      */
-    function insert_new_event_type($type, $description) {
-
-        try {
-
-            if ($this->db->query("INSERT INTO event_type(`event_type`,`description`) VALUES('$type' , '$description')")) {
-                return TRUE;
-            } else {
-                return FALSE;
-            }
-        } catch (Exception $ex) {
-            
-        }
+    function insert_new_event_type($inert_event_type) {
+        $this->db->insert('event_type' , $inert_event_type);
+        return TRUE;
     }
 
     /**
      * Update the event
+     * 
+     * @param int $event_id
+     * @param array $update_event contains event details such as event_name,description,budget,start_date,end_date...
+     * @return boolean
      */
-    function update_event($event_id, $event_name, $event_type, $description, $start_date, $start_time, $end_date, $end_time, $in_charge, $budget , $location , $guest) {
-
-        try {
-
-            if ($this->db->query("UPDATE events SET title='$event_name' , description='$description' , start_time='$start_time' , end_time='$end_time' , in_charge_id='$in_charge' , start_date='$start_date' , end_date='$end_date' , budget='$budget' , location='$location' , guest='$guest' , event_type='$event_type' where id='$event_id'")) {
-                return TRUE;
-            } else {
-                return FALSE;
-            }
-        } catch (Exception $ex) {
-            
-        }
+    function update_event($event_id , $update_event) {
+        $this->db->where('id' , $event_id);
+        $this->db->update('events' , $update_event);
+        return TRUE;
     }
 
     /**
      * Cancel the event. Only admin can cancel a event
+     * 
+     * @param int $id
+     * @return boolean
      */
     function cancel_event($id) {
-
         try {
-
             if ($this->db->query("UPDATE events SET `status` = 'cancelled'  WHERE `id` = '$id'")) {
                 return TRUE;
             } else {
@@ -76,6 +71,8 @@ class Event_model extends CI_Model {
 
     /**
      * Get pending event details
+     * 
+     * @return mixed resulting row or null value
      */
     public function get_pending_event_details() {
         $today = date('Y-m-d');
@@ -91,6 +88,12 @@ class Event_model extends CI_Model {
         }
     }
 
+    /**
+     * getting details of the selected event
+     * 
+     * @param int $id
+     * @return mixed resulting row or null value
+     */
     public function get_approved_event_details($id) {
         try {
             if ($data = $this->db->query("select * from `events` where id = '$id'")) {
@@ -104,6 +107,11 @@ class Event_model extends CI_Model {
         }
     }
 
+    /**
+     * getting all event type details
+     * 
+     * @return mixed resulting row or null value
+     */
     public function get_event_type_details() {
         try {
             if ($data = $this->db->query("select * from `event_type`")) {
@@ -117,6 +125,12 @@ class Event_model extends CI_Model {
         }
     }
 
+    /**
+     * Getting upcoming event details which are approved by the system admin.
+     * 
+     * @param date $today
+     * @return mixed resulting row or null value
+     */
     public function get_upcoming_events($today) {
         try {
 
@@ -131,6 +145,12 @@ class Event_model extends CI_Model {
         }
     }
 
+    /**
+     * This method is used to get selected upcoming event details
+     * 
+     * @param int $id
+     * @return mixed resulting row or null value
+     */
     public function get_upcoming_event_single_details($id) {
         try {
             if ($data = $this->db->query("select * from `events` where id = '$id'")) {
@@ -144,6 +164,11 @@ class Event_model extends CI_Model {
         }
     }
 
+    /**
+     * select pending event details
+     * 
+     * @return mixed resulting row or null value
+     */
     public function get_pending_events_to_approve() {
         try {
             if ($data = $this->db->query("select * from `events` where `status` = 'pending' limit 10")) {
@@ -157,6 +182,11 @@ class Event_model extends CI_Model {
         }
     }
 
+    /**
+     * get rejected event details
+     * 
+     * @return mixed resulting set or null value
+     */
     public function get_canceled_events() {
         try {
             if ($data = $this->db->query("select * from `events` where `status` = 'rejected' limit 10")) {
@@ -170,6 +200,12 @@ class Event_model extends CI_Model {
         }
     }
 
+    /**
+     * get selected event details
+     * 
+     * @param int $id
+     * @return mixed resulting row or null value
+     */
     public function load_pending_events($id) {
         try {
             if ($data = $this->db->query("select * from `events` where id = '$id'")) {
@@ -183,6 +219,12 @@ class Event_model extends CI_Model {
         }
     }
 
+    /**
+     * update the selected event's status to approved
+     * 
+     * @param int $id
+     * @return boolean
+     */
     public function approve_event($id) {
         try {
             if ($this->db->query("update events set status = 'approved' where id = '$id'")) {
@@ -193,6 +235,12 @@ class Event_model extends CI_Model {
         }
     }
 
+    /**
+     * update the selected event's status to rejected
+     * 
+     * @param int $id
+     * @return boolean
+     */
     public function reject_event($id) {
         try {
             if ($this->db->query("update events set status = 'rejected' where id = '$id'")) {
@@ -203,8 +251,13 @@ class Event_model extends CI_Model {
         }
     }
 
+    /**
+     * get current month event details
+     * 
+     * @param date $month
+     * @return mixed resulting row or null value
+     */
     public function get_monthly_events($month) {
-        //Get all monthly events in order to check 
         try {
             if ($data = $this->db->query("select * from `events` where DATE_FORMAT(start_date, '%m-%Y') = '$month' and status = 'approved'")) {
                 $row = $data->result();
@@ -217,8 +270,13 @@ class Event_model extends CI_Model {
         }
     }
 
+    /**
+     * get all completed event details
+     * 
+     * @param date $today
+     * @return mixed resulting set or null value
+     */
     public function get_completed_events($today) {
-        //Get all monthly events in order to check 
         try {
             if ($data = $this->db->query("select * from `events` where end_date < '$today' and status = 'approved'")) {
                 $row = $data->result();
@@ -231,8 +289,12 @@ class Event_model extends CI_Model {
         }
     }
 
+    /**
+     * get all approved event details
+     * 
+     * @return mixed resulting set or null value
+     */
     public function get_all_events() {
-        //Get all events in order to check 
         try {
             if ($data = $this->db->query("select * from `events` where status = 'approved'")) {
                 $row = $data->result();
@@ -245,8 +307,12 @@ class Event_model extends CI_Model {
         }
     }
 
+    /**
+     * this method is used to get all the event types that are currently using in school
+     * 
+     * @return mixed resulting set or null value
+     */
     public function get_event_types() {
-        //this method is used to get all the events that are currently using in school
         try {
             if ($data = $this->db->query("select * from event_type")) {
                 $row = $data->result();
@@ -257,6 +323,12 @@ class Event_model extends CI_Model {
         }
     }
 
+    /**
+     * this is used to get selected teacher's nic no
+     * 
+     * @param int $id
+     * @return mixed resulting row or null value
+     */
     public function validate_teacher_id($id) {
         try {
             if ($data = $this->db->query("select nic_no from teachers where nic_no = '$id'")) {
@@ -269,6 +341,12 @@ class Event_model extends CI_Model {
         }
     }
 
+    /**
+     * this method is used to delete event type
+     * 
+     * @param int $id
+     * @return boolean
+     */
     public function delete_event_type($id) {
         try {
             if ($this->db->query("delete from event_type where id='$id'")) {
@@ -281,6 +359,11 @@ class Event_model extends CI_Model {
         }
     }
 
+    /**
+     * this method is used to get selected event type details
+     * @param int $id
+     * @return mixed resulting set or null value
+     */
     public function get_event_type_to_update($id) {
         try {
             if ($data = $this->db->query("select * from event_type where id = '$id'")) {
@@ -292,19 +375,25 @@ class Event_model extends CI_Model {
         }
     }
 
-    public function update_event_type($id, $type, $description) {
-        try {
-            if ($this->db->query("update event_type set event_type = '$type' , description = '$description' where id = '$id'")) {
-                return TRUE;
-            } else {
-                return FALSE;
-            }
-        } catch (Exception $ex) {
-            
-        }
+    /**
+     * this method is used to update the event type details
+     * 
+     * @param int $id
+     * @param array $update_event_type contains event type details such as eventtype name , desciption
+     * @return boolean
+     */
+    public function update_event_type($id, $update_event_type) {
+        $this->db->where('id' , $id);
+        $this->db->update('event_type' , $update_event_type);
+        return TRUE;
     }
 
-    //get count of upcoming events
+    /**
+     * get count of the upcoming events
+     * 
+     * @param date $today
+     * @return mixed count or null
+     */
     public function get_count_upcoming_events($today) {
         try {
             if ($data = $this->db->query("select count(*) as count from `events` where start_date >= '$today' and status = 'approved'")) {
@@ -318,6 +407,12 @@ class Event_model extends CI_Model {
         }
     }
 
+    /**
+     * get the logged user's nic no
+     * 
+     * @param int $user
+     * @return mixed string or null
+     */
     public function get_logged_user_nic($user) {
         try {
             if($data=  $this->db->query("select nic_no from teachers where user_id='$user'")){
@@ -328,6 +423,12 @@ class Event_model extends CI_Model {
         }
     }
     
+    /**
+     * get the profile image of the given user
+     * 
+     * @param string $nic
+     * @return mixed string or resulting row
+     */
     public function get_pro_image($nic){
         $data = $this->db->query("select * from teachers where nic_no = '$nic'");
         if($data->num_rows() > 0){
@@ -338,6 +439,12 @@ class Event_model extends CI_Model {
         }
     }
     
+    /**
+     * select given user's all event details
+     * 
+     * @param string $nic
+     * @return mixed string or resulting row
+     */
     public function get_user_all_events($nic) {
         $data = $this->db->query("select * from events where in_charge_id = '$nic'");
         if($data->num_rows() > 0){
