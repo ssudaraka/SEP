@@ -1,18 +1,30 @@
 <?php
-
+/**
+ * Ecole - Timetable Model
+ * 
+ * Model to interact with db to timetable controller related activities
+ * 
+ * @author  Sudaraka K. S.
+ * @copyright (c) 2015, Ecole. (http://projectecole.com)
+ * @link http://projectecole.com
+ */
 class Timetable_Model extends CI_Model {
 
     private $table = "class_timetable";
     
+    /**
+     * Class constructor
+     */
     function __construct() {
         parent::__construct();
     }
 
     /**
+     * Create timetable for a class, for a given academic year
      * 
      * @param int $class_id ID of the class
      * @param string $year Academic Year
-     * @return int Timetable ID
+     * @return int Created Timetable ID
      */
     function create_class_timetable($class_id, $year) {
         $timetable = array(
@@ -23,6 +35,12 @@ class Timetable_Model extends CI_Model {
         return $this->db->insert_id();
     }
 
+    /**
+     * Returns a particular timetable for a given timetable id.
+     * 
+     * @param int $timetable_id
+     * @return mixed Timetable object
+     */
     function get_class_timetable($timetable_id) {
         $sql = "SELECT * FROM class_timetable WHERE id='{$timetable_id}'";
         $query = $this->db->query($sql);
@@ -39,6 +57,7 @@ class Timetable_Model extends CI_Model {
         return $this->db->get($this->table)->result();
     }
 
+    
     function search_by_year($keyword) {
         $sql = "SELECT * FROM class_timetable WHERE year LIKE '%{$keyword}%' ";
         $query = $this->db->query($sql);
