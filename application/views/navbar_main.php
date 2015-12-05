@@ -17,7 +17,7 @@
             </ul>
             <ul class="nav navbar-nav navbar-right">
                 <!-- <li><a href="#" class="display-tooltip" style="color: #FFF;" >Hello User!<?php ?></a></li> -->
-                <li><a href="<?php echo base_url('index.php/profile/'); ?>" class="display-tooltip" data-toggle="tooltip" data-placement="bottom" title="Pofile"><span class="glyphicon glyphicon-user" aria-hidden="true"></span></a></li>
+                <li><a href="<?php echo base_url('index.php/profile/'); ?>" class="display-tooltip" data-toggle="tooltip" data-placement="bottom" title="Profile"><span class="glyphicon glyphicon-user" aria-hidden="true"></span></a></li>
                 <li><a href="<?php echo base_url('index.php/inbox'); ?>" class="display-tooltip" data-toggle="tooltip" data-placement="bottom" title="Inbox"><span class="glyphicon glyphicon-comment" aria-hidden="true"></span></a></li>
                 <li><a href="<?php echo base_url('index.php/dashboard/logout'); ?>" data-toggle="tooltip" data-placement="bottom" title="Logout"><span class="glyphicon glyphicon-off" aria-hidden="true"></span></a></li>
             </ul>
