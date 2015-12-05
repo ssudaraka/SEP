@@ -20,6 +20,7 @@ class leave extends CI_Controller {
         $this->load->model('Teacher_Model');
         $this->load->model('News_Model');
         $this->load->model('Email_Model');
+        $this->load->helper('sms_helper');
     }
 
     /** 
@@ -345,6 +346,11 @@ class leave extends CI_Controller {
             $messagestring = "Your requested leaves on <strong>". $applydate ."</strong> from <strong>". $startdate ."</strong> to <strong>". $enddate ."</strong> (". $no_of_days_mc ." days) has been Approved by the Principal.";
             $this->Email_Model->send_basic_email($userid, $messagestring, $messagesubject);
 
+            // Send SMS on Leave Approval
+            $message = "Leave ". $applydate ." from ". $startdate ." to ". $enddate ." (". $no_of_days_mc ." days) has been Approved by the Principal.";
+            $phone_number = $this->Leave_Model->get_teacher_phone($userid);
+            send_sms($phone_number, $message);
+
             redirect('leave/get_leave_details/'. $id . '?action=approve&status=true', 'refresh');
         } else {
             redirect('leave/get_leave_details/'. $id . '?action=approve&status=false', 'refresh');
@@ -407,6 +413,11 @@ class leave extends CI_Controller {
             $messagesubject = "Leave Rejection";
             $messagestring = "Your requested leaves on <strong>". $applydate ."</strong> from <strong>". $startdate ."</strong> to <strong>". $enddate ."</strong> (". $no_of_days_mc ." days) has been Rejected by the Principal.";
             $this->Email_Model->send_basic_email($userid, $messagestring, $messagesubject);
+
+            // Send SMS on Leave Approval
+            $message = "Leave ". $applydate ." from ". $startdate ." to ". $enddate ." (". $no_of_days_mc ." days) has been Rejected by the Principal.";
+            $phone_number = $this->Leave_Model->get_teacher_phone($userid);
+            send_sms($phone_number, $message);
 
             redirect('leave/get_leave_details/'. $id . '?action=reject&status=true', 'refresh');
         } else {
@@ -957,7 +968,7 @@ class leave extends CI_Controller {
 
     function send_new_sms(){
         $this->load->helper('sms_helper');
-        var_dump(send_sms());
+        var_dump(send_sms($phone_number, $message));
     }
 
 }

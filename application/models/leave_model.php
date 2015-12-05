@@ -503,5 +503,21 @@ class Leave_Model extends CI_Model {
         }
     }
 
+    /*
+    * Function to get telephone number by user id
+    *
+    * @return mixed bool or Results
+    */
+    public function get_teacher_phone($tid){
+        try {
+            $query = $this->db->query("SELECT contact_mobile FROM teachers t WHERE t.user_id = '$tid'");
+            $row = $query->row();
+            return $row->contact_mobile;
+
+        } catch(Exception $ex) {
+            return FALSE;
+        }
+    }
+
 }
 ?>
