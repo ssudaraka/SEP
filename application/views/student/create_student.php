@@ -20,12 +20,11 @@
                 </div>
             <?php } ?>
 
-            <div class="row">
-                <ul class="nav nav-tabs ">
-                    <li role="presentation" class="active"><a href="#">Student Details</a></li>
-                    <li role="presentation" ><a href="#">Guardian Details</a></li>
-                    <li role="presentation" ><a href="#">Profile</a></li>
-                </ul>
+            <div class="progress" style="border: ">
+                <div class="progress-bar progress-bar-danger progress-bar-striped" role="progressbar"
+                     aria-valuenow="40" aria-valuemin="0" aria-valuemax="100" style="width:5%">
+                    0% Complete (success)
+                </div>
             </div>
             <br>
 
@@ -64,7 +63,7 @@
 
                 <div class="panel  panel-default"  >
                     <div class="panel-heading panel-default " >
-                        PERSONAL DETAILS
+                        <b>ADMISSION / Personal Details</b>
                     </div>
                     <div class="panel panel-body" >
 

@@ -7,14 +7,13 @@
         </div>
 
         <div class="col-md-9">
-            
-            <div class="row">
-                <ul class="nav nav-tabs ">
-                    <li role="presentation" ><a href="#">Student Details</a></li>
-                  <li role="presentation" class="active"><a href="#">Guardian Details</a></li>
-                  <li role="presentation" ><a href="#">Profile</a></li>
-                </ul>
+            <div class="progress" style="border: ">
+                <div class="progress-bar progress-bar-success progress-bar-striped" role="progressbar"
+                     aria-valuenow="70" aria-valuemin="0" aria-valuemax="100" style="width:60%">
+                    60% Completed
+                </div>
             </div>
+          
             <br>
            
             <div >
@@ -53,7 +52,7 @@
           
              <div class="panel  panel-default"  >
                  <div class="panel-heading panel-default " >
-                    GUARDIAN DETAILS
+                     <b>ADMISSION / Guardian Details</b>
                 </div>
                  <div class="panel panel-body" >
                  
