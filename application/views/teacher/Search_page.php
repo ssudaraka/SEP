@@ -73,7 +73,7 @@
                                 <td><?php  $gender=$row->gender; 
                                  if ($gender == 'm') {
                                         echo 'Male';
-                                    } else if ($med == 'f') {
+                                    } else if ($gender == 'f') {
                                         echo 'Female';
                                     }
                                 ?></td>

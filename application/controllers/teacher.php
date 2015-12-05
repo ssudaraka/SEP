@@ -1,5 +1,13 @@
 <?php
-
+/**
+ * Ecole - Teacher Controller
+ * 
+ * Responsibe for handling inputs
+ * 
+ * @author Gunathilaka M.A.S.S
+ * @copyright (c) 2015, Ecole. (http://projectecole.com)
+ * @link  http://projectecole.com
+ */
 class Teacher extends CI_Controller {
 
     function __construct() {
@@ -10,9 +18,12 @@ class Teacher extends CI_Controller {
         $this->load->helper('date');
         $this->load->model('user');
     }
-
+    
+    /**
+     * First run this index method. The session keeps track of whether the user logged in or not. If not, user has to login to the system.
+     * It riderects user to another method according to the user type.
+     */
     function index() {
-
         if (!$this->session->userdata('id')) {
             redirect('login', 'refresh');
         }
@@ -52,30 +63,34 @@ class Teacher extends CI_Controller {
     }
 
     //Table search
-    public function search_one() {
+//    public function search_one() {
+//
+//        if (!$this->session->userdata('id')) {
+//            redirect('login', 'refresh');
+//        }
+//        $data['user_type'] = $this->session->userdata['user_type'];
+//        $data['navbar'] = "teacher";
+//        $id = $this->input->post('nic');
+//        $data['query'] = $this->teacher_model->SearchTeacher($id);
+//        if ($data['query']->num_rows() <= 0) {
+//
+//            $data['err_message'] = "No result is found";
+//        }
+//
+//        $data['result'] = $data['query']->result();
+//        $data['page_title'] = "Search Teacher";
+//        $this->load->view('/templates/header', $data);
+//        $this->load->view('navbar_main', $data);
+//        $this->load->view('navbar_sub', $data);
+//        $this->load->view('/teacher/Search_page', $data);
+//        $this->load->view('/templates/footer');
+//    }
 
-        if (!$this->session->userdata('id')) {
-            redirect('login', 'refresh');
-        }
-        $data['user_type'] = $this->session->userdata['user_type'];
-        $data['navbar'] = "teacher";
-        $id = $this->input->post('nic');
-        $data['query'] = $this->teacher_model->SearchTeacher($id);
-        if ($data['query']->num_rows() <= 0) {
-
-            $data['err_message'] = "No result is found";
-        }
-
-        $data['result'] = $data['query']->result();
-        $data['page_title'] = "Search Teacher";
-        $this->load->view('/templates/header', $data);
-        $this->load->view('navbar_main', $data);
-        $this->load->view('navbar_sub', $data);
-        $this->load->view('/teacher/Search_page', $data);
-        $this->load->view('/templates/footer');
-    }
-
-    //Load teacher details in to update view
+    /**
+     * This method is used to load teacher details
+     * 
+     * @param int $id
+     */
     public function load_teacher($id) {
         if (!$this->session->userdata('id')) {
             redirect('login', 'refresh');
@@ -92,7 +107,11 @@ class Teacher extends CI_Controller {
         $this->load->view('/templates/footer');
     }
 
-    //edit teacher
+    /**
+     * this method is used to edit teacher details
+     * 
+     * @param int $id
+     */
     public function edit_teacher($id) {
         if (!$this->session->userdata('id')) {
             redirect('login', 'refresh');
@@ -136,12 +155,8 @@ class Teacher extends CI_Controller {
         $this->form_validation->set_rules('increment', 'Increment Date', 'callback_check_pension_day');
         $this->form_validation->set_error_delimiters('<br /><span class="error">', '</span>');
 
-
         //if validations are false
         if ($this->form_validation->run() == FALSE) {
-            //$myid = $this->input->post('XID');
-            //load form with same details
-            //$this->load_teacher($id);
             $data['row'] = $this->teacher_model->getTeacherProfile($id);
             $data['navbar'] = "teacher";
             $data['attempt'] = 2;
@@ -152,42 +167,45 @@ class Teacher extends CI_Controller {
             $this->load->view('/teacher/edit_teacher_profile', $data);
             $this->load->view('/templates/footer');
         } else {
-
             //validations passed
             $myid = $this->input->post('XID');
-            $teacher = array(
-                'nic' => $this->input->post('NIC'),
-                'fullName' => $this->input->post('name'),
-                'nameWithInitials' => $this->input->post('initial'),
-                'birthday' => $this->input->post('birth'),
+            $datestring = " %Y-%m-%d";    //get the current date
+            $time = time();
+            $updated_date = mdate($datestring, $time);
+            $teacher = array(            //set the data to an array
+                'nic_no' => $this->input->post('NIC'),
+                'full_name' => $this->input->post('name'),
+                'name_with_initials' => $this->input->post('initial'),
+                'dob' => $this->input->post('birth'),
                 'gender' => $this->input->post('gender'),
-                'nationality' => $this->input->post('Nationality'),
-                'religion' => $this->input->post('religion'),
-                'civilStatus' => $this->input->post('civilstatus'),
-                'address' => $this->input->post('address'),
-                'contactMobile' => $this->input->post('contactMob'),
-                'contactHome' => $this->input->post('contactHome'),
+                'nationality_id' => $this->input->post('Nationality'),
+                'religion_id' => $this->input->post('religion'),
+                'civil_status' => $this->input->post('civilstatus'),
+                'permanent_addr' => $this->input->post('address'),
+                'contact_mobile' => $this->input->post('contactMob'),
+                'contact_home' => $this->input->post('contactHome'),
                 'email' => $this->input->post('email'),
-                'wnop' => $this->input->post('widow'),
-                'serial' => $this->input->post('serialno'),
-                'signature' => $this->input->post('signatureno'),
-                'joinDate' => $this->input->post('careerdate'),
+                'wnop_no' => $this->input->post('widow'),
+                'serial_no' => $this->input->post('serialno'),
+                'signature_no' => $this->input->post('signatureno'),
+                'joined_date' => $this->input->post('careerdate'),
                 'medium' => $this->input->post('medium'),
-                'designation' => $this->input->post('designation'),
+                'designation_id' => $this->input->post('designation'),
                 'section' => $this->input->post('section'),
-                'mainSub' => $this->input->post('mainsubject'),
-                'serviceGrade' => $this->input->post('servicegrade'),
-                'personalFile' => $this->input->post('personfile'),
-                'teacherRegNo' => $this->input->post('teacherregno'),
+                'main_subject_id' => $this->input->post('mainsubject'),
+                'grade' => $this->input->post('servicegrade'),
+                'personal_file_no' => $this->input->post('personfile'),
+                'teacher_register_no' => $this->input->post('teacherregno'),
                 'service' => $this->input->post('serviceperiod'),
                 'remarks' => $this->input->post('remarks'),
-                'nature' => $this->input->post('nature'),
-                'education' => $this->input->post('education'),
-                'profession' => $this->input->post('profession'),
-                'appointmentdate' => $this->input->post('appointmentdate'),
-                'pension' => $this->input->post('pension'),
-                'increment' => $this->input->post('increment'),
-                'promotions' => $this->input->post('promotions')
+                'nature_of_appointment' => $this->input->post('nature'),
+                'educational_qualific' => $this->input->post('education'),
+                'professional_qualific' => $this->input->post('profession'),
+                'first_appointment_date' => $this->input->post('appointmentdate'),
+                'pension_date' => $this->input->post('pension'),
+                'increment_date' => $this->input->post('increment'),
+                'promotions' => $this->input->post('promotions'),
+                'updated_at' => $updated_date
             );
 
             //successfull message is genarated
@@ -207,7 +225,6 @@ class Teacher extends CI_Controller {
                 $this->load->view('/teacher/edit_teacher_profile', $data);
                 $this->load->view('/templates/footer');
             } else {
-
                 // error message
                 $data['page_title'] = "Teacher Profile";
                 $this->load->view('/templates/header', $data);
@@ -219,16 +236,18 @@ class Teacher extends CI_Controller {
         }
     }
 
-    //deleate teacher recode
+    /**
+     * This method is used to delete teacher record from archive list.
+     * 
+     * @param int $id
+     */
     public function delete_teacher($id) {
         if (!$this->session->userdata('id')) {
             redirect('login', 'refresh');
         }
         $data['navbar'] = "teacher";
-
         $data['user_type'] = $this->session->userdata['user_type'];
         if ($this->teacher_model->DeleteTeacher($id)) {
-
             $data['result'] = $this->teacher_model->SearchAllTeachers();
             //For news field
             $tech_id = $this->session->userdata('id');
@@ -243,10 +262,7 @@ class Teacher extends CI_Controller {
             $this->load->view('/teacher/archived_search_teacher', $data);
             $this->load->view('/templates/footer');
         } else {
-
             $data['result'] = $this->teacher_model->SearchAllTeachers();
-
-
             $data['succ_message'] = "Teacher details deleted successfully";
             $data['page_title'] = "Search Teacher";
             $this->load->view('/templates/header', $data);
@@ -257,19 +273,17 @@ class Teacher extends CI_Controller {
         }
     }
     
-       /*
-     * function for archive student+guardian recode
+    /**
+     * function for archive teacher record
+     * 
+     * @param int $id
      */
-
     public function archive_teacher($id) {
-
         if (!$this->session->userdata('id')) {
             redirect('login', 'refresh');
         }
         $data['navbar'] = "teacher";
         $data['user_type'] = $this->session->userdata['user_type'];
-
-
         if ($this->teacher_model->archive_teacher($id)) {
 
             //reload table
@@ -288,10 +302,7 @@ class Teacher extends CI_Controller {
             $this->load->view('/teacher/Search_page', $data);
             $this->load->view('/templates/footer');
         } else {
-
             $data['result'] = $this->teacher_model->SearchAllTeachers();
-
-
             $data['err_message'] = "Error occured !";
             $data['page_title'] = "Search Teacher";
             $this->load->view('/templates/header', $data);
@@ -302,6 +313,9 @@ class Teacher extends CI_Controller {
         }
     }
 
+    /**
+     * This method is used to insert the teacher basic details
+     */
     function create() {
         if (!$this->session->userdata('id')) {
             redirect('login', 'refresh');
@@ -334,22 +348,24 @@ class Teacher extends CI_Controller {
             $this->load->view('/templates/footer');
         } else { // passed validation proceed to post success logic
             // build array for the model
-            $NIC = $this->input->post('NIC');
-            $name = $this->input->post('name');
-            $initials = $this->input->post('initial');
-            $birth = $this->input->post('birth');
-            $gender = $this->input->post('gender');
-            $Nationality = $this->input->post('Nationality');
-            $religion = $this->input->post('religion');
-            $civilstatus = $this->input->post('civilstatus');
-            $address = $this->input->post('address');
-            $contactMob = $this->input->post('contactMob');
-            $contactHome = $this->input->post('contactHome');
-            $email = $this->input->post('email');
-            $widow = $this->input->post('widow');
+            $personal_teacher_details = array(
+                'nic_no' => $this->input->post('NIC'),
+                'full_name' => $this->input->post('name'),
+                'name_with_initials' => $this->input->post('initial'),
+                'dob' => $this->input->post('birth'),
+                'gender' => $this->input->post('gender'),
+                'nationality_id' => $this->input->post('Nationality'),
+                'religion_id' => $this->input->post('religion'),
+                'civil_status' => $this->input->post('civilstatus'),
+                'permanent_addr' => $this->input->post('address'),
+                'contact_mobile' => $this->input->post('contactMob'),
+                'contact_home' => $this->input->post('contactHome'),
+                'email' => $this->input->post('email'),
+                'wnop_no' => $this->input->post('widow')
+            );
             // run insert model to write data to db
 
-            if ($id = $this->teacher_model->insert_new_staff($NIC, $name, $initials, $birth, $gender, $Nationality, $religion, $civilstatus, $address, $contactMob, $contactHome, $email, $widow)) { // the information has therefore been successfully saved in the db
+            if ($id = $this->teacher_model->insert_new_staff($personal_teacher_details)) { // the information has therefore been successfully saved in the db
                 $data["user_id"] = $id;
                 $data['page_title'] = "Teacher Registration";
                 $data['navbar'] = "teacher";
@@ -370,6 +386,11 @@ class Teacher extends CI_Controller {
         }
     }
 
+    /**
+     * insert teacher accademic details 
+     * 
+     * @param int $id
+     */
     function update_details($id) {
         if (!$this->session->userdata('id')) {
             redirect('login', 'refresh');
@@ -406,27 +427,29 @@ class Teacher extends CI_Controller {
             $this->load->view('/templates/footer');
         } else { // passed validation proceed to post success logic
             // build array for the model
-            $regno = $this->input->post('regno');
-            $serialno = $this->input->post('serialno');
-            $signatureno = $this->input->post('signatureno');
-            $careerdate = $this->input->post('careerdate');
-            $medium = $this->input->post('medium');
-            $designation = $this->input->post('designation');
-            $section = $this->input->post('section');
-            $mainsubject = $this->input->post('mainsubject');
-            $servicegrade = $this->input->post('servicegrade');
-            $appointment = $this->input->post('appointment');
-            $educational = $this->input->post('educational');
-            $profession = $this->input->post('profession');
-            $first_appointment = $this->input->post('first_appointment');
-            $fileno = $this->input->post('fileno');
-            $pension = $this->input->post('pension');
+            $teacher_accademic_details = array(
+                'teacher_register_no' => $this->input->post('regno'),
+                'serial_no' => $this->input->post('serialno'),
+                'signature_no' => $this->input->post('signatureno'),
+                'joined_date' => $this->input->post('careerdate'),
+                'medium' => $this->input->post('medium'),
+                'designation_id' => $this->input->post('designation'),
+                'section' => $this->input->post('section'),
+                'main_subject_id' => $this->input->post('mainsubject'),
+                'grade' => $this->input->post('servicegrade'),
+                'nature_of_appointment' => $this->input->post('appointment'),
+                'educational_qualific' => $this->input->post('educational'),
+                'professional_qualific' => $this->input->post('profession'),
+                'first_appointment_date' => $this->input->post('first_appointment'),
+                'personal_file_no' => $this->input->post('fileno'),
+                'pension_date' => $this->input->post('pension')
+            );
             // run insert model to write data to db
 
             $create = date('Y-m-d H:i:s');
             $this->teacher_model->set_time($id, $create);
 
-            if ($t_id = $this->teacher_model->update_new_staff($regno, $id, $serialno, $signatureno, $careerdate, $medium, $designation, $section, $mainsubject, $servicegrade, $appointment, $educational, $profession, $first_appointment, $fileno, $pension)) { // the information has therefore been successfully saved in the db
+            if ($t_id = $this->teacher_model->update_new_staff($id,$teacher_accademic_details)) { // the information has therefore been successfully saved in the db
                 $data["user_id"] = $t_id;
                 $data['page_title'] = "Teacher Registration";
                 $this->load->view('templates/header', $data);
@@ -441,6 +464,11 @@ class Teacher extends CI_Controller {
         }
     }
 
+    /**
+     * this method is used to create teacher loging for the system
+     * 
+     * @param int $id
+     */
     function create_log_details($id) {
         if (!$this->session->userdata('id')) {
             redirect('login', 'refresh');
@@ -506,6 +534,11 @@ class Teacher extends CI_Controller {
         }
     }
 
+    /**
+     * This method is used to check selected user's profile
+     * 
+     * @param int $id
+     */
     function check_profile($id) {
         if (!$this->session->userdata('id')) {
             redirect('login', 'refresh');
@@ -524,7 +557,7 @@ class Teacher extends CI_Controller {
         $this->load->view('/templates/footer');
     }
 
-    function create_profile() {
+/*    function create_profile() {
         if (!$this->session->userdata('id')) {
             redirect('login', 'refresh');
         }
@@ -590,7 +623,14 @@ class Teacher extends CI_Controller {
             $this->load->view('/templates/footer');
         }
     }
+ * 
+ */
 
+    /**
+     * View teacher profile
+     * 
+     * @param int $teacher_id
+     */
     function view_profile($teacher_id) {
         if (!$this->session->userdata('id')) {
             redirect('login', 'refresh');
@@ -608,10 +648,11 @@ class Teacher extends CI_Controller {
         $this->load->view('/templates/footer');
     }
 
-    /*
+    /**
      * This is used to view the reporting page
+     * 
+     * @param int $val
      */
-
     function teacher_report($val) {
         if (!$this->session->userdata('id')) {
             redirect('login', 'refresh');
@@ -628,10 +669,11 @@ class Teacher extends CI_Controller {
         $this->load->view('/templates/footer');
     }
 
-    /*
+    /**
      * This function is used to download the html page. use dompdf library for that
+     * 
+     * @param int $l
      */
-
     function report_pdf($l) {
         if (!$this->session->userdata('id')) {
             redirect('login', 'refresh');
@@ -682,12 +724,10 @@ class Teacher extends CI_Controller {
         }
     }
     
-      /*
+    /**
      * get archive teacher details
      */
-
     public function load_all_archived_teachers() {
-
         if (!$this->session->userdata('id')) {
             redirect('login', 'refresh');
         }
@@ -708,17 +748,23 @@ class Teacher extends CI_Controller {
             redirect('login', 'refresh');
         }
     }
-
     
-    
+    /**
+     * generate the teacher report
+     */
     function generate_report() {
         $type = $this->input->post('tpe');
         $report = $this->input->post('rpt');
         $this->teacher_model->generate_report($type , $report);
     }
 
+    /**
+     * This method is used to check whether the select field is selected or not.
+     * 
+     * @param int $field
+     * @return boolean
+     */
     function check_selection($field) {
-
         if ($field == 0) {
             $this->form_validation->set_message('check_selection', 'Please Select One!');
             return FALSE;
@@ -727,8 +773,13 @@ class Teacher extends CI_Controller {
         }
     }
 
+    /**
+     * check whether the status field is selected or not
+     * 
+     * @param string $field
+     * @return boolean
+     */
     function check_selection_status($field) {
-
         if ($field == 'n') {
             $this->form_validation->set_message('check_selection_status', 'Please Select One!');
             return FALSE;
@@ -737,8 +788,13 @@ class Teacher extends CI_Controller {
         }
     }
 
+    /**
+     * check whether the mobile no is valid or not.
+     * 
+     * @param int $field
+     * @return boolean
+     */
     function check_Mobile($field) {
-
         $res = preg_match('/07[0-9][0-9][0-9][0-9][0-9][0-9][0-9][0-9]/', $field);
         if ($res == 0) {
             $this->form_validation->set_message('check_Mobile', 'Please Enter Valid Mobile No!');
@@ -748,8 +804,13 @@ class Teacher extends CI_Controller {
         }
     }
 
+    /**
+     * check whether the NIC is valid nic or not.
+     * 
+     * @param string $field
+     * @return boolean
+     */
     function check_NIC($field) {
-
         $res = preg_match('/[0-9][0-9][0-9][0-9][0-9][0-9][0-9][0-9][0-9][vV]/', $field);
         if ($res == 0) {
             $this->form_validation->set_message('check_NIC', 'Please Enter Your Valid NIC!');
@@ -759,12 +820,16 @@ class Teacher extends CI_Controller {
         }
     }
 
+    /**
+     * Check whether the given age is in between 20 and 60
+     * 
+     * @param date $field
+     * @return boolean
+     */
     function check_Birth_day($field) {
-
         $datestring = "%Y-%m-%d";
         $time = time();
         $create = mdate($datestring, $time);
-
         if ($create - $field > 60 || $create - $field < 20) {
             $this->form_validation->set_message('check_Birth_day', 'Please Enter Valid Birth Day!');
             return FALSE;
@@ -773,8 +838,13 @@ class Teacher extends CI_Controller {
         }
     }
 
+    /**
+     * check whether the gender is selected or not
+     *  
+     * @param string $d
+     * @return boolean
+     */
     function check_gender($d) {
-
         //$gender = $this->input->post('gender');
         if ($d == 'f' || $d == 'm') {
             return TRUE;
@@ -784,12 +854,16 @@ class Teacher extends CI_Controller {
         }
     }
 
+    /**
+     * check whether the career date is valid or not.
+     * 
+     * @param date $field
+     * @return boolean
+     */
     function check_career_day($field) {
-
         $datestring = "%Y-%m-%d";
         $time = time();
         $create = mdate($datestring, $time);
-
         if ($create >= $field) {
             return TRUE;
         } else {
@@ -798,12 +872,16 @@ class Teacher extends CI_Controller {
         }
     }
 
+    /**
+     * check whether the pension date is future date or not.
+     * 
+     * @param date $field
+     * @return boolean
+     */
     function check_pension_day($field) {
-
         $datestring = "%Y-%m-%d";
         $time = time();
         $create = mdate($datestring, $time);
-
         if ($create < $field) {
             return TRUE;
         } else if ($field == 0000 - 00 - 00) {
@@ -814,6 +892,9 @@ class Teacher extends CI_Controller {
         }
     }
     
+    /*
+     * This method is used to get teacher full report.
+     */
     function full_staff_report() {
         if (!$this->session->userdata('id')) {
             redirect('login', 'refresh');
