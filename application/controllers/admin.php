@@ -1,25 +1,35 @@
 <?php
 
-/*
+/**
+ * Ecole - Admin Controller
+ * 
  * Main controller for Admin related functionalties.
+ * 
+ * @author  Sudaraka K. S.
+ * @copyright (c) 2015, Ecole. (http://projectecole.com)
+ * @link http://projectecole.com
  */
-
 class Admin extends CI_Controller {
 
+    /**
+     * Class Contructor
+     */
     function __construct() {
         parent::__construct();
         $this->load->model('user');
-        $this->load->model('Teacher_Model');
-        $this->load->model('News_Model');
+        $this->load->model('teacher_model');
+        $this->load->model('news_model');
+
+        if ($this->session->userdata('user_type') !== "A") {
+            redirect('login');
+        }
     }
 
     /**
-     * Main function for Admin section for now. Maybe changed in future. This will just load the current user's profile.
+     * Main administrator interface.
      */
     function index() {
-        //getting the user type
         $data['user_type'] = $this->session->userdata['user_type'];
-
         $data['page_title'] = "System Administration";
         $data['navbar'] = "admin";
 
@@ -31,16 +41,12 @@ class Admin extends CI_Controller {
     }
 
     /**
-     * This will just load the view used to change account settings.
-     * as a kickstart, I have added password change here.
+     * System settings interface. 
+     * Responsible for managing global system wide settings.
      */
     function system_settings() {
         //getting the user type
         $data['user_type'] = $this->session->userdata['user_type'];
-
-        if ($this->session->userdata('user_type') !== "A") {
-            redirect('login');
-        }
 
         $data['page_title'] = "Account Settings";
         $data['navbar'] = 'admin';
@@ -52,9 +58,14 @@ class Admin extends CI_Controller {
         $this->load->view('templates/footer');
     }
 
+    /**
+     * Admin account creation
+     */
     function create() {
         //getting the user type
         $data['user_type'] = $this->session->userdata['user_type'];
+        $data['page_title'] = "Create Admin Account";
+        $data['navbar'] = 'admin';
 
         $this->form_validation->set_rules('username', 'username', "trim|required|xss_clean|min_length[5]|alpha_dash|is_unique[users.username]");
         $this->form_validation->set_rules('email', 'email', "trim|required|xss_clean|valid_email|is_unique[users.email]");
@@ -64,16 +75,8 @@ class Admin extends CI_Controller {
         $this->form_validation->set_rules('conf_password', 'confirm password', "required|xss_clean|matches[password]");
 
 
-        if ($this->form_validation->run() == FALSE) {
+        if ($this->form_validation->run()) {
             $data['to_user'] = $this->input->post('to_user');
-            $data['page_title'] = "Create Admin Account";
-            $data['navbar'] = 'admin';
-            $this->load->view('templates/header', $data);
-            $this->load->view('navbar_main', $data);
-            $this->load->view('navbar_sub', $data);
-            $this->load->view('admin/create_admin', $data);
-            $this->load->view('templates/footer');
-        } else {
 
             $user = array(
                 'username' => $this->input->post('username'),
@@ -83,32 +86,29 @@ class Admin extends CI_Controller {
                 'password' => md5($this->input->post('password'))
             );
 
-
             $this->user->create($user, "A");
-            $tech_id = $this->session->userdata('id');
-            $tech_details = $this->Teacher_Model->user_details($tech_id);
-            $this->News_Model->insert_action_details($tech_id, "Create new admin account", $tech_details->photo_file_name, $tech_details->full_name);
-
-            $data['page_title'] = "Create Admin Account";
-            $data['navbar'] = 'admin';
+//            $tech_id = $this->session->userdata('id');
+//            $tech_details = $this->teacher_model->user_details($tech_id);
+//            $this->news_model->insert_action_details($tech_id, "Create new admin account", $tech_details->photo_file_name, $tech_details->full_name);
             $data['succ_message'] = "New Admin Created Successfully";
-            $this->load->view('templates/header', $data);
-            $this->load->view('navbar_main', $data);
-            $this->load->view('navbar_sub', $data);
-            $this->load->view('admin/create_admin', $data);
-            $this->load->view('templates/footer');
         }
+
+        $this->load->view('templates/header', $data);
+        $this->load->view('navbar_main', $data);
+        $this->load->view('navbar_sub', $data);
+        $this->load->view('admin/create_admin', $data);
+        $this->load->view('templates/footer');
     }
 
+    /**
+     * Interface to manage administrator accounts.
+     */
     function manage_admins() {
-        //getting the user type
         $data['user_type'] = $this->session->userdata['user_type'];
-
         $data['page_title'] = "Manage Administrators";
         $data['navbar'] = 'admin';
 
         $data['query'] = $this->user->get_user_list('A');
-
         $data['result'] = $data['query']->result();
 
         $this->load->view('templates/header', $data);
@@ -152,8 +152,11 @@ class Admin extends CI_Controller {
         $this->load->view('templates/footer');
     }
 
+    /**
+     * Delete administrator account for a given user account
+     * @param type $user_id
+     */
     function delete($user_id) {
-        //getting the user type
         $data['user_type'] = $this->session->userdata['user_type'];
 
         if ($this->session->userdata('user_type') !== "A") {
@@ -161,10 +164,12 @@ class Admin extends CI_Controller {
         }
 
         $this->user->delete($user_id);
-
-        redirect('admin/manage_users');
+        redirect('admin/manage_admins');
     }
 
+    /*
+     * Interface to edit administrator account
+     */
     function edit($user_id = null) {
 
         $data['user_type'] = $this->session->userdata['user_type'];
@@ -186,7 +191,6 @@ class Admin extends CI_Controller {
             $this->load->view('admin/edit_admin', $data);
             $this->load->view('templates/footer');
         } else {
-
             $edited_user = array(
                 'email' => $this->input->post('email'),
                 'password' => md5($this->input->post('password'))
@@ -201,11 +205,12 @@ class Admin extends CI_Controller {
             $this->load->view('templates/footer');
         }
     }
-
+    
+    /**
+     * Interface to manage user accounts
+     */
     function manage_users() {
-        //getting the user type
         $data['user_type'] = $this->session->userdata['user_type'];
-
         $data['page_title'] = "Manage Users";
         $data['navbar'] = 'admin';
 

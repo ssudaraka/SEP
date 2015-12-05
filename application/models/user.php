@@ -88,6 +88,13 @@ class User extends CI_Model {
         }
     }
 
+    /**
+     * Interact with the database to create user accounts.
+     * 
+     * @param array $new_user_data User account information
+     * @param string $user_type Type of the user account. "A" - Admin, "T" - Teacher, "S" - Student
+     * @return int Newly created user account's id.
+     */
     public function create($new_user_data, $user_type) {
         $new_user_data['created_at'] = date("Y-m-d H:i:s");
         $new_user_data['user_type'] = $user_type;
@@ -100,9 +107,15 @@ class User extends CI_Model {
         return $this->db->insert_id();
     }
 
+    /**
+     * Returns the user list according to request user type.
+     * 
+     * @param string $user_type User type of the user accounts
+     * @return mixed Result set
+     */
     public function get_user_list($user_type) {
-        $sql = "SELECT * FROM users WHERE user_type = '$user_type'";
-        $query = $this->db->query($sql);
+        $this->db->get_where($this->table, array('user_type' => $user_type));
+        $query = $this->db->get_where($this->table, array('user_type' => $user_type, 'active' => 1));
         return $query;
     }
 
@@ -113,13 +126,18 @@ class User extends CI_Model {
         return $query->num_rows();
     }
 
+    /**
+     * Deactivate the user account by interacting with the database
+     * 
+     * @param int $user_id
+     * @return bool
+     */
     public function delete($user_id) {
-        $sql = "UPDATE users SET active = '0' WHERE id='{$user_id}'";
-        $query = $this->db->query($sql);
-
-        if ($query) {
-            return TRUE;
-        }
+        $data = array(
+            'active' => 0,
+        );
+        $this->db->update($this->table, $data, array('id' => $user_id));
+        return TRUE;
     }
 
     public function get_profile_img($user_id) {
@@ -151,9 +169,15 @@ class User extends CI_Model {
             return $query->row();
         }
     }
-    
+    /**
+     * Edit user account by interacting with database.
+     * 
+     * @param int $user_id User ID of the user account
+     * @param mixed $data Information that needs to be updated
+     * @return boolean
+     */
     public function edit_user($user_id, $data){
-        $this->db->update('users', $data, array('id' => $user_id));
+        $this->db->update($this->table, $data, array('id' => $user_id));
         return true;
     }
     
@@ -185,10 +209,12 @@ class User extends CI_Model {
         }
     }
 
-    // Get All the Users
+    /**
+     * Method to get the list of user accounts
+     * @return mixed Result set contains user accounts
+     */
     public function get_all_users_list() {
-        $sql = "SELECT * FROM users ORDER BY created_at desc";
-        $query = $this->db->query($sql);
+        $query = $this->db->get($this->table);
         return $query->result();
     }
 }
