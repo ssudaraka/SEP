@@ -1,7 +1,19 @@
 <?php
 
+/**
+ * Ecole - Attendance Controller
+ * 
+ * Controller for attendance recording functions
+ * 
+ * @author  Sudaraka K. S., Thomas A. P.
+ * @copyright (c) 2015, Ecole. (http://projectecole.com)
+ * @link http://projectecole.com
+ */
 class Attendance extends CI_Controller {
 
+    /**
+     * Class constructor
+     */
     function __construct() {
         parent::__construct();
         $this->load->model('attendance_model');
@@ -9,18 +21,19 @@ class Attendance extends CI_Controller {
         $this->load->library('form_validation');
         $this->load->helper('date');
         $this->load->library('session');
+        if (!$this->session->userdata('logged_in')) {
+            redirect('login', 'refresh');
+        }
     }
 
-    /*
+    /**
      * This loads the main interface for recording attendaces of teachers. 
      */
-
     function index() {
         $data['page_title'] = "Attendance";
         $data['navbar'] = "attendance";
         $data['date'] = date('Y-m-d');
 
-        //Getting user type
         $data['user_type'] = $this->session->userdata['user_type'];
 
         $this->form_validation->set_rules("signature_no", "Signature Number", "required|integer|callback_add_record");
@@ -52,6 +65,11 @@ class Attendance extends CI_Controller {
         }
     }
 
+    /**
+     * Used to add attending record. Acts as a callback form validation function
+     * to the attendance record form.
+     * @return boolean
+     */
     function add_record() {
         /*
          * First we check the signature number already in the attendance recording database. If it's already in the
@@ -87,7 +105,7 @@ class Attendance extends CI_Controller {
 
     /**
      * This function is created to delete a record already added to the temp table that contains attendace details.
-     * Parameters: $signature_no
+     * @param int $signature_no Signature number of the added attendance record
      */
     function delete_record($signature_no) {
         //Getting user type
@@ -108,8 +126,11 @@ class Attendance extends CI_Controller {
         }
     }
 
+    /**
+     * Responsible for generating the confirmation view of the current date's
+     * temporary attendance records.
+     */
     function generate_report() {
-        //Getting user type
         $data['user_type'] = $this->session->userdata['user_type'];
 
         $data['date'] = date('Y-m-d');
@@ -126,6 +147,10 @@ class Attendance extends CI_Controller {
         $this->load->view('attendance/report', $data);
         $this->load->view('/templates/footer');
     }
+
+    /*
+     * Responsible for generating the report PDF.
+     */
 
     function report_pdf() {
         //Getting user type
@@ -221,7 +246,7 @@ class Attendance extends CI_Controller {
 
         $this->load->helper(array('dompdf', 'file'));
 
-        /**
+        /*
          * REMINDER!
          * School name is hardcoded here. Change it to get the value from database so it can be extended
          * to different schools.
@@ -234,8 +259,10 @@ class Attendance extends CI_Controller {
         pdf_create($html, $filename);
     }
 
+    /**
+     * Interface to generate attendance reports
+     */
     function reports() {
-        //Getting user type
         $data['user_type'] = $this->session->userdata['user_type'];
 
         $data['page_title'] = "Attendance Reports";
@@ -263,7 +290,7 @@ class Attendance extends CI_Controller {
     /**
      * This function is used to check whether there are teacher attendence reports for a given
      * date. If not available, we can display that there are no reports.
-     * @return boolean
+     * @return bool
      */
     function have_reports_for() {
         $date = $this->input->post('date');
@@ -275,12 +302,9 @@ class Attendance extends CI_Controller {
         }
     }
 
-    /*
-     * 
-     *<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<< FOR STUDENT >>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>> 
-     * 
-     */
-
+    
+    #################### FOR STUDENT ##################### 
+     
     /**
      * This is for retrieving attendance recodes of students
      */
@@ -350,10 +374,11 @@ class Attendance extends CI_Controller {
             redirect('attendance/load_students', 'refresh');
         }
     }
-    
+
     /*
      * getting the student attendence recodes for a speific student attendance log detail
      */
+
     public function view_one_attendance() {
         $id = $this->uri->segment(3);
         $data['query'] = $this->attendance_model->get_attendance_data($id);
@@ -365,6 +390,7 @@ class Attendance extends CI_Controller {
     /*
      * edit  student attendence recodes for a speific student attendance log detail
      */
+
     public function edit_one_attendance() {
 
         $data = json_decode($this->input->post('data'));

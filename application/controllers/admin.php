@@ -12,7 +12,7 @@
 class Admin extends CI_Controller {
 
     /**
-     * Class Contructor
+     * Class contructor
      */
     function __construct() {
         parent::__construct();
