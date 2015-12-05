@@ -1,26 +1,49 @@
 <?php
-
+/**
+ * Ecole - User Model
+ * 
+ * Responsibe for handling date related to user accounts in the system
+ * 
+ * @author  Sudaraka K. S.
+ * @copyright (c) 2015, Ecole. (http://projectecole.com)
+ * @link http://projectecole.com
+ */
 class User extends CI_Model {
+    
+    /*
+     * Class Attributes
+     */
+    private $table = "users";
 
+    /**
+     * Class Constructor
+     */
+    
     public function __construct() {
         parent::__construct();
     }
 
+    /**
+     * Interact with the database to authenticate user.
+     * 
+     * @param string $username Username
+     * @param string $password Password
+     * 
+     * @return result
+     */
     public function login($username, $password) {
-        $this->db->select('*');
-        $this->db->from('users');
-        $this->db->where('username', $username);
-        $this->db->where('active', '1');
-        $this->db->where('password', MD5($password));
-        $this->db->limit(1);
-
-        $query = $this->db->get();
-
+        $auth_info = array(
+            'username' => $username,
+            'password' => md5($password),
+            'active' => 1
+        );
+        $query = $this->db->get_where($this->table, $auth_info, 1);
         if ($query->num_rows() == 1) {
-            $date = date('Y-m-d h:i:s a');
-            $update_query = "UPDATE users SET lastvisit_at='{$date}' WHERE username='{$username}'";
-            $this->db->query($update_query);
-            return $query->result();
+            $data = array(
+              'lastvisit_at' => date('Y-m-d h:i:s a')
+            );
+            $this->db->update($this->table, $data, array('username' => $username));
+            return $query->row();
         } else {
             return FALSE;
         }

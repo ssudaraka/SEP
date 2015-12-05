@@ -2,7 +2,9 @@
 /**
  * Ecole - Login Controller
  * 
- * Handles the user login to the system.
+ * Handles the user login interface to the system.
+ * This is the default controller in the system. If there's no user signed in,
+ * that user will be redirected to this controller.
  * 
  * @author  Sudaraka K. S.
  * @copyright (c) 2015, Ecole. (http://projectecole.com)
