@@ -1,18 +1,32 @@
 <?php
+/**
+ * Ecole - Student Model
+ * 
+ * Handles DB Functionalities of the Student component
+ * 
+ * @author  Thomas A.P.
+ * @copyright (c) 2015, Ecole. (http://projectecole.com)
+ * @link http://projectecole.com
+ */
 
 class Student_Model extends CI_Model {
 
-    //loading database on class creationorderMainAddress
+    
+    /**
+     * constructor
+     */
     public function __construct() {
         parent::__construct();
-        $this->load->database();
-        $this->load->helper('date');
+      $this->load->helper('date');
     }
 
-    /*
-     * Insert New Student recode
-     */
 
+    /**
+     * Insert New Student recode
+     * 
+     * @param type $student_data
+     * @return boolean
+     */
     public function insert_new_student($student_data) {
         try {
             // $userid=$student_data['studentid'];
@@ -46,10 +60,12 @@ class Student_Model extends CI_Model {
         }
     }
 
-    /*
+    /**
      * Insert New Guardian recode
+     * 
+     * @param type $guardian_data
+     * @return type
      */
-
     public function insert_new_Guardian($guardian_data) {
 
         $row = $this->Student_Model->get_last_row();
@@ -74,10 +90,11 @@ class Student_Model extends CI_Model {
         }
     }
 
-    /*
+    /**
      * getting the last recode details of students table
+     * 
+     * @return type mixed :boolean or query result
      */
-
     public function get_last_row() {
         if ($rows = $this->db->query("SELECT * FROM students ORDER BY id DESC LIMIT 1")) {
             $row = $rows->row();
@@ -87,10 +104,13 @@ class Student_Model extends CI_Model {
         }
     }
 
-    /*
-     * getting the recode details of Newly added Student
-     */
 
+    /**
+     * getting the recode details of Newly added Student
+     * 
+     * @param type $id
+     * @return type
+     */
     public function get_last_inserted_student($id) {
         if ($query = $this->db->query("SELECT * FROM students WHERE id = '$id'")) {
             $row = $query->row();
@@ -100,10 +120,13 @@ class Student_Model extends CI_Model {
         }
     }
 
-    /*
-     * getting the recode details of  Student with his guardian details by given id
-     */
 
+    /**
+     * getting the recode details of  Student with his guardian details by given id
+     * 
+     * @param type $id
+     * @return type query results
+     */
     public function get_student_profile($id) {
 
         try {
@@ -118,10 +141,12 @@ class Student_Model extends CI_Model {
         }
     }
 
-    /*
+    /**
      * getting the recode details of  Student details by given id
+     * 
+     * @param type $id
+     * @return type query results
      */
-
     public function get_student_only($id) {
         try {
             if ($data = $this->db->query("SELECT * FROM students  WHERE user_id = '$id'")) {
@@ -135,10 +160,13 @@ class Student_Model extends CI_Model {
         }
     }
 
-    /*
-     * getting the recode details of guardian details by given id
-     */
 
+    /**
+     * getting the recode details of guardian details by given id
+     * 
+     * @param type $id
+     * @return type query resuls
+     */
     public function get_guardian_only($id) {
         try {
             if ($data = $this->db->query("SELECT * FROM guardians  WHERE student_id = '$id'")) {
@@ -152,10 +180,13 @@ class Student_Model extends CI_Model {
         }
     }
 
-    /*
-     * getting all the student recode details +pagination
+    /**
+     * getting all the student recode details
+     * 
+     * @param type $limit
+     * @param type $offset
+     * @return type query results
      */
-
     public function get_all_students($limit = 1, $offset = null) {
         $sql = "SELECT * FROM students LIMIT {$limit}";
         if (isset($offset)) {
@@ -165,10 +196,12 @@ class Student_Model extends CI_Model {
         return $query;
     }
 
-    /*
-     * getting all the student recode details without pagination
-     */
 
+    /**
+     * getting all the student recode details without pagination
+     * 
+     * @return type query results
+     */
     public function get_all_students_2() {
         $sql = "SELECT * FROM students";
 
@@ -176,10 +209,12 @@ class Student_Model extends CI_Model {
         return $query;
     }
 
-    /*
-     * get all archived student recodes
-     */
 
+    /**
+     * get all archived student recodes
+     * 
+     * @return boolean
+     */
     function get_all_archive_students() {
         $query = $this->db->query("SELECT * FROM  archived_students order by full_name asc");
 
@@ -190,10 +225,13 @@ class Student_Model extends CI_Model {
         }
     }
 
-    /*
-     * delete student recode + his guardian details
-     */
 
+    /**
+     * delete student recode + his guardian details
+     * 
+     * @param type $id
+     * @return boolean
+     */
     public function delete_student($id) {
         $sql1 = "DELETE s,g FROM archived_students AS s INNER JOIN archived_guardians AS g ON s.user_id = g.student_id  WHERE  s.user_id = '$id'";
 
@@ -204,10 +242,15 @@ class Student_Model extends CI_Model {
         }
     }
 
-    /*
-     * update Guardian recode 
-     */
 
+
+    /**update Guardian recode 
+     * 
+     * 
+     * @param type $guardian
+     * @param type $myid
+     * @return boolean
+     */
     public function update_guardian($guardian, $myid) {
         $sql = "UPDATE guardians SET fullname = '{$guardian['name']}', name_with_initials = '{$guardian['nameWithInitials']}', dob = '{$guardian['birthday']}', occupation = '{$guardian['occupation']}',
                                         addr ='{$guardian['address']}',contact_home='{$guardian['contact_home']}',contact_mobile='{$guardian['contact_mobile']}' WHERE student_id='$myid' ";
@@ -220,10 +263,15 @@ class Student_Model extends CI_Model {
         }
     }
 
-    /*
-     * update Student recode 
-     */
+ 
 
+    /**
+     * update Student recode 
+     * 
+     * @param type $student
+     * @param type $myid
+     * @return boolean
+     */
     public function update_student($student, $myid) {
         $sql = "UPDATE students SET full_name ='{$student['name']}',  permanent_addr='{$student['address']}',  name_with_initials='{$student['nameWithInitials']}', contact_home='{$student['contact_home']}',email='{$student['email']}'  WHERE user_id='$myid'";
 
@@ -234,10 +282,17 @@ class Student_Model extends CI_Model {
         }
     }
 
-    /*
-     * Insert new student's log details
-     */
 
+    /**
+     * Insert new student's log details
+     * 
+     * @param type $username
+     * @param type $password
+     * @param type $create
+     * @param type $fname
+     * @param type $lname
+     * @return boolean
+     */
     public function insert_new_student_userdata($username, $password, $create, $fname, $lname) {
         try {
             $encryptpwd = md5($password);
@@ -252,10 +307,14 @@ class Student_Model extends CI_Model {
         }
     }
 
-    /*
-     * set user_id of the student in the student table
-     */
 
+    /**
+     * set user_id of the student in the student table
+     * 
+     * @param type $ID
+     * @param type $userid
+     * @return boolean
+     */
     public function set_user_id($ID, $userid) {
         try {
             if ($this->db->query("UPDATE `students` set `user_id` = '$userid'  where `id` = '$ID' ") == TRUE) {
@@ -269,10 +328,13 @@ class Student_Model extends CI_Model {
         }
     }
 
-    /*
-     * Search student by given Id 
-     */
 
+    /**
+     * Search student by given Id 
+     * 
+     * @param type $id
+     * @return type
+     */
     public function search_student($id) {
         $sql = "SELECT * FROM students WHERE user_id like'%$id%' or full_name like '%$id%' or admission_no like '%$id%' or name_with_initials like '%$id%' ";
         if (isset($offset)) {
@@ -282,10 +344,13 @@ class Student_Model extends CI_Model {
         return $query;
     }
 
-    /*
-     * Get Logged user's username 
-     */
 
+    /**
+     * Get Logged user's username
+     * 
+     * @param type $user_id
+     * @return boolean
+     */
     public function get_details($user_id) {
         $query = $this->db->query("SELECT username FROM users WHERE id='{$user_id}'");
         if ($query->num_rows() > 0) {
@@ -295,10 +360,14 @@ class Student_Model extends CI_Model {
         }
     }
 
-    /*
-     * change Logged user's password
-     */
 
+    /**
+     * change Logged user's password
+     * 
+     * @param type $user_id
+     * @param type $new_password
+     * @return boolean
+     */
     public function change_password($user_id, $new_password) {
         $hashed_password = md5($new_password);
         $query = "UPDATE users SET password='{$hashed_password}' WHERE id='{$user_id}'";
@@ -311,24 +380,26 @@ class Student_Model extends CI_Model {
         }
     }
 
-    /*
-     * get Logged user's encrypted password
+    /**
+     *  get Logged user's encrypted password
+     * 
+     * @param type $user_id
+     * @return type query results
      */
-
     public function get_password_hash($user_id) {
         $query = $this->db->query("SELECT password FROM users WHERE id='{$user_id}'");
         $row = $query->row();
         return $row->password;
     }
 
-    /*
+    /**
      * Insert New Guardian recode
+     * 
+     * @param type $id
+     * @return boolean
      */
-
     public function archive_student($id) {
 
-//       $student_d = get_student_only($id);
-//       $guardian_d = get_guardian_only($id);
 
         try {
             if ($data_s = $this->db->query("SELECT * FROM students  WHERE user_id = '$id'")) {
@@ -337,14 +408,11 @@ class Student_Model extends CI_Model {
                 $user_id = $student_data->user_id;
                 $admissionno = $student_data->admission_no;
                 $admissiondate = $student_data->admission_date;
-//                $firstname = $student_data->'first_name'];
-//                $lastname = $student_data->'last_name'];
                 $fullname = $student_data->full_name;
                 $initials = $student_data->name_with_initials;
                 $dob = $student_data->dob;
                 $gender = "M";
                 $nic = $student_data->nic_no;
-
                 $language = $student_data->language;
                 $religion_id = $student_data->religion;
                 $address = $student_data->permanent_addr;
@@ -398,10 +466,13 @@ class Student_Model extends CI_Model {
         }
     }
 
-    /*
-     * getting the recode details of archived student by given id
-     */
 
+    /**
+     *  getting the recode details of archived student by given id
+     * 
+     * @param type $id
+     * @return type query resuls
+     */
     public function get_archived_student_only($id) {
         try {
             if ($data = $this->db->query("SELECT * FROM archived_students  WHERE user_id = '$id'")) {
@@ -415,10 +486,14 @@ class Student_Model extends CI_Model {
         }
     }
 
-    /*
-     * for serverside datatable of student recodes
-     */
 
+
+    /**
+     * for serverside datatable of student recodes
+     * 
+     * @param type $data
+     * @return type mixed : boolean , query results
+     */
     public function get_all_student_details($data) {
         $limit = intval(htmlspecialchars($data["limit"]));
         $offset = intval(htmlspecialchars($data["offset"]));
@@ -453,6 +528,12 @@ class Student_Model extends CI_Model {
         return $arr;
     }
 
+    /**
+     * genarate student report
+     * 
+     * @param type $report
+     * @return boolean
+     */
     public function generate_report($report) {
         $data = $this->db->query("select s.* from students s inner join classes c on c.id=s.class where c.grade_id = '$report' ");
 
@@ -464,6 +545,13 @@ class Student_Model extends CI_Model {
 
      
     }
+    
+    /**
+     * get student user id by given addmission no
+     * 
+     * @param type $index
+     * @return type query results
+     */
     function get_id_by_index($index){
          try {
             if ($data = $this->db->query("SELECT user_id FROM students  WHERE admission_no = '$index'")) {
@@ -477,6 +565,11 @@ class Student_Model extends CI_Model {
         }
     }
     
+    /**
+     * get all note details
+     * 
+     * @return boolean
+     */
     function get_all_notes(){
          $data = $this->db->query("select s.admission_no ,s.contact_home ,c.name, n.* from students s, classes c ,notes n where c.id=s.class and s.user_id=n.student_id");
 
@@ -487,6 +580,12 @@ class Student_Model extends CI_Model {
         }
     }
     
+    /**
+     * get details of a specific note by given id
+     * 
+     * @param type $id
+     * @return boolean
+     */
      function get_note($id){
          $data = $this->db->query("select * from notes where id = '$id'");
 
@@ -497,6 +596,13 @@ class Student_Model extends CI_Model {
         }
     }
     
+    /**
+     * Chane note settings
+     * 
+     * @param type $id
+     * @param type $action
+     * @return boolean
+     */
      public function take_action($id, $action) {
         $query = "UPDATE notes SET action='{$action}',status='1' WHERE id='{$id}'";
         $result = $this->db->query($query);
