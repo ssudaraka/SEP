@@ -34,10 +34,14 @@
                 </div>
                 <div class="panel-body">
 
-                    <div style="margin-left: 39em">
-                        <form>
-                            Sorted By :
-                            <select id="event" name="event" onchange="hello()">
+                    <div class="pull-right">
+                        <form class="form-inline">
+                            <div class="form-group">
+    <label>Sorted By</label>
+    <!-- <input type="text" class="form-control" id="exampleInputName2" placeholder="Jane Doe"> -->
+  
+                            
+                            <select id="event" name="event" class="form-control" onchange="hello()">
 <?php
 echo $type;
 echo '<option value="0">Select Type</option>';
@@ -70,6 +74,7 @@ if ($type == 1) {
 ?>
 
                             </select>
+                            </div>
                         </form>
                     </div>
                     <br>
@@ -80,7 +85,7 @@ if ($type == 1) {
                                 <th>Event Name</th>
                                 <th>Start Date</th>
                                 <th>End Date</th>
-                                <th></th>
+                                <th>Actions</th>
                             </tr>
                         </thead>
                         <tbody>
@@ -103,22 +108,6 @@ if ($type == 1) {
                                     
                                 </tr>
                                 <?php } ?>
-                            <tr>
-                                <td>No More records</td>
-                                <td></td>
-                                <td></td>
-                                <td></td>
-                                <td></td>
-                                <td></td>
-                            </tr>
-                            <tr>
-                                <td></td>
-                                <td></td>
-                                <td></td>
-                                <td></td>
-                                <td></td>
-                                <td></td>
-                            </tr>
                         </tbody>
                     </table>
 

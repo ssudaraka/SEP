@@ -26,7 +26,7 @@
             <?php } ?>
             <div class="panel panel-default">
                 <div class="panel-heading">
-                    <strong>PENDING EVENTS</strong>
+                    <strong>Pending Events</strong>
                 </div>
                 <div class="panel-body">
                     <table class="table table-hover">
@@ -55,7 +55,7 @@
             
             <div class="panel panel-default">
                 <div class="panel-heading">
-                    <strong>CANCELED EVENTS </strong>
+                    <strong>Canceled Events </strong>
                 </div>
                 <div class="panel-body">
                     <table class="table table-hover">
