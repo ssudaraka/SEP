@@ -32,7 +32,7 @@ class Dashboard extends CI_Controller {
 
         $data['page_title'] = 'Dashboard';
         $data['first_name'] = $this->session->userdata('first_name');
-        $data['details'] = $this->event_model->get_pending_event_details();
+        $data['details'] = $this->event_model->get_running_events();
         $this->load->view('templates/header', $data);
         $this->load->view('navbar_main', $data);
         $this->load->view('navbar_sub', $data);

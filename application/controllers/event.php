@@ -29,7 +29,7 @@ class Event extends CI_Controller {
         }
         $data['user_type'] = $this->session->userdata['user_type'];
         $user_t = $this->session->userdata['user_type']; //get the user type from session
-        $data['details'] = $this->event_model->get_pending_event_details(); //get pending events from database
+        $data['details'] = $this->event_model->get_event_details(); //get pending events from database
         $data['result'] = $this->event_model->get_event_type_details();
         $data['navbar'] = "event";
         if ($user_t == 'A') {
@@ -67,7 +67,7 @@ class Event extends CI_Controller {
         $this->form_validation->set_error_delimiters('<br /><span class="error">', '</span>');
         
         if ($this->form_validation->run() == FALSE) {
-            $data['details'] = $this->event_model->get_pending_event_details();
+            $data['details'] = $this->event_model->get_event_details();
             $data['page_title'] = "New Event";
             $this->load->view('templates/header', $data);
             $this->load->view('navbar_main', $data);
@@ -99,7 +99,7 @@ class Event extends CI_Controller {
                 $tech_details = $this->teacher_model->user_details($tech_id);
                 $this->news_model->insert_action_details($tech_id, "Create new event", $tech_details->profile_img, $tech_details->first_name);
                 //////
-                $data['details'] = $this->event_model->get_pending_event_details();
+                $data['details'] = $this->event_model->get_event_details();
                 $data['page_title'] = "Create Sports Event";
                 $data['navbar'] = "event";
                 $this->load->view('templates/header', $data);
@@ -586,7 +586,7 @@ class Event extends CI_Controller {
         if (!$this->session->userdata('logged_in')) {
             redirect('login', 'refresh');
         }
-        $data['details'] = $this->event_model->get_pending_event_details();
+        $data['details'] = $this->event_model->get_running_events();
         $data['user_type'] = $this->session->userdata['user_type'];
         $data['page_title'] = "Event Calendar";
         $data['navbar'] = "event";

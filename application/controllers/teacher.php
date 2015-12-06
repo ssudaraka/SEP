@@ -494,6 +494,7 @@ class Teacher extends CI_Controller {
             $username = $this->input->post('username');
             $password = $this->input->post('password');
             $confirm_password = $this->input->post('confirm_password');
+            
             $create = date('Y-m-d H:i:s');
 
             $config['upload_path'] = './uploads/';
@@ -506,10 +507,18 @@ class Teacher extends CI_Controller {
 
             $this->upload->do_upload('profile_img');
             $image_data = $this->upload->data();
-            $image = base_url() . "uploads/" . $image_data['file_name'];
+            if (!$this->upload->do_upload('profile_img'))
+            {
+                $image = base_url()."assets/img/profile_placeholder.png";
+            }
+            else{
+                $image = base_url() . "uploads/" . $image_data['file_name'];
+            }
             $teacher_log_details = $this->teacher_model->get_staff_details($id);
             $teacher_name = explode(" ",$teacher_log_details->full_name);
-
+            if(!isset($teacher_name[1])){
+                $teacher_name[1] = ' ';         // If the second name is not given, we assign blank
+            }
             if ($u_id = $this->teacher_model->insert_new_teacher_userdata($username, $password, $create, $teacher_name[0], $teacher_name[1], $image , $teacher_log_details->email)) { // the information has therefore been successfully saved in the db
                 $this->teacher_model->set_user_id($id, $u_id);
                 $this->teacher_model->upload_pic($id, $image);

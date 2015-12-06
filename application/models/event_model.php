@@ -88,7 +88,7 @@ class Event_model extends CI_Model {
      * 
      * @return mixed resulting row or null value
      */
-    public function get_pending_event_details() {
+    public function get_event_details() {
         $today = date('Y-m-d');
         try {
             if ($data = $this->db->query("select * from `events`")) {
@@ -203,7 +203,7 @@ class Event_model extends CI_Model {
      */
     public function get_canceled_events() {
         try {
-            if ($data = $this->db->query("select * from `events` where `status` = 'rejected' limit 10")) {
+            if ($data = $this->db->query("select * from `events` where `status` = 'cancelled' limit 10")) {
                 $row = $data->result();
                 return $row;
             } else {
@@ -472,6 +472,16 @@ class Event_model extends CI_Model {
         else{
             return "no";
         }
+    }
+    
+    /**
+     * This method is used to get the pending, approved and rejected event details
+     * 
+     * @return resulting set
+     */
+    public function get_running_events() {
+        $data = $this->db->query("select * from events where status = 'rejected' or status = 'approved' or status = 'pending'");
+        return $data->result();
     }
 
 }
