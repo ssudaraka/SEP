@@ -181,5 +181,10 @@ class Class_Model extends CI_Model {
         $sql = "SELECT s.*, c.* FROM students s, student_class c ";
         $sql .= "WHERE c.student_id = s.id AND c.academic_year ='{$academic_year}'";
     }
+    
+    public function get_class_name($class_id){
+        $class = $this->db->get_where('classes', array('id' => $class_id), 1)->row();
+        return $class->grade_id . " " .$class->name;
+    }
 
 }

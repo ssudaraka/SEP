@@ -47,7 +47,7 @@
                                     <select id="class" name="class" class="form-control">
                                         <option value="0">Select Class</option>
                                         <?php foreach ($class_list as $class) { ?>
-                                            <option value="<?php echo $class->id; ?>"><?php echo $class->name; ?></option>
+                                            <option value="<?php echo $class->id; ?>"><?php echo $class->grade_id . " " . $class->name; ?></option>
                                         <?php } ?>
                                     </select>
                                 </div>
