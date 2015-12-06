@@ -253,10 +253,10 @@ class Student extends CI_Controller {
                         'contact_mobile' => $this->input->post('contact_mobile')
                     );
                     
-                     var_dump('dsadsadads');
+                     // var_dump('dsadsadads');
 
                     if ($id = $this->Student_Model->insert_new_Guardian($guardian_data)) { // the information has therefore been successfully saved in the db
-                        var_dump($id);
+                        // var_dump($id);
                         $this->session->unset_userdata('student_d');
                         $this->session->set_flashdata('succ_message', 'Admission Successfull');
                         redirect('student/create_student');
