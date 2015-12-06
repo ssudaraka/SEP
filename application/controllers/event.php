@@ -555,15 +555,8 @@ class Event extends CI_Controller {
         $data['succ_message'] = "Successfully completed";
         $data['user_type'] = $this->session->userdata['user_type'];
         $this->event_model->approve_event($id);
-        $data['details'] = $this->event_model->get_pending_events_to_approve();
-        $data['cancel'] = $this->event_model->get_canceled_events();
-        $data['page_title'] = "Pending event";
-        $data['navbar'] = "event";
-        $this->load->view('templates/header', $data);
-        $this->load->view('navbar_main', $data);
-        $this->load->view('navbar_sub', $data);
-        $this->load->view('event/check_event_details', $data);
-        $this->load->view('/templates/footer');
+        $this->session->set_flashdata('succ' , 'Successfully approved the event');
+        redirect('event/check_event_details');
     }
     
     /**
@@ -580,18 +573,10 @@ class Event extends CI_Controller {
         $tech_details = $this->teacher_model->user_details($tech_id);
         $this->news_model->insert_action_details($tech_id, "Reject the event", $tech_details->profile_img, $tech_details->first_name);
         //////
-        $data['succ_message'] = "Successfully completed";
         $data['user_type'] = $this->session->userdata['user_type'];
         $this->event_model->reject_event($id);
-        $data['details'] = $this->event_model->get_pending_events_to_approve();
-        $data['cancel'] = $this->event_model->get_canceled_events();
-        $data['page_title'] = "Pending event";
-        $data['navbar'] = "event";
-        $this->load->view('templates/header', $data);
-        $this->load->view('navbar_main', $data);
-        $this->load->view('navbar_sub', $data);
-        $this->load->view('event/check_event_details', $data);
-        $this->load->view('/templates/footer');
+        $this->session->set_flashdata('succ' , 'Successfully rejected the event');
+        redirect('event/check_event_details');
     }
     
     /**

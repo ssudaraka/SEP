@@ -24,9 +24,13 @@ class Teacher_Model extends CI_Model {
      * @return int
      */
     public function insert_new_staff($personal_teacher_details) {
-        $this->db->insert('teachers', $personal_teacher_details);
-        $id = $this->db->insert_id();
-        return $id;
+        try{
+            $this->db->insert('teachers', $personal_teacher_details);
+            $id = $this->db->insert_id();
+            return $id;
+        } catch (Exception $ex) {
+            return NULL;
+        }
     }
 
     /**
@@ -37,9 +41,13 @@ class Teacher_Model extends CI_Model {
      * @return type
      */
     public function update_new_staff($id, $teacher_accademic_details) {
-        $this->db->where('id', $id);
-        $this->db->update('teachers', $teacher_accademic_details);
-        return $id;
+        try{
+            $this->db->where('id', $id);
+            $this->db->update('teachers', $teacher_accademic_details);
+            return $id;
+        } catch (Exception $ex) {
+            return NULL;
+        }
     }
 
     /**
@@ -54,10 +62,10 @@ class Teacher_Model extends CI_Model {
                 $row = $data->row();
                 return $row;
             } else {
-                return null;
+                return NULL;
             }
         } catch (Exception $ex) {
-            return null;
+            return NULL;
         }
     }
 
@@ -76,7 +84,7 @@ class Teacher_Model extends CI_Model {
                 return FALSE;
             }
         } catch (Exception $ex) {
-            return null;
+            return NULL;
         }
     }
 
@@ -90,13 +98,12 @@ class Teacher_Model extends CI_Model {
     public function set_user_id($ID, $userid) {
         try {
             if ($this->db->query("UPDATE `teachers` set `user_id` = '$userid'  where `id` = '$ID' ") == TRUE) {
-
                 return TRUE;
             } else {
                 return FALSE;
             }
         } catch (Exception $ex) {
-            return null;
+            return FALSE;
         }
     }
 
@@ -144,7 +151,7 @@ class Teacher_Model extends CI_Model {
                 return NULL;
             }
         } catch (Exception $ex) {
-            return FALSE;
+            return NULL;
         }
     }
 
@@ -162,8 +169,12 @@ class Teacher_Model extends CI_Model {
      * @return resulting row
      */
     public function getTeacherProfile($id) {
-        $query = $this->db->query("SELECT * FROM teachers WHERE id ='$id'");
-        return $query->row();
+        try{
+            $query = $this->db->query("SELECT * FROM teachers WHERE id ='$id'");
+            return $query->row();
+        } catch (Exception $ex) {
+            return FALSE;
+        }
     }
 
     /**
@@ -172,8 +183,12 @@ class Teacher_Model extends CI_Model {
      * @return resulting set
      */
     public function SearchAllTeachers() {
-        $query = $this->db->query("SELECT * FROM teachers order by full_name asc");
-        return $query->result();
+        try{
+            $query = $this->db->query("SELECT * FROM teachers order by full_name asc");
+            return $query->result();
+        } catch (Exception $ex) {
+            return FALSE;
+        }
     }
 
     /**
@@ -184,9 +199,13 @@ class Teacher_Model extends CI_Model {
      * @return boolean
      */
     public function UpdateTeacher($teacher, $myid) {
-        $this->db->where('id', $myid);
-        $this->db->update('teachers', $teacher);
-        return TRUE;
+        try{
+            $this->db->where('id', $myid);
+            $this->db->update('teachers', $teacher);
+            return TRUE;
+        } catch (Exception $ex) {
+            return FALSE;
+        }
     }
 
     /**
@@ -263,9 +282,13 @@ class Teacher_Model extends CI_Model {
      * @return string
      */
     public function get_profile_img($id) {
-        $sql = "SELECT photo_file_name FROM teachers WHERE id='$id'";
-        $query = $this->db->query($sql);
-        return $query->row()->photo_file_name;
+        try{
+            $sql = "SELECT photo_file_name FROM teachers WHERE id='$id'";
+            $query = $this->db->query($sql);
+            return $query->row()->photo_file_name;
+        } catch (Exception $ex) {
+            return FALSE;
+        }
     }
 
     /**
@@ -275,8 +298,12 @@ class Teacher_Model extends CI_Model {
      * @return int
      */
     public function getTeacherUserId($id) {
-        $query = $this->db->query("SELECT user_id FROM teachers WHERE id ='$id'");
-        return $query->row()->user_id;
+        try{
+            $query = $this->db->query("SELECT user_id FROM teachers WHERE id ='$id'");
+            return $query->row()->user_id;
+        } catch (Exception $ex) {
+            return FALSE;
+        }
     }
 
     /**
@@ -357,9 +384,13 @@ class Teacher_Model extends CI_Model {
      * @return type
      */
     public function user_details($id) {
-        $sql = "SELECT * FROM users WHERE id='$id'";
-        $query = $this->db->query($sql);
-        return $query->row();
+        try{
+            $sql = "SELECT * FROM users WHERE id='$id'";
+            $query = $this->db->query($sql);
+            return $query->row();
+        } catch (Exception $ex) {
+            return FALSE;
+        }
     }
 
     /**

@@ -23,8 +23,13 @@ class Event_model extends CI_Model {
      * @return boolean
      */
     function insert_sport_event($insert_event) {
-        $this->db->insert('events' , $insert_event);
-        return TRUE;
+        try{
+            $this->db->insert('events' , $insert_event);
+            return TRUE;
+        } catch (Exception $ex) {
+            return FALSE;
+        }
+        
     }
 
     /**
@@ -34,8 +39,13 @@ class Event_model extends CI_Model {
      * @return boolean
      */
     function insert_new_event_type($inert_event_type) {
-        $this->db->insert('event_type' , $inert_event_type);
-        return TRUE;
+        try{
+            $this->db->insert('event_type' , $inert_event_type);
+            return TRUE;
+        } catch (Exception $ex) {
+            return FALSE;
+        }
+        
     }
 
     /**
@@ -46,9 +56,13 @@ class Event_model extends CI_Model {
      * @return boolean
      */
     function update_event($event_id , $update_event) {
-        $this->db->where('id' , $event_id);
-        $this->db->update('events' , $update_event);
-        return TRUE;
+        try{
+            $this->db->where('id' , $event_id);
+            $this->db->update('events' , $update_event);
+            return TRUE;
+        } catch (Exception $ex) {
+            return FALSE;
+        }
     }
 
     /**
@@ -383,9 +397,14 @@ class Event_model extends CI_Model {
      * @return boolean
      */
     public function update_event_type($id, $update_event_type) {
-        $this->db->where('id' , $id);
-        $this->db->update('event_type' , $update_event_type);
-        return TRUE;
+        try{
+            $this->db->where('id' , $id);
+            $this->db->update('event_type' , $update_event_type);
+            return TRUE;
+        } catch (Exception $ex) {
+            return FALSE;
+        }
+        
     }
 
     /**

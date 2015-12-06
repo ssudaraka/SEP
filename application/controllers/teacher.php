@@ -401,8 +401,8 @@ class Teacher extends CI_Controller {
         $data['user_type'] = $this->session->userdata['user_type'];
         $this->load->library('form_validation');
         $this->form_validation->set_rules('regno', 'Register No', 'required');
-        $this->form_validation->set_rules('serialno', 'Serial No', 'required|less_than[100000]|is_unique[teachers.serial_no]|integer');
-        $this->form_validation->set_rules('signatureno', 'Signature No', 'required|less_than[1000]|is_unique[teachers.signature_no]|integer');
+        $this->form_validation->set_rules('serialno', 'Serial No', 'required|less_than[100000]|greater_than[0]|is_unique[teachers.serial_no]|integer');
+        $this->form_validation->set_rules('signatureno', 'Signature No', 'required|less_than[1000]|greater_than[0]|is_unique[teachers.signature_no]|integer');
         $this->form_validation->set_rules('careerdate', 'Date Joined', 'required|callback_check_career_day');
         $this->form_validation->set_rules('medium', 'Medium', '');
         $this->form_validation->set_rules('designation', 'Designation', '');
@@ -508,8 +508,9 @@ class Teacher extends CI_Controller {
             $image_data = $this->upload->data();
             $image = base_url() . "uploads/" . $image_data['file_name'];
             $teacher_log_details = $this->teacher_model->get_staff_details($id);
+            $teacher_name = explode(" ",$teacher_log_details->full_name);
 
-            if ($u_id = $this->teacher_model->insert_new_teacher_userdata($username, $password, $create, $teacher_log_details->full_name, $teacher_log_details->full_name, $image , $teacher_log_details->email)) { // the information has therefore been successfully saved in the db
+            if ($u_id = $this->teacher_model->insert_new_teacher_userdata($username, $password, $create, $teacher_name[0], $teacher_name[1], $image , $teacher_log_details->email)) { // the information has therefore been successfully saved in the db
                 $this->teacher_model->set_user_id($id, $u_id);
                 $this->teacher_model->upload_pic($id, $image);
                 $data['propic'] = $this->teacher_model->get_profile_img($id);
