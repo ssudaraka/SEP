@@ -87,9 +87,9 @@ class Admin extends CI_Controller {
             );
 
             $this->user->create($user, "A");
-//            $tech_id = $this->session->userdata('id');
-//            $tech_details = $this->teacher_model->user_details($tech_id);
-//            $this->news_model->insert_action_details($tech_id, "Create new admin account", $tech_details->photo_file_name, $tech_details->full_name);
+            $tech_id = $this->session->userdata('id');
+            $tech_details = $this->teacher_model->user_details($tech_id);
+            $this->news_model->insert_action_details($tech_id, "Create new admin account", $tech_details->photo_file_name, $tech_details->full_name);
             $data['succ_message'] = "New Admin Created Successfully";
         }
 
@@ -170,6 +170,7 @@ class Admin extends CI_Controller {
     /*
      * Interface to edit administrator account
      */
+
     function edit($user_id = null) {
 
         $data['user_type'] = $this->session->userdata['user_type'];
@@ -205,7 +206,7 @@ class Admin extends CI_Controller {
             $this->load->view('templates/footer');
         }
     }
-    
+
     /**
      * Interface to manage user accounts
      */

@@ -2,6 +2,19 @@
 <project-private xmlns="http://www.netbeans.org/ns/project-private/1">
     <editor-bookmarks xmlns="http://www.netbeans.org/ns/editor-bookmarks/2" lastBookmarkId="0"/>
     <open-files xmlns="http://www.netbeans.org/ns/projectui-open-files/2">
-        <group/>
+        <group>
+            <file>file:/C:/wamp/www/sep/application/controllers/timetable.php</file>
+            <file>file:/C:/wamp/www/sep/application/views/timetable/timetable.php</file>
+            <file>file:/C:/wamp/www/sep/application/models/messages_model.php</file>
+            <file>file:/C:/wamp/www/sep/application/models/class_model.php</file>
+            <file>file:/C:/wamp/www/sep/application/controllers/admin.php</file>
+            <file>file:/C:/wamp/www/sep/application/controllers/inbox.php</file>
+            <file>file:/C:/wamp/www/sep/application/views/inbox/list.php</file>
+            <file>file:/C:/wamp/www/sep/application/models/timetable_model.php</file>
+            <file>file:/C:/wamp/www/sep/application/helpers/messages_helper.php</file>
+            <file>file:/C:/wamp/www/sep/application/controllers/attendance.php</file>
+            <file>file:/C:/wamp/www/sep/application/controllers/user_auth.php</file>
+            <file>file:/C:/wamp/www/sep/application/views/inbox/sidebar_nav.php</file>
+        </group>
     </open-files>
 </project-private>
