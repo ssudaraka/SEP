@@ -35,7 +35,7 @@
                     <div class="col-md-3 col-md-push-1  form-group">
                         
                                 <label for="studentname">Student Name</label>
-                                <input type="text" name="studentname" value="<?php echo $stud_data['nameWithInitials'];// $row->name_with_initials;?>" class="form-control" id="addmissiondate" readonly>
+                                <input type="text" name="studentname" value="<?php echo $stud_data['name_with_initials'];// $row->name_with_initials;?>" class="form-control" id="addmissiondate" readonly>
                                 <div><?php echo form_error('studentname'); ?></div>
                      </div>
                      <div class="col-md-3 col-md-offset-4 form-group">
@@ -62,19 +62,29 @@
                     
                     <div class="col-md-5 col-md-push-1 form-group">
                                 
-                                <label for="fullname">First Name</label>
-                                <input type="text" name="fullname" value="<?php echo set_value('fullname'); ?>" class="form-control" id="fullname" placeholder="Full Name" >
-                                <div><?php echo form_error('fullname'); ?></div>
+                                <label for="gfirstname">First Name</label>
+                                <input type="text" name="gfirstname" value="<?php echo set_value('gfirstname'); ?>" class="form-control" id="gfirstname" placeholder="First Name" >
+                                <div><?php echo form_error('gfirstname'); ?></div>
                                 
                      </div>
                      <div class="col-md-5 col-md-push-1 form-group">
+                                
+                                <label for="glastname">Last Name</label>
+                                <input type="text" name="glastname" value="<?php echo set_value('glastname'); ?>" class="form-control" id="glastname" placeholder="Last Name" >
+                                <div><?php echo form_error('glastname'); ?></div>
+                                
+                     </div>
+                     
+                     
+                </div>
+                <div class="row">
+                    <div class="col-md-5 col-md-push-1 form-group">
                                 
                                 <label for="initials">Name With Initials</label>
                                 <input type="text" name="initial" value="<?php echo set_value('initial'); ?>" class="form-control" id="initial" placeholder="Name with Initials">
                                 <div> <?php echo form_error('initial'); ?></div>
                                 
                     </div>
-                     
                 </div>
                 <!-- secound row-->
                 <div class="row">

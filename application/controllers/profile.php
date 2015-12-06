@@ -1,10 +1,17 @@
 <?php
 
-/*
- * This controlled used for managing the current user's profile / account. 
- * Edit Profile and Edit Account Settings (like password change) was previously in admin controller.
- * Seperated for better usage of admin controller. So we can use admin controller for system administration only.
- * @ssudaraka
+
+/**
+ * Ecole - Profile Controller
+ * 
+ *  This controlled used for managing the current user's profile / account. 
+ * view profile(s) /Edit Profile and Edit Account Settings (like password change) was previously in admin controller.
+ *  Seperated for better usage of admin controller. So we can use admin controller for system administration only.
+ * 
+ * 
+ * @authors  Sudaraka K.S , Thomas A.P. 
+ * @copyright (c) 2015, Ecole. (http://projectecole.com)
+ * @link http://projectecole.com
  */
 
 class Profile extends CI_Controller {
@@ -148,6 +155,11 @@ class Profile extends CI_Controller {
             }
         }
     }
+    
+    /**
+     * Load account settings.then we can change account settings
+     * 
+     */
 
     function account_settings() {
         //getting the user type
@@ -211,6 +223,11 @@ class Profile extends CI_Controller {
         }
     }
 
+    /**
+     * chech whether the password is stongtype
+     * 
+     * @return boolean
+     */
     function is_strong_password() {
         $password = $this->input->post('new_password');
         $uppercase = preg_match('@[A-Z]@', $password);
@@ -231,6 +248,9 @@ class Profile extends CI_Controller {
         }
     }
 
+    /**
+     * This performs update profile
+     */
     function update_profile() {
         //getting the user type
         $data['user_type'] = $this->session->userdata['user_type'];
@@ -299,6 +319,11 @@ class Profile extends CI_Controller {
         }
     }
 
+    /**
+     * we can check wheter the entered old password is correct
+     * 
+     * @return boolean
+     */
     function check_old_password() {
         $user_id = $this->session->userdata('id');
         $password_hash = $this->user->get_password_hash($user_id);
@@ -312,6 +337,9 @@ class Profile extends CI_Controller {
         }
     }
 
+    /**
+     * we load the profile view and all the relevent details
+     */
     function load_profile() {
 
         $data['user_type'] = $this->session->userdata['user_type'];
@@ -331,6 +359,9 @@ class Profile extends CI_Controller {
         $this->load->view('templates/footer');
     }
 
+    /**
+     * to load the profile settings view
+     */
     function profile_settings() {
         //getting the user type
         $data['user_type'] = $this->session->userdata['user_type'];
@@ -352,6 +383,11 @@ class Profile extends CI_Controller {
         $this->load->view('templates/footer');
     }
 
+    /**
+     * to load the calander in the profile
+     * 
+     * @param type $id
+     */
     public function view_year($id) {
         $data['navbar'] = "admin";
 
@@ -376,6 +412,9 @@ class Profile extends CI_Controller {
         $this->load->view('/templates/footer');
     }
 
+    /**
+     * performs the note adding functionality of the profile
+     */
     function add_note() {
         $this->load->library('form_validation');
         $this->form_validation->set_rules('subject', 'Subject', "required|xss_clean");
@@ -416,19 +455,3 @@ class Profile extends CI_Controller {
 
 }
 
-//$data['page_title'] = "Profile";
-//$data['navbar'] = 'student';
-//$data['user_id'] = $this->student_model->get_student_only($student_id);
-//$data['user_id_2'] = $this->student_model->get_guardian_only($student_id);
-//$this->load->view('templates/header', $data);
-//$this->load->view('navbar_main', $data);
-//$this->load->view('navbar_sub', $data);
-//
-//if ($data['user_type'] == 'A') {
-//    $this->load->view('student/check_student_profile', $data);
-//} else if ($data['user_type'] == 'T') {
-//    $this->load->view('student/check_student_profile_1', $data);
-//} else if ($data['user_type'] == 'S') {
-//    $this->load->view('student/check_student_profile_1_S', $data);
-//}
-//$this->load->view('/templates/footer');
