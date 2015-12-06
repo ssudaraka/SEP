@@ -50,10 +50,10 @@ class Subject extends CI_Controller {
             $this->load->view('templates/footer');
         } else {
             $subject_data = array(
-                'subjectname' => $this->input->post('subjectname'),
-                'subjectcode' => $this->input->post('subjectcode'),
-                'sectionid' => $this->input->post('sectionid'),
-                'subjectinchargeid' => $this->input->post('subjectinchargeid')
+                'subject_name' => $this->input->post('subjectname'),
+                'subject_code' => $this->input->post('subjectcode'),
+                'section_id' => $this->input->post('sectionid'),
+                'subject_incharge_id' => $this->input->post('subjectinchargeid')
             );
             if ($this->Subject_model->create($subject_data)) {
                  //For news field
@@ -95,85 +95,85 @@ class Subject extends CI_Controller {
         
         
     }
-    /**
-     * Search subjects
-     */
-    function search() {
-        $data['user_type']=$this->session->userdata('user_type');
-        $this->load->library('pagination');
-        $config = array();
-        $config['base_url'] = base_url() . "index.php/subject/manage_subjects";
-        $config['total_rows'] = $this->Subject_model->get_subject_total();
-        $config['per_page'] = 2;
-        $config['use_page_numbers'] = TRUE;
-        $config['num_links'] = 5;
-
-        $config['offset'] = ($this->uri->segment(3) ? $this->uri->segment(3) : null);
-
-        $keyword = $this->input->post('keyword');
-        $data['page_title'] = "Manage Administrators";
-        $data['navbar'] = 'subject';
-
-        $data['query'] = $this->Subject_model->search_subjects($keyword, $config['per_page'], $config['offset']);
-        $config['cur_tag_open'] = "&nbsp;";
-
-        $this->pagination->initialize($config);
-        $str_links = $this->pagination->create_links();
-        $data["links"] = explode('&nbsp;', $str_links);
-
-        $data['result'] = $data['query']->result();
-
-        $this->load->view('templates/header', $data);
-        $this->load->view('navbar_main', $data);
-        $this->load->view('navbar_sub', $data);
-        $this->load->view('subject/manage_subjects', $data);
-        $this->load->view('templates/footer');
-    }
-    /**
-     * Delete a subject given id
-     * 
-     * @param type $id
-     */
-    function delete($id) {
-
-        if ($this->session->userdata('user_type') !== "A") {
-            show_404();
-        }
-
-        if ($this->Subject_model->delete($id)) {
-            $data['user_type']=$this->session->userdata('user_type');
-            $data['delete_msg'] = "Subject ID " . $id . " has been removed from the database. This cannot be reverted";
-            $data['page_title'] = "Manage Subjects";
-            $data['navbar'] = 'subject';
-
-            $this->load->library('pagination');
-            $config = array();
-            $config['base_url'] = base_url() . "index.php/subject/manage_subjects";
-            $config['total_rows'] = $this->Subject_model->get_subject_total();
-            $config['per_page'] = 2;
-            $config['use_page_numbers'] = TRUE;
-            $config['num_links'] = 5;
-
-            $config['cur_tag_open'] = '<a href="#">';
-            $config['cur_tag_close'] = '</a>';
-
-            $config['offset'] = ($this->uri->segment(3) ? $this->uri->segment(3) : null);
-
-            $data['query'] = $this->Subject_model->get_subjects($config['per_page'], $config['offset']);
-
-            $data['result'] = $data['query']->result();
-            $this->pagination->initialize($config);
-            $str_links = $this->pagination->create_links();
-            $data["links"] = explode('&nbsp;', $str_links);
-
-            $data['result'] = $data['query']->result();
-            $this->load->view('templates/header', $data);
-            $this->load->view('navbar_main', $data);
-            $this->load->view('navbar_sub', $data);
-            $this->load->view('subject/manage_subjects', $data);
-            $this->load->view('templates/footer');
-        }
-    }
+//    /**
+//     * Search subjects
+//     */
+//    function search() {
+//        $data['user_type']=$this->session->userdata('user_type');
+//        $this->load->library('pagination');
+//        $config = array();
+//        $config['base_url'] = base_url() . "index.php/subject/manage_subjects";
+//        $config['total_rows'] = $this->Subject_model->get_subject_total();
+//        $config['per_page'] = 2;
+//        $config['use_page_numbers'] = TRUE;
+//        $config['num_links'] = 5;
+//
+//        $config['offset'] = ($this->uri->segment(3) ? $this->uri->segment(3) : null);
+//
+//        $keyword = $this->input->post('keyword');
+//        $data['page_title'] = "Manage Administrators";
+//        $data['navbar'] = 'subject';
+//
+//        $data['query'] = $this->Subject_model->search_subjects($keyword, $config['per_page'], $config['offset']);
+//        $config['cur_tag_open'] = "&nbsp;";
+//
+//        $this->pagination->initialize($config);
+//        $str_links = $this->pagination->create_links();
+//        $data["links"] = explode('&nbsp;', $str_links);
+//
+//        $data['result'] = $data['query']->result();
+//
+//        $this->load->view('templates/header', $data);
+//        $this->load->view('navbar_main', $data);
+//        $this->load->view('navbar_sub', $data);
+//        $this->load->view('subject/manage_subjects', $data);
+//        $this->load->view('templates/footer');
+//    }
+//    /**
+//     * Delete a subject given id
+//     * 
+//     * @param type $id
+//     */
+//    function delete($id) {
+//
+//        if ($this->session->userdata('user_type') !== "A") {
+//            redirect('login');
+//        }
+//
+//        if ($this->Subject_model->delete($id)) {
+//            $data['user_type']=$this->session->userdata('user_type');
+//            $data['delete_msg'] = "Subject ID " . $id . " has been removed from the database. This cannot be reverted";
+//            $data['page_title'] = "Manage Subjects";
+//            $data['navbar'] = 'subject';
+//
+//            $this->load->library('pagination');
+//            $config = array();
+//            $config['base_url'] = base_url() . "index.php/subject/manage_subjects";
+//            $config['total_rows'] = $this->Subject_model->get_subject_total();
+//            $config['per_page'] = 2;
+//            $config['use_page_numbers'] = TRUE;
+//            $config['num_links'] = 5;
+//
+//            $config['cur_tag_open'] = '<a href="#">';
+//            $config['cur_tag_close'] = '</a>';
+//
+//            $config['offset'] = ($this->uri->segment(3) ? $this->uri->segment(3) : null);
+//
+//            $data['query'] = $this->Subject_model->get_subjects($config['per_page'], $config['offset']);
+//
+//            $data['result'] = $data['query']->result();
+//            $this->pagination->initialize($config);
+//            $str_links = $this->pagination->create_links();
+//            $data["links"] = explode('&nbsp;', $str_links);
+//
+//            $data['result'] = $data['query']->result();
+//            $this->load->view('templates/header', $data);
+//            $this->load->view('navbar_main', $data);
+//            $this->load->view('navbar_sub', $data);
+//            $this->load->view('subject/manage_subjects', $data);
+//            $this->load->view('templates/footer');
+//        }
+//    }
     /**
      * Edit subject
      */

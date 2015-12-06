@@ -129,22 +129,28 @@ class Student extends CI_Controller {
 
             $this->load->view('/templates/footer');
         } else {//validation ok
+            
+            $fname=$this->input->post('firstname');
+            $lname=$this->input->post('lastname');
+            $fullname = $fname . " " . $lname;
+            
             $student_data = array(
                 // 'studentid' => $student_id,
-                'admissionno' => $this->input->post('admissionnumber'),
-                'admissiondate' => $this->input->post('admissiondate'),
-                'firstname' => $this->input->post('firstname'),
-                'lastname' => $this->input->post('lastname'),
-                'nameWithInitials' => $this->input->post('initials'),
-                'birthday' => $this->input->post('dob'),
-                'nic' => $this->input->post('nic'),
+                'admission_no' => $this->input->post('admissionnumber'),
+                'admission_date' => $this->input->post('admissiondate'),
+                'full_name' => $fullname,
+                'name_with_initials' => $this->input->post('initials'),
+                'dob' => $this->input->post('dob'),
+                'gender' => 'M',
+                'nic_no' => $this->input->post('nic'),
                 'language' => $this->input->post('language'),
                 'religion' => $this->input->post('religion'),
-                'houseid' => $this->input->post('houseid'),
-                'address' => $this->input->post('address'),
-                'contactHome' => $this->input->post('contact_home'),
+                'house_id' => $this->input->post('houseid'),
+                'permanent_addr' => $this->input->post('address'),
+                'contact_home' => $this->input->post('contact_home'),
                 'email' => $this->input->post('email'),
-                'admission_grade' => $this->input->post('admission_grade'),
+                'created_at' => date('Y-m-d H:i:s'),
+                'current_grade' => $this->input->post('admission_grade'),
             );
 
             $this->session->set_userdata('student_d', $student_data);
@@ -204,26 +210,9 @@ class Student extends CI_Controller {
             $student_id = $last_row->id;
             $studentd = array();
             $studentd = $this->session->userdata('student_d');
+            
 
-            $student_data = array(
-                // 'studentid' => $student_id,
-                'admissionno' => $studentd['admissionno'],
-                'admissiondate' => $studentd['admissiondate'],
-                'firstname' => $studentd['firstname'],
-                'lastname' => $studentd['lastname'],
-                'nameWithInitials' => $studentd['nameWithInitials'],
-                'birthday' => $studentd['birthday'],
-                'nic' => $studentd['nic'],
-                'language' => $studentd['language'],
-                'religion' => $studentd['religion'],
-                'houseid' => $studentd['houseid'],
-                'address' => $studentd['address'],
-                'contactHome' => $studentd['contactHome'],
-                'email' => $studentd['email'],
-                'admission_grade' => $studentd['admission_grade'],
-            );
-
-            if ($id = $this->Student_Model->insert_new_student($student_data)) {
+            if ($id = $this->Student_Model->insert_new_student($studentd)) {
 
                 /*
                  * creating and inserting login credentials for the student
@@ -231,36 +220,43 @@ class Student extends CI_Controller {
                 $data['row'] = $this->Student_Model->get_last_inserted_student($id);
                 $ID = $data['row']->id;
                 $username = $data['row']->admission_no;
-
+                
                 $password = "PW_" . $username;
 
                 $create = date('Y-m-d H:i:s');
-                $fname = $studentd['firstname'];
-                $lname = $studentd['lastname'];
+                $name = $studentd['full_name'];
+                $names = explode(" ", $name);
+                $lname = $names[1];
+                $fname = $names[0];
                 if ($id = $this->Student_Model->insert_new_student_userdata($username, $password, $create, $fname, $lname)) {
 
+                   
                     $this->Student_Model->set_user_id($ID, $id);
                     $firstname=$this->input->post('gfirstname');
                     $lastname=$this->input->post('glastname');
                     
                     $fullname=$firstname." ".$lastname;
-                    
+                    $row = $this->Student_Model->get_last_row();
+                    $student_id = $row->user_id;
                     
                     $guardian_data = array(
-                        'studentid' => $this->input->post('studentid'),
+                        'student_id' => $student_id,
                         'fullname' => $fullname,
                         'relation' => $this->input->post('relation'),
-                        'namewithinitials' => $this->input->post('initial'),
-                        'birthday' => $this->input->post('dobg'),
+                        'name_with_initials' => $this->input->post('initial'),
+                        'dob' => $this->input->post('dobg'),
                         'gender' => $this->input->post('gender'),
                         'occupation' => $this->input->post('occupation'),
-                        'pastpupil' => $pastpupil,
-                        'address' => $this->input->post('address'),
+                        'is_pastpupil' => $pastpupil,
+                        'addr' => $this->input->post('address'),
                         'contact_home' => $this->input->post('contact_homeg'),
                         'contact_mobile' => $this->input->post('contact_mobile')
                     );
+                    
+                     var_dump('dsadsadads');
 
                     if ($id = $this->Student_Model->insert_new_Guardian($guardian_data)) { // the information has therefore been successfully saved in the db
+                        var_dump($id);
                         $this->session->unset_userdata('student_d');
                         $this->session->set_flashdata('succ_message', 'Admission Successfull');
                         redirect('student/create_student');
