@@ -119,17 +119,17 @@
                             <tr>
                                 <td class="subheadng">Nationality</td>
                                 <td class="normal"><?php
-                                    $rel = $details->religion_id;
+                                    $rel = $details->nationality_id;
                                     if ($rel == 1) {
-                                        echo "Buddhism";
+                                        echo "Sinhala";
                                     } else if ($rel == 2) {
-                                        echo "Hindunism";
+                                        echo "Sri Lankan Tamil";
                                     } else if ($rel == 3) {
-                                        echo "Islam";
+                                        echo "Indian Tamil";
                                     } else if ($rel == 4) {
-                                        echo "Catholicism";
+                                        echo "Muslim";
                                     } else if ($rel == 5) {
-                                        echo "Christianity";
+                                        echo "Other";
                                     } else {
                                         echo "Other";
                                     }
