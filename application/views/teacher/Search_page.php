@@ -59,8 +59,8 @@
                                     <th>Gender</th>
                                     <th>Grade</th>
                                     <th>Medium</th>
-                                    <th>Contact no</th>
-                                    <td>&nbsp;</td>
+                                    <th>Contact</th>
+                                    <td>Actions</td>
                                    
                                 </tr>
                             </thead>
