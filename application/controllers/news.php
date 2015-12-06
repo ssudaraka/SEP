@@ -1,5 +1,13 @@
 <?php
-
+/**
+ * Ecole - News Controller
+ * 
+ * Handles the News Page Functions
+ * 
+ * @author  Udara Karunarathna
+ * @copyright (c) 2015, Ecole. (http://projectecole.com)
+ * @link http://projectecole.com
+ */
 class News extends CI_Controller {
 
     function __construct() {
@@ -12,8 +20,8 @@ class News extends CI_Controller {
 
     /*
      *  This is the index function which executes first in this controller
+     * Only Admin is priveledged to View this page
      */
-
     function index() {
         if (!$this->session->userdata('logged_in')) {
             redirect('login', 'refresh');
@@ -37,7 +45,6 @@ class News extends CI_Controller {
     /*
      * In this function, admin can get the news form
      */
-
     function get_news() {
         if (!$this->session->userdata('logged_in')) {
             redirect('login', 'refresh');
@@ -58,7 +65,6 @@ class News extends CI_Controller {
     /*
      * Display all the activities that user has perfomed in this system
      */
-
     function list_activities() {
         $tech_id = $this->input->post('tid');
         $this->News_Model->get_teacher_activities($tech_id);
@@ -67,15 +73,18 @@ class News extends CI_Controller {
     /*
      * Admin can clear the history(activities)
      */
-
     function clear_history() {
         $clear_data_type = $this->input->post('deletetype');
         $this->News_Model->clear($clear_data_type);
     }
 
     /*
-    * This function is used to get information about a single news items and display it
-    */
+     * Function to edit a news
+     *
+     * @param  int 
+     *
+     * @return Results
+     */
     public function edit_news($id) {
         if (!$this->session->userdata('logged_in')) {
             redirect('login', 'refresh');
@@ -134,9 +143,12 @@ class News extends CI_Controller {
     }
 
     /*
-     * In this function, news details will be displayed as a pop up window
+     * Function to view a news
+     *
+     * @param  int 
+     *
+     * @return Results
      */
-
     public function view_news($id) {
         if (!$this->session->userdata('logged_in')) {
             redirect('login', 'refresh');
@@ -155,23 +167,30 @@ class News extends CI_Controller {
     }
 
     /*
-     * In this function admin can delete particular news
+     * Function to delete a news
+     *
+     * @param  int 
+     *
+     * @return Results
      */
-
     public function delete_news($id) {
         if (!$this->session->userdata('logged_in')) {
             redirect('login', 'refresh');
         }
-        //Getting user type
+        //Getting user type and Authorize it to be an Admin
         $data['user_type'] = $this->session->userdata['user_type'];
+        if ($data['user_type'] != 'A') {
+            redirect('login', 'refresh');
+        }
         $this->News_Model->delete_news($id);
         // Redirect on success
         redirect('news/get_news?delete=true', 'refresh');
     }
 
     /**
-    * This function is to create news items
-    */
+     * This function a function to publish a news item
+     * Takes Values from the Form and Send them to Model
+     */
     function publish_news() {
         if (!$this->session->userdata('logged_in')) {
             redirect('login', 'refresh');
@@ -227,5 +246,4 @@ class News extends CI_Controller {
             }
         }
     }
-
 }

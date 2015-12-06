@@ -1,25 +1,18 @@
 <?php
-
+/**
+ * Ecole - Year Controller
+ * 
+ * Handles the Year Planner Methods
+ * 
+ * @author  Udara Karunarathna
+ * @copyright (c) 2015, Ecole. (http://projectecole.com)
+ * @link http://projectecole.com
+ */
 if (!defined('BASEPATH'))
     exit('No direct script access allowed');
 
 class Year extends CI_Controller {
 
-    /**
-     * Index Page for this controller.
-     *
-     * Maps to the following URL
-     * 		http://example.com/index.php/welcome
-     * 	- or -  
-     * 		http://example.com/index.php/welcome/index
-     * 	- or -
-     * Since this controller is set as the default controller in 
-     * config/routes.php, it's displayed at http://example.com/
-     *
-     * So any other public methods not prefixed with an underscore will
-     * map to /index.php/welcome/<method_name>
-     * @see http://codeigniter.com/user_guide/general/urls.html
-     */
     public function __construct() {
         parent::__construct();
         $this->load->model('Year_Model');
@@ -28,11 +21,11 @@ class Year extends CI_Controller {
     }
 
     /*
-    * Main Index Method for Year Controller
-    * Display related Options for different Users
-    * Admin can add/ edit academic years
-    * Students and teachers can view the current academic year
-    */
+     * Main Index Method for Year Controller
+     * Display related Options for different Users
+     * Admin can add/ edit academic years
+     * Students and teachers can view the current academic year
+     */
     public function index() {
         if (!$this->session->userdata('logged_in')) {
             redirect('login', 'refresh');
@@ -99,8 +92,9 @@ class Year extends CI_Controller {
         }
     }
 
-    /* Add Academic Year Function
-     * This Function will help you to add new Academic Years to the System
+    /** 
+     *   Add Academic Year Function
+     *  This Function will help you to add new Academic Years to the System
      */
 
     public function current_adademic_year() {
@@ -138,7 +132,9 @@ class Year extends CI_Controller {
         $this->load->view('/templates/footer');
     }
 
-    //Function to add new Academic years to the system
+    /* 
+     * Function to add new Academic years to the system
+     */
     public function add_academic_year() {
         $data['navbar'] = "admin";
 
@@ -197,6 +193,7 @@ class Year extends CI_Controller {
             $this->load->view('/templates/footer');
         } else {
 
+            // Save Form Data
             $name = $this->input->post('txt_name');
             $start_date = $this->input->post('txt_startdate');
             $end_date = $this->input->post('txt_enddate');
@@ -290,12 +287,9 @@ class Year extends CI_Controller {
                     $newdate = date('Y-m-d', $newdate);
                 }
 
-
                 //Data Passing
                 $data['daysof'] = $sdate;
                 $data['dataarr'] = $dataset;
-
-
 
                 $stucture = http_build_query($dataset, '', ', ');
 
@@ -327,7 +321,13 @@ class Year extends CI_Controller {
         }
     }
 
-    //View Academic Year
+    /*
+     * Function to View Acadamic Year
+     *
+     * @param  int
+     *
+     * @return Results
+     */
     public function view_year($id) {
         $data['navbar'] = "admin";
 
@@ -352,7 +352,13 @@ class Year extends CI_Controller {
         $this->load->view('/templates/footer');
     }
 
-    //Edit Academic Year View
+     /*
+     * Function to View Edit Acadamic Year Page
+     *
+     * @param  int
+     *
+     * @return bool
+     */
     public function edit_year($id) {
         $data['navbar'] = "admin";
 
@@ -377,7 +383,13 @@ class Year extends CI_Controller {
         $this->load->view('/templates/footer');
     }
 
-    //Edit Acadamic Year Function
+     /*
+     * Function to Edit Acadamic Year
+     *
+     * @param  int
+     *
+     * @return Results
+     */
     public function edit_academic_year($id) {
         $data['navbar'] = "admin";
 
@@ -512,11 +524,7 @@ class Year extends CI_Controller {
                 $data['daysof'] = $sdate;
                 $data['dataarr'] = $dataset;
 
-
-
                 $stucture = http_build_query($dataset, '', ', ');
-
-
 
                 if ($this->Year_Model->update_academic_year($id, $name, $start_date, $end_date, $status, $t1_start_date, $t1_end_date, $t2_start_date, $t2_end_date, $t3_start_date, $t3_end_date, $stucture) == TRUE) {
                     $data['succ_message'] = "Academic Year Edited Sucessfully";
@@ -551,7 +559,13 @@ class Year extends CI_Controller {
         }
     }
 
-    //Add Holiday
+     /*
+     * Function to Add Holiday to an Acadamic Year
+     *
+     * @param  int
+     *
+     * @return Results
+     */
     public function add_holiday($id) {
         //Getting user type
         $data['user_type'] = $this->session->userdata['user_type'];
@@ -567,7 +581,6 @@ class Year extends CI_Controller {
 
         $this->load->library('form_validation');
         $this->form_validation->set_rules('txt_date', 'Date', "required|xss_clean");
-
 
 
         if ($this->form_validation->run() == FALSE) {
@@ -604,10 +617,6 @@ class Year extends CI_Controller {
                 $this->load->view('year/edit_year', $data);
                 $this->load->view('/templates/footer');
             } else {
-
-
-
-
 
                 //Year Details by ID
                 $year_structure = $this->Year_Model->year_structure($id);
@@ -663,7 +672,14 @@ class Year extends CI_Controller {
         }
     }
 
-    //Remove Holiday
+    /*
+     * Function to Remove Holiday to an Acadamic Year
+     *
+     * @param  int
+     * @param  date
+     *
+     * @return Results
+     */
     public function remove_holiday($id, $date) {
         //Getting user type
         $data['user_type'] = $this->session->userdata['user_type'];
