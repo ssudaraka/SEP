@@ -19,8 +19,10 @@
                 <div class="panel-heading">Administrator Accounts</div>
                 <div class="panel-body">
                     <script type="text/javascript">
-                        $(document).ready(function() {
-                            $('#admin-user-table').DataTable();
+                        $(document).ready(function () {
+                            $('#admin-user-table').DataTable(
+                                    {"columnDefs": [ {"targets": 5, "orderable": false} ]}
+                                    );
                         });
                     </script>
                     <table id="admin-user-table" class="table table-hover" style="margin-top: 10px;">
@@ -43,9 +45,9 @@
                                     <td><?php echo $row->email; ?></td>
                                     <td><?php echo $row->lastvisit_at; ?></td>
                                     <td>
-                                        <a href="<?php echo base_url("index.php/profile") . "?key=" . $row->id; ?>" data-toggle="tooltip" title="edit"><i class="fa fa-eye" style="font-size: 22px;" ></i></a>&nbsp;
+                                        <a href="<?php echo base_url("index.php/profile") . "?key=" . $row->id; ?>" data-toggle="tooltip" title="view"><i class="fa fa-eye" style="font-size: 22px;" ></i></a>&nbsp;
                                         <a href="<?php echo base_url("index.php/admin/edit/{$row->id}"); ?>" data-toggle="tooltip" title="edit"><i class="fa fa-pencil-square-o" style="font-size: 22px;" ></i></a>&nbsp;
-                                        <a href="#" class="delete-user" data-user-id="<?php echo $row->id; ?>" data-toggle="tooltip" title="edit"><i class="fa fa-trash" style="font-size: 22px;"></i></a>&nbsp;
+                                        <a href="#" class="delete-user" data-user-id="<?php echo $row->id; ?>" data-toggle="tooltip" title="deactivate"><i class="fa fa-toggle-off" style="font-size: 22px;"></i></a>&nbsp;
                                     </td>
                                 </tr>
                             <?php } ?>
@@ -59,32 +61,31 @@
     </div>
 </div>
 <script type="text/javascript">
-    $(function() {
+    $(function () {
         $("[data-toggle='tooltip']").tooltip();
     });
 </script>
 
 <script>
-  $('.delete-user').click(function() {
-    var userId = $(this).attr("data-user-id");
-    deleteUser(userId);
-  });
-
-  function deleteUser(userId) {
-    swal({
-      title: "Are you sure?", 
-      text: "Are you sure that you want to delete this user?", 
-      type: "warning",
-      showCancelButton: true,
-      closeOnConfirm: false,
-      confirmButtonText: "Yes, delete it!",
-      confirmButtonColor: "#ec6c62"
-    }, function() {
-        window.location.href = "<?php echo base_url("index.php/admin/delete"); ?>" + "/" + userId;
+    $('.delete-user').click(function () {
+        var userId = $(this).attr("data-user-id");
+        deleteUser(userId);
     });
-    
-    
-  }
-  
-  </script>
+
+    function deleteUser(userId) {
+        swal({
+            title: "Are you sure?",
+            text: "Are you sure that you want to deactivate this user account?",
+            type: "warning",
+            showCancelButton: true,
+            closeOnConfirm: false,
+            confirmButtonText: "Yes, deactivate it!",
+            confirmButtonColor: "#ec6c62"
+        }, function () {
+            window.location.href = "<?php echo base_url("index.php/admin/delete"); ?>" + "/" + userId;
+        });
+
+
+    }
+</script>
 

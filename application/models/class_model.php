@@ -2,6 +2,7 @@
 
 class Class_Model extends CI_Model {
 
+    private $table = "classes";
     public function __construct() {
         parent::__construct();
     }
@@ -131,10 +132,17 @@ class Class_Model extends CI_Model {
         }
     }
 
+    /**
+     * Returns the complete list of classes.
+     * @return type
+     */
     public function get_class_list() {
-        $sql = "SELECT * FROM classes order by grade_id,name asc";
-        $query = $this->db->query($sql);
-
+        $this->db
+                ->select('*')
+                ->from($this->table)
+                ->order_by("grade_id", "asc")
+                ->order_by("name", "asc");
+        $query = $this->db->get();
         return $query->result();
     }
 

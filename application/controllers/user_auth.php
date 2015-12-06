@@ -1,11 +1,26 @@
 <?php
 
+/**
+ * Ecole - User Authentication Controller
+ * 
+ * Handles the user login to the system.
+ * 
+ * @author  Sudaraka K. S.
+ * @copyright (c) 2015, Ecole. (http://projectecole.com)
+ * @link http://projectecole.com
+ */
 class User_Auth extends CI_Controller {
 
     function __construct() {
         parent::__construct();
         $this->load->model('user', '', TRUE);
     }
+
+    /*
+     * Main Authentication Handler.
+     * Provide the interface for user login and calls the neccessary functions
+     * to authenticate the user.
+     */
 
     function index() {
         $this->load->library('form_validation');
@@ -21,30 +36,31 @@ class User_Auth extends CI_Controller {
             redirect('dashboard', 'refresh');
         }
     }
-
-    function authenticate($password) {
+    
+    /**
+     * Authentication Validation
+     * @return bool
+     */
+    function authenticate() {
         $username = $this->input->post('username');
-        $result = $this->user->login($username, $password);
-
-        if ($result) {
+        $password = $this->input->post('password');
+        $user = $this->user->login($username, $password);
+        if ($user) {
             $sess_array = array();
-            foreach ($result as $row) {
-                $sess_array = array(
-                    'logged_in' => TRUE,
-                    'id' => $row->id,
-                    'username' => $row->username,
-                    'password' => $row->password,
-                    'first_name' => $row->first_name,
-                    'last_name' => $row->last_name,
-                    'user_type' => $row->user_type
-                );
-                $this->session->set_userdata($sess_array);
-            }
+            $sess_array = array(
+                'logged_in' => TRUE,
+                'id' => $user->id,
+                'username' => $user->username,
+                'password' => $user->password,
+                'first_name' => $user->first_name,
+                'last_name' => $user->last_name,
+                'user_type' => $user->user_type
+            );
+            $this->session->set_userdata($sess_array);
             return TRUE;
         } else {
             $this->form_validation->set_message('authenticate', "Invalid Username or Password.");
             return FALSE;
         }
     }
-
 }

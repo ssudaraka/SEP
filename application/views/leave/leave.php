@@ -168,7 +168,7 @@
                     </div>			
                 </div>
             </div>
-        </div
+        </div>
     </div>
     <a name="leaverequests"></a>
     <div class="row">

@@ -1,5 +1,13 @@
 <?php
-
+/**
+ * Ecole - Inbox Controller
+ * 
+ * Controller for internal messaging system.
+ * 
+ * @author  Sudaraka K. S.
+ * @copyright (c) 2015, Ecole. (http://projectecole.com)
+ * @link http://projectecole.com
+ */
 class Inbox extends CI_Controller {
 
     public function __construct() {
@@ -10,16 +18,14 @@ class Inbox extends CI_Controller {
     }
     
     /*
-     * Loads the main page of messages inbox
+     * Loads the main interface of messages inbox
      */
-
     public function index() {
         $data['navbar'] = 'inbox';
         $data['user_type'] = $this->session->userdata('user_type');
         $data['page_title'] = "Profile Settings";
         $data['inbox_type'] = "inbox";
-        // Get the list of received messages
-        $data['conversations'] = $this->messages_model->get_received_list($this->session->userdata('id'));
+        $data['conversations'] = $this->messages_model->get_all_messages($this->session->userdata('id'));
         $this->load->view('templates/header', $data);
         $this->load->view('navbar_main', $data);
         $this->load->view('navbar_sub', $data);

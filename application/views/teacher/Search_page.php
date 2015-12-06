@@ -43,29 +43,29 @@
             </div>
             -->
             <div class="row">
-                <script type="text/javascript">
-                    $(document).ready(function () {
-                        $('#example').DataTable();
-                    });
-                </script>
-                <table id="example" class="table table-hover">
-                    <thead>
-                        <tr>
-                            <th>#</th>
-                            <th>NIC</th>
-                            <th>Name</th>
-                            <th>Gender</th>
-                            <th>Grade</th>
-                            <th>Medium</th>
-                            <th>Contact no</th>
-                            <td>&nbsp;</td>
-                           
-                        </tr>
-                    </thead>
-                    <tbody>
-                        <?php foreach ($result as $row) { ?>
-
-
+                <div class="panel panel-default">
+                    <div class="panel-body">
+                        <script type="text/javascript">
+                            $(document).ready(function () {
+                                $('#example').DataTable();
+                            });
+                        </script>
+                        <table id="example" class="table table-hover">
+                            <thead>
+                                <tr>
+                                    <th>#</th>
+                                    <th>NIC</th>
+                                    <th>Name</th>
+                                    <th>Gender</th>
+                                    <th>Grade</th>
+                                    <th>Medium</th>
+                                    <th>Contact no</th>
+                                    <td>&nbsp;</td>
+                                   
+                                </tr>
+                            </thead>
+                            <tbody>
+                                <?php foreach ($result as $row) { ?>
                             <tr>
                                 <td><?php echo $row->id; ?></td>
                                 <td><?php echo $row->nic_no; ?></td>
