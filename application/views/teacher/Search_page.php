@@ -43,60 +43,64 @@
             </div>
             -->
             <div class="row">
-                <script type="text/javascript">
-                    $(document).ready(function () {
-                        $('#example').DataTable();
-                    });
-                </script>
-                <table id="example" class="table table-hover">
-                    <thead>
-                        <tr>
-                            <th>#</th>
-                            <th>NIC</th>
-                            <th>Name</th>
-                            <th>Gender</th>
-                            <th>Grade</th>
-                            <th>Medium</th>
-                            <th>Contact no</th>
-                            <td>&nbsp;</td>
-                           
-                        </tr>
-                    </thead>
-                    <tbody>
-                        <?php foreach ($result as $row) { ?>
+                <div class="panel panel-default">
+                    <div class="panel-body">
+                        <script type="text/javascript">
+                            $(document).ready(function () {
+                                $('#example').DataTable();
+                            });
+                        </script>
+                        <table id="example" class="table table-hover">
+                            <thead>
+                                <tr>
+                                    <th>#</th>
+                                    <th>NIC</th>
+                                    <th>Name</th>
+                                    <th>Gender</th>
+                                    <th>Grade</th>
+                                    <th>Medium</th>
+                                    <th>Contact no</th>
+                                    <td>&nbsp;</td>
+                                   
+                                </tr>
+                            </thead>
+                            <tbody>
+                                <?php foreach ($result as $row) { ?>
 
 
-                            <tr>
-                                <td><?php echo $row->id; ?></td>
-                                <td><?php echo $row->nic_no; ?></td>
-                                <td><?php echo $row->full_name; ?></td>
-                                <td><?php  $gender=$row->gender; 
-                                 if ($gender == 'm') {
-                                        echo 'Male';
-                                    } else if ($med == 'f') {
-                                        echo 'Female';
-                                    }
-                                ?></td>
-                                <td><?php echo $row->grade; ?></td>
-                                <td><?php
-                                    $med = $row->medium;
-                                    if ($med == 's') {
-                                        echo 'sin';
-                                    } else if ($med == 'e') {
-                                        echo 'eng';
-                                    } else if ($med == 't') {
-                                        echo 'tam';
-                                    }
-                                    ?></td>
-                                <td><?php echo $row->contact_mobile; ?></td>
-                                <td><a href="<?php echo base_url("index.php/profile") . "?key=" . $row->user_id; ?>" class="btn btn-primary btn-xs" aria-hidden="true"><i class="fa fa-eye"></i></a>&nbsp;
-                                <a href="<?php echo base_url("index.php/teacher/load_teacher") . "/" . $row->id; ?>" class="btn btn-primary btn-xs" aria-hidden="true"><i class="fa fa-edit"></i></a>&nbsp;
-                                <a href="#" id="delete-user" data-user-id="<?php echo $row->user_id; ?>" class="btn btn-danger btn-xs" aria-hidden="true"><i class="fa fa-trash"></i></a></td>
+                                    <tr>
+                                        <td><?php echo $row->id; ?></td>
+                                        <td><?php echo $row->nic_no; ?></td>
+                                        <td><?php echo $row->full_name; ?></td>
+                                        <td><?php  $gender=$row->gender; 
+                                         if ($gender == 'm') {
+                                                echo 'Male';
+                                            } else if ($med == 'f') {
+                                                echo 'Female';
+                                            }
+                                        ?></td>
+                                        <td><?php echo $row->grade; ?></td>
+                                        <td><?php
+                                            $med = $row->medium;
+                                            if ($med == 's') {
+                                                echo 'sin';
+                                            } else if ($med == 'e') {
+                                                echo 'eng';
+                                            } else if ($med == 't') {
+                                                echo 'tam';
+                                            }
+                                            ?></td>
+                                        <td><?php echo $row->contact_mobile; ?></td>
+                                        <td><a href="<?php echo base_url("index.php/profile") . "?key=" . $row->user_id; ?>" class="btn btn-primary btn-xs" aria-hidden="true"><i class="fa fa-eye"></i></a>&nbsp;
+                                        <a href="<?php echo base_url("index.php/teacher/load_teacher") . "/" . $row->id; ?>" class="btn btn-primary btn-xs" aria-hidden="true"><i class="fa fa-edit"></i></a>&nbsp;
+                                        <a href="#" id="delete-user" data-user-id="<?php echo $row->user_id; ?>" class="btn btn-danger btn-xs" aria-hidden="true"><i class="fa fa-trash"></i></a></td>
 
-                            </tr>
-                        <?php } ?>
-                    </tbody>
-                </table>
+                                    </tr>
+                                <?php } ?>
+                            </tbody>
+                        </table>
+                    </div>
+                </div>
             </div>
         </div>
     </div>
