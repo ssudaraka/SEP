@@ -145,4 +145,15 @@ class Messages_model extends CI_Model {
         }
     }
 
+    /*
+     * Returns No of Unread Messages
+     */
+    public function get_unread_count($user_id){
+        $sql  = "SELECT count(*) as count FROM inbox_messages WHERE receiver_id = {$user_id} AND is_read = 0 ";
+        
+        $query = $this->db->query($sql);
+        $row = $query->row();
+        return $row->count;
+    }
+
 }
