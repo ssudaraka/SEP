@@ -79,9 +79,22 @@
             
             <div class="panel panel-default">
                 <div class="panel-heading">
-                    <strong>View All Events</strong>
+                    <strong>Current Event Types</strong>
                 </div>
                 <div class="panel-body">
+                    <?php
+                            if(count($details) == 0){ ?>
+                                <div class="col-md-12 col-md-offset-* text-center">
+                                   <div class="well well-lg">
+                                        <i class="fa fa-exclamation-triangle fa-5x"></i>
+                                        <div class="">
+                                          <h2>No Event Types Found</h2>
+                                        </div>
+                                   </div>
+                                </div>
+                            
+                            <?php 
+                            }else{ ?>
                     <table class="table table-hover">
                     <thead>
                         <tr>
@@ -99,11 +112,11 @@
                                 <td><?php echo $row->event_type; ?></td>
                                 <td><?php echo $row->description; ?></td>
                                 <td><a href="<?php echo base_url("index.php/event/view_event_type_details") . "/" . $row->id; ?>" class="btn btn-primary btn-xs" aria-hidden="true"><i class="fa fa-eye"></i></a></td>
-                                <td><a id="delete-user" data-user-id="<?php echo $row->id; ?>" class="btn btn-danger btn-xs del" aria-hidden="true"><i class="fa fa-trash"></i></a></td>
-                            </tr>
+                                <td><a id="delete-user" data-user-id="<?php echo $row->id; ?>" class="btn btn-danger btn-xs del" aria-hidden="true"><i class="fa fa-trash"></i></a></td>            </tr>
                         <?php } ?>
                     </tbody>
                 </table>
+                <?php } ?>
 
 
                 </div>

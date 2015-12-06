@@ -114,7 +114,7 @@
                             <div class="row" style="padding:20px">
 
                                 <div id="big_stats" class="cf">
-                                    <div class="stat"> <i class="fa fa-bed"></i> <span class="value">8</span>
+                                    <div class="stat"> <i class="fa fa-bed"></i> <span class="value"><?php echo $leavescount; ?></span>
                                         <br/>Leaves
                                     </div>
                                     <!-- .stat -->
@@ -133,12 +133,12 @@
                                     </div>
                                     <!-- .stat -->
 
-                                    <div class="stat"> <i class="fa fa-newspaper-o"></i> <span class="value">22</span>
-                                        <br/>News
+                                    <div class="stat"> <i class="fa fa-users"></i> <span class="value"><?php echo count($students_without_class); ?></span>
+                                        <br/>Students
                                     </div>
                                     <!-- .stat -->
 
-                                    <div class="stat"> <i class="fa fa-envelope"></i> <span class="value">25</span>
+                                    <div class="stat"> <i class="fa fa-envelope"></i> <span class="value"><?php echo $messagecount; ?></span>
                                         <br/>Messages
                                     </div>
                                     <!-- .stat --> 

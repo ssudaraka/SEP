@@ -38,7 +38,7 @@
                     tinyMCE.init({
                         // General options
                         mode : "textareas",
-                        height: 800,
+                        height: 250,
                         theme : "modern",
                         plugins : "spellchecker,pagebreak,layer,table,save,insertdatetime,preview,media,searchreplace,print,contextmenu,paste,directionality,fullscreen,noneditable,visualchars,nonbreaking,template",
                      

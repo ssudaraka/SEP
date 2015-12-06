@@ -1,5 +1,4 @@
 <?php
-
 /**
  * Ecole - Student Controller
  * 
@@ -9,7 +8,6 @@
  * @copyright (c) 2015, Ecole. (http://projectecole.com)
  * @link http://projectecole.com
  */
-
 class Student extends CI_Controller {
     /**
      * Class Constructor
@@ -253,10 +251,10 @@ class Student extends CI_Controller {
                         'contact_mobile' => $this->input->post('contact_mobile')
                     );
                     
-                     var_dump('dsadsadads');
+                     // var_dump('dsadsadads');
 
                     if ($id = $this->Student_Model->insert_new_Guardian($guardian_data)) { // the information has therefore been successfully saved in the db
-                        var_dump($id);
+                        // var_dump($id);
                         $this->session->unset_userdata('student_d');
                         $this->session->set_flashdata('succ_message', 'Admission Successfull');
                         redirect('student/create_student');
@@ -828,12 +826,14 @@ class Student extends CI_Controller {
         $data['navbar'] = "admin";
         $data['page_title'] = "Student Report";
 
+        $data['class']=$this->Student_Model->get_class_names();
+        
 
         $data['user_type'] = $this->session->userdata['user_type'];
         $this->load->view('templates/header', $data);
         $this->load->view('navbar_main', $data);
         $this->load->view('navbar_sub', $data);
-        $this->load->view('student/student_report_form');
+        $this->load->view('student/student_report_form',$data);
         $this->load->view('/templates/footer');
     }
    
@@ -882,10 +882,58 @@ class Student extends CI_Controller {
                     <table class='table table-hove'>
                     <thead>
                     <tr>
-                        <th align='left' width='150px'>Signature No</th>
+                        <th align='left' width='150px'>Admission No</th>
                         <th align='left' width='150px'>Name</th>
-                        <th align='left' width='150px'>NIC</th>
-                        <th align='left' width='150px'>Registered Date</th>
+                        <th align='left' width='150px'>Permenent Address</th>
+                        <th align='left' width='150px'>Contact Home</th>
+                    </tr>
+                    </thead>
+                    <tbody>";
+        if ($result) {
+            foreach ($result as $row) {
+                echo "<tr>
+                        <td>$row->admission_no</td>
+                        <td>$row->name_with_initials</td>
+                        <td>$row->permanent_addr</td>
+                        <td>$row->contact_home</td>
+                    </tr>";
+            }
+        }
+        echo "  </tbody>
+                    </table>
+                    </div>";
+    }
+
+    
+     
+    /**
+     * Generate student report
+     */
+    function generate_class_report() {
+        $report = $this->input->post('rpt');
+        $result = $this->Student_Model->generate_class_report($report);
+        $name = $this->Student_Model->get_class_name_by_id($report);
+        
+        
+
+
+        echo "<img src='" . base_url('assets/img/dslogo.jpg') . "' width='128px' height='128px' style='margin-left: 4em'>";
+        echo "<h3 style='margin-bottom: 0; margin-left: 3em'>D.S Senanayake College</h3>";
+        echo "<h4 style='margin-top: 0; margin-left: 5em'>REPORT - ";
+        if ($name) {
+            echo $name->name;
+        } else {
+            echo '';
+        }
+        echo " CLASS STUDENT LIST </h5>";
+        echo "<div class='row' style='margin-left: 5em'>
+                    <table class='table table-hove'>
+                    <thead>
+                    <tr>
+                        <th align='left' width='150px'>Admission No</th>
+                        <th align='left' width='150px'>Name</th>
+                        <th align='left' width='150px'>Permenent Address</th>
+                        <th align='left' width='150px'>Contact Home</th>
                     </tr>
                     </thead>
                     <tbody>";
@@ -1163,5 +1211,4 @@ class Student extends CI_Controller {
             return FALSE;
         }
     }
-
 }

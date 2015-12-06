@@ -277,7 +277,7 @@ class leave extends CI_Controller {
             //For news field
             $tech_id = $this->session->userdata('id');
             $tech_details = $this->Teacher_Model->user_details($tech_id);
-            $this->News_Model->insert_action_details($tech_id, "Apply a leave", $tech_details->profile_img, $tech_details->first_name);
+            $this->News_Model->insert_action_details($tech_id, "Apply for leave", $tech_details->profile_img, $tech_details->first_name);
             //////
             //Passing it to the View
             $this->load->view('templates/header', $data);

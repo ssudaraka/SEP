@@ -1,7 +1,7 @@
 <div class="container">
     <div class="row">
         <div class="col-md-3">
-            <?php $this->view('admin/sidebar_nav'); ?>
+            <?php $this->view('admin/sidebar_nav_notes'); ?>
         </div>
         <div class="col-md-9">
             <?php if (isset($delete_msg)) { ?>
@@ -29,7 +29,7 @@
                                 <td><strong>ID&nbsp;&nbsp;</strong></td>
                                 <td><strong>Admission No</strong></td>
                                 <td><strong>Class</strong></td>
-                                <td><strong>Contact No</strong></td>
+                                <td><strong>Contact Home</strong></td>
                                 <td><strong>Type</strong></td>
                                 <td><strong>subject</strong></td>
                                 <td><strong>note</strong></td>

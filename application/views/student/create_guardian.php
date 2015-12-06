@@ -8,7 +8,7 @@
 
         <div class="col-md-9">
             <div class="progress" style="border: ">
-                <div class="progress-bar progress-bar-success progress-bar-striped" role="progressbar"
+                <div class="progress-bar progress-bar-primary progress-bar-striped" role="progressbar"
                      aria-valuenow="70" aria-valuemin="0" aria-valuemax="100" style="width:60%">
                     60% Completed
                 </div>
