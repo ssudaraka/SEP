@@ -30,14 +30,14 @@
                     <div class="col-md-10">
                         <div class="row">
                            
-                            <div class="col-md-6">
+                            <div class="col-md-4">
                                 <div class="form-inline">
                                     <label for="report">Select Grade</label>
                                    
                                         
                                     
                                         <select id="report" name="report" class="form-control" style="width: 50%;">
-                                            <option value="n">select grade</option>
+                                            <option value="n">--grade--</option>
                                             <option value="1">1</option>
                                             <option value="2">2</option>
                                             <option value="3">3</option>
@@ -57,6 +57,15 @@
                                         <?php echo form_error('report'); ?>
                                 </div>
                             </div>
+                            <div class="col-md-4">
+                                <div class="form-inline">
+                             <label for="class">Select Class</label>
+                            <select class="form-control" name='class' id="class">
+                                <option value="n">--class--</option>
+                                <?php foreach ($class as $val) { ?>
+                                        <option value="<?php echo $val->id; ?>" ><?php echo $val->name; ?></option>
+                                <?php } ?>
+                            </select></div></div>
                             <div class="col-md-3">
                                 <input type="submit" class="btn btn-danger" value="Genarate Report">
                             </div>
@@ -84,10 +93,12 @@
 
     $('#report').on('click', function () {
         
-        formdata = new FormData();
+        var formdata = new FormData();
         //var type = document.getElementById('reporttype').value;
         var report = document.getElementById('report').value;
-//        alert('report');
+       if(report){
+           
+       }
         if (formdata) {
             //formdata.append("tpe", type);
             formdata.append("rpt", report);
@@ -96,6 +107,31 @@
             url: "<?php echo base_url(); ?>index.php/student/generate_report/",
             type: 'POST',
             data: formdata,
+            processData: false,
+            contentType: false,
+        }).done(function (data) {
+            $("#teacher_rep").html(data);
+        });
+
+    });
+    
+     $('#class').on('click', function () {
+        
+       
+        var formdata2 = new FormData();
+        //var type = document.getElementById('reporttype').value;
+        var report = document.getElementById('class').value;
+       if(report){
+           formdata2.append("rpt", report);
+       }
+        if (formdata2) {
+            //formdata.append("tpe", type);
+            formdata2.append("rpt", report);
+        }
+        $.ajax({
+            url: "<?php echo base_url(); ?>index.php/student/generate_class_report/",
+            type: 'POST',
+            data: formdata2,
             processData: false,
             contentType: false,
         }).done(function (data) {

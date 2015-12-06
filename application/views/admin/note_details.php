@@ -1,7 +1,7 @@
 <div class="container">
     <div class="row">
         <div class="col-md-3">
-            <?php $this->view('admin/sidebar_nav'); ?>
+            <?php $this->view('admin/sidebar_nav_notes'); ?>
         </div>
         <div class="col-md-9">
             <?php if (isset($succ_message)) { ?>
@@ -16,7 +16,7 @@
                     
                
 
-                <div class="well">
+               
                    
                
                              <?php
@@ -32,26 +32,26 @@
                                         <div class="row">
                                             <div class="col-md-3 col-lg-3 " align="center"><!-- <img alt="User Pic" src="https://lh5.googleusercontent.com/-b0-k99FZlyE/AAAAAAAAAAI/AAAAAAAAAAA/eu7opA4byxI/photo.jpg?sz=100" class="img-circle">--> </div>
 
-                                            <div class=" col-md-9 col-lg-9 ">
-                                                <table class="table table-user-information">
+                                            <div class=" col-md-9  ">
+                                                <table class="table" >
                                                     <tbody>
                                                         <tr>
-                                                            <td>
+                                                            <td style="border-top: 0px solid #ddd;">
                                                                 <label>ID</label>
 
                                                             </td>
-                                                            <td>
+                                                            <td style="border-top: 0px solid #ddd;">
 
                                                                 <label><?php echo $result->type; ?></label>
                                                             </td>
                                                         </tr>
                                                         <tr>
-                                                            <td><label>Subject</label></td>
-                                                            <td><label><?php echo $result->subject; ?></label></td>
+                                                            <td style="border-top: 0px solid #ddd;"><label>Subject</label></td>
+                                                            <td style="border-top: 0px solid #ddd;"><label><?php echo $result->subject; ?></label></td>
                                                         </tr>
                                                         <tr>
-                                                            <td><label>Note</label></td>
-                                                            <td><label><?php echo $result->note; ?> </label></td>
+                                                            <td style="border-top: 0px solid #ddd;"><label>Note</label></td>
+                                                            <td style="border-top: 0px solid #ddd;"><label><?php echo $result->note; ?> </label></td>
                                                         </tr>
 
                                                         <tr>
@@ -62,13 +62,21 @@
                                                     </tbody>
                                                 </table>
                                                 <input type='text' id='id' name="id" class='hidden' value='<?php echo $id;?>'>
-                                                <div class="form-group">
+                                                <div class="row">
+                                                <div class="form-group col-md-10">
                                                     <label for="action">Action Description</label>
                                                     <textarea  name="action" id="action" class="form-control"><?php echo set_value('action'); ?></textarea>
-                                                    <?php echo form_error('action'); ?>
+                                                    
+                                                        <?php echo form_error('action'); ?>
+                                                    
                                                 </div>
-                                                <button type="submit"  value="" class='btn btn-success'><i class='fa fa fa-check'></i></button>
-                                            </div>
+                                                <div class="form-group col-md-2">
+                                                    <label for="but" class="col-md-9">&nbsp;</label>
+                                                    <button type="submit"  value="" class='btn btn-success ' style="margin-left: 10px;"><i class='fa fa fa-check'></i></button>
+                                                    
+                                                </div>
+                                                
+                                                </div>
                                         </div>
                                     
                                     <!--                                        <div class="panel-footer">
@@ -86,7 +94,7 @@
 
 
 
-                </div>
+             
                     
                     </div>
                 </div>
