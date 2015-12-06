@@ -121,9 +121,9 @@ class Class_Model extends CI_Model {
         }
     }
 
-    public function class_name_already_have($class_name, $academic_year) {
+    public function class_name_already_have($class_name, $grade_id, $academic_year) {
         $class_name = trim($class_name);
-        $sql = "SELECT * FROM classes WHERE name ='{$class_name}' AND academic_year = '{$academic_year}'";
+        $sql = "SELECT * FROM classes WHERE name ='{$class_name}' AND academic_year = '{$academic_year}' AND grade_id = {$grade_id}";
 
         if ($this->db->query($sql)->num_rows() > 0) {
             return TRUE;

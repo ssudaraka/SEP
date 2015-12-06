@@ -163,7 +163,8 @@ class Classes extends CI_Controller {
 
     function validate_class_name() {
         $class_name = $this->input->post('class_name');
-        if ($this->class_model->class_name_already_have($class_name, date('Y'))) {
+        $grade_id = $this->input->post('grade');
+        if ($this->class_model->class_name_already_have($class_name, $grade_id, date('Y'))) {
             $this->form_validation->set_message('validate_class_name', "Class name already have");
             return FALSE;
         } else {
