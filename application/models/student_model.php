@@ -160,6 +160,24 @@ class Student_Model extends CI_Model {
             return FALSE;
         }
     }
+    
+    function get_class_names(){
+        $query = $this->db->get('classes');
+        if ($query->num_rows() > 0) {
+            return $query->result();
+        } else {
+            return FALSE;
+        }
+    }
+    
+     function get_class_name_by_id($id){
+        $query = $this->db->get_where('classes',array('id'=>$id),1);
+        if ($query->num_rows() > 0) {
+            return $query->row();
+        } else {
+            return FALSE;
+        }
+    }
 
 
     /**
@@ -503,7 +521,25 @@ class Student_Model extends CI_Model {
      * @return boolean
      */
     public function generate_report($report) {
-        $data = $this->db->query("select s.* from students s inner join classes c on c.id=s.class where c.grade_id = '$report' ");
+        $data = $this->db->query("select s.* from students s inner join classes c on c.grade_id=s.current_grade where c.grade_id = '$report' ");
+
+        if ($data->num_rows() > 0) {
+            return $data->result();
+        }else{
+            return FALSE;
+        }
+
+     
+    }
+    
+    /**
+     * genarate student report
+     * 
+     * @param type $report
+     * @return boolean
+     */
+    public function generate_class_report($class) {
+        $data = $this->db->query("select s.* from students s inner join classes c on c.id=s.current_class where c.id = '$class' ");
 
         if ($data->num_rows() > 0) {
             return $data->result();
@@ -541,10 +577,11 @@ class Student_Model extends CI_Model {
      * @return boolean
      */
     function get_all_notes(){
-         $data = $this->db->query("select s.admission_no ,s.contact_home ,c.name, n.* from students s, classes c ,notes n where c.id=s.class and s.user_id=n.student_id");
+         $data = $this->db->query("select s.admission_no ,s.contact_home ,c.name, n.* from students s, classes c ,notes n where c.grade_id=s.current_class and s.user_id=n.student_id");
 
         if ($data->num_rows() > 0) {
             return $data->result();
+           
         }else{
             return FALSE;
         }
