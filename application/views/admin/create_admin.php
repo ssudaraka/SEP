@@ -4,7 +4,7 @@
             <?php $this->view('admin/sidebar_nav'); ?>
         </div>
         <div class="col-md-9">
-            <?php if (isset($succ_message)) { ?>
+            <?php if ($succ_message) { ?>
                 <div class="alert alert-success alert-dismissible" role="alert">
                     <button type="button" class="close" data-dismiss="alert" aria-label="Close"><span aria-hidden="true">&times;</span></button>
                     <?php echo $succ_message; ?>

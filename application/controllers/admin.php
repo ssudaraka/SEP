@@ -87,12 +87,13 @@ class Admin extends CI_Controller {
             );
 
             $this->user->create($user, "A");
-            $tech_id = $this->session->userdata('id');
-            $tech_details = $this->teacher_model->user_details($tech_id);
-            $this->news_model->insert_action_details($tech_id, "Create new admin account", $tech_details->photo_file_name, $tech_details->full_name);
-            $data['succ_message'] = "New Admin Created Successfully";
+            $user_details = $this->user->get_user($this->session->userdata('id'));
+            $this->news_model->insert_action_details($this->session->userdata('id'), "Create new admin account", $user_details->profile_img, $user_details->first_name . "" . $user_details->last_name);
+            $this->session->set_flashdata('succ_message', 'New Admin Created Successfully');
+            redirect('admin/create', 'refresh');
         }
 
+        $data['succ_message'] = $this->session->flashdata('succ_message');
         $this->load->view('templates/header', $data);
         $this->load->view('navbar_main', $data);
         $this->load->view('navbar_sub', $data);

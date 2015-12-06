@@ -57,6 +57,7 @@ class User extends CI_Model {
             return FALSE;
         }
     }
+    
 
     public function change_password($user_id, $new_password) {
         $hashed_password = md5($new_password);
