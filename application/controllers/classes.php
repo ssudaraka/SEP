@@ -1,5 +1,13 @@
 <?php
-
+/**
+ * Ecole - Leave Controller
+ * 
+ * Handles the Class Methods
+ * 
+ * @author  Supun Sudaraka
+ * @copyright (c) 2015, Ecole. (http://projectecole.com)
+ * @link http://projectecole.com
+ */
 class Classes extends CI_Controller {
 
     function __construct() {
