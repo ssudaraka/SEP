@@ -112,8 +112,7 @@
                                 <td><?php echo $row->event_type; ?></td>
                                 <td><?php echo $row->description; ?></td>
                                 <td><a href="<?php echo base_url("index.php/event/view_event_type_details") . "/" . $row->id; ?>" class="btn btn-primary btn-xs" aria-hidden="true"><i class="fa fa-eye"></i></a></td>
-                                <td><a href="<?php echo base_url("index.php/event/delete_event_type") . "/" . $row->id; ?>" onclick="return confirm('Are you sure you want to delete this event type?');" class="btn btn-primary btn-xs" aria-hidden="true"><i class="fa fa-trash"></i></a></td>
-                            </tr>
+                                <td><a id="delete-user" data-user-id="<?php echo $row->id; ?>" class="btn btn-danger btn-xs del" aria-hidden="true"><i class="fa fa-trash"></i></a></td>            </tr>
                         <?php } ?>
                     </tbody>
                 </table>
@@ -128,5 +127,30 @@
     </div>
 
 </div>
+<script>
+  $('.del').click(function() {
+    var userId = $(this).attr("data-user-id");
+    deleteUser(userId);
+  });
+
+  function deleteUser(userId) {
+      
+    swal({
+      title: "Are you sure?", 
+      text: "Are you sure that you want to delete this user?", 
+      type: "warning",
+      showCancelButton: true,
+      closeOnConfirm: false,
+      confirmButtonText: "Yes, delete it!",
+      confirmButtonColor: "#ec6c62"
+    }, function() {
+        window.location.href = "<?php echo base_url("index.php/event/delete_event_type")?>" + "/" + userId;
+    });
+    
+    
+  }
+  
+  </script>
+
 
 

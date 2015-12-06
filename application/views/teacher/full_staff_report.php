@@ -1,6 +1,6 @@
 
 <!DOCTYPE html>
-<html id="dvContainer">
+<html id="dvContainer2">
     <head>
         <title>Staff Report</title>
 
@@ -363,10 +363,26 @@
     $("#btnPrint").on('click', function (e){
         var divContents = $("#dvContainer").html();
         var printWindow = window.open('', '', 'height=760,width=1300');
-       // printWindow.document.write('<html><head><title></title>');
-       // printWindow.document.write('</head><body ><h2 style="text-align: center">2013 ජුනි 01 දිනට පාසලේ අධ්‍යයන කාර්ය මණ්ඩලවල තොරතුරු</h2><h3 style="text-align: center">සැම විදුහල්පති තනතුරු ධාරියකු හා ගුරුවරයකු සඳහා ම සියලුම තීරු සම්පුර්ණ කිරීම අනිවාර්යය වේ. මුල් පිටුවේ උපදෙස් හොදින් කියවන්න.</h3>');
+        printWindow.document.write('<html><head><link href="<?php echo base_url("assets/css/style.css"); ?>" rel="stylesheet">');
+        printWindow.document.write('<style>.btn-danger {color: #fff; background-color: #d9534f; border-color: #d43f3a;}');
+        printWindow.document.write('*{font-family: "Open Sans", sans-serif;font-weight: 400;}');
+        printWindow.document.write('h1, h2, h3{ text-align: center;}');
+        printWindow.document.write('.report, .report th, .report td{/*text-align: justify;*/border: 1px solid black;border-collapse: collapse;}');
+        printWindow.document.write('.report .headerRow{height:300px;}');
+        printWindow.document.write('.report .salary{text-align: right;}');
+        printWindow.document.write('.report .center{text-align: center;}');
+        printWindow.document.write('.numbers td{text-align: center;}');
+        printWindow.document.write('#col_0{text-indent: -6.5em;max-width: 50px;min-width: 50px;}');
+        printWindow.document.write('#col_1{max-width: 300px;min-width: 300px;padding-left: 10px;padding-right: 10px;}');
+        printWindow.document.write('#col_26{max-width: 180px;min-width: 180px;}');
+        printWindow.document.write('#col_27{text-align: justify;padding-left: 14px;padding-right: 14px;max-width: 200px;min-width: 200px;}');
+        printWindow.document.write('.secret td{border-top: 1px solid white;border-left: 1px solid white;border-right: 1px solid white;}');
+        printWindow.document.write('.numberCol{text-align: left;white-space: nowrap;text-overflow: ellipsis; min-width: 25px;max-width: 25px;writing-mode: bt-rl;text-indent: -7.5em;padding: 0px 0px 0px 0px;margin: 0px;}');
+        printWindow.document.write('.upcol{position: relative;text-align: left;white-space: nowrap;top: 50px;text-overflow: ellipsis;min-width: 25px;max-width: 25px;writing-mode: bt-rl;padding: 0px 0px 0px 0px;margin: 0px;}');
+        printWindow.document.write('.rotate { -webkit-transform: rotate(-90deg);-moz-transform: rotate(-90deg);-ms-transform: rotate(-90deg);-o-transform: rotate(-90deg);filter: progid:DXImageTransform.Microsoft.BasicImage(rotation=3);}');
+        printWindow.document.write('</style></head><body ><h2 style="text-align: center">2013 ජුනි 01 දිනට පාසලේ අධ්‍යයන කාර්ය මණ්ඩලවල තොරතුරු</h2><h3 style="text-align: center">සැම විදුහල්පති තනතුරු ධාරියකු හා ගුරුවරයකු සඳහා ම සියලුම තීරු සම්පුර්ණ කිරීම අනිවාර්යය වේ. මුල් පිටුවේ උපදෙස් හොදින් කියවන්න.</h3>');
         printWindow.document.write(divContents);
-       // printWindow.document.write('</body></html>');
+        printWindow.document.write('</body></html>');
         printWindow.document.close();
         printWindow.print();
     });

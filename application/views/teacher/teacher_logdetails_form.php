@@ -25,7 +25,7 @@
                             <div class="col-md-3 col-lg-3 " align="center"> 
                                 <label for="profile-img">Profile image</label>
                                 <br />
-                                <img src="<?php echo base_url('assets/img/profile_img.png'); ?>" id="profile-img" class="img-thumbnail profile-img">
+                                <img src="" id="profile-img" class="img-thumbnail profile-img">
                                 <br>
                                 <span class="btn btn-default btn-file">
                                     Upload Image<input type="file" name="profile_img" id="img-inp" onchange="readURL(this);">

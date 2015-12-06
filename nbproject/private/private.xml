@@ -2,15 +2,6 @@
 <project-private xmlns="http://www.netbeans.org/ns/project-private/1">
     <editor-bookmarks xmlns="http://www.netbeans.org/ns/editor-bookmarks/2" lastBookmarkId="0"/>
     <open-files xmlns="http://www.netbeans.org/ns/projectui-open-files/2">
-        <group>
-            <file>file:/C:/wamp/www/sep/application/models/teacher_model.php</file>
-            <file>file:/C:/wamp/www/sep/application/views/teacher/Search_page.php</file>
-            <file>file:/C:/wamp/www/sep/application/controllers/event.php</file>
-            <file>file:/C:/wamp/www/sep/application/views/teacher/teacher_logdetails_form.php</file>
-            <file>file:/C:/wamp/www/sep/application/models/user.php</file>
-            <file>file:/C:/wamp/www/sep/application/models/event_model.php</file>
-            <file>file:/C:/wamp/www/sep/application/controllers/teacher.php</file>
-            <file>file:/C:/wamp/www/sep/application/views/teacher/edit_teacher_profile.php</file>
-        </group>
+        <group/>
     </open-files>
 </project-private>
