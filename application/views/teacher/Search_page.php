@@ -59,59 +59,56 @@
                                     <th>Gender</th>
                                     <th>Grade</th>
                                     <th>Medium</th>
-                                    <th>Contact no</th>
-                                    <td>&nbsp;</td>
+                                    <th>Contact</th>
+                                    <td>Actions</td>
                                    
                                 </tr>
                             </thead>
                             <tbody>
                                 <?php foreach ($result as $row) { ?>
-
-
-                                    <tr>
-                                        <td><?php echo $row->id; ?></td>
-                                        <td><?php echo $row->nic_no; ?></td>
-                                        <td><?php echo $row->full_name; ?></td>
-                                        <td><?php  $gender=$row->gender; 
-                                         if ($gender == 'm') {
-                                                echo 'Male';
-                                            } else if ($med == 'f') {
-                                                echo 'Female';
-                                            }
-                                        ?></td>
-                                        <td><?php echo $row->grade; ?></td>
-                                        <td><?php
-                                            $med = $row->medium;
-                                            if ($med == 's') {
-                                                echo 'sin';
-                                            } else if ($med == 'e') {
-                                                echo 'eng';
-                                            } else if ($med == 't') {
-                                                echo 'tam';
-                                            }
-                                            ?></td>
-                                        <td><?php echo $row->contact_mobile; ?></td>
-                                        <td><a href="<?php echo base_url("index.php/profile") . "?key=" . $row->user_id; ?>" class="btn btn-primary btn-xs" aria-hidden="true"><i class="fa fa-eye"></i></a>&nbsp;
-                                        <a href="<?php echo base_url("index.php/teacher/load_teacher") . "/" . $row->id; ?>" class="btn btn-primary btn-xs" aria-hidden="true"><i class="fa fa-edit"></i></a>&nbsp;
-                                        <a href="#" id="delete-user" data-user-id="<?php echo $row->user_id; ?>" class="btn btn-danger btn-xs" aria-hidden="true"><i class="fa fa-trash"></i></a></td>
-
-                                    </tr>
-                                <?php } ?>
-                            </tbody>
-                        </table>
-                    </div>
-                </div>
+                            <tr>
+                                <td><?php echo $row->id; ?></td>
+                                <td><?php echo $row->nic_no; ?></td>
+                                <td><?php echo $row->full_name; ?></td>
+                                <td><?php  $gender=$row->gender; 
+                                 if ($gender == 'm') {
+                                        echo 'Male';
+                                    } else if ($gender == 'f') {
+                                        echo 'Female';
+                                    }
+                                ?></td>
+                                <td><?php echo $row->grade; ?></td>
+                                <td><?php
+                                    $med = $row->medium;
+                                    if ($med == 's') {
+                                        echo 'sin';
+                                    } else if ($med == 'e') {
+                                        echo 'eng';
+                                    } else if ($med == 't') {
+                                        echo 'tam';
+                                    }
+                                    ?></td>
+                                <td><?php echo $row->contact_mobile; ?></td>
+                                <td><a href="<?php echo base_url("index.php/profile") . "?key=" . $row->user_id; ?>" class="btn btn-primary btn-xs" aria-hidden="true"><i class="fa fa-eye"></i></a>&nbsp;
+                                <a href="<?php echo base_url("index.php/teacher/load_teacher") . "/" . $row->id; ?>" class="btn btn-primary btn-xs" aria-hidden="true"><i class="fa fa-edit"></i></a>&nbsp;
+                                <a id="delete-user" data-user-id="<?php echo $row->user_id; ?>" class="btn btn-danger btn-xs del" aria-hidden="true"><i class="fa fa-trash"></i></a></td>
+                                
+                            </tr>
+                        <?php } ?>
+                    </tbody>
+                </table>
             </div>
         </div>
     </div>
 </div>
 <script>
-  $('#delete-user').click(function() {
+  $('.del').click(function() {
     var userId = $(this).attr("data-user-id");
     deleteUser(userId);
   });
 
   function deleteUser(userId) {
+      
     swal({
       title: "Are you sure?", 
       text: "Are you sure that you want to delete this user?", 

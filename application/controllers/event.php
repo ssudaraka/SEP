@@ -1,13 +1,21 @@
 <?php
-
+/**
+ * Ecole - Event Controller
+ * 
+ * Responsibe for handling inputs
+ * 
+ * @author Gunathilaka M.A.S.S
+ * @copyright (c) 2015, Ecole. (http://projectecole.com)
+ * @link  http://projectecole.com
+ */
 class Event extends CI_Controller {
 
     function __construct() {
         parent::__construct();
         $this->load->model('event_model');
-        $this->load->model('Teacher_Model');
-        $this->load->model('News_Model');
-        $this->load->model('User');
+        $this->load->model('teacher_model');
+        $this->load->model('news_model');
+        $this->load->model('user');
         $this->load->helper('date');
     }
 
@@ -56,8 +64,8 @@ class Event extends CI_Controller {
         $this->form_validation->set_rules('budget', 'budget', 'required|integer|greater_than[0]');
         $this->form_validation->set_rules('location', 'location', 'required');
         $this->form_validation->set_rules('guest', 'guest', '');
-
         $this->form_validation->set_error_delimiters('<br /><span class="error">', '</span>');
+        
         if ($this->form_validation->run() == FALSE) {
             $data['details'] = $this->event_model->get_pending_event_details();
             $data['page_title'] = "New Event";
@@ -69,23 +77,27 @@ class Event extends CI_Controller {
         } else {
 
             $data['succ_message'] = "Successfully created the event";
-            $event_name = $this->input->post('event_name');
-            $event_type = $this->input->post('event_type');
-            $description = $this->input->post('description');
-            $start_date = $this->input->post('start_date');
-            $start_time = $this->input->post('start_time');
-            $end_date = $this->input->post('end_date');
-            $end_time = $this->input->post('end_time');
-            $in_charge = $this->input->post('in_charge');
-            $budget = $this->input->post('budget');
-            $location = $this->input->post('location');
-            $guest = $this->input->post('guest');
+            
+            $insert_event = array(
+                'title' => $this->input->post('event_name'),
+                'event_type' => $this->input->post('event_type'),
+                'description' => $this->input->post('description'),
+                'start_date' => $this->input->post('start_date'),
+                'start_time' => $this->input->post('start_time'),
+                'end_date' => $this->input->post('end_date'),
+                'end_time' => $this->input->post('end_time'),
+                'in_charge_id' => $this->input->post('in_charge'),
+                'budget' => $this->input->post('budget'),
+                'location' => $this->input->post('location'),
+                'guest' => $this->input->post('guest'),
+                'status' => 'pending'
+            );
 
-            if ($this->event_model->insert_sport_event($event_name, $event_type, $description, $start_date, $start_time, $end_date, $end_time, $in_charge, $budget , $location , $guest)) { // the information has therefore been successfully saved in the db
+            if ($this->event_model->insert_sport_event($insert_event)) { // the information has therefore been successfully saved in the db
                 //For news field
                 $tech_id = $this->session->userdata('id');
-                $tech_details = $this->Teacher_Model->user_details($tech_id);
-                $this->News_Model->insert_action_details($tech_id, "Create new event", $tech_details->profile_img, $tech_details->first_name);
+                $tech_details = $this->teacher_model->user_details($tech_id);
+                $this->news_model->insert_action_details($tech_id, "Create new event", $tech_details->profile_img, $tech_details->first_name);
                 //////
                 $data['details'] = $this->event_model->get_pending_event_details();
                 $data['page_title'] = "Create Sports Event";
@@ -119,11 +131,11 @@ class Event extends CI_Controller {
         $this->form_validation->set_rules('start_time', 'start time', 'required');
         $this->form_validation->set_rules('end_date', 'end date', 'required|callback_check_event_end_date');
         $this->form_validation->set_rules('end_time', 'end time', 'required');
-        $this->form_validation->set_rules('budget', 'budget', 'required|integer');
+        $this->form_validation->set_rules('budget', 'budget', 'required|integer|greater_than[0]');
         $this->form_validation->set_rules('location', 'location', 'required');
         $this->form_validation->set_rules('guest', 'guest', '');
-        
         $this->form_validation->set_error_delimiters('<br /><span class="error">', '</span>');
+        
         $event_id = $this->input->post('eid');
         if ($this->form_validation->run() == FALSE) {
             $data['result'] = $this->event_model->get_event_type_details();
@@ -136,24 +148,26 @@ class Event extends CI_Controller {
             $this->load->view('/templates/footer');
         } else {
             
-            $event_name = $this->input->post('event_name');
-            $event_type = $this->input->post('event_type');
-            $description = $this->input->post('description');
-            $start_date = $this->input->post('start_date');
-            $start_time = $this->input->post('start_time');
-            $end_date = $this->input->post('end_date');
-            $end_time = $this->input->post('end_time');
-            $in_charge = $this->input->post('in_charge');
-            $budget = $this->input->post('budget');
-            $location = $this->input->post('location');
-            $guest = $this->input->post('guest');
+            $update_event = array(
+                'title' => $this->input->post('event_name'),
+                'event_type' => $this->input->post('event_type'),
+                'description' => $this->input->post('description'),
+                'start_date' => $this->input->post('start_date'),
+                'start_time' => $this->input->post('start_time'),
+                'end_date' => $this->input->post('end_date'),
+                'end_time' => $this->input->post('end_time'),
+                'in_charge_id' => $this->input->post('in_charge'),
+                'budget' => $this->input->post('budget'),
+                'location' => $this->input->post('location'),
+                'guest' => $this->input->post('guest')
+            );
 
-            if ($this->event_model->update_event($event_id, $event_name, $event_type, $description, $start_date, $start_time, $end_date, $end_time, $in_charge, $budget , $location , $guest)) {
+            if ($this->event_model->update_event($event_id, $update_event)) {
                 
                 //For news field
                 $tech_id = $this->session->userdata('id');
-                $tech_details = $this->Teacher_Model->user_details($tech_id);
-                $this->News_Model->insert_action_details($tech_id, "Published approved event", $tech_details->profile_img, $tech_details->first_name);
+                $tech_details = $this->teacher_model->user_details($tech_id);
+                $this->news_model->insert_action_details($tech_id, "Published approved event", $tech_details->profile_img, $tech_details->first_name);
                 //////
                 $data['details'] = $this->event_model->get_all_events();
                 $data['succ_message'] = "Successfully Updated!";
@@ -172,13 +186,18 @@ class Event extends CI_Controller {
         }
     }
     
+    /**
+     * View selected event details
+     * 
+     * @param int $event_id
+     */
     function view_event_details($event_id){
         if (!$this->session->userdata('logged_in')) {
             redirect('login', 'refresh');
         }
         date_default_timezone_set('Asia/Kolkata');
         $data['user_type'] = $this->session->userdata['user_type'];
-        $data['valid_nic'] = $this->Teacher_Model->teacher_nic_from_user_id($this->session->userdata['id']);
+        $data['valid_nic'] = $this->teacher_model->teacher_nic_from_user_id($this->session->userdata['id']);
         $data['details'] = $this->event_model->get_approved_event_details($event_id); //Get approved event details from the database
         $data['page_title'] = "Publish Event";
         $data['navbar'] = "event";
@@ -188,9 +207,11 @@ class Event extends CI_Controller {
         $this->load->view('event/view_event_details', $data);
         $this->load->view('/templates/footer');
     }
-
+    
     /**
      * This method is used to view the approved event details
+     * 
+     * @param int $event_id
      */
     function edit_approved_event($event_id) {
         if (!$this->session->userdata('logged_in')) {
@@ -234,18 +255,20 @@ class Event extends CI_Controller {
             $this->load->view('/templates/footer');
         } else {
 
-            $event_type = $this->input->post('event_type');
-            $description = $this->input->post('description');
+            $inert_event_type = array(
+                'event_type' => $this->input->post('event_type'),
+                'description' => $this->input->post('description')
+            );
 
-            if ($this->event_model->insert_new_event_type($event_type, $description)) {
+            if ($this->event_model->insert_new_event_type($inert_event_type)) {
                 //For news field
                 $tech_id = $this->session->userdata('id');
-                $tech_details = $this->Teacher_Model->user_details($tech_id);
-                $this->News_Model->insert_action_details($tech_id, "Create new event type", $tech_details->profile_img, $tech_details->first_name);
+                $tech_details = $this->teacher_model->user_details($tech_id);
+                $this->news_model->insert_action_details($tech_id, "Create new event type", $tech_details->profile_img, $tech_details->first_name);
                 //////
                 $data['details'] = $this->event_model->get_event_type_details();
                 $data['succ_message'] = "Successfully created the event type";
-                $data['page_title'] = "Create Event Type";
+                $data['page_title'] = "Event Type";
                 $data['navbar'] = "event";
                 $this->load->view('templates/header', $data);
                 $this->load->view('navbar_main', $data);
@@ -257,9 +280,11 @@ class Event extends CI_Controller {
             }
         }
     }
-
+    
     /**
      * This method is used to view a particular event type details.
+     * 
+     * @param int $id
      */
     function view_event_type_details($id) {
         if (!$this->session->userdata('logged_in')) {
@@ -278,6 +303,8 @@ class Event extends CI_Controller {
 
     /**
      * This methos is used to update the event type
+     * 
+     * @param int $id
      */
     function update_event_type($id) {
         if (!$this->session->userdata('logged_in')) {
@@ -301,14 +328,16 @@ class Event extends CI_Controller {
             $this->load->view('/templates/footer');
         } else {
 
-            $event_type = $this->input->post('event_type');
-            $description = $this->input->post('description');
+            $update_event_type = array(
+                'event_type' => $this->input->post('event_type'),
+                'description' => $this->input->post('description')
+            );
 
-            if ($this->event_model->update_event_type($id, $event_type, $description)) {
+            if ($this->event_model->update_event_type($id, $update_event_type)) {
                 //For news field
                 $tech_id = $this->session->userdata('id');
-                $tech_details = $this->Teacher_Model->user_details($tech_id);
-                $this->News_Model->insert_action_details($tech_id, "Update event type", $tech_details->profile_img, $tech_details->first_name);
+                $tech_details = $this->teacher_model->user_details($tech_id);
+                $this->news_model->insert_action_details($tech_id, "Update event type", $tech_details->profile_img, $tech_details->first_name);
                 //////
                 $data['details'] = $this->event_model->get_event_type_details();
                 $data['succ_message'] = "Successfully created the event type";
@@ -327,6 +356,8 @@ class Event extends CI_Controller {
 
     /**
      * This method is used to delete a particular event type
+     * 
+     * @param int $id
      */
     function delete_event_type($id) {
         if (!$this->session->userdata('logged_in')) {
@@ -334,20 +365,13 @@ class Event extends CI_Controller {
         }
         //For news field
         $tech_id = $this->session->userdata('id');
-        $tech_details = $this->Teacher_Model->user_details($tech_id);
-        $this->News_Model->insert_action_details($tech_id, "Delete event type", $tech_details->profile_img, $tech_details->first_name);
+        $tech_details = $this->teacher_model->user_details($tech_id);
+        $this->news_model->insert_action_details($tech_id, "Delete event type", $tech_details->profile_img, $tech_details->first_name);
         //////
-        $data['succ_message'] = "Successfully deleted";
-        $data['user_type'] = $this->session->userdata['user_type'];
         $this->event_model->delete_event_type($id);
-        $data['details'] = $this->event_model->get_event_type_details();
-        $data['page_title'] = "Create Event Type";
-        $data['navbar'] = "event";
-        $this->load->view('templates/header', $data);
-        $this->load->view('navbar_main', $data);
-        $this->load->view('navbar_sub', $data);
-        $this->load->view('event/add_new_event_type', $data);
-        $this->load->view('/templates/footer');
+        $err = 'Succesfully deleted';
+        $this->session->set_flashdata('succ',$err);
+        redirect('event/create_event_type');
     }
 
     /**
@@ -431,6 +455,8 @@ class Event extends CI_Controller {
 
     /**
      * This method is used to view details of the particular event.
+     * 
+     * @param int $id
      */
     function view_upcoming_event_details($id) {
         if (!$this->session->userdata('logged_in')) {
@@ -448,7 +474,9 @@ class Event extends CI_Controller {
     }
 
     /**
-     * This method is used to cancel a event published by admin panel.
+     * This method is used to cancel an event by admin panel.
+     * 
+     * @param int $id
      */
     function cancel_event($id) {
         if (!$this->session->userdata('logged_in')) {
@@ -456,8 +484,8 @@ class Event extends CI_Controller {
         }
         //For news field
         $tech_id = $this->session->userdata('id');
-        $tech_details = $this->Teacher_Model->user_details($tech_id);
-        $this->News_Model->insert_action_details($tech_id, "Cancelled the event", $tech_details->profile_img, $tech_details->first_name);
+        $tech_details = $this->teacher_model->user_details($tech_id);
+        $this->news_model->insert_action_details($tech_id, "Cancelled the event", $tech_details->profile_img, $tech_details->first_name);
         //////
         $data['user_type'] = $this->session->userdata['user_type'];
         $this->event_model->cancel_event($id);
@@ -492,6 +520,8 @@ class Event extends CI_Controller {
 
     /**
      * This method is used to view the details of the particular pennding event.
+     * 
+     * @param int $id
      */
     function load_selected_pending_event($id) {
         if (!$this->session->userdata('logged_in')) {
@@ -510,6 +540,8 @@ class Event extends CI_Controller {
 
     /**
      * This method is used to approve the event.
+     * 
+     * @param int $id
      */
     function approve_event($id) {
         if (!$this->session->userdata('logged_in')) {
@@ -517,25 +549,20 @@ class Event extends CI_Controller {
         }
         //For news field
         $tech_id = $this->session->userdata('id');
-        $tech_details = $this->Teacher_Model->user_details($tech_id);
-        $this->News_Model->insert_action_details($tech_id, "Approved the event", $tech_details->profile_img, $tech_details->first_name);
+        $tech_details = $this->teacher_model->user_details($tech_id);
+        $this->news_model->insert_action_details($tech_id, "Approved the event", $tech_details->profile_img, $tech_details->first_name);
         //////
         $data['succ_message'] = "Successfully completed";
         $data['user_type'] = $this->session->userdata['user_type'];
         $this->event_model->approve_event($id);
-        $data['details'] = $this->event_model->get_pending_events_to_approve();
-        $data['cancel'] = $this->event_model->get_canceled_events();
-        $data['page_title'] = "Pending event";
-        $data['navbar'] = "event";
-        $this->load->view('templates/header', $data);
-        $this->load->view('navbar_main', $data);
-        $this->load->view('navbar_sub', $data);
-        $this->load->view('event/check_event_details', $data);
-        $this->load->view('/templates/footer');
+        $this->session->set_flashdata('succ' , 'Successfully approved the event');
+        redirect('event/check_event_details');
     }
-
+    
     /**
      * This method is used to reject the event.
+     * 
+     * @param int $id
      */
     function reject_event($id) {
         if (!$this->session->userdata('logged_in')) {
@@ -543,23 +570,18 @@ class Event extends CI_Controller {
         }
         //For news field
         $tech_id = $this->session->userdata('id');
-        $tech_details = $this->Teacher_Model->user_details($tech_id);
-        $this->News_Model->insert_action_details($tech_id, "Reject the event", $tech_details->profile_img, $tech_details->first_name);
+        $tech_details = $this->teacher_model->user_details($tech_id);
+        $this->news_model->insert_action_details($tech_id, "Reject the event", $tech_details->profile_img, $tech_details->first_name);
         //////
-        $data['succ_message'] = "Successfully completed";
         $data['user_type'] = $this->session->userdata['user_type'];
         $this->event_model->reject_event($id);
-        $data['details'] = $this->event_model->get_pending_events_to_approve();
-        $data['cancel'] = $this->event_model->get_canceled_events();
-        $data['page_title'] = "Pending event";
-        $data['navbar'] = "event";
-        $this->load->view('templates/header', $data);
-        $this->load->view('navbar_main', $data);
-        $this->load->view('navbar_sub', $data);
-        $this->load->view('event/check_event_details', $data);
-        $this->load->view('/templates/footer');
+        $this->session->set_flashdata('succ' , 'Successfully rejected the event');
+        redirect('event/check_event_details');
     }
     
+    /**
+     * View the event calendar
+     */
     function event_calendar(){
         if (!$this->session->userdata('logged_in')) {
             redirect('login', 'refresh');
@@ -575,6 +597,9 @@ class Event extends CI_Controller {
         $this->load->view('/templates/footer');
     }
     
+    /**
+     * view given teacher's all event details
+     */
     function teacher_event_details(){
         $nic = $this->uri->segment(3);
         $data['details'] = $this->event_model->get_pro_image($nic);
@@ -584,6 +609,9 @@ class Event extends CI_Controller {
 
     /**
      * This method is a validation method which validate event start date
+     * 
+     * @param date $field
+     * @return boolean
      */
     function check_event_start_date($field) {
         if (!$this->session->userdata('logged_in')) {
@@ -602,6 +630,9 @@ class Event extends CI_Controller {
 
     /**
      * This method is a validation method which validate event start date
+     * 
+     * @param date $field
+     * @return boolean
      */
     function check_event_end_date($field) {
         if (!$this->session->userdata('logged_in')) {
@@ -618,6 +649,9 @@ class Event extends CI_Controller {
 
     /**
      * Check whether the given in charge id is a valid id or not.
+     * 
+     * @param string $field
+     * @return boolean
      */
     function check_incharge_id($field) {
         if (!$this->session->userdata('logged_in')) {

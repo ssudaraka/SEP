@@ -155,7 +155,12 @@
                         </div>
                         <label for="inputEmail3" class="col-sm-2 control-label">*Location</label>
                         <div class="col-sm-4">
-                            <input id="location" type="text" name="location"  value="" type="text" class="form-control" id="location" placeholder="Location">
+                            <input id="location" type="text" name="location"  value="<?php 
+                            if(isset($succ_message)){ 
+                                echo '';
+                            }else{
+                                echo set_value('location');
+                            } ?>" type="text" class="form-control" id="location" placeholder="Location">
                             <?php echo form_error('location'); ?>
                         </div>
                     </div>

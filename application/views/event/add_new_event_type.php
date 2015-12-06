@@ -30,6 +30,12 @@
                 <?php echo $err_message; ?>
             </div>
             <?php } ?>
+            <?php if ($this->session->flashdata('succ')) { ?>
+            <div class="alert alert-success alert-dismissible" role="alert">
+                <button type="button" class="close" data-dismiss="alert" aria-label="Close"><span aria-hidden="true">&times;</span></button>
+                <?php echo $this->session->flashdata('succ'); ?>
+            </div>
+            <?php } ?>
 
             <div class="panel panel-default">
                 <div class="panel-heading">

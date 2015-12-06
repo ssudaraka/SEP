@@ -1,55 +1,81 @@
 <?php
 
+/**
+ * Ecole - Teacher Model
+ * 
+ * Responsibe for handling data related to school stuff details
+ * 
+ * @author Gunathilaka M.A.S.S
+ * @copyright (c) 2015, Ecole. (http://projectecole.com)
+ * @link  http://projectecole.com
+ */
 class Teacher_Model extends CI_Model {
 
-    //loading database on class creationorderMainAddress
     public function __construct() {
         parent::__construct();
         $this->load->database();
         $this->load->helper('date');
     }
 
-    public function insert_new_staff($NIC, $name, $initial, $birth, $gender, $Nationality, $religion, $civilstatus, $address, $contactMob, $contactHome, $email, $widow) {
-        try {
-            if ($this->db->query("INSERT INTO teachers (`nic_no`, `full_name`, `name_with_initials` , `dob` , `gender`, `nationality_id` , `religion_id` , `civil_status` , `permanent_addr` , `contact_mobile` , `contact_home` , `email` , `wnop_no`) 
-    			VALUES ('$NIC', '$name' , '$initial' , '$birth', '$gender' , '$Nationality' , '$religion' , '$civilstatus' , '$address' , '$contactMob' , '$contactHome' , '$email' , '$widow')")) {
-                $id = $this->db->insert_id();
-                return $id;
-            } else {
-                return NULL;
-            }
+    /**
+     * Insert personal teacher details to the database
+     * 
+     * @param array $personal_teacher_details contains teacher personal details such as full name , age , gender...
+     * @return int
+     */
+    public function insert_new_staff($personal_teacher_details) {
+        try{
+            $this->db->insert('teachers', $personal_teacher_details);
+            $id = $this->db->insert_id();
+            return $id;
         } catch (Exception $ex) {
-            return FALSE;
+            return NULL;
         }
     }
 
-    public function update_new_staff($regno, $ID, $serialno, $signatureno, $careerdate, $medium, $designation, $section, $mainsubject, $servicegrade, $appointment, $educational, $profession, $first_appointment, $fileno, $pension) {
-        try {
-            if ($this->db->query("UPDATE teachers SET `teacher_register_no` = '$regno', `serial_no` = '$serialno' , `signature_no` = '$signatureno' , `joined_date` = '$careerdate' , `medium` = '$medium' ,"
-                            . " `designation_id` = '$designation' , `section` = '$section' , `main_subject_id` = '$mainsubject' , `grade` = '$servicegrade' , `nature_of_appointment` = '$appointment' , `educational_qualific`='$educational' ,"
-                            . " `professional_qualific`='$profession' , `first_appointment_date`='$first_appointment' , `personal_file_no`='$fileno' , `pension_date`='$pension' WHERE id = '$ID' ")) {
-                return $ID;
-            } else {
-                return FALSE;
-            }
+    /**
+     * Insert teacher accademic details to the database
+     * 
+     * @param int $id
+     * @param type $teacher_accademic_details
+     * @return type
+     */
+    public function update_new_staff($id, $teacher_accademic_details) {
+        try{
+            $this->db->where('id', $id);
+            $this->db->update('teachers', $teacher_accademic_details);
+            return $id;
         } catch (Exception $ex) {
-            return FALSE;
+            return NULL;
         }
     }
 
+    /**
+     * get selected teacher's all details
+     * 
+     * @param int $ID
+     * @return mixed resulting row or null value
+     */
     public function get_staff_details($ID) {
         try {
             if ($data = $this->db->query("select * from `teachers` where `id` = $ID")) {
                 $row = $data->row();
                 return $row;
             } else {
-                return null;
+                return NULL;
             }
         } catch (Exception $ex) {
-            return null;
+            return NULL;
         }
     }
 
+    /**
+     * set the time at the teacher registration
+     * 
+     * @param int $id
+     * @param time $time
+     * @return boolean
+     */
     public function set_time($id, $time) {
         try {
             if ($data = $this->db->query("UPDATE `teachers` set `created_at` = '$time'  where `id` = '$id' ")) {
@@ -58,23 +84,38 @@ class Teacher_Model extends CI_Model {
                 return FALSE;
             }
         } catch (Exception $ex) {
-            return null;
+            return NULL;
         }
     }
 
+    /**
+     * set user id to the teachers
+     * 
+     * @param int $ID
+     * @param int $userid
+     * @return boolean
+     */
     public function set_user_id($ID, $userid) {
         try {
             if ($this->db->query("UPDATE `teachers` set `user_id` = '$userid'  where `id` = '$ID' ") == TRUE) {
-
                 return TRUE;
             } else {
                 return FALSE;
             }
         } catch (Exception $ex) {
-            return null;
+            return FALSE;
         }
     }
 
+    /**
+     * update the teacher loging details
+     * 
+     * @param string $username
+     * @param string $password
+     * @param date-time $create
+     * @param int $teacher_log_id
+     * @return boolean
+     */
     public function update_new_teacher_userdata($username, $password, $create, $teacher_log_id) {
         try {
             $encryptpwd = md5($password);
@@ -88,7 +129,19 @@ class Teacher_Model extends CI_Model {
         }
     }
 
-    public function insert_new_teacher_userdata($username, $password, $create , $first_name , $last_name , $photo , $email) {
+    /**
+     * this method is used to insert teacher's loging data
+     * 
+     * @param string $username
+     * @param string $password
+     * @param date-time $create
+     * @param string $first_name
+     * @param string $last_name
+     * @param string $photo
+     * @param string $email
+     * @return boolean
+     */
+    public function insert_new_teacher_userdata($username, $password, $create, $first_name, $last_name, $photo, $email) {
         try {
             $encryptpwd = md5($password);
             if ($this->db->query("INSERT INTO users (`username`, `password` , `created_at`, `user_type` , `first_name` , `last_name` , `profile_img` , `email`) VALUES ('$username', '$encryptpwd' , '$create', 'T' , '$first_name' , '$last_name' , '$photo' , '$email')")) {
@@ -98,59 +151,69 @@ class Teacher_Model extends CI_Model {
                 return NULL;
             }
         } catch (Exception $ex) {
-            return FALSE;
+            return NULL;
         }
     }
 
 //search teacher by nic no
-    public function SearchTeacher($id) {
+//    public function SearchTeacher($id) {
+//
+//        $query = $this->db->query("SELECT * FROM teachers WHERE nic_no like'%$id%' or full_name like '%$id%' or user_id like '%$id%' or signature_no like '%$id%' or serial_no like '%$id%' ");
+//        return $query;
+//    }
 
-        $query = $this->db->query("SELECT * FROM teachers WHERE nic_no like'%$id%' or full_name like '%$id%' or user_id like '%$id%' or signature_no like '%$id%' or serial_no like '%$id%' ");
-        return $query;
-    }
-
-//search for teacher details by 'id'
+    /**
+     * retrieve selected teacher's details
+     * 
+     * @param int $id
+     * @return resulting row
+     */
     public function getTeacherProfile($id) {
-
-        $query = $this->db->query("SELECT * FROM teachers WHERE id ='$id'");
-        return $query->row();
-    }
-
-//get all teacher recodes    
-    public function SearchAllTeachers() {
-
-        $query = $this->db->query("SELECT * FROM teachers order by full_name asc");
-        return $query->result();
-    }
-
-    //update teacher details
-    public function UpdateTeacher($teacher, $myid) {
-        $datestring = " %Y-%m-%d";
-        $time = time();
-
-        $updated_date = mdate($datestring, $time);
-
-
-        $sql = "UPDATE teachers SET
-                                    nic_no='{$teacher['nic']}',                 full_name='{$teacher['fullName']}',            name_with_initials='{$teacher['nameWithInitials']}', dob='{$teacher['birthday']}',
-                                        gender='{$teacher['gender']}',          nationality_id='{$teacher['nationality']}',    religion_id='{$teacher['religion']}',                civil_status='{$teacher['civilStatus']}',
-                                        permanent_addr='{$teacher['address']}', contact_mobile='{$teacher['contactMobile']}',  contact_home='{$teacher['contactHome']}',            email='{$teacher['email']}', 
-                                        wnop_no='{$teacher['wnop']}',           serial_no='{$teacher['serial']}',              signature_no='{$teacher['signature']}',              joined_date='{$teacher['joinDate']}',
-                                        medium='{$teacher['medium']}',          designation_id='{$teacher['designation']}',    section='{$teacher['section']}',                     main_subject_id='{$teacher['mainSub']}',
-                                        grade='{$teacher['serviceGrade']}',     personal_file_no='{$teacher['personalFile']}', teacher_register_no='{$teacher['teacherRegNo']}',    service='{$teacher['service']}',
-                                        remarks='{$teacher['remarks']}',        nature_of_appointment='{$teacher['nature']}',  educational_qualific='{$teacher['education']}',      professional_qualific='{$teacher['profession']}',       
-                                        first_appointment_date='{$teacher['appointmentdate']}',    pension_date='{$teacher['pension']}',     increment_date='{$teacher['increment']}',    promotions='{$teacher['promotions']}',      updated_at='$updated_date'    
-                WHERE id='$myid' ";
-        // $sql = "UPDATE teachers SET nic_no='{$teacher['nic']}' WHERE id='$myid' ";
-
-        if ($query = $this->db->query($sql)) {
-            return TRUE;
-        } else {
+        try{
+            $query = $this->db->query("SELECT * FROM teachers WHERE id ='$id'");
+            return $query->row();
+        } catch (Exception $ex) {
             return FALSE;
         }
     }
 
-    //delete teacher
+    /**
+     * retrieve teacher details by ordering in ascending order
+     * 
+     * @return resulting set
+     */
+    public function SearchAllTeachers() {
+        try{
+            $query = $this->db->query("SELECT * FROM teachers order by full_name asc");
+            return $query->result();
+        } catch (Exception $ex) {
+            return FALSE;
+        }
+    }
+
+    /**
+     * update teacher details 
+     * 
+     * @param array $teacher contains teacher details including both personal and accademic details
+     * @param int $myid
+     * @return boolean
+     */
+    public function UpdateTeacher($teacher, $myid) {
+        try{
+            $this->db->where('id', $myid);
+            $this->db->update('teachers', $teacher);
+            return TRUE;
+        } catch (Exception $ex) {
+            return FALSE;
+        }
+    }
+
+    /**
+     * delete teacher details
+     * 
+     * @param int $id
+     * @return boolean
+     */
     public function DeleteTeacher($id) {
         $sql = "DELETE FROM archived_teachers WHERE id='$id'";
         if ($query = $this->db->query($sql)) {
@@ -160,7 +223,12 @@ class Teacher_Model extends CI_Model {
         }
     }
 
-    //Get teacher id from user id
+    /**
+     * get teacher id 
+     * 
+     * @param int $userid
+     * @return mixed boolean or int value
+     */
     public function get_teacher_id($userid) {
         try {
             $query = $this->db->query("SELECT id FROM teachers WHERE user_id='$userid'");
@@ -171,6 +239,12 @@ class Teacher_Model extends CI_Model {
         }
     }
 
+    /**
+     * get teacher details of given section
+     * 
+     * @param string $section
+     * @return type
+     */
     public function get_section_teacher_details($section) {
         try {
             if ($data = $this->db->query("select * from teachers where section = '$section' ")) {
@@ -184,6 +258,13 @@ class Teacher_Model extends CI_Model {
         }
     }
 
+    /**
+     * this method is used to upload the image to the system
+     * 
+     * @param int $id
+     * @param string $img
+     * @return boolean
+     */
     public function upload_pic($id, $img) {
         try {
             if ($this->db->query("UPDATE teachers SET photo_file_name = '$img' WHERE id = '$id' ")) {
@@ -194,21 +275,44 @@ class Teacher_Model extends CI_Model {
         }
     }
 
+    /**
+     * retreive the image of given user
+     * 
+     * @param int $id
+     * @return string
+     */
     public function get_profile_img($id) {
-        $sql = "SELECT photo_file_name FROM teachers WHERE id='$id'";
-        $query = $this->db->query($sql);
-
-        return $query->row()->photo_file_name;
+        try{
+            $sql = "SELECT photo_file_name FROM teachers WHERE id='$id'";
+            $query = $this->db->query($sql);
+            return $query->row()->photo_file_name;
+        } catch (Exception $ex) {
+            return FALSE;
+        }
     }
 
+    /**
+     * get user id of the given teacher
+     * 
+     * @param int $id
+     * @return int
+     */
     public function getTeacherUserId($id) {
-
-        $query = $this->db->query("SELECT user_id FROM teachers WHERE id ='$id'");
-        return $query->row()->user_id;
+        try{
+            $query = $this->db->query("SELECT user_id FROM teachers WHERE id ='$id'");
+            return $query->row()->user_id;
+        } catch (Exception $ex) {
+            return FALSE;
+        }
     }
 
+    /**
+     * check user id 
+     * 
+     * @param int $teacher_log_id
+     * @return boolean
+     */
     public function check_userid($teacher_log_id) {
-
         if ($this->db->query("SELECT * FROM users WHERE id = '$teacher_log_id'")) {
             return TRUE;
         } else {
@@ -216,15 +320,16 @@ class Teacher_Model extends CI_Model {
         }
     }
 
+    /**
+     * this method is used to archive the teacher details
+     * 
+     * @param int $id
+     * @return boolean
+     */
     public function archive_teacher($id) {
-        
-
         try {
             if ($data_t = $this->db->query("SELECT * FROM teachers  WHERE user_id = '$id'")) {
                 $teachr_data = $data_t->row();
-
-                
-
                 $NIC = $teachr_data->nic_no;
                 $name = $teachr_data->full_name;
                 $initial = $teachr_data->name_with_initials;
@@ -242,7 +347,6 @@ class Teacher_Model extends CI_Model {
                 if ($this->db->query("INSERT INTO archived_teachers(`id`,`nic_no`, `full_name`, `name_with_initials` , `dob` , `gender`, `nationality_id` , `religion_id` , `civil_status` , `permanent_addr` , `contact_mobile` , `contact_home` , `email` , `wnop_no`) 
     			VALUES ('$id','$NIC', '$name' , '$initial' , '$birth', '$gender' , '$Nationality' , '$religion' , '$civilstatus' , '$address' , '$contactMob' , '$contactHome' , '$email' , '$widow')")) {
 
-
                     $sql1 = "DELETE FROM teachers  WHERE user_id = '$id'";
                     if ($query = $this->db->query($sql1)) {
                         return TRUE;
@@ -258,13 +362,14 @@ class Teacher_Model extends CI_Model {
             return FALSE;
         }
     }
-    
-      /*
-     * get all archived student recodes
+
+    /**
+     * get all archived teacher details 
+     * 
+     * @return mixed resulting set or bollean
      */
-     function get_all_archive_teachers() {
-         $query = $this->db->query("SELECT * FROM  archived_teachers");
-     
+    function get_all_archive_teachers() {
+        $query = $this->db->query("SELECT * FROM  archived_teachers");
         if ($query->num_rows() > 0) {
             return $query->result();
         } else {
@@ -272,28 +377,47 @@ class Teacher_Model extends CI_Model {
         }
     }
 
-
+    /**
+     * retieve user details of the given teacher
+     * 
+     * @param int $id
+     * @return type
+     */
     public function user_details($id) {
-        $sql = "SELECT * FROM users WHERE id='$id'";
-        $query = $this->db->query($sql);
-        return $query->row();
-    }
-    
-    public function teacher_nic_from_user_id($uid){
-        $data = $this->db->query("select * from teachers where user_id = '$uid'");
-        if($data->num_rows() > 0){
-            return  $data->row()->nic_no;
+        try{
+            $sql = "SELECT * FROM users WHERE id='$id'";
+            $query = $this->db->query($sql);
+            return $query->row();
+        } catch (Exception $ex) {
+            return FALSE;
         }
-        else{
+    }
+
+    /**
+     * retrive the nic no of the given user
+     * 
+     * @param int $uid
+     * @return string
+     */
+    public function teacher_nic_from_user_id($uid) {
+        $data = $this->db->query("select * from teachers where user_id = '$uid'");
+        if ($data->num_rows() > 0) {
+            return $data->row()->nic_no;
+        } else {
             return "0";
         }
-        
     }
 
-        public function generate_report($type , $report){
-        if($type == 1){
+    /**
+     * this method is used to generate teacher individual repot and sectionwise teacher report
+     * 
+     * @param int $type
+     * @param int $report
+     */
+    public function generate_report($type, $report) {
+        if ($type == 1) {
             $data = $this->db->query("select * from teachers where section = '$report' ");
-            echo "<img src='".base_url('assets/img/dslogo.jpg')."' width='128px' height='128px' style='margin-left: 4em'>";
+            echo "<img src='" . base_url('assets/img/dslogo.jpg') . "' width='128px' height='128px' style='margin-left: 4em'>";
             echo "<h3 style='margin-bottom: 0; margin-left: 3em'>D.S Senanayake College</h3>";
             echo "<h5 style='margin-top: 0; margin-left: 5em'>Report - ";
             if ($report == 1) {
@@ -312,7 +436,7 @@ class Teacher_Model extends CI_Model {
                 echo 'A/L Arts';
             } else {
                 echo '';
-            } 
+            }
             echo "Section Teacher List</h5>";
             echo "<div class='row' style='margin-left: 5em'>
                     <table class='table table-hove'>
@@ -325,7 +449,7 @@ class Teacher_Model extends CI_Model {
                     </tr>
                     </thead>
                     <tbody>";
-            foreach ($data->result() as $row){
+            foreach ($data->result() as $row) {
                 echo "<tr align='left' width='50%'>
                         <td>$row->signature_no;</td>
                         <td>$row->name_with_initials</td>
@@ -336,12 +460,11 @@ class Teacher_Model extends CI_Model {
             echo "  </tbody>
                     </table>
                     </div>";
-        }
-        else{
+        } else {
             $data = $this->db->query("select * from `teachers` where `id` = $report");
             $result = $data->row();
             $propic = $this->get_profile_img($report);
-            echo "<img src='".base_url('assets/img/dslogo.jpg')."' width='128px' height='128px' style='margin-left: 4em'>";
+            echo "<img src='" . base_url('assets/img/dslogo.jpg') . "' width='128px' height='128px' style='margin-left: 4em'>";
             echo "<img src='$propic' id='profile-img' class='img-thumbnail profile-img' style='height: 100px ; width: 100px ; margin-left: 12em ;'>";
             echo "<h3 style='margin-bottom: 0; margin-left: 3em'>D.S Senanayake College</h3>";
             echo "<h5 style='margin-top: 0; margin-left: 5em'>Teacher Report - $result->name_with_initials</h5>";
@@ -374,60 +497,60 @@ class Teacher_Model extends CI_Model {
                 <tr align='left' width='50%'>
                     <td>Gender</td>
                     <td>";
-                    if ( $result->gender == 'm') {
-                        echo 'Male';
-                    } else if ( $result->gender == 'f') {
-                        echo 'Female';
-                    }
-                    echo "</td>";
+            if ($result->gender == 'm') {
+                echo 'Male';
+            } else if ($result->gender == 'f') {
+                echo 'Female';
+            }
+            echo "</td>";
             echo "</tr>
                 <tr align='left' width='50%'>
                 <td>Nationality</td>
                 <td>";
-                    if ($result->nationality_id == 1) {
-                        echo "Sinhala";
-                    } else if ($result->nationality_id == 2) {
-                        echo "Sri Lankan Tamil";
-                    } else if ($result->nationality_id == 3) {
-                        echo "Indian Tamil";
-                    } else if ($result->nationality_id == 4) {
-                        echo "Muslim";
-                    } else {
-                        echo "Other";
-                    }
-               echo "</td>
+            if ($result->nationality_id == 1) {
+                echo "Sinhala";
+            } else if ($result->nationality_id == 2) {
+                echo "Sri Lankan Tamil";
+            } else if ($result->nationality_id == 3) {
+                echo "Indian Tamil";
+            } else if ($result->nationality_id == 4) {
+                echo "Muslim";
+            } else {
+                echo "Other";
+            }
+            echo "</td>
                     </tr>
                     <tr align='left' width='50%'>
                         <td>Religion</td>
                         <td>";
-                    if ($result->religion_id == 1) {
-                        echo "Buddhism";
-                    } else if ($result->religion_id == 2) {
-                        echo "Hindunism";
-                    } else if ($result->religion_id == 3) {
-                        echo "Islam";
-                    } else if ($result->religion_id == 4) {
-                        echo "Catholicism";
-                    } else if ($result->religion_id == 5) {
-                        echo "Christianity";
-                    } else {
-                        echo "Other";
-                    }
+            if ($result->religion_id == 1) {
+                echo "Buddhism";
+            } else if ($result->religion_id == 2) {
+                echo "Hindunism";
+            } else if ($result->religion_id == 3) {
+                echo "Islam";
+            } else if ($result->religion_id == 4) {
+                echo "Catholicism";
+            } else if ($result->religion_id == 5) {
+                echo "Christianity";
+            } else {
+                echo "Other";
+            }
             echo "</td>
                     </tr>
                     <tr align='left' width='50%'>
                     <td>Civil Status</td>
                     <td>";
-                    if ($result->civil_status == 's') {
-                        echo "Single";
-                    } else if ($result->civil_status == 'm') {
-                        echo "Married";
-                    } else if ($result->civil_status == 'w') {
-                        echo "Widow";
-                    } else {
-                        echo "Other";
-                    }
-                    echo "</td>
+            if ($result->civil_status == 's') {
+                echo "Single";
+            } else if ($result->civil_status == 'm') {
+                echo "Married";
+            } else if ($result->civil_status == 'w') {
+                echo "Widow";
+            } else {
+                echo "Other";
+            }
+            echo "</td>
             </tr>
             <tr align='left' width='50%'>
                 <td>Address</td>
@@ -472,143 +595,143 @@ class Teacher_Model extends CI_Model {
             <tr align='left' width='50%'>
                 <td>Medium</td>
                 <td>";
-                    if ($result->medium == 's') {
-                        echo "Sinhala";
-                    } else if ($result->medium == 'e') {
-                        echo "English";
-                    } else if ($result->medium == 't') {
-                        echo "Tamil";
-                    } else {
-                        echo "";
-                    }
-                    
-                echo "</td>
+            if ($result->medium == 's') {
+                echo "Sinhala";
+            } else if ($result->medium == 'e') {
+                echo "English";
+            } else if ($result->medium == 't') {
+                echo "Tamil";
+            } else {
+                echo "";
+            }
+
+            echo "</td>
             </tr>
             <tr align='left' width='50%'>
                 <td>Designation</td>
                 <td>";
-                    if ($result->designation_id == 1) {
-                        echo "Principal";
-                    } else if ($result->designation_id == 2) {
-                        echo "Acting Principal";
-                    } else if ($result->designation_id == 3) {
-                        echo "Deputy Principal";
-                    } else if ($result->designation_id == 4) {
-                        echo "Acting Deputy Principal";
-                    } else if ($result->designation_id == 5) {
-                        echo "Assistant Principal";
-                    } else if ($result->designation_id == 6) {
-                        echo "Acting Assistant Principal";
-                    } else if ($result->designation_id == 7) {
-                        echo "Teacher";
-                    } else {
-                        echo "";
-                    }
-                echo "</td>
+            if ($result->designation_id == 1) {
+                echo "Principal";
+            } else if ($result->designation_id == 2) {
+                echo "Acting Principal";
+            } else if ($result->designation_id == 3) {
+                echo "Deputy Principal";
+            } else if ($result->designation_id == 4) {
+                echo "Acting Deputy Principal";
+            } else if ($result->designation_id == 5) {
+                echo "Assistant Principal";
+            } else if ($result->designation_id == 6) {
+                echo "Acting Assistant Principal";
+            } else if ($result->designation_id == 7) {
+                echo "Teacher";
+            } else {
+                echo "";
+            }
+            echo "</td>
             </tr>
             <tr align='left' width='50%'>
                 <td>Section</td>
                 <td>";
-                    if ($result->section == 1) {
-                        echo "1/5";
-                    } else if ($result->section == 2) {
-                        echo "6/7";
-                    } else if ($result->section == 3) {
-                        echo "8/9";
-                    } else if ($result->section == 4) {
-                        echo "10/11";
-                    } else if ($result->section == 5) {
-                        echo "A/L Science";
-                    } else if ($result->section == 6) {
-                        echo "A/L Commerce";
-                    } else if ($result->section == 7) {
-                        echo "A/L Arts";
-                    } else {
-                        echo "";
-                    }
-                echo "</td>
+            if ($result->section == 1) {
+                echo "1/5";
+            } else if ($result->section == 2) {
+                echo "6/7";
+            } else if ($result->section == 3) {
+                echo "8/9";
+            } else if ($result->section == 4) {
+                echo "10/11";
+            } else if ($result->section == 5) {
+                echo "A/L Science";
+            } else if ($result->section == 6) {
+                echo "A/L Commerce";
+            } else if ($result->section == 7) {
+                echo "A/L Arts";
+            } else {
+                echo "";
+            }
+            echo "</td>
             </tr>
             <tr align='left' width='50%'>
                 <td>Main Subject</td>
                 <td>";
-                    if ($result->main_subject_id == 1) {
-                        echo "Maths";
-                    } else if ($result->main_subject_id == 2) {
-                        echo "Science";
-                    } else if ($result->main_subject_id == 3) {
-                        echo "Chemistry";
-                    } else if ($result->main_subject_id == 4) {
-                        echo "Physics";
-                    } else if ($result->main_subject_id == 5) {
-                        echo "Business Studies";
-                    } else if ($result->main_subject_id == 6) {
-                        echo "English";
-                    } else if ($result->main_subject_id == 7) {
-                        echo "History";
-                    } else if ($result->main_subject_id == 8) {
-                        echo "Information Technology";
-                    } else if ($result->main_subject_id == 9) {
-                        echo "Sinhala";
-                    } else if ($result->main_subject_id == 10) {
-                        echo "Mechanics";
-                    } else if ($result->main_subject_id == 11) {
-                        echo "Tamil";
-                    } else if ($result->main_subject_id == 12) {
-                        echo "Other";
-                    } else {
-                        echo "";
-                    }
-                echo "</td>
+            if ($result->main_subject_id == 1) {
+                echo "Maths";
+            } else if ($result->main_subject_id == 2) {
+                echo "Science";
+            } else if ($result->main_subject_id == 3) {
+                echo "Chemistry";
+            } else if ($result->main_subject_id == 4) {
+                echo "Physics";
+            } else if ($result->main_subject_id == 5) {
+                echo "Business Studies";
+            } else if ($result->main_subject_id == 6) {
+                echo "English";
+            } else if ($result->main_subject_id == 7) {
+                echo "History";
+            } else if ($result->main_subject_id == 8) {
+                echo "Information Technology";
+            } else if ($result->main_subject_id == 9) {
+                echo "Sinhala";
+            } else if ($result->main_subject_id == 10) {
+                echo "Mechanics";
+            } else if ($result->main_subject_id == 11) {
+                echo "Tamil";
+            } else if ($result->main_subject_id == 12) {
+                echo "Other";
+            } else {
+                echo "";
+            }
+            echo "</td>
             </tr>
             <tr align='left' width='50%'>
                 <td>Service Garde</td>
                 <td>";
-                    if ($result->grade == 1) {
-                        echo "Sri Lanka Education Administrative ServiceI";
-                    } else if ($result->grade == 2) {
-                        echo "Sri Lanka Education Administrative ServiceII";
-                    } else if ($result->grade == 3) {
-                        echo "Sri Lanka Education Administrative ServiceIII";
-                    } else if ($result->grade == 4) {
-                        echo "Sri Lanka Principal ServiceI";
-                    } else if ($result->grade == 5) {
-                        echo "Sri Lanka Principal Service2I";
-                    } else if ($result->grade == 6) {
-                        echo "Sri Lanka Principal Service2II";
-                    } else if ($result->grade == 7) {
-                        echo "Sri Lanka Principal Service3";
-                    } else if ($result->grade == 8) {
-                        echo "Sri Lanka Teacher ServiceI";
-                    } else if ($result->grade == 9) {
-                        echo "Sri Lanka Teacher Service2I";
-                    } else if ($result->grade == 10) {
-                        echo "Sri Lanka Teacher Service2II";
-                    } else if ($result->grade == 11) {
-                        echo "Sri Lanka Teacher Service3I";
-                    } else if ($result->grade == 12) {
-                        echo "Sri Lanka Teacher Service3II";
-                    } else if ($result->grade == 13) {
-                        echo "Sri Lanka Teacher Service Pending";
-                    } else {
-                        echo "";
-                    }
-                echo "</td>
+            if ($result->grade == 1) {
+                echo "Sri Lanka Education Administrative ServiceI";
+            } else if ($result->grade == 2) {
+                echo "Sri Lanka Education Administrative ServiceII";
+            } else if ($result->grade == 3) {
+                echo "Sri Lanka Education Administrative ServiceIII";
+            } else if ($result->grade == 4) {
+                echo "Sri Lanka Principal ServiceI";
+            } else if ($result->grade == 5) {
+                echo "Sri Lanka Principal Service2I";
+            } else if ($result->grade == 6) {
+                echo "Sri Lanka Principal Service2II";
+            } else if ($result->grade == 7) {
+                echo "Sri Lanka Principal Service3";
+            } else if ($result->grade == 8) {
+                echo "Sri Lanka Teacher ServiceI";
+            } else if ($result->grade == 9) {
+                echo "Sri Lanka Teacher Service2I";
+            } else if ($result->grade == 10) {
+                echo "Sri Lanka Teacher Service2II";
+            } else if ($result->grade == 11) {
+                echo "Sri Lanka Teacher Service3I";
+            } else if ($result->grade == 12) {
+                echo "Sri Lanka Teacher Service3II";
+            } else if ($result->grade == 13) {
+                echo "Sri Lanka Teacher Service Pending";
+            } else {
+                echo "";
+            }
+            echo "</td>
             </tr>
             <tr align='left' width='50%'>
                 <td>Nature of Appointment</td>
                 <td>";
-                    if ($result->nature_of_appointment == 1) {
-                        echo "Degree";
-                    } else if ($result->nature_of_appointment == 2) {
-                        echo "Diploma";
-                    } else if ($result->nature_of_appointment == 3) {
-                        echo "Trained";
-                    } else if ($result->nature_of_appointment == 4) {
-                        echo "Other";
-                    } else {
-                        echo "";
-                    }
-                echo "</td>
+            if ($result->nature_of_appointment == 1) {
+                echo "Degree";
+            } else if ($result->nature_of_appointment == 2) {
+                echo "Diploma";
+            } else if ($result->nature_of_appointment == 3) {
+                echo "Trained";
+            } else if ($result->nature_of_appointment == 4) {
+                echo "Other";
+            } else {
+                echo "";
+            }
+            echo "</td>
             </tr>
             <tr align='left' width='50%'>
                 <td>Educational Qualifications</td>
@@ -629,15 +752,23 @@ class Teacher_Model extends CI_Model {
             </table>
         </div>";
         }
-        
     }
-    
-    public function get_teacher_list(){
+
+    /**
+     * 
+     * @return type
+     */
+    public function get_teacher_list() {
         $sql = "SELECT `id`, `full_name` FROM teachers ORDER BY `id`";
         return $this->db->query($sql)->result();
     }
-    
-    public function get_teacher_name($teacher_id){
+
+    /**
+     * 
+     * @param type $teacher_id
+     * @return type
+     */
+    public function get_teacher_name($teacher_id) {
         $sql = "SELECT name_with_initials FROM teachers WHERE id='{$teacher_id}'";
         return $this->db->query($sql)->row();
     }
