@@ -1,5 +1,4 @@
 <?php
-
 /**
  * Ecole - Student Controller
  * 
@@ -9,7 +8,6 @@
  * @copyright (c) 2015, Ecole. (http://projectecole.com)
  * @link http://projectecole.com
  */
-
 class Student extends CI_Controller {
     /**
      * Class Constructor
@@ -1163,5 +1161,4 @@ class Student extends CI_Controller {
             return FALSE;
         }
     }
-
 }

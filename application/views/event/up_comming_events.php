@@ -34,6 +34,18 @@
                 </div>
                 <div class="panel-body">
 
+                <?php
+                        if(count($details) == 0){ ?>
+                            <div class="col-md-12 col-md-offset-* text-center">
+                                <div class="well well-lg">
+                                    <i class="fa fa-exclamation-triangle fa-5x"></i>
+                                    <div class="">
+                                        <h2>No Events Found</h2>
+                                    </div>
+                                </div>
+                            </div>
+                      <?php  }else{ ?>
+
                     <div class="pull-right">
                         <form class="form-inline">
                             <div class="form-group">
@@ -110,7 +122,7 @@ if ($type == 1) {
                                 <?php } ?>
                         </tbody>
                     </table>
-
+                    <?php } ?>
 
                 </div>
             </div>
