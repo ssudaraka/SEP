@@ -21,7 +21,7 @@ function get_other_user($conversation_id, $user_id) {
     $query = $ci->db->get_where('inbox_conversations', array('conversation_id' => $conversation_id));
     $row = $query->row();
 
-    if ($user_id === $row->sender_id) {
+    if ($user_id == $row->sender_id) {
         return $row->receiver_id;
     } else {
         return $row->sender_id;
