@@ -15,7 +15,9 @@ $error_suffix = "</p>"
                     <div class="col-sm-1">
                         <div class="thumbnail">
                             <a href="<?php echo base_url("index.php/inbox/read/{$conversation->conversation_id}"); ?>">
-                                <img class="img-responsive user-photo" src="<?php echo user_img_url($other_user); ?>">
+                                <img class="img-responsive user-photo" src="
+                                     <?php echo (user_img_url($other_user) == "" ? base_url('assets/img/profile_placeholder.png') :  user_img_url($other_user)); ?>
+                                     ">
                             </a>
                         </div><!-- /thumbnail -->
                     </div><!-- /col-sm-1 -->

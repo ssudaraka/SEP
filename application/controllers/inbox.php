@@ -23,7 +23,7 @@ class Inbox extends CI_Controller {
     public function index() {
         $data['navbar'] = 'inbox';
         $data['user_type'] = $this->session->userdata('user_type');
-        $data['page_title'] = "Profile Settings";
+        $data['page_title'] = "Inbox";
         $data['inbox_type'] = "inbox";
         $data['conversations'] = $this->messages_model->get_all_messages($this->session->userdata('id'));
         $this->load->view('templates/header', $data);
