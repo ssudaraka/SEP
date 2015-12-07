@@ -688,6 +688,7 @@ class Teacher extends CI_Controller {
         if (!$this->session->userdata('id')) {
             redirect('login', 'refresh');
         }
+        $data['user_type'] = $this->session->userdata['user_type'];
         $this->load->helper(array('dompdf', 'file'));
         $this->load->library('form_validation');
         $this->form_validation->set_rules('reporttype', 'reporttype', 'callback_check_selection');
