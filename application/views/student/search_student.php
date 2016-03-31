@@ -72,7 +72,7 @@
                                 $('#table_id tbody ').on('click', '#edit', function (e) {
                                     e.preventDefault();
                                     var data = table.row($(this).parents('tr')).data();
-                                    window.location.href = "/sep/index.php/student/load_student/" + data['id2'];
+                                    window.location.href = "/index.php/student/load_student/" + data['id2'];
                                 });
                                 $('#table_id tbody ').on('click', '#delete', function (e) {
                                     e.preventDefault();
