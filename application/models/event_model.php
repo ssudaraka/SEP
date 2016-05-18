@@ -4,9 +4,9 @@
  * 
  * Responsibe for handling date related to school events in the system
  * 
- * @author Gunathilaka M.A.S.S
- * @copyright (c) 2015, Ecole. (http://projectecole.com)
- * @link  http://projectecole.com
+ * @author Galhena V.I
+ * @copyright (c) 2016, Ecole. (http://demo.projectecole.com)
+ * @link  http://demo.projectecole.com
  */
 class Event_model extends CI_Model {
 

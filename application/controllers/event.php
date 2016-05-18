@@ -4,9 +4,9 @@
  * 
  * Responsibe for handling inputs
  * 
- * @author Gunathilaka M.A.S.S
- * @copyright (c) 2015, Ecole. (http://projectecole.com)
- * @link  http://projectecole.com
+ * @author Galhena V.I
+ * @copyright (c) 2016, Ecole. (http://demo.projectecole.com)
+ * @link  http://demo.projectecole.com
  */
 class Event extends CI_Controller {
 
@@ -21,7 +21,7 @@ class Event extends CI_Controller {
 
     /**
      * First run this index method. The session keeps track of whether the user logged in or not. If not, user has to login to the system.
-     * It riderects user to another method according to the user type.
+     * It redirects user to another method according to the user type.
      */
     function index() {
         if (!$this->session->userdata('logged_in')) {

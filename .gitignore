@@ -1,3 +1,4 @@
 aplication/config/config.php
 aplication/config/database.php
 uploads/*
+.idea
